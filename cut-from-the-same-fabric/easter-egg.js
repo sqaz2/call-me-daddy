@@ -50,6 +50,7 @@
     trap.hidden=true;
     trap.disabled=true;
     trap.setAttribute('aria-expanded','true');
+    echoFilm.classList.add('wtf-open');
     overlay.classList.add('open');
     close.focus({preventScroll:true});
     speak();
@@ -57,6 +58,7 @@
 
   const shut=()=>{
     overlay.classList.remove('open');
+    echoFilm.classList.remove('wtf-open');
     trap.setAttribute('aria-expanded','false');
     if('speechSynthesis' in window)window.speechSynthesis.cancel();
   };
