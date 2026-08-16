@@ -8,12 +8,20 @@ crossAudio.volume=0;
 crossAudio.style.display='none';
 document.body.appendChild(crossAudio);
 
-const CROSSFADE_LEAD=30;
-const CROSSFADE_SECONDS=22;
+// Only used for Find Your People -> instrumental.
+// The first song gets out of the way quickly while the instrumental stays
+// deliberately tucked underneath it, then rises after the first song is gone.
+const CROSSFADE_LEAD=18;
+const FIRST_FADE_SECONDS=6.5;
+const SECOND_RISE_SECONDS=5.5;
+const SECOND_UNDER_VOLUME=.12;
 let order=[],index=0;
 let activeAudio=audio;
 let crossfadeActive=false;
 let crossfadeRaf=0;
+
+function clamp01(n){return Math.max(0,Math.min(1,n));}
+function smoothstep(n){n=clamp01(n);return n*n*(3-2*n);}
 
 function stopCrossfade(){
   cancelAnimationFrame(crossfadeRaf);
@@ -88,34 +96,60 @@ function beginPositiveCrossfade(){
   if(audio.currentTime<fadeStart)return;
 
   crossfadeActive=true;
-  const elapsed=Math.max(0,audio.currentTime-fadeStart);
+  const initialElapsed=Math.max(0,audio.currentTime-fadeStart);
   crossAudio.src=tracks.beat.src;
   crossAudio.volume=0;
-  try{crossAudio.currentTime=Math.min(elapsed,CROSSFADE_SECONDS)}catch(_){ }
+  try{crossAudio.currentTime=Math.min(initialElapsed,CROSSFADE_LEAD)}catch(_){ }
 
   const startBeat=()=>{
+    const beatStartPosition=crossAudio.currentTime;
+    let firstStopped=false;
+
+    const switchToInstrumental=()=>{
+      if(firstStopped)return;
+      firstStopped=true;
+      audio.pause();
+      audio.volume=1;
+      activeAudio=crossAudio;
+      index=1;
+      nowTitle.textContent=tracks.beat.title;
+      nowLabel.textContent='Track 2 of 3 · blended in';
+      updateProgress(crossAudio);
+    };
+
     const tick=()=>{
       if(!crossfadeActive)return;
-      const p=Math.max(0,Math.min(1,(audio.currentTime-fadeStart)/CROSSFADE_SECONDS));
-      audio.volume=Math.cos(p*Math.PI/2);
-      crossAudio.volume=Math.sin(p*Math.PI/2);
 
-      if(p>=1){
-        cancelAnimationFrame(crossfadeRaf);
-        crossfadeRaf=0;
-        audio.pause();
-        audio.volume=1;
-        crossAudio.volume=1;
-        activeAudio=crossAudio;
-        crossfadeActive=false;
-        index=1;
-        nowTitle.textContent=tracks.beat.title;
-        nowLabel.textContent='Track 2 of 3 · crossfaded';
-        updateProgress(crossAudio);
-        return;
+      const elapsed=initialElapsed+Math.max(0,crossAudio.currentTime-beatStartPosition);
+      const firstP=clamp01(elapsed/FIRST_FADE_SECONDS);
+
+      if(firstP<1){
+        // Fade Find Your People faster than a normal equal-power crossfade.
+        audio.volume=Math.pow(1-firstP,2.15);
+
+        // Keep the instrumental very quiet while both tracks overlap.
+        crossAudio.volume=SECOND_UNDER_VOLUME*Math.pow(firstP,1.7);
+      }else{
+        switchToInstrumental();
+
+        // Only after the first song is effectively gone do we let the
+        // instrumental come forward to full volume.
+        const riseP=clamp01((elapsed-FIRST_FADE_SECONDS)/SECOND_RISE_SECONDS);
+        crossAudio.volume=SECOND_UNDER_VOLUME+(1-SECOND_UNDER_VOLUME)*smoothstep(riseP);
+
+        if(riseP>=1){
+          cancelAnimationFrame(crossfadeRaf);
+          crossfadeRaf=0;
+          crossAudio.volume=1;
+          crossfadeActive=false;
+          updateProgress(crossAudio);
+          return;
+        }
       }
+
       crossfadeRaf=requestAnimationFrame(tick);
     };
+
     cancelAnimationFrame(crossfadeRaf);
     crossfadeRaf=requestAnimationFrame(tick);
   };
