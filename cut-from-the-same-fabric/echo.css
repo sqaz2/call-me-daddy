@@ -55,6 +55,7 @@
     radial-gradient(ellipse at center,transparent 24%,rgba(8,8,8,.14) 58%,rgba(8,8,8,.72) 100%),
     linear-gradient(180deg,rgba(8,8,8,.34) 0%,rgba(8,8,8,.04) 22%,rgba(8,8,8,.06) 42%,rgba(8,8,8,.46) 62%,rgba(8,8,8,.80) 80%,rgba(8,8,8,.97) 94%,#080808 100%);
   pointer-events:none;
+  transition:opacity .22s ease;
 }
 
 .echo-film-copy{
@@ -106,60 +107,70 @@
   cursor:pointer;
 }
 
+.echo-sound[hidden]{display:none!important;}
 .echo-sound:focus-visible{
   outline:1px solid rgba(255,255,255,.5);
   outline-offset:6px;
 }
 
+.echo-film.wtf-open video{
+  opacity:.88;
+  filter:saturate(.88) contrast(1.06) brightness(.82);
+}
+.echo-film.wtf-open .echo-film-shade{opacity:.45;}
+
 .wtf-modal{
-  position:fixed;
+  position:absolute;
   inset:0;
-  z-index:10000;
+  z-index:12;
   display:grid;
   place-items:center;
-  padding:24px;
-  background:rgba(0,0,0,.94);
-  backdrop-filter:blur(12px);
+  padding:clamp(22px,5vw,64px);
+  background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.24) 48%,rgba(0,0,0,.38));
   opacity:0;
   visibility:hidden;
+  pointer-events:none;
   transition:opacity .22s ease,visibility .22s ease;
 }
 
 .wtf-modal.open{
   opacity:1;
   visibility:visible;
+  pointer-events:auto;
 }
 
 .wtf-modal-inner{
-  width:min(720px,100%);
+  width:min(980px,100%);
   text-align:center;
+  text-shadow:0 4px 30px rgba(0,0,0,.92);
 }
 
 .wtf-modal-label{
-  color:#77736d;
-  font-size:.66rem;
-  font-weight:780;
-  letter-spacing:.20em;
+  color:rgba(235,231,223,.68);
+  font-size:clamp(.62rem,1.4vw,.82rem);
+  font-weight:800;
+  letter-spacing:.22em;
   text-transform:uppercase;
 }
 
 .wtf-modal h2{
-  margin:14px 0 26px;
-  color:#f2f0e9;
-  font-size:clamp(3.1rem,12vw,7rem);
-  line-height:.84;
-  letter-spacing:-.065em;
+  margin:14px 0 28px;
+  color:#f4f1e9;
+  font-size:clamp(4rem,13vw,10rem);
+  line-height:.78;
+  letter-spacing:-.07em;
   text-transform:uppercase;
 }
 
 .wtf-close{
-  min-height:46px;
-  padding:0 18px;
-  border:1px solid rgba(255,255,255,.15);
+  min-height:48px;
+  padding:0 20px;
+  border:1px solid rgba(255,255,255,.24);
   border-radius:999px;
-  background:#111;
-  color:#d8d4cb;
-  font-weight:760;
+  background:rgba(9,9,9,.66);
+  color:#eeeae1;
+  font-weight:780;
+  box-shadow:0 10px 34px rgba(0,0,0,.34);
   cursor:pointer;
 }
 
@@ -205,6 +216,17 @@
     right:18px;
     bottom:88px;
     max-width:46vw;
+  }
+  .wtf-modal{
+    padding:24px 18px 58px;
+    align-items:center;
+    background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.20) 45%,rgba(0,0,0,.44));
+  }
+  .wtf-modal-inner{width:100%;}
+  .wtf-modal h2{
+    margin:12px 0 24px;
+    font-size:clamp(4.2rem,19vw,7.4rem);
+    line-height:.76;
   }
 }
 
