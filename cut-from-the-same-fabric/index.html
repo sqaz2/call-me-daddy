@@ -24,6 +24,7 @@
 
   <link rel="canonical" href="https://callmedaddy.musicsubject.com/cut-from-the-same-fabric/">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/cut-from-the-same-fabric/echo.css">
 </head>
 <body>
   <header class="topbar">
@@ -35,7 +36,9 @@
 
   <main>
     <section class="project-hero">
-      <img class="project-poster" src="/cut-from-the-same-fabric.png" alt="" aria-hidden="true">
+      <video class="project-poster" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="/cut-from-the-same-fabric.mp4" type="video/mp4">
+      </video>
       <div class="project-shell project-hero-copy">
         <a class="back" href="/">← Call Me Daddy</a>
         <div class="eyebrow">MusicSubject × Call Me Daddy</div>
@@ -90,7 +93,7 @@
 
     <section class="echo-film-wrap" aria-label="The ending comes back">
       <div class="echo-film">
-        <video id="endLoop" muted playsinline preload="metadata" poster="/cut-from-the-same-fabric.png">
+        <video id="endLoop" muted playsinline preload="metadata">
           <source src="/cut-from-the-same-fabric.mp4" type="video/mp4">
         </video>
         <div class="echo-film-shade"></div>
