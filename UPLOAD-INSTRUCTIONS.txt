@@ -1,0 +1,13 @@
+Call Me Daddy media assets
+
+Upload the contents of the assets folder into the root of the GitHub repository:
+sqaz2/call-me-daddy
+
+Expected paths:
+assets/audio/find-your-people.mp3
+assets/audio/cut-from-the-same-fabric-instrumental.mp3
+assets/audio/hell-has-people-too.mp3
+assets/video/cut-from-the-same-fabric.mp4
+assets/images/cut-from-the-same-fabric.png
+assets/images/find-your-people.png
+assets/images/hell-has-people-too.png
