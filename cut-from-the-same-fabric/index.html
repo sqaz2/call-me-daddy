@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07070a">
+  <title>Cut From the Same Fabric — Call Me Daddy</title>
+  <meta name="description" content="One musical fabric split into two emotional directions. Choose where you begin; the instrumental always stays in the middle.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="project-shell nav">
+      <a class="brand" href="/"><span class="brand-mark">CMD</span><span>CALL ME DADDY</span></a>
+      <nav class="navlinks"><a href="#choose">Choose a side</a><a href="#idea">The idea</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="project-hero">
+      <video class="project-video" autoplay muted loop playsinline poster="/assets/images/cut-from-the-same-fabric.png">
+        <source src="/assets/video/cut-from-the-same-fabric.mp4" type="video/mp4">
+      </video>
+      <div class="project-shell">
+        <a class="back" href="/">← Call Me Daddy</a>
+        <div class="eyebrow">Interactive release // one musical family</div>
+        <h1>CUT FROM THE SAME FABRIC</h1>
+        <p class="lede">Two songs came from the same musical fabric by separating the negative from the positive. Pick either emotional direction first. The instrumental is always the bridge in the middle.</p>
+        <div class="status">HEADPHONES RECOMMENDED · YOU CONTROL THE ORDER</div>
+      </div>
+    </section>
+
+    <section class="project-shell section" id="choose">
+      <div class="section-head">
+        <div><div class="eyebrow">Start where you are</div><h2>WHICH SIDE<br>DO YOU HEAR FIRST?</h2></div>
+        <p class="section-copy">There is no “correct” first track. Start in the direction that matches you. The sequence automatically puts the naked beat between the two songs.</p>
+      </div>
+
+      <div class="choice-grid">
+        <button class="choice good" data-path="up">
+          <span class="kicker">Upward cut</span>
+          <strong>Find Your People</strong>
+          <span>Keep the lesson. Remove the resentment. Find support that doesn't ask you to shrink.</span>
+        </button>
+        <button class="choice dark" data-path="down">
+          <span class="kicker">Shadow cut</span>
+          <strong>HELL HAS PEOPLE TOO</strong>
+          <span>Isolate the jealousy, insecurity, resentment and relationships that keep score.</span>
+        </button>
+      </div>
+
+      <div class="sequence" aria-live="polite">
+        <div class="seq" id="seq1"><span class="num">01 · START</span><strong>Choose a direction</strong></div>
+        <div class="seq center">SAME<br>FABRIC</div>
+        <div class="seq" id="seq3"><span class="num">03 · OTHER SIDE</span><strong>Then hear the contrast</strong></div>
+      </div>
+      <div class="seq" style="margin-bottom:20px"><span class="num">02 · BRIDGE</span><strong>Cut From the Same Fabric — Instrumental</strong><p>The lyrics disappear. The shared musical DNA becomes obvious.</p></div>
+
+      <div class="player">
+        <audio id="audio" preload="metadata"></audio>
+        <div class="now">
+          <div class="disc" aria-hidden="true"></div>
+          <div class="trackmeta"><small id="nowLabel">Choose a starting side</small><strong id="nowTitle">Cut From the Same Fabric</strong></div>
+          <div class="controls">
+            <button class="iconbtn" id="prev" aria-label="Previous track">↶</button>
+            <button class="iconbtn" id="play" aria-label="Play or pause">▶</button>
+            <button class="iconbtn" id="next" aria-label="Next track">↷</button>
+          </div>
+        </div>
+        <div class="timeline" id="timeline"><span id="progress"></span></div>
+      </div>
+    </section>
+
+    <section class="project-shell section" id="idea">
+      <div class="section-head">
+        <div><div class="eyebrow">Why split one song?</div><h2>SAME MUSIC.<br>DIFFERENT ENERGY.</h2></div>
+        <p class="section-copy">The experiment is about separating emotional ingredients without pretending the difficult ones don't exist.</p>
+      </div>
+      <div class="essay">
+        <article class="card"><div class="kicker">The shadow</div><h3>Put the poison in its own container.</h3><p><em>HELL HAS PEOPLE TOO</em> holds the envy, comparison, resentment, insecurity and conditional support. Instead of blending those feelings into everything, the song gives them somewhere specific to live.</p></article>
+        <article class="card"><div class="kicker">The climb</div><h3>Keep what helps you move.</h3><p><em>Find Your People</em> takes the same underlying lesson in the other direction: stop shrinking for the wrong room, recognize genuine support, and move toward people who can celebrate your growth.</p></article>
+        <article class="card"><div class="kicker">The bridge</div><h3>Remove the words.</h3><p>The instrumental sits between both songs because it belongs to neither emotional interpretation. It is the common fabric: proof that the same musical foundation can carry opposite psychological framing.</p></article>
+        <article class="card"><div class="kicker">Your route</div><h3>Direction changes context.</h3><p>Start dark and the experience can feel like moving out of resentment toward connection. Start positive and the same sequence becomes a reminder of what you're choosing to leave behind. The listener supplies the narrative.</p></article>
+      </div>
+    </section>
+
+    <section class="project-shell section">
+      <div class="card manifesto">
+        <div class="kicker">Cut from the same fabric</div>
+        <blockquote>Sometimes the difference isn't the beat. It's what you decide to carry through it.</blockquote>
+        <div class="actions" style="justify-content:center"><a class="btn" href="https://suno.com/@callmedaddy" target="_blank" rel="noopener">More on Suno ↗</a><a class="btn" href="/">Back to Call Me Daddy</a></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/cut-from-the-same-fabric/player.js"></script>
+</body>
+</html>
