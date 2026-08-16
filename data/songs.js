@@ -1,5 +1,19 @@
 window.CMD_SONGS = [
   {
+    id: 'namaste-hamster',
+    title: 'Namaste, Hamster',
+    artist: 'Call Me Daddy',
+    year: 2026,
+    month: 8,
+    date: '2026-08-16',
+    project: 'Namaste, Hamster',
+    description: 'Meditation, dubstep, tiny paws and a suspicious amount of enlightenment.',
+    audio: '/media/songs/2026/08/namaste-hamster/audio.mp3',
+    cover: '/media/songs/2026/08/namaste-hamster/cover.jpg',
+    experience: '/namaste-hamster/',
+    kind: 'song'
+  },
+  {
     id: 'find-your-people',
     title: 'Find Your People',
     artist: 'Call Me Daddy',
