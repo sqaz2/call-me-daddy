@@ -1,4 +1,4 @@
-const tracks={up:{title:'Find Your People',src:'/find-your-people.mp3'},beat:{title:'Cut From the Same Fabric — Instrumental',src:'/cut-from-the-same-fabric-instrumental.mp3'},down:{title:'HELL HAS PEOPLE TOO',src:'/hell-has-people-too.mp3'}};
+const tracks={up:{title:'Find Your People',src:'/media/songs/2026/08/find-your-people/audio.mp3'},beat:{title:'Cut From the Same Fabric — Instrumental',src:'/media/songs/2026/08/cut-from-the-same-fabric-instrumental/audio.mp3'},down:{title:'HELL HAS PEOPLE TOO',src:'/media/songs/2026/08/hell-has-people-too/audio.mp3'}};
 const audio=document.getElementById('audio'),playBtn=document.getElementById('play'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),nowTitle=document.getElementById('nowTitle'),nowLabel=document.getElementById('nowLabel'),progress=document.getElementById('progress'),timeline=document.getElementById('timeline'),seq1=document.getElementById('seq1'),seq3=document.getElementById('seq3');
 
 const crossAudio=document.createElement('audio');
@@ -124,16 +124,10 @@ function beginPositiveCrossfade(){
       const firstP=clamp01(elapsed/FIRST_FADE_SECONDS);
 
       if(firstP<1){
-        // Fade Find Your People faster than a normal equal-power crossfade.
         audio.volume=Math.pow(1-firstP,2.15);
-
-        // Keep the instrumental very quiet while both tracks overlap.
         crossAudio.volume=SECOND_UNDER_VOLUME*Math.pow(firstP,1.7);
       }else{
         switchToInstrumental();
-
-        // Only after the first song is effectively gone do we let the
-        // instrumental come forward to full volume.
         const riseP=clamp01((elapsed-FIRST_FADE_SECONDS)/SECOND_RISE_SECONDS);
         crossAudio.volume=SECOND_UNDER_VOLUME+(1-SECOND_UNDER_VOLUME)*smoothstep(riseP);
 
