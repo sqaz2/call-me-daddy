@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <title>Music — Call Me Daddy × MusicSubject</title>
+  <meta name="description" content="Browse and play music from Call Me Daddy by MusicSubject.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MusicSubject × Call Me Daddy">
+  <meta property="og:title" content="Music — Call Me Daddy × MusicSubject">
+  <meta property="og:description" content="Songs, instrumentals and interactive releases from Call Me Daddy.">
+  <meta property="og:url" content="https://callmedaddy.musicsubject.com/music/">
+  <meta property="og:image" content="https://callmedaddy.musicsubject.com/cut-from-the-same-fabric.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://callmedaddy.musicsubject.com/cut-from-the-same-fabric.png">
+  <link rel="canonical" href="https://callmedaddy.musicsubject.com/music/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/music/music.css">
+</head>
+<body class="music-page">
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="/"><span class="brand-parent">MUSICSUBJECT</span><span class="brand-slash">×</span><span>CALL ME DADDY</span></a>
+      <nav class="navlinks" aria-label="Music navigation">
+        <a href="/">Home</a>
+        <a href="/cut-from-the-same-fabric/">Featured</a>
+        <a href="/sqaz/">Sqaz</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell music-hero">
+      <a class="back" href="/">← Call Me Daddy</a>
+      <div class="eyebrow">The catalog starts here</div>
+      <h1>MUSIC</h1>
+      <p class="lede">Songs, instrumentals and the projects they turn into. The special releases still get their own pages; this is the place where the music itself can keep growing.</p>
+    </section>
+
+    <section class="shell music-section" aria-labelledby="catalogTitle">
+      <div class="music-head">
+        <div>
+          <div class="kicker">Current library</div>
+          <h2 id="catalogTitle">LISTEN HERE.</h2>
+        </div>
+        <p id="catalogCount" class="catalog-count" aria-live="polite"></p>
+      </div>
+      <div id="songGrid" class="song-grid"></div>
+      <noscript><p class="catalog-empty">JavaScript is needed for the on-page player. The project pages and external music links still work without it.</p></noscript>
+    </section>
+  </main>
+
+  <div class="catalog-player" id="catalogPlayer" hidden>
+    <audio id="catalogAudio" preload="metadata"></audio>
+    <div class="catalog-player-inner shell">
+      <img id="playerCover" class="player-cover" alt="">
+      <div class="player-copy">
+        <small id="playerLabel">Call Me Daddy</small>
+        <strong id="playerTitle">Choose a song</strong>
+        <span id="playerStatus" class="player-status"></span>
+      </div>
+      <button id="catalogPlay" class="catalog-play" type="button" aria-label="Play or pause">▶</button>
+      <div class="catalog-progress" id="catalogProgress" aria-label="Seek through song"><span id="catalogProgressBar"></span></div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Music first. Then whatever happens next.</span></div></footer>
+
+  <script src="/data/songs.js"></script>
+  <script src="/music/music.js"></script>
+  <script src="/motion.js"></script>
+</body>
+</html>
