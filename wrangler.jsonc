@@ -4,5 +4,11 @@
   "compatibility_date": "2026-08-16",
   "assets": {
     "directory": "."
-  }
+  },
+  "routes": [
+    {
+      "pattern": "callmedaddy.musicsubject.com",
+      "custom_domain": true
+    }
+  ]
 }
