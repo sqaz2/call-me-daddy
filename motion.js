@@ -2,6 +2,15 @@
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root=document.documentElement;
 
+  const endLoop=document.getElementById('endLoop');
+  if(endLoop&&!document.querySelector('link[data-echo-style]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='/cut-from-the-same-fabric/echo.css';
+    link.dataset.echoStyle='1';
+    document.head.appendChild(link);
+  }
+
   if(!reduced){
     let raf=0;
     const updateGlobal=(x,y)=>{
@@ -37,217 +46,319 @@
       root.style.setProperty('--scroll-drift',`${Math.min(y*.01,10)}px`);
       const echo=document.querySelector('.echo-film');
       if(echo){
-        const d=(window.innerHeight*.5-echo.getBoundingClientRect().top)*.022;
-        root.style.setProperty('--echo-drift',`${Math.max(-16,Math.min(16,d))}px`);
+        const d=(window.innerHeight*.5-echo.getBoundingClientRect().top)*.018;
+        root.style.setProperty('--echo-drift',`${Math.max(-12,Math.min(12,d))}px`);
       }
     };
     window.addEventListener('scroll',onScroll,{passive:true});
     onScroll();
   }
 
-  const endLoop=document.getElementById('endLoop');
   const soundButton=document.getElementById('echoSound');
+  if(!endLoop)return;
 
-  if(endLoop){
-    const echoFilm=endLoop.closest('.echo-film');
-    const echoWrap=endLoop.closest('.echo-film-wrap');
-    const echoCopy=echoFilm?.querySelector('.echo-film-copy');
-    const echoShade=echoFilm?.querySelector('.echo-film-shade');
-    const cinemaKey='cftsf-ending-cinema-used';
+  const echoFilm=endLoop.closest('.echo-film');
+  const echoWrap=endLoop.closest('.echo-film-wrap');
+  const echoCopy=echoFilm?.querySelector('.echo-film-copy');
+  const echoShade=echoFilm?.querySelector('.echo-film-shade');
+  const music=document.getElementById('audio');
+  const cinemaKey='cftsf-ending-cinema-used';
 
-    let clipStart=0;
-    let cinematicActive=false;
-    let transitioning=false;
-    let cinematicUsed=false;
+  let clipStart=0;
+  let shortStart=0;
+  let shortEnd=0;
+  let cinematicActive=false;
+  let transitioning=false;
+  let cinematicUsed=false;
+  let returnRect=null;
 
-    try{
-      cinematicUsed=sessionStorage.getItem(cinemaKey)==='1';
-    }catch(_){ }
+  let danceRaf=0;
+  let danceActive=false;
+  let danceDir=1;
+  let danceSpeed=.92;
+  let danceLast=0;
+  let danceWindowStart=0;
+  let danceWindowEnd=0;
 
-    const setClip=()=>{
-      if(!Number.isFinite(endLoop.duration)||!endLoop.duration)return false;
-      clipStart=Math.max(0,endLoop.duration-8.5);
-      if(endLoop.currentTime<clipStart||endLoop.currentTime>endLoop.duration-.12){
-        endLoop.currentTime=clipStart;
-      }
-      return true;
+  try{
+    cinematicUsed=sessionStorage.getItem(cinemaKey)==='1';
+  }catch(_){ }
+
+  const setClip=()=>{
+    if(!Number.isFinite(endLoop.duration)||!endLoop.duration)return false;
+    clipStart=Math.max(0,endLoop.duration-8.5);
+    shortEnd=Math.max(.2,endLoop.duration-.16);
+    shortStart=Math.max(clipStart,shortEnd-3.6);
+    if(endLoop.currentTime<clipStart||endLoop.currentTime>endLoop.duration-.08){
+      endLoop.currentTime=shortStart;
+    }
+    return true;
+  };
+
+  const inView=()=>{
+    if(!echoWrap)return true;
+    const r=echoWrap.getBoundingClientRect();
+    return r.bottom>0&&r.top<window.innerHeight;
+  };
+
+  const varyDance=()=>{
+    if(!echoFilm)return;
+    const x=(Math.random()-.5)*12;
+    const y=(Math.random()-.5)*9;
+    const scale=1.035+Math.random()*.022;
+    endLoop.style.setProperty('--dance-x',`${x.toFixed(1)}px`);
+    endLoop.style.setProperty('--dance-y',`${y.toFixed(1)}px`);
+    endLoop.style.setProperty('--dance-scale',scale.toFixed(3));
+  };
+
+  const chooseDanceWindow=()=>{
+    if(!setClip())return false;
+    const endJitter=Math.random()*.28;
+    const span=2.25+Math.random()*.95;
+    danceWindowEnd=Math.max(shortStart+.8,shortEnd-endJitter);
+    danceWindowStart=Math.max(clipStart,danceWindowEnd-span);
+    danceSpeed=.80+Math.random()*.34;
+    varyDance();
+    return true;
+  };
+
+  const stopDance=()=>{
+    danceActive=false;
+    cancelAnimationFrame(danceRaf);
+    danceRaf=0;
+    danceLast=0;
+  };
+
+  const danceTick=now=>{
+    if(!danceActive||cinematicActive||transitioning||!endLoop.muted||!inView()){
+      stopDance();
+      return;
+    }
+
+    if(!danceLast)danceLast=now;
+    const elapsed=now-danceLast;
+    if(elapsed<38){
+      danceRaf=requestAnimationFrame(danceTick);
+      return;
+    }
+    danceLast=now;
+
+    const pulse=music&&!music.paused ? .92+Math.max(0,Math.sin(music.currentTime*Math.PI*4.4))*.18 : 1;
+    const step=Math.min(.07,elapsed/1000)*danceSpeed*pulse;
+    let next=endLoop.currentTime+(danceDir*step);
+
+    if(next>=danceWindowEnd){
+      next=danceWindowEnd;
+      danceDir=-1;
+      danceSpeed=.78+Math.random()*.28;
+      varyDance();
+    }else if(next<=danceWindowStart){
+      chooseDanceWindow();
+      next=danceWindowStart;
+      danceDir=1;
+    }
+
+    try{endLoop.currentTime=next;}catch(_){ }
+    danceRaf=requestAnimationFrame(danceTick);
+  };
+
+  const startDance=()=>{
+    if(reduced||cinematicActive||transitioning||!endLoop.muted||!inView())return;
+    if(!chooseDanceWindow())return;
+    endLoop.pause();
+    danceDir=Math.random()>.5?1:-1;
+    endLoop.currentTime=danceDir>0?danceWindowStart:danceWindowEnd;
+    danceActive=true;
+    danceLast=0;
+    cancelAnimationFrame(danceRaf);
+    danceRaf=requestAnimationFrame(danceTick);
+  };
+
+  const startSoundLoop=()=>{
+    stopDance();
+    if(!setClip())return;
+    endLoop.playbackRate=1;
+    if(endLoop.currentTime<shortStart||endLoop.currentTime>=shortEnd){
+      endLoop.currentTime=shortStart;
+    }
+    endLoop.play().catch(()=>{});
+  };
+
+  const clearCinemaStyles=()=>{
+    if(!echoFilm)return;
+    echoFilm.style.cssText='';
+    endLoop.style.cssText='';
+    if(echoCopy)echoCopy.style.cssText='';
+    if(echoShade)echoShade.style.cssText='';
+    if(soundButton)soundButton.style.cssText='';
+    document.body.style.overflow='';
+  };
+
+  const finishCinema=()=>{
+    if(!cinematicActive||transitioning||!echoFilm)return;
+    transitioning=true;
+    cinematicActive=false;
+    endLoop.pause();
+
+    const vv=window.visualViewport;
+    const vw=vv?.width||window.innerWidth;
+    const vh=vv?.height||window.innerHeight;
+    const target=returnRect||{left:0,top:vh*.15,width:vw,height:vh*.70};
+    const sx=Math.max(.05,target.width/vw);
+    const sy=Math.max(.05,target.height/vh);
+
+    const done=()=>{
+      clearCinemaStyles();
+      transitioning=false;
+      returnRect=null;
+      if(endLoop.muted)startDance();
+      else startSoundLoop();
     };
 
-    const inView=()=>{
-      if(!echoWrap)return true;
-      const r=echoWrap.getBoundingClientRect();
-      return r.bottom>0&&r.top<window.innerHeight;
-    };
+    if(reduced){
+      done();
+      return;
+    }
 
-    const clearCinemaStyles=()=>{
-      if(!echoFilm)return;
-      echoFilm.style.cssText='';
-      endLoop.style.cssText='';
-      if(echoCopy)echoCopy.style.cssText='';
-      if(echoShade)echoShade.style.cssText='';
-      if(soundButton)soundButton.style.cssText='';
-      if(echoWrap)echoWrap.style.height='';
-      document.body.style.overflow='';
-    };
-
-    const finishCinema=(cancelled=false)=>{
-      if(!cinematicActive||transitioning||!echoFilm)return;
-      transitioning=true;
-      cinematicActive=false;
-      endLoop.pause();
-
-      const vv=window.visualViewport;
-      const vw=vv?.width||window.innerWidth;
-      const vh=vv?.height||window.innerHeight;
-      const target=echoWrap?.getBoundingClientRect()||{left:0,top:0,width:vw,height:vh};
-      const sx=Math.max(.05,target.width/vw);
-      const sy=Math.max(.05,target.height/vh);
-      const radius=window.innerWidth<=820?24:32;
-
-      const done=()=>{
-        clearCinemaStyles();
-        transitioning=false;
-        if(setClip())endLoop.currentTime=clipStart;
-        if(inView())endLoop.play().catch(()=>{});
-      };
-
-      if(reduced){
-        done();
-        return;
-      }
-
-      const anim=echoFilm.animate([
-        {transform:'translate(0,0) scale(1)',borderRadius:'0px'},
-        {transform:`translate(${target.left}px,${target.top}px) scale(${sx},${sy})`,borderRadius:`${radius}px`}
-      ],{
-        duration:620,
-        easing:'cubic-bezier(.22,.82,.24,1)',
-        fill:'forwards'
-      });
-
-      if(echoCopy)echoCopy.animate([{opacity:.055},{opacity:1}],{duration:520,easing:'ease-out',fill:'forwards'});
-      if(echoShade)echoShade.animate([{opacity:.16},{opacity:1}],{duration:520,easing:'ease-out',fill:'forwards'});
-      if(soundButton)soundButton.animate([{opacity:.22},{opacity:1}],{duration:420,easing:'ease-out',fill:'forwards'});
-
-      anim.addEventListener('finish',done,{once:true});
-      anim.addEventListener('cancel',done,{once:true});
-    };
-
-    const startCinema=()=>{
-      if(cinematicUsed||cinematicActive||transitioning||!echoFilm||!echoWrap)return false;
-      if(!setClip())return false;
-
-      cinematicUsed=true;
-      cinematicActive=true;
-      try{sessionStorage.setItem(cinemaKey,'1');}catch(_){ }
-
-      const from=echoFilm.getBoundingClientRect();
-      const vv=window.visualViewport;
-      const vw=vv?.width||window.innerWidth;
-      const vh=vv?.height||window.innerHeight;
-      const sx=Math.max(.05,from.width/vw);
-      const sy=Math.max(.05,from.height/vh);
-      const oldRadius=getComputedStyle(echoFilm).borderRadius||'32px';
-
-      echoWrap.style.height=`${from.height}px`;
-      document.body.style.overflow='hidden';
-
-      Object.assign(echoFilm.style,{
-        position:'fixed',
-        left:'0',
-        top:'0',
-        width:`${vw}px`,
-        height:`${vh}px`,
-        margin:'0',
-        zIndex:'9999',
-        borderRadius:'0px',
-        transformOrigin:'top left',
-        boxShadow:'0 0 0 100vmax rgba(0,0,0,.92)'
-      });
-      Object.assign(endLoop.style,{
-        inset:'0',
-        width:'100%',
-        height:'100%',
-        opacity:'.98',
-        filter:'saturate(.92) contrast(1.05) brightness(.92)',
-        transform:'none',
-        objectFit:'cover'
-      });
-      if(echoCopy){
-        echoCopy.style.opacity='.055';
-        echoCopy.style.transition='opacity .45s ease';
-      }
-      if(echoShade){
-        echoShade.style.opacity='.16';
-        echoShade.style.transition='opacity .45s ease';
-      }
-      if(soundButton){
-        soundButton.style.opacity='.22';
-        soundButton.style.transition='opacity .35s ease';
-      }
-
-      if(!reduced){
-        echoFilm.animate([
-          {transform:`translate(${from.left}px,${from.top}px) scale(${sx},${sy})`,borderRadius:oldRadius},
-          {transform:'translate(0,0) scale(1)',borderRadius:'0px'}
-        ],{
-          duration:700,
-          easing:'cubic-bezier(.18,.88,.22,1)',
-          fill:'none'
-        });
-      }
-
-      endLoop.currentTime=clipStart;
-      endLoop.play().catch(()=>{});
-      return true;
-    };
-
-    endLoop.addEventListener('loadedmetadata',setClip,{once:true});
-
-    endLoop.addEventListener('timeupdate',()=>{
-      if(!clipStart||endLoop.currentTime<endLoop.duration-.10)return;
-      if(cinematicActive){
-        finishCinema(false);
-      }else if(!transitioning){
-        endLoop.currentTime=clipStart;
-        endLoop.play().catch(()=>{});
-      }
+    const anim=echoFilm.animate([
+      {transform:'translate(0,0) scale(1)',borderRadius:'0px'},
+      {transform:`translate(${target.left}px,${target.top}px) scale(${sx},${sy})`,borderRadius:'0px'}
+    ],{
+      duration:620,
+      easing:'cubic-bezier(.22,.82,.24,1)',
+      fill:'forwards'
     });
 
-    endLoop.addEventListener('ended',()=>{
-      if(cinematicActive){
-        finishCinema(false);
-      }else if(!transitioning){
-        endLoop.currentTime=clipStart;
-        endLoop.play().catch(()=>{});
-      }
+    if(echoCopy)echoCopy.animate([{opacity:.025},{opacity:.16}],{duration:520,easing:'ease-out',fill:'forwards'});
+    if(echoShade)echoShade.animate([{opacity:.10},{opacity:1}],{duration:520,easing:'ease-out',fill:'forwards'});
+    if(soundButton)soundButton.animate([{opacity:.20},{opacity:1}],{duration:420,easing:'ease-out',fill:'forwards'});
+
+    anim.addEventListener('finish',done,{once:true});
+    anim.addEventListener('cancel',done,{once:true});
+  };
+
+  const startCinema=()=>{
+    if(cinematicUsed||cinematicActive||transitioning||!echoFilm||!echoWrap)return false;
+    if(!setClip())return false;
+
+    stopDance();
+    cinematicUsed=true;
+    cinematicActive=true;
+    try{sessionStorage.setItem(cinemaKey,'1');}catch(_){ }
+
+    returnRect=echoFilm.getBoundingClientRect();
+    const from=returnRect;
+    const vv=window.visualViewport;
+    const vw=vv?.width||window.innerWidth;
+    const vh=vv?.height||window.innerHeight;
+    const sx=Math.max(.05,from.width/vw);
+    const sy=Math.max(.05,from.height/vh);
+
+    document.body.style.overflow='hidden';
+
+    Object.assign(echoFilm.style,{
+      position:'fixed',
+      left:'0',
+      top:'0',
+      width:`${vw}px`,
+      height:`${vh}px`,
+      margin:'0',
+      zIndex:'9999',
+      border:'0',
+      borderRadius:'0',
+      WebkitMaskImage:'none',
+      maskImage:'none',
+      transformOrigin:'top left',
+      boxShadow:'0 0 0 100vmax rgba(0,0,0,.94)'
     });
-
-    const observer=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(cinematicActive||transitioning)return;
-        if(entry.isIntersecting){
-          setClip();
-          endLoop.play().catch(()=>{});
-        }else{
-          endLoop.pause();
-        }
-      });
-    },{threshold:.18});
-    observer.observe(endLoop);
-
+    Object.assign(endLoop.style,{
+      inset:'0',
+      width:'100%',
+      height:'100%',
+      opacity:'.99',
+      filter:'saturate(.94) contrast(1.05) brightness(.92)',
+      transform:'none',
+      objectFit:'cover'
+    });
+    if(echoCopy){
+      echoCopy.style.opacity='.025';
+      echoCopy.style.transition='opacity .45s ease';
+    }
+    if(echoShade){
+      echoShade.style.opacity='.10';
+      echoShade.style.transition='opacity .45s ease';
+    }
     if(soundButton){
-      soundButton.addEventListener('click',()=>{
-        if(endLoop.muted){
-          endLoop.muted=false;
-          soundButton.textContent='sound off';
-          if(!startCinema()&&endLoop.paused)endLoop.play().catch(()=>{});
-        }else{
-          endLoop.muted=true;
-          soundButton.textContent='sound on';
-          if(cinematicActive)finishCinema(true);
-        }
+      soundButton.style.opacity='.20';
+      soundButton.style.transition='opacity .35s ease';
+    }
+
+    if(!reduced){
+      echoFilm.animate([
+        {transform:`translate(${from.left}px,${from.top}px) scale(${sx},${sy})`,borderRadius:'0px'},
+        {transform:'translate(0,0) scale(1)',borderRadius:'0px'}
+      ],{
+        duration:700,
+        easing:'cubic-bezier(.18,.88,.22,1)',
+        fill:'none'
       });
     }
+
+    endLoop.playbackRate=1;
+    endLoop.currentTime=clipStart;
+    endLoop.play().catch(()=>{});
+    return true;
+  };
+
+  endLoop.addEventListener('loadedmetadata',()=>{
+    setClip();
+    if(endLoop.muted&&inView())startDance();
+  },{once:true});
+
+  endLoop.addEventListener('timeupdate',()=>{
+    if(!setClip()||danceActive)return;
+    if(cinematicActive&&endLoop.currentTime>=endLoop.duration-.10){
+      finishCinema();
+      return;
+    }
+    if(!cinematicActive&&!transitioning&&!endLoop.muted&&endLoop.currentTime>=shortEnd){
+      endLoop.currentTime=shortStart;
+      endLoop.play().catch(()=>{});
+    }
+  });
+
+  endLoop.addEventListener('ended',()=>{
+    if(cinematicActive)finishCinema();
+    else if(!endLoop.muted&&!transitioning)startSoundLoop();
+  });
+
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(cinematicActive||transitioning)return;
+      if(entry.isIntersecting){
+        if(endLoop.muted)startDance();
+        else startSoundLoop();
+      }else{
+        stopDance();
+        endLoop.pause();
+      }
+    });
+  },{threshold:.08});
+  observer.observe(echoWrap||endLoop);
+
+  if(soundButton){
+    soundButton.addEventListener('click',()=>{
+      if(endLoop.muted){
+        stopDance();
+        endLoop.muted=false;
+        soundButton.textContent='sound off';
+        if(!startCinema())startSoundLoop();
+      }else{
+        endLoop.muted=true;
+        soundButton.textContent='sound on';
+        if(cinematicActive)finishCinema();
+        else startDance();
+      }
+    });
   }
 })();
