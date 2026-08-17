@@ -218,8 +218,8 @@
   display: block;
   margin-top: 8px;
   color: #fff6d8;
-  font-size: clamp(2.6rem, 5vw, 4.6rem);
-  line-height: .78;
+  font-size: clamp(2.25rem, 3.8vw, 3.55rem);
+  line-height: .82;
   letter-spacing: -.065em;
   text-shadow: 0 0 24px rgba(255, 78, 176, .42), 0 5px 24px rgba(0, 0, 0, .86);
   text-transform: uppercase;
@@ -265,7 +265,7 @@
   letter-spacing: -.06em;
 }
 
-.dad-report {
+.origin-report {
   display: grid;
   grid-template-columns: .82fr 1fr;
   gap: 46px;
@@ -273,7 +273,7 @@
   margin: 38px 0 64px;
 }
 
-.dad-art {
+.origin-art {
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
@@ -285,13 +285,13 @@
   transform: rotate(-1.2deg);
 }
 
-.dad-art img {
+.origin-art img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.dad-art::after {
+.origin-art::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -299,7 +299,7 @@
   pointer-events: none;
 }
 
-.dad-art figcaption {
+.origin-art figcaption {
   position: absolute;
   z-index: 2;
   left: 22px;
@@ -312,20 +312,20 @@
   text-transform: uppercase;
 }
 
-.dad-copy h3 {
+.origin-copy h3 {
   margin: 12px 0 24px;
   font-size: clamp(2.35rem, 5vw, 4.8rem);
   line-height: .88;
   letter-spacing: -.06em;
 }
 
-.dad-copy p {
+.origin-copy p {
   margin: 0 0 15px;
   color: #c9bdcf;
   font-size: 1.04rem;
 }
 
-.dad-copy .dad-verdict {
+.origin-copy .origin-verdict {
   margin-top: 24px;
   padding: 18px 20px;
   border-left: 3px solid var(--funhouse-pink);
@@ -437,12 +437,12 @@
     flex-direction: column;
   }
 
-  .dad-report {
+  .origin-report {
     grid-template-columns: 1fr;
     gap: 36px;
   }
 
-  .dad-art {
+  .origin-art {
     width: min(100%, 560px);
     margin: 0 auto;
   }
@@ -454,13 +454,13 @@
   .funhouse-copy .lede { font-size: 1.02rem; }
   .funhouse-machine { min-height: 520px; border-radius: 27px; }
   .machine-sign { bottom: 164px; }
-  .machine-sign strong { font-size: clamp(2.45rem, 13vw, 3.6rem); }
+  .machine-sign strong { font-size: clamp(2rem, 10vw, 2.85rem); }
   .audio-wrap { left: 12px; right: 12px; bottom: 12px; padding: 13px; }
   .funhouse-story { padding: 72px 0 78px; }
   .funhouse-grid { grid-template-columns: 1fr; }
   .funhouse-grid .card { min-height: 235px; }
   .funhouse-grid h3 { margin-top: 34px; }
-  .dad-copy p { font-size: 1rem; }
+  .origin-copy p { font-size: 1rem; }
   .funhouse-quote { padding: 78px 0; }
 }
 
@@ -471,6 +471,6 @@
   .funhouse-hero {
     background:
       linear-gradient(180deg, rgba(8, 0, 12, .26), #09010d),
-      url('/media/songs/2026/08/funhouse-meltdown/cover.jpg') center / cover no-repeat;
+      url('/media/songs/2026/08/funhouse-meltdown/cover-v2.jpg') center / cover no-repeat;
   }
 }
