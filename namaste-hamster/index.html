@@ -53,6 +53,16 @@
           <span class="cover-play" aria-hidden="true">▶</span>
           <span class="cover-caption">tap the hamster</span>
         </button>
+
+        <div class="namaste-player" id="namastePlayer" hidden>
+          <audio id="namasteAudio" preload="metadata" src="/media/songs/2026/08/namaste-hamster/audio.mp3"></audio>
+          <div class="namaste-player-inner">
+            <img src="/media/songs/2026/08/namaste-hamster/cover.jpg" alt="" class="namaste-mini-cover">
+            <div class="namaste-player-copy"><small>Call Me Daddy</small><strong>Namaste, Hamster</strong><span id="namasteStatus">Ready</span></div>
+            <button id="namastePlay" class="namaste-play" type="button" aria-label="Play or pause">▶</button>
+            <div class="namaste-progress" id="namasteProgress" aria-label="Seek through Namaste, Hamster"><span id="namasteProgressBar"></span></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -91,16 +101,6 @@
       </div>
     </section>
   </main>
-
-  <div class="namaste-player" id="namastePlayer" hidden>
-    <audio id="namasteAudio" preload="metadata" src="/media/songs/2026/08/namaste-hamster/audio.mp3"></audio>
-    <div class="shell namaste-player-inner">
-      <img src="/media/songs/2026/08/namaste-hamster/cover.jpg" alt="" class="namaste-mini-cover">
-      <div class="namaste-player-copy"><small>Call Me Daddy</small><strong>Namaste, Hamster</strong><span id="namasteStatus">Ready</span></div>
-      <button id="namastePlay" class="namaste-play" type="button" aria-label="Play or pause">▶</button>
-      <div class="namaste-progress" id="namasteProgress" aria-label="Seek through Namaste, Hamster"><span id="namasteProgressBar"></span></div>
-    </div>
-  </div>
 
   <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Enlightenment not guaranteed.</span></div></footer>
 
