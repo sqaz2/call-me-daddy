@@ -47,8 +47,8 @@
 .namaste-end-cover{display:block;position:relative;aspect-ratio:2/3;overflow:hidden;border-radius:28px;border:1px solid rgba(255,255,255,.10);box-shadow:0 28px 80px rgba(0,0,0,.42)}
 .namaste-end-cover img{width:100%;height:100%;object-fit:cover}
 .namaste-end p{color:#a99e91}
-.namaste-player{position:fixed;left:0;right:0;bottom:max(10px,env(safe-area-inset-bottom));z-index:80;pointer-events:none}
-.namaste-player-inner{pointer-events:auto;display:grid;grid-template-columns:58px minmax(0,1fr) 50px;gap:14px;align-items:center;padding:12px 14px 14px;border:1px solid rgba(255,221,164,.17);border-radius:24px;background:rgba(16,11,8,.92);backdrop-filter:blur(18px);box-shadow:0 22px 80px rgba(0,0,0,.58)}
+.namaste-player{position:relative;grid-column:1/-1;order:3;z-index:4;pointer-events:none;width:100%;margin-top:2px}
+.namaste-player-inner{pointer-events:auto;display:grid;grid-template-columns:58px minmax(0,1fr) 50px;gap:14px;align-items:center;width:min(760px,100%);margin:0 auto;padding:12px 14px 14px;border:1px solid rgba(255,221,164,.17);border-radius:24px;background:rgba(16,11,8,.92);backdrop-filter:blur(18px);box-shadow:0 22px 80px rgba(0,0,0,.58)}
 .namaste-mini-cover{width:58px;height:58px;object-fit:cover;border-radius:15px}
 .namaste-player-copy{min-width:0}
 .namaste-player-copy small,.namaste-player-copy span{display:block;color:#a99884;font-size:.72rem}
@@ -64,6 +64,7 @@
   .namaste-copy{order:2}
   .namaste-copy h1{font-size:clamp(3.8rem,19vw,6.5rem)}
   .namaste-cover-button{order:1;width:min(68vw,330px);justify-self:center;aspect-ratio:2/3;margin-top:10px;transform:rotate(.8deg)}
+  .namaste-player{order:3;margin-top:0}
   .cover-play{width:62px;height:62px}
   .namaste-story{padding:70px 0}
   .namaste-story-head{grid-template-columns:1fr;gap:18px}
@@ -76,7 +77,7 @@
 }
 @media(max-width:430px){
   .namaste-cover-button{width:min(76vw,310px)}
-  .namaste-player-inner{width:calc(100% - 18px);grid-template-columns:50px minmax(0,1fr) 46px;gap:10px;padding:10px 11px 12px;border-radius:20px}
+  .namaste-player-inner{width:100%;grid-template-columns:50px minmax(0,1fr) 46px;gap:10px;padding:10px 11px 12px;border-radius:20px}
   .namaste-mini-cover{width:50px;height:50px;border-radius:12px}
   .namaste-play{width:44px;height:44px}
 }
