@@ -3,14 +3,15 @@ window.CMD_SONGS = [
     id: 'youtube-W47ebCMfrBI',
     title: 'YouTube Release',
     artist: 'Call Me Daddy',
-    project: 'YouTube',
-    description: 'A Call Me Daddy release currently hosted on YouTube.',
+    project: 'YouTube + Suno',
+    description: 'A Call Me Daddy release available on both YouTube and Suno.',
     audio: '',
     cover: 'https://i.ytimg.com/vi/W47ebCMfrBI/hqdefault.jpg',
     experience: '/youtube/W47ebCMfrBI/',
     youtubeId: 'W47ebCMfrBI',
     youtubeUrl: 'https://youtu.be/W47ebCMfrBI',
-    kind: 'YouTube'
+    sunoUrl: 'https://suno.com/s/a1pry4Jzqjks2MoH',
+    kind: 'YouTube + Suno'
   },
   {
     id: 'namaste-hamster',
