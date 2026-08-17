@@ -3,7 +3,7 @@
   const root=document.documentElement;
 
   const endLoop=document.getElementById('endLoop');
-  if(endLoop&&!document.querySelector('link[data-echo-style]')){
+  if(endLoop&&!document.querySelector('link[href*="/cut-from-the-same-fabric/echo.css"]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
     link.href='/cut-from-the-same-fabric/echo.css';
@@ -62,6 +62,8 @@
   const echoCopy=echoFilm?.querySelector('.echo-film-copy');
   const echoShade=echoFilm?.querySelector('.echo-film-shade');
   const music=document.getElementById('audio');
+  const crossfadeMusic=document.getElementById('crossfadeAudio');
+  const heroVideo=document.querySelector('.project-poster');
   const cinemaKey='cftsf-ending-cinema-used';
 
   let clipStart=0;
@@ -72,17 +74,22 @@
   let cinematicUsed=false;
   let returnRect=null;
 
-  let danceRaf=0;
-  let danceActive=false;
-  let danceDir=1;
-  let danceSpeed=.92;
-  let danceLast=0;
-  let danceWindowStart=0;
-  let danceWindowEnd=0;
+  let endLoopLoadRequested=false;
+  let heroInView=true;
 
   try{
     cinematicUsed=sessionStorage.getItem(cinemaKey)==='1';
   }catch(_){ }
+
+  const ensureEndLoopLoaded=()=>{
+    if(endLoopLoadRequested)return;
+    const src=endLoop.dataset.src;
+    if(!src)return;
+    endLoopLoadRequested=true;
+    endLoop.src=src;
+    endLoop.removeAttribute('data-src');
+    endLoop.load();
+  };
 
   const setClip=()=>{
     if(!Number.isFinite(endLoop.duration)||!endLoop.duration)return false;
@@ -101,77 +108,22 @@
     return r.bottom>0&&r.top<window.innerHeight;
   };
 
-  const varyDance=()=>{
-    if(!echoFilm)return;
-    const x=(Math.random()-.5)*12;
-    const y=(Math.random()-.5)*9;
-    const scale=1.035+Math.random()*.022;
-    endLoop.style.setProperty('--dance-x',`${x.toFixed(1)}px`);
-    endLoop.style.setProperty('--dance-y',`${y.toFixed(1)}px`);
-    endLoop.style.setProperty('--dance-scale',scale.toFixed(3));
-  };
-
-  const chooseDanceWindow=()=>{
-    if(!setClip())return false;
-    const endJitter=Math.random()*.28;
-    const span=2.25+Math.random()*.95;
-    danceWindowEnd=Math.max(shortStart+.8,shortEnd-endJitter);
-    danceWindowStart=Math.max(clipStart,danceWindowEnd-span);
-    danceSpeed=.80+Math.random()*.34;
-    varyDance();
-    return true;
-  };
-
   const stopDance=()=>{
-    danceActive=false;
-    cancelAnimationFrame(danceRaf);
-    danceRaf=0;
-    danceLast=0;
-  };
-
-  const danceTick=now=>{
-    if(!danceActive||cinematicActive||transitioning||!endLoop.muted||!inView()){
-      stopDance();
-      return;
-    }
-
-    if(!danceLast)danceLast=now;
-    const elapsed=now-danceLast;
-    if(elapsed<38){
-      danceRaf=requestAnimationFrame(danceTick);
-      return;
-    }
-    danceLast=now;
-
-    const pulse=music&&!music.paused ? .92+Math.max(0,Math.sin(music.currentTime*Math.PI*4.4))*.18 : 1;
-    const step=Math.min(.07,elapsed/1000)*danceSpeed*pulse;
-    let next=endLoop.currentTime+(danceDir*step);
-
-    if(next>=danceWindowEnd){
-      next=danceWindowEnd;
-      danceDir=-1;
-      danceSpeed=.78+Math.random()*.28;
-      varyDance();
-    }else if(next<=danceWindowStart){
-      chooseDanceWindow();
-      next=danceWindowStart;
-      danceDir=1;
-    }
-
-    try{endLoop.currentTime=next;}catch(_){ }
-    danceRaf=requestAnimationFrame(danceTick);
+    endLoop.pause();
   };
 
   const startDance=()=>{
-    if(reduced||cinematicActive||transitioning||!endLoop.muted||!inView())return;
-    if(!chooseDanceWindow())return;
-    endLoop.pause();
-    danceDir=Math.random()>.5?1:-1;
-    endLoop.currentTime=danceDir>0?danceWindowStart:danceWindowEnd;
-    danceActive=true;
-    danceLast=0;
-    cancelAnimationFrame(danceRaf);
-    danceRaf=requestAnimationFrame(danceTick);
+    if(cinematicActive||transitioning||!endLoop.muted||!inView())return;
+    if(!setClip())return;
+    endLoop.playbackRate=.92;
+    if(endLoop.currentTime<shortStart||endLoop.currentTime>=shortEnd){
+      endLoop.currentTime=shortStart;
+    }
+    if(reduced){
+      endLoop.pause();
+      return;
+    }
+    endLoop.play().catch(()=>{});
   };
 
   const startSoundLoop=()=>{
@@ -183,6 +135,41 @@
     }
     endLoop.play().catch(()=>{});
   };
+
+  const syncHeroVideo=()=>{
+    if(!heroVideo)return;
+    const musicPlaying=(music&&!music.paused&&!music.ended)||(crossfadeMusic&&!crossfadeMusic.paused&&!crossfadeMusic.ended);
+    if(document.hidden||!heroInView||musicPlaying){
+      heroVideo.pause();
+      return;
+    }
+    heroVideo.play().catch(()=>{});
+  };
+
+  if(heroVideo){
+    const heroObserver=new IntersectionObserver(entries=>{
+      const entry=entries[0];
+      heroInView=!!entry?.isIntersecting;
+      syncHeroVideo();
+    },{threshold:.08});
+    heroObserver.observe(heroVideo);
+    music?.addEventListener('play',syncHeroVideo);
+    music?.addEventListener('pause',syncHeroVideo);
+    music?.addEventListener('ended',syncHeroVideo);
+    crossfadeMusic?.addEventListener('play',syncHeroVideo);
+    crossfadeMusic?.addEventListener('pause',syncHeroVideo);
+    crossfadeMusic?.addEventListener('ended',syncHeroVideo);
+    document.addEventListener('visibilitychange',()=>{
+      syncHeroVideo();
+      if(document.hidden){
+        stopDance();
+        endLoop.pause();
+      }else if(inView()&&endLoop.readyState>=1){
+        if(endLoop.muted)startDance();
+        else startSoundLoop();
+      }
+    });
+  }
 
   const clearCinemaStyles=()=>{
     if(!echoFilm)return;
@@ -316,28 +303,34 @@
   },{once:true});
 
   endLoop.addEventListener('timeupdate',()=>{
-    if(!setClip()||danceActive)return;
+    if(!setClip())return;
     if(cinematicActive&&endLoop.currentTime>=endLoop.duration-.10){
       finishCinema();
       return;
     }
-    if(!cinematicActive&&!transitioning&&!endLoop.muted&&endLoop.currentTime>=shortEnd){
+    if(!cinematicActive&&!transitioning&&endLoop.currentTime>=shortEnd){
       endLoop.currentTime=shortStart;
-      endLoop.play().catch(()=>{});
+      if(inView()&&!document.hidden)endLoop.play().catch(()=>{});
     }
   });
 
   endLoop.addEventListener('ended',()=>{
     if(cinematicActive)finishCinema();
-    else if(!endLoop.muted&&!transitioning)startSoundLoop();
+    else if(!transitioning&&inView()){
+      if(endLoop.muted)startDance();
+      else startSoundLoop();
+    }
   });
 
   const observer=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
       if(cinematicActive||transitioning)return;
       if(entry.isIntersecting){
-        if(endLoop.muted)startDance();
-        else startSoundLoop();
+        ensureEndLoopLoaded();
+        if(endLoop.readyState>=1){
+          if(endLoop.muted)startDance();
+          else startSoundLoop();
+        }
       }else{
         stopDance();
         endLoop.pause();

@@ -2,8 +2,8 @@ const tracks={up:{title:'Find Your People',src:'/media/songs/2026/08/find-your-p
 const audio=document.getElementById('audio'),playBtn=document.getElementById('play'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),nowTitle=document.getElementById('nowTitle'),nowLabel=document.getElementById('nowLabel'),progress=document.getElementById('progress'),timeline=document.getElementById('timeline'),seq1=document.getElementById('seq1'),seq3=document.getElementById('seq3');
 
 const crossAudio=document.createElement('audio');
-crossAudio.preload='auto';
-crossAudio.src=tracks.beat.src;
+crossAudio.id='crossfadeAudio';
+crossAudio.preload='metadata';
 crossAudio.volume=0;
 crossAudio.style.display='none';
 document.body.appendChild(crossAudio);
@@ -35,12 +35,11 @@ function stopCrossfade(){
 
 function primeBeat(){
   if(order[0]!=='up')return;
-  crossAudio.src=tracks.beat.src;
-  crossAudio.volume=0;
-  const p=crossAudio.play();
-  if(p&&typeof p.then==='function'){
-    p.then(()=>{crossAudio.pause();try{crossAudio.currentTime=0}catch(_){ }}).catch(()=>{});
+  if(crossAudio.src!==new URL(tracks.beat.src,location.href).href){
+    crossAudio.src=tracks.beat.src;
+    crossAudio.load();
   }
+  crossAudio.volume=0;
 }
 
 function choose(path){
@@ -97,7 +96,10 @@ function beginPositiveCrossfade(){
 
   crossfadeActive=true;
   const initialElapsed=Math.max(0,audio.currentTime-fadeStart);
-  crossAudio.src=tracks.beat.src;
+  if(crossAudio.src!==new URL(tracks.beat.src,location.href).href){
+    crossAudio.src=tracks.beat.src;
+    crossAudio.load();
+  }
   crossAudio.volume=0;
   try{crossAudio.currentTime=Math.min(initialElapsed,CROSSFADE_LEAD)}catch(_){ }
 

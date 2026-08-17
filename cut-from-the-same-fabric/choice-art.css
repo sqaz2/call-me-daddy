@@ -100,4 +100,16 @@
   .choice.choice-art .choice-description{
     font-size:.98rem;
   }
+
+  .choice-art>img,
+  .choice-art.good>img,
+  .choice-art.dark>img{
+    filter:none;
+    transition:none;
+  }
+
+  .choice.choice-art:hover>img,
+  .choice.choice-art.active>img{
+    transform:scale(1.01);
+  }
 }

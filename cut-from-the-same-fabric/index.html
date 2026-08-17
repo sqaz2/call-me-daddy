@@ -25,10 +25,10 @@
   <link rel="canonical" href="https://callmedaddy.musicsubject.com/cut-from-the-same-fabric/">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/share.css">
-  <link rel="stylesheet" href="/cut-from-the-same-fabric/choice-art.css">
-  <link rel="stylesheet" href="/cut-from-the-same-fabric/echo.css">
+  <link rel="stylesheet" href="/cut-from-the-same-fabric/choice-art.css?v=20260817-2">
+  <link rel="stylesheet" href="/cut-from-the-same-fabric/echo.css?v=20260817-2">
 </head>
-<body>
+<body class="fabric-page">
   <header class="topbar">
     <div class="project-shell nav">
       <a class="brand" href="/"><span class="brand-parent">MUSICSUBJECT</span><span class="brand-slash">×</span><span>CALL ME DADDY</span></a>
@@ -38,8 +38,8 @@
 
   <main>
     <section class="project-hero">
-      <video class="project-poster" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="/cut-from-the-same-fabric.mp4" type="video/mp4">
+      <video class="project-poster" autoplay muted loop playsinline preload="metadata" poster="/media/projects/2026/08/cut-from-the-same-fabric/cover-720.jpg" aria-hidden="true">
+        <source src="/media/projects/2026/08/cut-from-the-same-fabric/video-lite.mp4" type="video/mp4">
       </video>
       <div class="project-shell project-hero-copy">
         <a class="back" href="/">← Call Me Daddy</a>
@@ -58,7 +58,7 @@
 
       <div class="choice-grid choice-art-grid">
         <button class="choice choice-art good" data-path="up" aria-label="Play Find Your People first">
-          <img src="/find-your-people.png" alt="Find Your People cover art">
+          <img src="/media/projects/2026/08/cut-from-the-same-fabric/find-your-people-720.webp" alt="Find Your People cover art" loading="lazy" decoding="async">
           <span class="choice-art-shade" aria-hidden="true"></span>
           <span class="choice-art-copy">
             <span class="kicker">The part I kept</span>
@@ -67,7 +67,7 @@
           </span>
         </button>
         <button class="choice choice-art dark" data-path="down" aria-label="Play HELL HAS PEOPLE TOO first">
-          <img src="/hell-has-people-too.png" alt="HELL HAS PEOPLE TOO cover art">
+          <img src="/media/projects/2026/08/cut-from-the-same-fabric/hell-has-people-too-720.webp" alt="HELL HAS PEOPLE TOO cover art" loading="lazy" decoding="async">
           <span class="choice-art-shade" aria-hidden="true"></span>
           <span class="choice-art-copy">
             <span class="kicker">The part I cut out</span>
@@ -105,9 +105,7 @@
 
     <section class="echo-film-wrap" aria-label="The ending comes back">
       <div class="echo-film">
-        <video id="endLoop" muted playsinline preload="metadata">
-          <source src="/cut-from-the-same-fabric.mp4" type="video/mp4">
-        </video>
+        <video id="endLoop" muted playsinline preload="none" poster="/media/projects/2026/08/cut-from-the-same-fabric/cover-720.jpg" data-src="/media/projects/2026/08/cut-from-the-same-fabric/video-lite.mp4"></video>
         <div class="echo-film-shade"></div>
         <div class="echo-film-copy"><span>yeah, this part</span><strong>THE ENDING<br>GETS ONE MORE LAP.</strong></div>
         <button class="echo-sound" id="echoTrap" type="button" aria-haspopup="dialog">DON'T CLICK HERE · KEEP SCROLLING</button>
@@ -137,8 +135,8 @@
   </main>
 
   <script src="/share.js"></script>
-  <script src="/cut-from-the-same-fabric/player.js"></script>
-  <script src="/motion.js"></script>
-  <script src="/cut-from-the-same-fabric/easter-egg.js"></script>
+  <script src="/cut-from-the-same-fabric/player.js?v=20260817-2"></script>
+  <script src="/motion.js?v=20260817-2"></script>
+  <script src="/cut-from-the-same-fabric/easter-egg.js?v=20260817-2"></script>
 </body>
 </html>
