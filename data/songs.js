@@ -1,5 +1,22 @@
 window.CMD_SONGS = [
   {
+    id: 'back-to-sticks',
+    title: 'Back to Sticks (Soothing Mix)',
+    artist: 'Call Me Daddy',
+    year: 2026,
+    month: 8,
+    date: '2026-08-17',
+    project: 'Back to Sticks',
+    description: 'A dubstep satire about the vocabulary, iteration, editing and judgment behind AI-assisted music—and the people ready to retreat to rocks rather than learn new controls.',
+    audio: '/media/songs/2026/08/back-to-sticks/audio.mp3',
+    cover: '/media/songs/2026/08/back-to-sticks/cover.jpg',
+    video: '/media/songs/2026/08/back-to-sticks/video.mp4',
+    videoHd: '/media/songs/2026/08/back-to-sticks/video-hd.mp4',
+    experience: '/back-to-sticks/',
+    sunoUrl: 'https://suno.com/song/e45d7b0f-26f2-4d8e-a6fd-5b142f34f123',
+    kind: 'song'
+  },
+  {
     id: 'funhouse-meltdown',
     title: 'Funhouse Meltdown',
     artist: 'Call Me Daddy',

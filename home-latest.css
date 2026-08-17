@@ -22,7 +22,7 @@
 
 .release-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -87,6 +87,17 @@
   color: #d1ccc3;
 }
 
+.release-card.back-to-sticks {
+  background: radial-gradient(circle at 50% 27%, rgba(172, 213, 117, .25), transparent 27rem), linear-gradient(160deg, #172617, #080d08 68%);
+}
+
+.release-card.back-to-sticks .release-card-shade {
+  background: linear-gradient(180deg, rgba(5, 12, 6, .01) 28%, rgba(5, 12, 6, .18) 52%, rgba(5, 12, 6, .96) 100%);
+}
+
+.release-card.back-to-sticks small { color: #c9e59f; }
+.release-card.back-to-sticks img { object-position: 50% 48%; }
+
 .release-card.funhouse {
   background: radial-gradient(circle at 50% 27%, rgba(255, 78, 176, .34), transparent 27rem), linear-gradient(160deg, #2c062f, #09050b 68%);
 }
@@ -127,7 +138,6 @@
 
 @media (max-width: 1040px) {
   .release-grid { grid-template-columns: 1fr 1fr; }
-  .release-card.funhouse { grid-column: 1 / -1; }
   .release-card.funhouse img { object-position: 50% 44%; }
 }
 
@@ -135,7 +145,6 @@
   .latest-section { padding: 0 0 64px; }
   .latest-head { align-items: start; flex-direction: column; }
   .release-grid { grid-template-columns: 1fr; }
-  .release-card.funhouse { grid-column: auto; }
   .release-card { min-height: 74svh; max-height: 760px; }
   .release-card-copy { padding: 24px; }
   .release-card-copy strong { font-size: clamp(2.4rem, 10vw, 4.2rem); }
