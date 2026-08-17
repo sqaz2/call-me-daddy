@@ -1,5 +1,18 @@
 window.CMD_SONGS = [
   {
+    id: 'youtube-W47ebCMfrBI',
+    title: 'YouTube Release',
+    artist: 'Call Me Daddy',
+    project: 'YouTube',
+    description: 'A Call Me Daddy release currently hosted on YouTube.',
+    audio: '',
+    cover: 'https://i.ytimg.com/vi/W47ebCMfrBI/hqdefault.jpg',
+    experience: '/youtube/W47ebCMfrBI/',
+    youtubeId: 'W47ebCMfrBI',
+    youtubeUrl: 'https://youtu.be/W47ebCMfrBI',
+    kind: 'YouTube'
+  },
+  {
     id: 'namaste-hamster',
     title: 'Namaste, Hamster',
     artist: 'Call Me Daddy',
