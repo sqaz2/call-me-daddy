@@ -1,5 +1,20 @@
 window.CMD_SONGS = [
   {
+    id: 'funhouse-meltdown',
+    title: 'Funhouse Meltdown',
+    artist: 'Call Me Daddy',
+    year: 2026,
+    month: 8,
+    date: '2026-08-17',
+    project: 'Funhouse Meltdown',
+    description: 'Dubstep carnival chaos: warped funhouse energy, midway madness and a bass-heavy meltdown.',
+    audio: '/media/songs/2026/08/funhouse-meltdown/audio.mp3',
+    cover: '',
+    experience: '/funhouse-meltdown/',
+    sunoUrl: 'https://suno.com/s/tUZ8ksFlA1WrSque',
+    kind: 'song'
+  },
+  {
     id: 'youtube-W47ebCMfrBI',
     title: 'YouTube Release',
     artist: 'Call Me Daddy',
