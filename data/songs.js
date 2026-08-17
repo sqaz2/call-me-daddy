@@ -7,9 +7,11 @@ window.CMD_SONGS = [
     month: 8,
     date: '2026-08-17',
     project: 'Funhouse Meltdown',
-    description: 'Dubstep carnival chaos: warped funhouse energy, midway madness and a bass-heavy meltdown.',
+    description: 'One dad, one corn dog and the exact moment “I know a shortcut” becomes a dubstep insurance claim.',
     audio: '/media/songs/2026/08/funhouse-meltdown/audio.mp3',
-    cover: '',
+    cover: '/media/songs/2026/08/funhouse-meltdown/cover.jpg',
+    video: '/media/songs/2026/08/funhouse-meltdown/video.mp4',
+    videoHd: '/media/songs/2026/08/funhouse-meltdown/video-hd.mp4',
     experience: '/funhouse-meltdown/',
     sunoUrl: 'https://suno.com/s/tUZ8ksFlA1WrSque',
     kind: 'song'
