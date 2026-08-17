@@ -91,7 +91,7 @@
 .funhouse-layout {
   position: relative;
   z-index: 2;
-  width: 100%;
+  width: min(1180px, calc(100% - 32px));
   display: grid;
   grid-template-columns: 1.08fr .72fr;
   gap: 52px;
@@ -202,7 +202,7 @@
   z-index: 2;
   left: 26px;
   right: 26px;
-  bottom: 142px;
+  bottom: 168px;
   text-align: center;
 }
 
@@ -453,7 +453,7 @@
   .funhouse-copy h1 { font-size: clamp(3.55rem, 18vw, 5.65rem); }
   .funhouse-copy .lede { font-size: 1.02rem; }
   .funhouse-machine { min-height: 520px; border-radius: 27px; }
-  .machine-sign { bottom: 140px; }
+  .machine-sign { bottom: 164px; }
   .machine-sign strong { font-size: clamp(2.45rem, 13vw, 3.6rem); }
   .audio-wrap { left: 12px; right: 12px; bottom: 12px; padding: 13px; }
   .funhouse-story { padding: 72px 0 78px; }
