@@ -20,7 +20,7 @@
     return;
   }
 
-  const safe=(value='')=>String(value).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+  const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
 
   async function hydrateYoutubeCard(song,card){
     if(!song.youtubeUrl)return;
@@ -56,6 +56,7 @@
           ${primaryAction}
           ${song.experience&&song.audio?`<a class="song-link" href="${safe(song.experience)}">${experienceLabel}</a>`:''}
           ${song.youtubeUrl?`<a class="song-link" href="${safe(song.youtubeUrl)}" target="_blank" rel="noopener">YouTube ↗</a>`:''}
+          ${song.sunoUrl?`<a class="song-link" href="${safe(song.sunoUrl)}" target="_blank" rel="noopener">Suno ↗</a>`:''}
         </div>
       </div>`;
 
