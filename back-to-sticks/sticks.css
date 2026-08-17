@@ -440,6 +440,110 @@
 
 .fair-point p { max-width: 820px; color: #bdc6b4; }
 
+.sticks-companion {
+  padding: 102px 0 108px;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  background:
+    radial-gradient(circle at 84% 30%, rgba(224, 173, 91, .09), transparent 30rem),
+    radial-gradient(circle at 12% 70%, rgba(78, 126, 208, .055), transparent 26rem),
+    #071009;
+  scroll-margin-top: 76px;
+}
+
+.companion-head {
+  display: grid;
+  grid-template-columns: 1fr .72fr;
+  gap: 46px;
+  align-items: end;
+  margin-bottom: 35px;
+}
+
+.companion-head h2 {
+  margin: 7px 0 0;
+  font-size: clamp(2.7rem, 6.6vw, 5.55rem);
+  line-height: .87;
+  letter-spacing: -.06em;
+}
+
+.companion-head > p { color: #bcc4b3; font-size: 1.04rem; }
+
+.companion-layout {
+  display: grid;
+  grid-template-columns: minmax(270px, .58fr) 1fr;
+  gap: 38px;
+  align-items: center;
+  padding: 26px;
+  border: 1px solid rgba(224, 173, 91, .16);
+  border-radius: 32px;
+  background: rgba(5, 12, 7, .68);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .28);
+}
+
+.companion-cover {
+  position: relative;
+  display: block;
+  width: min(100%, 390px);
+  aspect-ratio: 9 / 16;
+  justify-self: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 222, 153, .20);
+  border-radius: 25px;
+  background: #07101b;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .45);
+}
+
+.companion-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.companion-cover:hover img { transform: scale(1.018); }
+
+.companion-cover span {
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: 13px;
+  padding: 11px 13px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 14px;
+  background: rgba(3, 9, 15, .83);
+  color: #f0cf8e;
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-align: center;
+}
+
+.companion-copy h3 {
+  margin: 9px 0 11px;
+  color: #f2e3c5;
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  line-height: .93;
+  letter-spacing: -.055em;
+}
+
+.companion-copy h3 small {
+  display: block;
+  margin-top: 9px;
+  color: #9c9f94;
+  font-size: .73rem;
+  font-weight: 750;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.companion-copy > p { color: #bdc3b4; }
+
+.companion-video {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  margin-top: 24px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  border-radius: 22px;
+  background: #020607;
+}
+
+.companion-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
 @keyframes stoneSignal {
   0%, 100% { height: 8px; opacity: .42; }
   50% { height: 28px; opacity: 1; }
@@ -464,10 +568,13 @@
   .sticks-copy h1 { font-size: clamp(4rem, 19vw, 7rem); }
   .stone-player { width: min(100%, 450px); min-height: 560px; margin: 0 auto; transform: none; }
   .sticks-head,
-  .roast-head { align-items: start; grid-template-columns: 1fr; gap: 20px; }
+  .roast-head,
+  .companion-head { align-items: start; grid-template-columns: 1fr; gap: 20px; }
   .vocabulary-layout { grid-template-columns: 1fr; gap: 38px; }
   .thesis-block { grid-template-columns: 1fr; gap: 12px; }
   .thesis-number { font-size: 3.9rem; }
+  .companion-layout { grid-template-columns: 1fr; }
+  .companion-cover { width: min(70vw, 360px); }
 }
 
 @media (max-width: 560px) {
@@ -479,7 +586,8 @@
   .stone-sign strong { font-size: clamp(2rem, 10vw, 2.8rem); }
   .stone-audio { left: 11px; right: 11px; bottom: 11px; padding: 12px; }
   .sticks-story,
-  .sticks-roast { padding: 74px 0 78px; }
+  .sticks-roast,
+  .sticks-companion { padding: 74px 0 78px; }
   .vocabulary-section { padding: 76px 0; }
   .thesis-block { padding: 25px; }
   .skill-grid,
@@ -491,6 +599,9 @@
   .roast-grid blockquote,
   .roast-card { min-height: 220px; padding: 24px; }
   .fair-point { padding: 27px; }
+  .companion-layout { padding: 16px; gap: 28px; }
+  .companion-cover { width: min(78vw, 340px); border-radius: 22px; }
+  .companion-video { border-radius: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,351 @@
+.police-page {
+  --police-gold: #ffd579;
+  --police-cream: #fff2d1;
+  --police-red: #ef4f49;
+  --police-blue: #5b8cff;
+  background: #050c16;
+  color: #f7f1e4;
+}
+
+.police-page::before {
+  background:
+    radial-gradient(circle at calc(16% + var(--cursor-x, 0px)) calc(22% + var(--cursor-y, 0px)), rgba(239, 79, 73, .055), transparent 28rem),
+    radial-gradient(circle at calc(84% - var(--cursor-x, 0px)) calc(68% - var(--cursor-y, 0px)), rgba(91, 140, 255, .05), transparent 34rem);
+}
+
+.police-topbar {
+  background: rgba(3, 9, 17, .79);
+  border-bottom-color: rgba(255, 213, 121, .10);
+}
+
+.police-hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 112px 0 68px;
+  background: #040a12;
+}
+
+.police-backdrop {
+  position: absolute;
+  inset: -5%;
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(3, 9, 17, .96) 0%, rgba(3, 9, 17, .90) 42%, rgba(3, 9, 17, .48) 72%, rgba(3, 9, 17, .88) 100%),
+    linear-gradient(180deg, rgba(3, 9, 17, .20), #050c16 96%),
+    url('/media/songs/2026/07/the-musician-police/cover.jpg') center 62% / cover no-repeat;
+  filter: saturate(.9) brightness(.66) blur(2px);
+  transform: scale(1.05);
+}
+
+.beacon {
+  position: absolute;
+  z-index: 1;
+  top: -20vh;
+  width: 46vw;
+  height: 78vh;
+  opacity: .12;
+  filter: blur(30px);
+  transform-origin: top center;
+  animation: policeSweep 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.beacon-red { left: -9vw; background: conic-gradient(from 164deg at 50% 0%, transparent, var(--police-red), transparent 27%); }
+.beacon-blue { right: -9vw; background: conic-gradient(from 171deg at 50% 0%, transparent, var(--police-blue), transparent 27%); animation-delay: -4.5s; }
+
+.police-hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.08fr minmax(330px, .62fr);
+  gap: 58px;
+  align-items: center;
+}
+
+.police-copy { text-shadow: 0 3px 30px rgba(0, 0, 0, .74); }
+.police-copy .eyebrow { color: #f1dcae; }
+.police-copy .eyebrow::before { background: var(--police-gold); }
+
+.police-copy h1 {
+  margin: 13px 0 22px;
+  font-size: clamp(4rem, 9.4vw, 8.4rem);
+  line-height: .75;
+  letter-spacing: -.075em;
+}
+
+.police-copy h1 span {
+  color: var(--police-gold);
+  text-shadow: 0 0 30px rgba(255, 201, 91, .18), 0 10px 42px rgba(0, 0, 0, .54);
+}
+
+.police-copy .lede { max-width: 770px; color: #f0e8d8; }
+
+.police-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 23px 0 3px;
+}
+
+.police-tags span {
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 999px;
+  background: rgba(4, 10, 18, .60);
+  color: #dfd8c8;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.police-page .btn { background: rgba(8, 17, 29, .84); }
+.police-page .btn.primary { background: var(--police-gold); border-color: var(--police-gold); color: #17130a; }
+
+.police-cover {
+  position: relative;
+  width: min(100%, 410px);
+  aspect-ratio: 9 / 16;
+  justify-self: end;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(255, 220, 147, .25);
+  border-radius: 29px;
+  background: #07101c;
+  box-shadow: 0 40px 130px rgba(0, 0, 0, .66), 0 0 60px rgba(255, 190, 66, .06);
+  transform: rotate(1deg);
+}
+
+.police-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+.police-cover figcaption {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 16px;
+  background: rgba(3, 9, 16, .82);
+  backdrop-filter: blur(14px);
+}
+
+.police-cover figcaption span,
+.police-cover figcaption strong { display: block; }
+.police-cover figcaption span { color: #aa9e87; font-size: .61rem; font-weight: 850; letter-spacing: .15em; }
+.police-cover figcaption strong { margin-top: 2px; color: var(--police-gold); font-size: .93rem; }
+
+.citation-section { padding: 98px 0 104px; }
+
+.citation-head,
+.case-file-head {
+  display: grid;
+  grid-template-columns: 1fr .72fr;
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+
+.citation-head h2,
+.case-file-head h2,
+.police-verdict h2 {
+  margin: 7px 0 0;
+  font-size: clamp(2.8rem, 6.9vw, 5.8rem);
+  line-height: .87;
+  letter-spacing: -.06em;
+}
+
+.citation-head > p,
+.case-file-head > p { color: #b8b4ad; font-size: 1.05rem; }
+
+.citation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.citation-grid article {
+  min-height: 305px;
+  padding: 27px;
+  border: 1px solid rgba(255, 213, 121, .12);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 203, 100, .05), transparent 15rem),
+    rgba(255, 255, 255, .015);
+}
+
+.citation-grid article > span { color: rgba(255, 213, 121, .36); font-size: 2.4rem; font-weight: 900; letter-spacing: -.06em; }
+.citation-grid .kicker { margin-top: 38px; color: #a79b84; }
+.citation-grid h3 { margin: 9px 0 12px; font-size: clamp(1.65rem, 3vw, 2.45rem); line-height: 1; letter-spacing: -.04em; }
+.citation-grid p { color: #b9b5ad; }
+
+.official-notice {
+  margin: 18px 0 0;
+  padding: 46px;
+  border: 1px solid rgba(255, 213, 121, .17);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 85% 20%, rgba(239, 79, 73, .07), transparent 24rem),
+    radial-gradient(circle at 10% 80%, rgba(91, 140, 255, .055), transparent 22rem),
+    #07101c;
+  color: #f6e5bd;
+  font-size: clamp(2rem, 4.6vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+
+.official-notice small {
+  display: block;
+  margin-bottom: 56px;
+  color: #9c958a;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.case-file {
+  padding: 100px 0 106px;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  background:
+    radial-gradient(circle at 14% 45%, rgba(91, 140, 255, .07), transparent 30rem),
+    radial-gradient(circle at 86% 40%, rgba(239, 79, 73, .06), transparent 28rem),
+    #050b14;
+  scroll-margin-top: 76px;
+}
+
+.case-sequence {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px minmax(0, 1fr);
+  gap: 15px;
+  align-items: stretch;
+}
+
+.case-track {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  border-radius: 29px;
+  background: rgba(8, 15, 25, .82);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, .26);
+}
+
+.track-number { margin-bottom: 16px; color: #a8a198; font-size: .67rem; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+
+.track-art {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  background: #0b150e;
+}
+
+.track-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 52%; }
+
+.youtube-frame { position: relative; overflow: hidden; aspect-ratio: 16 / 9; border-radius: 20px; background: #02050a; }
+.youtube-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.track-copy { padding: 19px 2px 12px; }
+.track-copy small { color: #9f998f; }
+.track-copy h3 { margin: 4px 0 8px; font-size: clamp(1.65rem, 3vw, 2.5rem); line-height: 1; letter-spacing: -.045em; }
+.track-copy p { margin: 0; color: #b9b4ab; }
+.case-track audio { width: 100%; margin-top: 8px; accent-color: var(--police-gold); }
+
+.case-link,
+.platform-row a {
+  display: inline-flex;
+  margin-top: 13px;
+  color: #ead6a9;
+  font-size: .83rem;
+  font-weight: 760;
+}
+
+.platform-row { display: flex; flex-wrap: wrap; gap: 15px; }
+
+.case-arrow {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  color: var(--police-gold);
+  font-size: 2rem;
+}
+
+.case-arrow span { color: #8c877f; font-size: .61rem; font-weight: 900; letter-spacing: .15em; }
+
+.police-verdict {
+  display: grid;
+  grid-template-columns: .55fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 100px 0 110px;
+}
+
+.verdict-mark {
+  display: grid;
+  place-items: center;
+  width: min(100%, 400px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 213, 121, .16);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 213, 121, .12), transparent 48%),
+    conic-gradient(from 0deg, rgba(239, 79, 73, .08), rgba(91, 140, 255, .08), rgba(239, 79, 73, .08));
+  color: var(--police-gold);
+  font-size: clamp(2.3rem, 5vw, 4.4rem);
+  font-weight: 950;
+  letter-spacing: -.06em;
+  box-shadow: inset 0 0 70px rgba(255, 205, 97, .035);
+}
+
+.police-verdict p { max-width: 760px; color: #b9b5ad; }
+
+@keyframes policeSweep {
+  from { transform: rotate(-9deg); }
+  to { transform: rotate(12deg); }
+}
+
+@media (max-width: 960px) {
+  .police-hero-grid { grid-template-columns: 1fr minmax(290px, .55fr); gap: 30px; }
+  .police-cover { width: min(100%, 350px); }
+}
+
+@media (max-width: 820px) {
+  .police-hero { min-height: auto; padding: 94px 0 64px; }
+  .police-backdrop { background-position: center; }
+  .police-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .police-copy h1 { font-size: clamp(3.8rem, 18vw, 6.7rem); }
+  .police-cover { width: min(76vw, 390px); justify-self: center; transform: none; }
+  .citation-head,
+  .case-file-head { grid-template-columns: 1fr; gap: 20px; align-items: start; }
+  .citation-grid { grid-template-columns: 1fr; }
+  .citation-grid article { min-height: 225px; }
+  .case-sequence { grid-template-columns: 1fr; }
+  .case-arrow { min-height: 72px; transform: rotate(90deg); }
+  .case-arrow span { transform: rotate(-90deg); }
+  .police-verdict { grid-template-columns: 1fr; gap: 40px; }
+  .verdict-mark { width: min(72vw, 350px); justify-self: center; }
+}
+
+@media (max-width: 560px) {
+  .police-hero { padding-bottom: 48px; }
+  .police-copy h1 { font-size: clamp(3.5rem, 18.5vw, 5.6rem); }
+  .police-copy .lede { font-size: 1.02rem; }
+  .police-cover { width: min(84vw, 360px); border-radius: 24px; }
+  .citation-section,
+  .case-file,
+  .police-verdict { padding-top: 74px; padding-bottom: 78px; }
+  .citation-grid article,
+  .case-track { padding: 22px; }
+  .official-notice { padding: 27px; }
+  .official-notice small { margin-bottom: 38px; }
+  .platform-row { gap: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beacon { animation: none; }
+}

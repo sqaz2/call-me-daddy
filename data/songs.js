@@ -14,7 +14,27 @@ window.CMD_SONGS = [
     videoHd: '/media/songs/2026/08/back-to-sticks/video-hd.mp4',
     experience: '/back-to-sticks/',
     sunoUrl: 'https://suno.com/song/e45d7b0f-26f2-4d8e-a6fd-5b142f34f123',
+    related: ['the-musician-police'],
     kind: 'song'
+  },
+  {
+    id: 'the-musician-police',
+    title: 'The Musician Police (feat. Call Me Daddy)',
+    artist: 'MusicSubject',
+    year: 2026,
+    month: 7,
+    date: '2026-07-30',
+    project: 'The Musician Police',
+    description: 'A satirical citation for new tools, new sounds and the apparently serious offense of making music without suffering enough. Companion listening for Back to Sticks.',
+    audio: '',
+    cover: '/media/songs/2026/07/the-musician-police/cover.jpg',
+    experience: '/the-musician-police/',
+    youtubeId: '7rI2MtnRsaA',
+    youtubeUrl: 'https://www.youtube.com/watch?v=7rI2MtnRsaA',
+    youtubeMusicUrl: 'https://music.youtube.com/watch?v=7rI2MtnRsaA',
+    spotifyUrl: 'https://open.spotify.com/track/4rDtnEc8qPOC01HZVnhX67',
+    related: ['back-to-sticks'],
+    kind: 'companion song'
   },
   {
     id: 'funhouse-meltdown',
