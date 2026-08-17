@@ -1,0 +1,10 @@
+.share-block{margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.10)}
+.share-label{margin-bottom:10px;color:#aaa49a;font-size:.70rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.share-buttons{display:flex;flex-wrap:wrap;gap:8px}
+.share-btn{min-height:40px;padding:0 13px;border:1px solid rgba(255,255,255,.13);border-radius:999px;background:rgba(12,12,12,.64);color:#f2eee7;font:inherit;font-size:.78rem;font-weight:780;cursor:pointer;backdrop-filter:blur(9px);transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.share-btn:hover,.share-btn:focus-visible{transform:translateY(-1px);border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08);outline:none}
+.share-btn[data-network="facebook"]{border-color:rgba(88,139,255,.28)}
+.share-btn[data-network="x"]{border-color:rgba(255,255,255,.22)}
+.share-btn[data-network="whatsapp"]{border-color:rgba(77,216,125,.26)}
+.share-status{min-height:1.15em;margin-top:9px;color:#9e978d;font-size:.72rem}
+@media(max-width:520px){.share-buttons{gap:7px}.share-btn{min-height:38px;padding:0 11px;font-size:.73rem}}
