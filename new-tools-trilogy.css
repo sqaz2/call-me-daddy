@@ -1,0 +1,185 @@
+.trilogy-section {
+  --trilogy-gold: #efba68;
+  --trilogy-cream: #f7ead3;
+  padding: 104px 0 110px;
+  border-top: 1px solid rgba(255, 255, 255, .07);
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  background:
+    radial-gradient(circle at 9% 24%, rgba(126, 157, 83, .08), transparent 28rem),
+    radial-gradient(circle at 50% 65%, rgba(81, 127, 199, .055), transparent 30rem),
+    radial-gradient(circle at 92% 20%, rgba(239, 174, 84, .09), transparent 30rem),
+    #080d10;
+  color: #f4eee3;
+  scroll-margin-top: 76px;
+}
+
+.trilogy-head {
+  display: grid;
+  grid-template-columns: 1fr .72fr;
+  gap: 46px;
+  align-items: end;
+  margin-bottom: 35px;
+}
+
+.trilogy-head h2 {
+  margin: 7px 0 0;
+  font-size: clamp(2.7rem, 6.6vw, 5.55rem);
+  line-height: .87;
+  letter-spacing: -.06em;
+}
+
+.trilogy-head > p {
+  margin: 0;
+  color: #bab8b1;
+  font-size: 1.04rem;
+}
+
+.trilogy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.trilogy-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .11);
+  border-radius: 29px;
+  background: rgba(8, 13, 16, .82);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, .25);
+}
+
+.trilogy-card.is-current {
+  border-color: rgba(239, 186, 104, .42);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, .32), inset 0 0 0 1px rgba(239, 186, 104, .08);
+}
+
+.trilogy-card.is-current::after {
+  content: "YOU ARE HERE";
+  position: absolute;
+  z-index: 4;
+  top: 65px;
+  right: 31px;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, .17);
+  border-radius: 999px;
+  background: rgba(5, 8, 10, .76);
+  color: var(--trilogy-cream);
+  font-size: .57rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  backdrop-filter: blur(10px);
+}
+
+.trilogy-number {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 2px 15px;
+  color: #aaa69e;
+  font-size: .65rem;
+  font-weight: 850;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.trilogy-tone {
+  color: var(--trilogy-gold);
+  letter-spacing: .11em;
+}
+
+.trilogy-art,
+.trilogy-video {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: 19px;
+  background: #05090b;
+}
+
+.trilogy-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+
+.trilogy-art:hover img { transform: scale(1.018); }
+.trilogy-sticks .trilogy-art img { object-position: 50% 50%; }
+.trilogy-level .trilogy-art img { object-position: 50% 45%; }
+.trilogy-police iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.trilogy-copy {
+  flex: 1;
+  padding: 19px 2px 12px;
+}
+
+.trilogy-copy small {
+  color: #9f9a91;
+  font-size: .72rem;
+}
+
+.trilogy-copy h3 {
+  margin: 5px 0 9px;
+  font-size: clamp(1.7rem, 3vw, 2.55rem);
+  line-height: .96;
+  letter-spacing: -.045em;
+}
+
+.trilogy-copy p {
+  margin: 0;
+  color: #bcb9b1;
+}
+
+.trilogy-card audio {
+  width: 100%;
+  margin-top: 8px;
+  accent-color: var(--trilogy-gold);
+}
+
+.trilogy-link,
+.trilogy-platforms a {
+  display: inline-flex;
+  margin-top: 14px;
+  color: #efd29d;
+  font-size: .82rem;
+  font-weight: 780;
+}
+
+.trilogy-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.trilogy-footnote {
+  margin: 22px 0 0;
+  color: #8f8c86;
+  font-size: .78rem;
+}
+
+@media (max-width: 960px) {
+  .trilogy-grid { grid-template-columns: 1fr 1fr; }
+  .trilogy-level { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .trilogy-section { padding: 76px 0 80px; }
+  .trilogy-head { grid-template-columns: 1fr; gap: 20px; align-items: start; }
+  .trilogy-grid { grid-template-columns: 1fr; }
+  .trilogy-level { grid-column: auto; }
+  .trilogy-card { padding: 18px; }
+}
+
+@media (max-width: 480px) {
+  .trilogy-card.is-current::after { top: 88px; right: 28px; }
+  .trilogy-number { align-items: flex-start; flex-direction: column; }
+}

@@ -1,5 +1,23 @@
 window.CMD_SONGS = [
   {
+    id: 'level-up',
+    title: 'Level Up (Primal Dubstep Mix)',
+    artist: 'MusicSubject × Call Me Daddy',
+    year: 2026,
+    month: 8,
+    date: '2026-08-18',
+    project: 'New Tools Trilogy',
+    description: 'The inspiring third movement: learn the new tool, bring meaning to it and grow strong enough for the future instead of asking the future to shrink.',
+    audio: '/media/songs/2026/08/level-up/audio.mp3',
+    cover: '/media/songs/2026/08/level-up/cover.jpg',
+    video: '/media/songs/2026/08/level-up/video.mp4',
+    videoWide: '/media/songs/2026/08/level-up/video-wide.mp4',
+    experience: '/level-up/',
+    sunoUrl: 'https://suno.com/s/XHbBz8drN7HVD6IX',
+    related: ['back-to-sticks', 'the-musician-police'],
+    kind: 'song'
+  },
+  {
     id: 'back-to-sticks',
     title: 'Back to Sticks (Soothing Mix)',
     artist: 'Call Me Daddy',
@@ -14,7 +32,7 @@ window.CMD_SONGS = [
     videoHd: '/media/songs/2026/08/back-to-sticks/video-hd.mp4',
     experience: '/back-to-sticks/',
     sunoUrl: 'https://suno.com/song/e45d7b0f-26f2-4d8e-a6fd-5b142f34f123',
-    related: ['the-musician-police'],
+    related: ['the-musician-police', 'level-up'],
     kind: 'song'
   },
   {
@@ -25,7 +43,7 @@ window.CMD_SONGS = [
     month: 7,
     date: '2026-07-30',
     project: 'The Musician Police',
-    description: 'A satirical citation for new tools, new sounds and the apparently serious offense of making music without suffering enough. Companion listening for Back to Sticks.',
+    description: 'The funniest movement in the New Tools Trilogy: a satirical citation for using new tools, making new sounds and apparently not suffering enough.',
     audio: '',
     cover: '/media/songs/2026/07/the-musician-police/cover.jpg',
     experience: '/the-musician-police/',
@@ -33,7 +51,7 @@ window.CMD_SONGS = [
     youtubeUrl: 'https://www.youtube.com/watch?v=7rI2MtnRsaA',
     youtubeMusicUrl: 'https://music.youtube.com/watch?v=7rI2MtnRsaA',
     spotifyUrl: 'https://open.spotify.com/track/4rDtnEc8qPOC01HZVnhX67',
-    related: ['back-to-sticks'],
+    related: ['back-to-sticks', 'level-up'],
     kind: 'companion song'
   },
   {

@@ -87,6 +87,20 @@
   color: #d1ccc3;
 }
 
+.release-card.level-up {
+  grid-column: 1 / -1;
+  min-height: 650px;
+  background: radial-gradient(circle at 74% 24%, rgba(243, 178, 75, .23), transparent 28rem), linear-gradient(160deg, #23160c, #090b0d 68%);
+}
+
+.release-card.level-up .release-card-shade {
+  background: linear-gradient(90deg, rgba(8, 9, 10, .92) 0%, rgba(8, 9, 10, .57) 41%, rgba(8, 9, 10, .08) 74%), linear-gradient(180deg, rgba(5, 6, 7, .03) 30%, rgba(5, 6, 7, .20) 64%, rgba(5, 6, 7, .91) 100%);
+}
+
+.release-card.level-up img { object-position: 50% 54%; }
+.release-card.level-up .release-card-copy { max-width: 720px; }
+.release-card.level-up small { color: #f2c678; }
+
 .release-card.back-to-sticks {
   background: radial-gradient(circle at 50% 27%, rgba(172, 213, 117, .25), transparent 27rem), linear-gradient(160deg, #172617, #080d08 68%);
 }
@@ -146,6 +160,8 @@
   .latest-head { align-items: start; flex-direction: column; }
   .release-grid { grid-template-columns: 1fr; }
   .release-card { min-height: 74svh; max-height: 760px; }
+  .release-card.level-up { grid-column: auto; min-height: 78svh; }
+  .release-card.level-up .release-card-shade { background: linear-gradient(180deg, rgba(5, 6, 7, .04) 26%, rgba(5, 6, 7, .23) 53%, rgba(5, 6, 7, .96) 100%); }
   .release-card-copy { padding: 24px; }
   .release-card-copy strong { font-size: clamp(2.4rem, 10vw, 4.2rem); }
 }
