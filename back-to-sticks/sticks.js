@@ -1,13 +1,14 @@
 (()=>{
   const video=document.getElementById('sticksVideo');
-  const audio=document.getElementById('sticksAudio');
+  const audio=document.getElementById('trilogyAudio');
   if(!video)return;
 
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let heroVisible=true;
+  let trilogyPlaying=false;
 
   const syncVideo=()=>{
-    const audioPlaying=audio&&!audio.paused&&!audio.ended;
+    const audioPlaying=trilogyPlaying||(audio&&!audio.paused&&!audio.ended);
     if(reduced||document.hidden||!heroVisible||audioPlaying){
       video.pause();
       return;
@@ -26,5 +27,9 @@
   audio?.addEventListener('play',syncVideo);
   audio?.addEventListener('pause',syncVideo);
   audio?.addEventListener('ended',syncVideo);
+  document.addEventListener('trilogy:playback',event=>{
+    trilogyPlaying=Boolean(event.detail?.playing);
+    syncVideo();
+  });
   document.addEventListener('visibilitychange',syncVideo);
 })();

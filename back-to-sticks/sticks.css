@@ -143,6 +143,12 @@
   background: #101a11;
   box-shadow: 0 38px 120px rgba(0, 0, 0, .62), inset 0 0 0 1px rgba(255, 255, 255, .035);
   transform: rotate(.45deg);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.stone-player.is-selected {
+  border-color: rgba(193, 229, 144, .70);
+  box-shadow: 0 38px 120px rgba(0, 0, 0, .65), 0 0 0 3px rgba(193, 229, 144, .10);
 }
 
 .stone-cover,
@@ -173,6 +179,47 @@
   justify-content: center;
   gap: 7px;
 }
+
+.stone-sign,
+.stone-audio,
+.stone-signal { pointer-events: none; }
+
+.stone-play-hit {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: #f4f1e7;
+  cursor: pointer;
+}
+
+.stone-play-hit::before {
+  content: "▶";
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  padding-left: 4px;
+  border: 1px solid rgba(255, 255, 255, .31);
+  border-radius: 50%;
+  background: rgba(5, 11, 6, .72);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, .46);
+  color: #eefbdc;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(12px);
+  transition: transform .2s ease, background .2s ease;
+}
+
+.stone-play-hit:hover::before { transform: translate(-50%, -50%) scale(1.06); }
+.stone-play-hit:focus-visible { outline: 3px solid var(--moss-bright); outline-offset: -6px; }
+.stone-play-hit.is-selected::before { content: "♪"; padding-left: 0; background: rgba(73, 101, 51, .88); }
 
 .stone-signal span {
   width: 5px;
@@ -231,7 +278,16 @@
 .audio-label strong { display: block; }
 .audio-label span { color: #aab69d; font-size: .72rem; }
 .audio-label strong { margin: 2px 0 9px; font-size: 1.05rem; }
-.stone-audio audio { width: 100%; accent-color: var(--moss-bright); }
+
+.stone-tap {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, .11);
+  color: #d6edba;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
 
 .sticks-story { padding: 96px 0 102px; }
 

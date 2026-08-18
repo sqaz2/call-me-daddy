@@ -25,8 +25,8 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/share.css">
-  <link rel="stylesheet" href="/new-tools-trilogy.css?v=20260818-1">
-  <link rel="stylesheet" href="/the-musician-police/police.css?v=20260818-1">
+  <link rel="stylesheet" href="/new-tools-trilogy.css?v=20260818-2">
+  <link rel="stylesheet" href="/the-musician-police/police.css?v=20260818-2">
 </head>
 <body class="police-page">
   <header class="topbar police-topbar">
@@ -49,7 +49,7 @@
           <p class="lede">A satirical dispatch about the people who appoint themselves guardians of “real music”—then issue citations for new tools, new sounds and songs made without the approved amount of suffering.</p>
           <div class="police-tags"><span>Satire</span><span>Gatekeeping unit</span><span>New-tool violation</span><span>WEE-OOO</span></div>
           <div class="actions">
-            <a class="btn primary" href="#trilogy">▶ Play the three-song case file</a>
+            <a class="btn primary" href="#trilogy" data-trilogy-track="sticks">▶ Play the three-song case file</a>
             <a class="btn" href="https://open.spotify.com/track/4rDtnEc8qPOC01HZVnhX67" target="_blank" rel="noopener">Spotify ↗</a>
             <a class="btn" href="https://music.youtube.com/watch?v=7rI2MtnRsaA" target="_blank" rel="noopener">YouTube Music ↗</a>
           </div>
@@ -58,6 +58,7 @@
 
         <figure class="police-cover">
           <img src="/media/songs/2026/07/the-musician-police/cover.jpg" alt="Musician Police officers issuing a citation on a beach at night">
+          <button class="police-cover-play" type="button" data-trilogy-track="police" aria-label="Play The Musician Police"></button>
           <figcaption><span>CASE NO. 2026-07</span><strong>ENJOYMENT DETECTED</strong></figcaption>
         </figure>
       </div>
@@ -88,28 +89,26 @@
         <div class="trilogy-grid">
           <article class="trilogy-card trilogy-sticks">
             <div class="trilogy-number"><span>01 · Refuse the change</span><span class="trilogy-tone">The mean one</span></div>
-            <a class="trilogy-art" href="/back-to-sticks/"><img src="/media/songs/2026/08/back-to-sticks/cover.jpg" alt="Back to Sticks caveman artwork" loading="lazy"></a>
+            <button class="trilogy-art" type="button" data-trilogy-track="sticks" aria-label="Play Back to Sticks"><img src="/media/songs/2026/08/back-to-sticks/cover.jpg" alt="Back to Sticks caveman artwork" loading="lazy"></button>
             <div class="trilogy-copy"><small>Call Me Daddy</small><h3>Back to Sticks</h3><p>The caveman roast. Mean on purpose, and included for my own personal amusement.</p></div>
-            <audio controls preload="metadata" src="/media/songs/2026/08/back-to-sticks/audio.mp3">Your browser does not support audio playback.</audio>
             <a class="trilogy-link" href="/back-to-sticks/">Open the field guide →</a>
           </article>
 
           <article class="trilogy-card trilogy-police is-current">
             <div class="trilogy-number"><span>02 · Police the change</span><span class="trilogy-tone">The funniest one</span></div>
-            <div class="trilogy-video"><iframe src="https://www.youtube-nocookie.com/embed/7rI2MtnRsaA?rel=0" title="The Musician Police (feat. Call Me Daddy) by MusicSubject" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+            <button class="trilogy-art" type="button" data-trilogy-track="police" aria-label="Play The Musician Police"><img src="/media/songs/2026/07/the-musician-police/cover.jpg" alt="The Musician Police cover artwork" loading="lazy"></button>
             <div class="trilogy-copy"><small>MusicSubject feat. Call Me Daddy</small><h3>The Musician Police</h3><p>The funniest movement: gatekeepers arrive to issue citations for enjoying the wrong process.</p></div>
             <div class="trilogy-platforms"><a href="#top">Return to the case file ↑</a><a href="https://open.spotify.com/track/4rDtnEc8qPOC01HZVnhX67" target="_blank" rel="noopener">Spotify ↗</a></div>
           </article>
 
           <article class="trilogy-card trilogy-level">
             <div class="trilogy-number"><span>03 · Become the change</span><span class="trilogy-tone">The inspiring one</span></div>
-            <a class="trilogy-art" href="/level-up/"><img src="/media/songs/2026/08/level-up/cover.jpg" alt="Level Up volcanic ascent artwork" loading="lazy"></a>
+            <button class="trilogy-art" type="button" data-trilogy-track="level" aria-label="Play Level Up"><img src="/media/songs/2026/08/level-up/cover.jpg" alt="Level Up volcanic ascent artwork" loading="lazy"></button>
             <div class="trilogy-copy"><small>MusicSubject × Call Me Daddy</small><h3>Level Up</h3><p>The answer: learn the tool, keep your meaning and become capable of more.</p></div>
-            <audio controls preload="metadata" src="/media/songs/2026/08/level-up/audio.mp3">Your browser does not support audio playback.</audio>
             <a class="trilogy-link" href="/level-up/">Finish with Level Up →</a>
           </article>
         </div>
-        <p class="trilogy-footnote">The Musician Police plays from its official MusicSubject YouTube release; Back to Sticks and Level Up play directly from this site.</p>
+        <p class="trilogy-footnote">Tap any artwork. The bottom player carries the route from the mean one to the funniest one to the inspiring one. The Musician Police uses its official MusicSubject YouTube release.</p>
       </div>
     </section>
 
@@ -119,14 +118,14 @@
         <div class="kicker">Case dismissed</div>
         <h2>TOOLS CHANGE.<br>TASTE STILL MATTERS.</h2>
         <p>Critique the song. Question the choices. Prefer another process. But policing whether someone is allowed to call the result music is usually less interesting than listening closely enough to explain why it works—or why it does not.</p>
-        <div class="actions"><a class="btn primary" href="#trilogy">Play all three ↑</a><a class="btn" href="/level-up/">Finish with Level Up →</a><a class="btn" href="/back-to-sticks/">Back to Sticks →</a></div>
+        <div class="actions"><a class="btn primary" href="#trilogy" data-trilogy-track="sticks">Play all three ↑</a><a class="btn" href="/level-up/">Finish with Level Up →</a><a class="btn" href="/back-to-sticks/">Back to Sticks →</a></div>
       </div>
     </section>
   </main>
 
   <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Your enjoyment has been released without charge.</span></div></footer>
   <script src="/share.js"></script>
-  <script src="/new-tools-trilogy.js?v=20260818-1"></script>
+  <script src="/new-tools-trilogy.js?v=20260818-2"></script>
   <script src="/motion.js"></script>
 </body>
 </html>

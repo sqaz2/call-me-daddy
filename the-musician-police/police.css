@@ -117,12 +117,69 @@
   background: #07101c;
   box-shadow: 0 40px 130px rgba(0, 0, 0, .66), 0 0 60px rgba(255, 190, 66, .06);
   transform: rotate(1deg);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.police-cover.is-selected {
+  border-color: rgba(255, 213, 121, .72);
+  box-shadow: 0 40px 130px rgba(0, 0, 0, .68), 0 0 0 3px rgba(255, 213, 121, .10);
 }
 
 .police-cover img { width: 100%; height: 100%; object-fit: cover; }
 
+.police-cover-play {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: #fff4d8;
+  cursor: pointer;
+}
+
+.police-cover-play::before {
+  content: "▶";
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  padding-left: 4px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  border-radius: 50%;
+  background: rgba(3, 9, 16, .73);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, .48);
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(12px);
+  transition: transform .2s ease, background .2s ease;
+}
+
+.police-cover-play::after {
+  content: "TAP ARTWORK TO PLAY";
+  position: absolute;
+  right: 20px;
+  bottom: 90px;
+  left: 20px;
+  color: #f4dfb0;
+  font-size: .57rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-align: center;
+}
+
+.police-cover-play:hover::before { transform: translate(-50%, -50%) scale(1.06); }
+.police-cover-play:focus-visible { outline: 3px solid var(--police-gold); outline-offset: -6px; }
+.police-cover-play.is-selected::before { content: "♪"; padding-left: 0; background: rgba(116, 83, 30, .88); }
+.police-cover-play.is-selected::after { content: "PLAYING IN THE DOCK"; }
+
 .police-cover figcaption {
   position: absolute;
+  z-index: 3;
   left: 15px;
   right: 15px;
   bottom: 15px;
@@ -131,6 +188,7 @@
   border-radius: 16px;
   background: rgba(3, 9, 16, .82);
   backdrop-filter: blur(14px);
+  pointer-events: none;
 }
 
 .police-cover figcaption span,

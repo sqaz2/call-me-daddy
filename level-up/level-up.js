@@ -6,9 +6,10 @@
   const dataSaver=navigator.connection?.saveData;
   const players=[...document.querySelectorAll('audio')];
   let heroVisible=true;
+  let trilogyPlaying=false;
 
   const syncVideo=()=>{
-    const audioPlaying=players.some(player=>!player.paused&&!player.ended);
+    const audioPlaying=trilogyPlaying||players.some(player=>!player.paused&&!player.ended);
     if(reduced||dataSaver||document.hidden||!heroVisible||audioPlaying){
       video.pause();
       return;
@@ -29,6 +30,9 @@
     player.addEventListener('pause',syncVideo);
     player.addEventListener('ended',syncVideo);
   });
+  document.addEventListener('trilogy:playback',event=>{
+    trilogyPlaying=Boolean(event.detail?.playing);
+    syncVideo();
+  });
   document.addEventListener('visibilitychange',syncVideo);
 })();
-

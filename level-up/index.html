@@ -27,8 +27,8 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/share.css">
-  <link rel="stylesheet" href="/new-tools-trilogy.css?v=20260818-1">
-  <link rel="stylesheet" href="/level-up/level-up.css?v=20260818-1">
+  <link rel="stylesheet" href="/new-tools-trilogy.css?v=20260818-2">
+  <link rel="stylesheet" href="/level-up/level-up.css?v=20260818-2">
 </head>
 <body class="level-page">
   <header class="topbar level-topbar">
@@ -56,22 +56,24 @@
           <p class="lede"><em>Back to Sticks</em> laughs at retreat. <em>The Musician Police</em> laughs at gatekeeping. <em>Level Up</em> turns around and asks the useful question: what are you going to learn next?</p>
           <div class="level-tags"><span>Inspiring</span><span>Primal dubstep</span><span>Adaptation</span><span>5:40</span></div>
           <div class="actions">
-            <a class="btn primary" href="#listen">▶ Play Level Up</a>
+            <a class="btn primary" href="#listen" data-trilogy-track="level">▶ Play Level Up</a>
             <a class="btn" href="#principle">Read the idea ↓</a>
             <a class="btn" href="https://suno.com/s/XHbBz8drN7HVD6IX" target="_blank" rel="noopener">Open on Suno ↗</a>
           </div>
           <div data-share data-share-label="Share the climb" data-share-title="Level Up (Primal Dubstep Mix) — MusicSubject × Call Me Daddy" data-share-text="Learn the tool. Bring the meaning. Grow toward the future instead of asking the future to shrink."></div>
         </div>
 
-        <aside class="level-player" id="listen" aria-label="Level Up audio player">
-          <div class="level-player-art">
-            <img src="/media/songs/2026/08/level-up/cover.jpg" alt="A climber on a volcanic ridge facing a bright summit">
-            <span>FINAL MOVEMENT · 03</span>
-          </div>
-          <div class="level-player-copy"><small>MusicSubject × Call Me Daddy</small><strong>Level Up</strong><span>Primal Dubstep Mix</span></div>
-          <audio id="levelAudio" controls preload="metadata" src="/media/songs/2026/08/level-up/audio.mp3">Your browser does not support audio playback.</audio>
-          <blockquote>“New tool? Learn it.<br>Blank page? Face it.”</blockquote>
-        </aside>
+        <button class="level-player" id="listen" type="button" data-trilogy-track="level" aria-label="Play Level Up">
+          <img class="level-choice-image" src="/media/songs/2026/08/level-up/cover.jpg" alt="A climber on a volcanic ridge facing a bright summit">
+          <span class="level-choice-shade" aria-hidden="true"></span>
+          <span class="level-choice-copy">
+            <span class="level-choice-kicker">Final movement · 03</span>
+            <strong>Level Up</strong>
+            <span class="level-choice-artist">MusicSubject × Call Me Daddy · Primal Dubstep Mix</span>
+            <span class="level-choice-quote">“New tool? Learn it. Blank page? Face it.”</span>
+            <span class="level-choice-cue">▶ Tap artwork to play</span>
+          </span>
+        </button>
       </div>
     </section>
 
@@ -116,41 +118,39 @@
         <div class="trilogy-grid">
           <article class="trilogy-card trilogy-sticks">
             <div class="trilogy-number"><span>01 · Refuse the change</span><span class="trilogy-tone">The mean one</span></div>
-            <a class="trilogy-art" href="/back-to-sticks/"><img src="/media/songs/2026/08/back-to-sticks/cover.jpg" alt="Back to Sticks caveman artwork" loading="lazy"></a>
+            <button class="trilogy-art" type="button" data-trilogy-track="sticks" aria-label="Play Back to Sticks"><img src="/media/songs/2026/08/back-to-sticks/cover.jpg" alt="Back to Sticks caveman artwork" loading="lazy"></button>
             <div class="trilogy-copy"><small>Call Me Daddy</small><h3>Back to Sticks</h3><p>The caveman roast. Mean on purpose, and included for my own personal amusement.</p></div>
-            <audio controls preload="metadata" src="/media/songs/2026/08/back-to-sticks/audio.mp3">Your browser does not support audio playback.</audio>
             <a class="trilogy-link" href="/back-to-sticks/">Open the field guide →</a>
           </article>
 
           <article class="trilogy-card trilogy-police">
             <div class="trilogy-number"><span>02 · Police the change</span><span class="trilogy-tone">The funniest one</span></div>
-            <div class="trilogy-video"><iframe src="https://www.youtube-nocookie.com/embed/7rI2MtnRsaA?rel=0" title="The Musician Police (feat. Call Me Daddy) by MusicSubject" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+            <button class="trilogy-art" type="button" data-trilogy-track="police" aria-label="Play The Musician Police"><img src="/media/songs/2026/07/the-musician-police/cover.jpg" alt="The Musician Police cover artwork" loading="lazy"></button>
             <div class="trilogy-copy"><small>MusicSubject feat. Call Me Daddy</small><h3>The Musician Police</h3><p>The funniest movement: gatekeepers arrive to issue citations for enjoying the wrong process.</p></div>
             <div class="trilogy-platforms"><a href="/the-musician-police/">Open the case file →</a><a href="https://open.spotify.com/track/4rDtnEc8qPOC01HZVnhX67" target="_blank" rel="noopener">Spotify ↗</a></div>
           </article>
 
           <article class="trilogy-card trilogy-level is-current">
             <div class="trilogy-number"><span>03 · Become the change</span><span class="trilogy-tone">The inspiring one</span></div>
-            <a class="trilogy-art" href="/level-up/"><img src="/media/songs/2026/08/level-up/cover.jpg" alt="Level Up volcanic ascent artwork" loading="lazy"></a>
+            <button class="trilogy-art" type="button" data-trilogy-track="level" aria-label="Play Level Up"><img src="/media/songs/2026/08/level-up/cover.jpg" alt="Level Up volcanic ascent artwork" loading="lazy"></button>
             <div class="trilogy-copy"><small>MusicSubject × Call Me Daddy</small><h3>Level Up</h3><p>The answer: learn the tool, keep your meaning and become capable of more.</p></div>
-            <audio controls preload="metadata" src="/media/songs/2026/08/level-up/audio.mp3">Your browser does not support audio playback.</audio>
             <a class="trilogy-link" href="#top">Return to the Level Up story ↑</a>
           </article>
         </div>
-        <p class="trilogy-footnote">The Musician Police plays from its official MusicSubject YouTube release; Back to Sticks and Level Up play directly from this site.</p>
+        <p class="trilogy-footnote">Tap any artwork. The bottom player carries the route from the mean one to the funniest one to the inspiring one. The Musician Police uses its official MusicSubject YouTube release.</p>
       </div>
     </section>
 
     <section class="shell level-finish">
       <div class="finish-mark" aria-hidden="true"><span>03</span></div>
-      <div><div class="kicker">Final instruction</div><h2>THE CLOCK WON’T<br>SLOW DOWN.</h2><p>Level yourself up. Do not level the whole world down.</p><div class="actions"><a class="btn primary" href="#listen">Play Level Up ↑</a><a class="btn" href="https://suno.com/s/XHbBz8drN7HVD6IX" target="_blank" rel="noopener">Level Up on Suno ↗</a><a class="btn" href="/music/">More music →</a></div></div>
+      <div><div class="kicker">Final instruction</div><h2>THE CLOCK WON’T<br>SLOW DOWN.</h2><p>Level yourself up. Do not level the whole world down.</p><div class="actions"><a class="btn primary" href="#listen" data-trilogy-track="level">Play Level Up ↑</a><a class="btn" href="https://suno.com/s/XHbBz8drN7HVD6IX" target="_blank" rel="noopener">Level Up on Suno ↗</a><a class="btn" href="/music/">More music →</a></div></div>
     </section>
   </main>
 
   <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>The path glows. The mountain stays.</span></div></footer>
   <script src="/share.js"></script>
-  <script src="/new-tools-trilogy.js?v=20260818-1"></script>
-  <script src="/level-up/level-up.js?v=20260818-1"></script>
+  <script src="/new-tools-trilogy.js?v=20260818-2"></script>
+  <script src="/level-up/level-up.js?v=20260818-2"></script>
   <script src="/motion.js"></script>
 </body>
 </html>
