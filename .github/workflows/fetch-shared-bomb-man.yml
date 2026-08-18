@@ -1,0 +1,48 @@
+name: Temporary shared Bomb Man source fetch
+on:
+  push:
+    paths-ignore:
+      - '.tmp/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch ChatGPT shared conversation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .tmp
+          python -m pip install --quiet curl-cffi
+          python - <<'PY'
+          from curl_cffi import requests
+          import json, os
+          url='https://chatgpt.com/backend-api/share/6a844445-5558-83e8-a713-1e79f6eedd30'
+          r=requests.get(url, impersonate='chrome', timeout=45)
+          print('status', r.status_code)
+          r.raise_for_status()
+          data=r.json()
+          with open('.tmp/chatgpt-share.json','w',encoding='utf-8') as f:
+              json.dump(data,f,ensure_ascii=False,indent=2)
+          print('title:', data.get('title'))
+          print('messages:', len(data.get('linear_conversation') or []))
+          print('bytes:', os.path.getsize('.tmp/chatgpt-share.json'))
+          PY
+      - name: Commit fetched share
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .tmp/chatgpt-share.json
+          git commit -m 'Temporary: fetch shared Bomb Man conversation' || exit 0
+          git push
