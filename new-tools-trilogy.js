@@ -40,7 +40,7 @@
       <div class="trilogy-now">
         <div class="trilogy-player-cover" aria-hidden="true">
           <img id="trilogyNowCover" alt="">
-          <iframe id="trilogyYoutube" title="The Musician Police audio source" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
+          <div id="trilogyYoutube"></div>
         </div>
         <div class="trilogy-player-meta">
           <small id="trilogyNowLabel">Tap a song image</small>
@@ -58,7 +58,7 @@
   document.body.appendChild(dock);
 
   const audio=document.getElementById('trilogyAudio');
-  const frame=document.getElementById('trilogyYoutube');
+  const youtubeMount=document.getElementById('trilogyYoutube');
   const cover=document.getElementById('trilogyNowCover');
   const label=document.getElementById('trilogyNowLabel');
   const title=document.getElementById('trilogyNowTitle');
@@ -71,7 +71,9 @@
 
   let currentKey='';
   let wantsPlay=false;
-  let youtubeLoaded=false;
+  let youtubePlayer=null;
+  let youtubeReady=false;
+  let youtubeRequested=false;
   let youtubeState=-1;
   let youtubeTime=0;
   let youtubeDuration=0;
@@ -86,14 +88,66 @@
     emitState(playing);
   }
 
-  function ytCommand(func,args=[]){
-    if(!frame.contentWindow)return;
-    frame.contentWindow.postMessage(JSON.stringify({event:'command',func,args}),'*');
+  function handleYoutubeState(state){
+    youtubeState=Number(state);
+    if(currentKey!=='police')return;
+    if(youtubeState===1)setPlaying(true);
+    else if(youtubeState===2)setPlaying(false);
+    else if(youtubeState===0)advance();
+  }
+
+  function createYoutubePlayer(){
+    if(youtubePlayer||!window.YT?.Player)return;
+    youtubePlayer=new window.YT.Player(youtubeMount,{
+      width:'200',
+      height:'200',
+      videoId:tracks.police.youtubeId,
+      playerVars:{autoplay:0,controls:0,playsinline:1,rel:0,origin:location.origin},
+      events:{
+        onReady:event=>{
+          youtubeReady=true;
+          youtubeDuration=Number(event.target.getDuration())||0;
+          if(currentKey==='police'&&wantsPlay){
+            status.textContent='Starting official release…';
+            event.target.playVideo();
+          }
+        },
+        onStateChange:event=>handleYoutubeState(event.data),
+        onError:()=>{
+          if(currentKey!=='police')return;
+          wantsPlay=false;
+          setPlaying(false,'Official player unavailable · open song page');
+        }
+      }
+    });
+  }
+
+  function ensureYoutube(){
+    if(youtubePlayer)return;
+    if(window.YT?.Player){createYoutubePlayer();return;}
+    if(youtubeRequested)return;
+    youtubeRequested=true;
+
+    const previousReady=window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady=()=>{
+      if(typeof previousReady==='function')previousReady();
+      createYoutubePlayer();
+    };
+
+    const script=document.createElement('script');
+    script.src='https://www.youtube.com/iframe_api';
+    script.async=true;
+    script.addEventListener('error',()=>{
+      if(currentKey==='police')setPlaying(false,'Official player unavailable · open song page');
+    });
+    document.head.appendChild(script);
   }
 
   function pauseYoutube(){
     wantsPlay=false;
-    ytCommand('pauseVideo');
+    if(youtubeReady){
+      try{youtubePlayer.pauseVideo();}catch(_){ }
+    }
   }
 
   function showDock(){
@@ -135,8 +189,11 @@
 
   function playYoutube(){
     wantsPlay=true;
-    status.textContent=youtubeLoaded?'Starting official release…':'Loading official release…';
-    if(youtubeLoaded)ytCommand('playVideo');
+    ensureYoutube();
+    status.textContent=youtubeReady?'Starting official release…':'Loading official release…';
+    if(youtubeReady){
+      try{youtubePlayer.playVideo();}catch(_){ }
+    }
   }
 
   function selectTrack(key,autoplay=true){
@@ -237,49 +294,23 @@
     const rect=timeline.getBoundingClientRect();
     const ratio=Math.max(0,Math.min(1,(event.clientX-rect.left)/rect.width));
     if(tracks[currentKey].src&&Number.isFinite(audio.duration))audio.currentTime=ratio*audio.duration;
-    else if(youtubeDuration)ytCommand('seekTo',[ratio*youtubeDuration,true]);
+    else if(youtubeDuration&&youtubeReady){
+      try{youtubePlayer.seekTo(ratio*youtubeDuration,true);}catch(_){ }
+    }
   });
 
-  frame.addEventListener('load',()=>{
-    youtubeLoaded=true;
-    frame.contentWindow?.postMessage(JSON.stringify({event:'listening',id:'newToolsTrilogy'}),'*');
-    ytCommand('addEventListener',['onStateChange']);
-    if(currentKey==='police'&&wantsPlay)ytCommand('playVideo');
-  });
-
-  window.addEventListener('message',event=>{
-    let host='';
-    try{host=new URL(event.origin).hostname;}catch(_){return;}
-    if(!/youtube(?:-nocookie)?\.com$/.test(host))return;
-    let data=event.data;
-    if(typeof data==='string'){
-      try{data=JSON.parse(data);}catch(_){return;}
-    }
-    if(!data||typeof data!=='object')return;
-
-    if(data.event==='onReady'){
-      youtubeLoaded=true;
-      if(currentKey==='police'&&wantsPlay)ytCommand('playVideo');
-    }
-
-    if(data.event==='onStateChange')youtubeState=Number(data.info);
-    if(data.event==='infoDelivery'&&data.info){
-      if(Number.isFinite(data.info.currentTime))youtubeTime=data.info.currentTime;
-      if(Number.isFinite(data.info.duration))youtubeDuration=data.info.duration;
-      if(Number.isFinite(data.info.playerState))youtubeState=data.info.playerState;
-      if(currentKey==='police'&&youtubeDuration)progress.style.width=`${youtubeTime/youtubeDuration*100}%`;
-    }
-
-    if(currentKey!=='police')return;
-    if(youtubeState===1){setPlaying(true);}
-    else if(youtubeState===2){setPlaying(false);}
-    else if(youtubeState===0){advance();}
-  });
+  window.setInterval(()=>{
+    if(currentKey!=='police'||!youtubeReady)return;
+    try{
+      youtubeTime=Number(youtubePlayer.getCurrentTime())||0;
+      youtubeDuration=Number(youtubePlayer.getDuration())||youtubeDuration;
+      if(youtubeDuration)progress.style.width=`${youtubeTime/youtubeDuration*100}%`;
+    }catch(_){ }
+  },500);
 
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden&&currentKey==='police'&&youtubeState===1)pauseYoutube();
   });
 
-  const origin=encodeURIComponent(location.origin);
-  frame.src=`https://www.youtube-nocookie.com/embed/${tracks.police.youtubeId}?enablejsapi=1&origin=${origin}&playsinline=1&controls=0&rel=0`;
+  ensureYoutube();
 })();

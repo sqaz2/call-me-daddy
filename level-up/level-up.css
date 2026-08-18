@@ -178,14 +178,15 @@
   border-radius: 999px;
   background: rgba(8, 10, 11, .66);
   color: #f5dfb7;
-  font-size: .59rem;
+  font-size: 0;
   font-weight: 900;
   letter-spacing: .1em;
   text-transform: uppercase;
   backdrop-filter: blur(10px);
 }
 
-.level-player.is-selected .level-choice-cue::first-letter { color: var(--level-gold); }
+.level-choice-cue::after { content: "▶ Tap artwork to play"; font-size: .59rem; }
+.level-player.is-selected .level-choice-cue::after { content: "♪ Playing in the bottom player"; }
 
 .level-principle { padding: 105px 0 108px; scroll-margin-top: 76px; }
 .principle-head { display: grid; grid-template-columns: 1fr .72fr; gap: 48px; align-items: end; margin-bottom: 34px; }

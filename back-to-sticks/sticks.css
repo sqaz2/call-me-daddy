@@ -283,11 +283,14 @@
   padding-top: 10px;
   border-top: 1px solid rgba(255, 255, 255, .11);
   color: #d6edba;
-  font-size: .62rem;
+  font-size: 0;
   font-weight: 900;
   letter-spacing: .11em;
   text-transform: uppercase;
 }
+
+.stone-tap::after { content: "▶ Tap artwork to play · controls open below"; font-size: .62rem; }
+.stone-player.is-selected .stone-tap::after { content: "♪ Playing in the bottom player"; }
 
 .sticks-story { padding: 96px 0 102px; }
 
