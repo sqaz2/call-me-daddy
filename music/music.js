@@ -1,10 +1,13 @@
 (()=>{
   const songs=Array.isArray(window.CMD_SONGS)?window.CMD_SONGS:[];
+  const playableSongs=songs.filter(song=>song?.audio);
   const grid=document.getElementById('songGrid');
   const count=document.getElementById('catalogCount');
   const player=document.getElementById('catalogPlayer');
   const audio=document.getElementById('catalogAudio');
   const play=document.getElementById('catalogPlay');
+  const prev=document.getElementById('catalogPrev');
+  const next=document.getElementById('catalogNext');
   const title=document.getElementById('playerTitle');
   const label=document.getElementById('playerLabel');
   const status=document.getElementById('playerStatus');
@@ -13,7 +16,7 @@
   const bar=document.getElementById('catalogProgressBar');
   let current=null;
 
-  count.textContent=`${songs.length} ${songs.length===1?'track':'tracks'}`;
+  count.textContent=`${songs.length} ${songs.length===1?'track':'tracks'} · ${playableSongs.length} in continuous player`;
 
   if(!songs.length){
     grid.innerHTML='<p class="catalog-empty">No tracks have been added yet.</p>';
@@ -21,6 +24,24 @@
   }
 
   const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  const playableIndex=()=>Math.max(0,playableSongs.findIndex(song=>song.id===current?.id));
+
+  function updateMediaSession(){
+    if(!current||!('mediaSession' in navigator))return;
+    try{
+      navigator.mediaSession.metadata=new MediaMetadata({
+        title:current.title||'Call Me Daddy',
+        artist:current.artist||'Call Me Daddy',
+        album:current.project||'MusicSubject × Call Me Daddy',
+        artwork:current.cover?[{src:new URL(current.cover,location.href).href}]:[]
+      });
+    }catch{}
+  }
+
+  function statusText(prefix='Playing'){
+    if(!current||!playableSongs.length)return prefix;
+    return `${prefix} · ${playableIndex()+1} of ${playableSongs.length} · continuous`;
+  }
 
   async function hydrateYoutubeCard(song,card){
     if(!song.youtubeUrl)return;
@@ -88,43 +109,100 @@
     });
   }
 
-  function selectSong(song){
+  function loadSong(song,autoplay=true){
     if(!song?.audio)return;
-    if(current?.id===song.id){
-      if(audio.paused)audio.play().catch(()=>{});else audio.pause();
-      return;
-    }
-
     current=song;
     audio.src=song.audio;
     title.textContent=song.title;
     label.textContent=[song.artist,song.project].filter(Boolean).join(' · ');
-    status.textContent='Loading…';
+    status.textContent=autoplay?statusText('Loading'):statusText('Ready');
     cover.src=song.cover||'';
     cover.alt=`${song.title} cover`;
     cover.onerror=()=>{cover.removeAttribute('src');cover.alt='';};
     bar.style.width='0%';
     player.hidden=false;
     setActiveCard(current.id);
-    audio.play().catch(()=>{
-      status.textContent='Tap play to start';
-      play.textContent='▶';
-      setActiveCard(current.id);
-    });
+    updateMediaSession();
+
+    if(autoplay){
+      audio.play().catch(()=>{
+        status.textContent=statusText('Tap play to start');
+        play.textContent='▶';
+        setActiveCard(current.id);
+      });
+    }
+  }
+
+  function selectSong(song){
+    if(!song?.audio)return;
+    if(current?.id===song.id){
+      if(audio.paused)audio.play().catch(()=>{});else audio.pause();
+      return;
+    }
+    loadSong(song,true);
+  }
+
+  function step(delta){
+    if(!playableSongs.length)return;
+    if(!current){loadSong(playableSongs[0],true);return;}
+    const index=playableIndex();
+    const target=(index+delta+playableSongs.length)%playableSongs.length;
+    loadSong(playableSongs[target],true);
+  }
+
+  function previous(){
+    if(!current){step(-1);return;}
+    if(audio.currentTime>5){
+      audio.currentTime=0;
+      if(audio.paused)audio.play().catch(()=>{});
+      return;
+    }
+    step(-1);
   }
 
   play.addEventListener('click',()=>{
-    if(!current)return;
+    if(!current){
+      if(playableSongs.length)loadSong(playableSongs[0],true);
+      return;
+    }
     if(audio.paused)audio.play().catch(()=>{});else audio.pause();
   });
+  prev?.addEventListener('click',previous);
+  next?.addEventListener('click',()=>step(1));
 
-  audio.addEventListener('play',()=>{play.textContent='❚❚';play.setAttribute('aria-label','Pause');status.textContent='Playing';setActiveCard(current?.id)});
-  audio.addEventListener('pause',()=>{play.textContent='▶';play.setAttribute('aria-label','Play');if(current&&!audio.ended)status.textContent='Paused';setActiveCard(current?.id)});
-  audio.addEventListener('waiting',()=>{if(current)status.textContent='Buffering…'});
-  audio.addEventListener('canplay',()=>{if(current&&audio.paused&&!audio.ended){status.textContent='Ready';setActiveCard(current.id)}});
-  audio.addEventListener('ended',()=>{play.textContent='▶';play.setAttribute('aria-label','Play');status.textContent='Finished';bar.style.width='100%';setActiveCard(current?.id)});
-  audio.addEventListener('error',()=>{status.textContent='This audio file could not be loaded.';play.textContent='▶';play.setAttribute('aria-label','Play');setActiveCard(current?.id)});
-  audio.addEventListener('timeupdate',()=>{if(audio.duration)bar.style.width=`${(audio.currentTime/audio.duration)*100}%`});
+  audio.addEventListener('play',()=>{
+    play.textContent='❚❚';
+    play.setAttribute('aria-label','Pause');
+    status.textContent=statusText('Playing');
+    setActiveCard(current?.id);
+    if('mediaSession' in navigator)navigator.mediaSession.playbackState='playing';
+  });
+  audio.addEventListener('pause',()=>{
+    play.textContent='▶';
+    play.setAttribute('aria-label','Play');
+    if(current&&!audio.ended)status.textContent=statusText('Paused');
+    setActiveCard(current?.id);
+    if('mediaSession' in navigator)navigator.mediaSession.playbackState='paused';
+  });
+  audio.addEventListener('waiting',()=>{if(current)status.textContent=statusText('Buffering')});
+  audio.addEventListener('canplay',()=>{if(current&&audio.paused&&!audio.ended){status.textContent=statusText('Ready');setActiveCard(current.id)}});
+  audio.addEventListener('ended',()=>{
+    bar.style.width='100%';
+    if(playableSongs.length)step(1);
+  });
+  audio.addEventListener('error',()=>{
+    status.textContent='This audio file could not be loaded. Skipping…';
+    play.textContent='▶';
+    play.setAttribute('aria-label','Play');
+    setActiveCard(current?.id);
+    window.setTimeout(()=>step(1),700);
+  });
+  audio.addEventListener('timeupdate',()=>{
+    if(audio.duration)bar.style.width=`${(audio.currentTime/audio.duration)*100}%`;
+    if('mediaSession' in navigator&&audio.duration&&Number.isFinite(audio.duration)){
+      try{navigator.mediaSession.setPositionState({duration:audio.duration,playbackRate:audio.playbackRate,position:Math.min(audio.currentTime,audio.duration)})}catch{}
+    }
+  });
 
   progress.addEventListener('click',e=>{
     if(!audio.duration)return;
@@ -132,4 +210,15 @@
     const ratio=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
     audio.currentTime=ratio*audio.duration;
   });
+
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.setActionHandler('play',()=>audio.play().catch(()=>{}));
+      navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
+      navigator.mediaSession.setActionHandler('previoustrack',previous);
+      navigator.mediaSession.setActionHandler('nexttrack',()=>step(1));
+      navigator.mediaSession.setActionHandler('seekbackward',details=>{audio.currentTime=Math.max(0,audio.currentTime-(details.seekOffset||10))});
+      navigator.mediaSession.setActionHandler('seekforward',details=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(details.seekOffset||10))});
+    }catch{}
+  }
 })();
