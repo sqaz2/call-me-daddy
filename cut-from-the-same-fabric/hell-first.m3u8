@@ -1,0 +1,12 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-TARGETDURATION:224
+#EXT-X-MEDIA-SEQUENCE:0
+#EXTINF:223.752,HELL HAS PEOPLE TOO
+/media/songs/2026/08/hell-has-people-too/audio.mp3
+#EXTINF:186.576,Cut From the Same Fabric — Instrumental
+/media/songs/2026/08/cut-from-the-same-fabric-instrumental/audio.mp3
+#EXTINF:149.760,Find Your People
+/media/songs/2026/08/find-your-people/audio.mp3
+#EXT-X-ENDLIST
