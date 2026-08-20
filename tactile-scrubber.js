@@ -51,7 +51,6 @@
       wheel.setAttribute('aria-valuetext',duration>0?`${fmt(time)} of ${fmt(duration)}`:'Loading duration');
       wheel.setAttribute('aria-disabled',duration>0?'false':'true');
       timeText.textContent=duration>0?`${fmt(time)} / ${fmt(duration)}`:'0:00 / --:--';
-      requestAnimationFrame(render);
     };
 
     const angle=e=>{
@@ -91,6 +90,7 @@
       const target=clamp(startTime+(accumulated/(Math.PI*2))*duration,0,duration);
       seek(target);
       haptic(target/duration);
+      render();
       e.preventDefault();
     });
 
@@ -101,6 +101,7 @@
       try{if(pointerId!==null)wheel.releasePointerCapture(pointerId)}catch{}
       pointerId=null;
       accumulated=0;
+      render();
     };
     wheel.addEventListener('pointerup',finish);
     wheel.addEventListener('pointercancel',finish);
@@ -120,10 +121,12 @@
       else return;
       e.preventDefault();
       seek(clamp(target,0,duration));
+      render();
     });
 
-    requestAnimationFrame(render);
-    return {wheel,destroy(){destroyed=true;mount.innerHTML='';}};
+    render();
+    const timer=window.setInterval(render,200);
+    return {wheel,destroy(){destroyed=true;window.clearInterval(timer);mount.innerHTML='';}};
   }
 
   window.CMDTactileScrubber={create};
