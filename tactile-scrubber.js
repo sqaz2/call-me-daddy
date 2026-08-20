@@ -24,8 +24,27 @@
     const label=options.label||'DRAG TO SCRUB';
     const detail=options.detail||'ONE TURN = WHOLE SONG';
     const haptics=options.haptics!==false;
+    const host=mount.parentElement;
 
-    mount.innerHTML=`<div class="tactile-wheel" role="slider" tabindex="0" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-disabled="true"><div class="tactile-wheel-face"><span class="tactile-wheel-kicker">${label}</span><strong class="tactile-wheel-time">0:00 / --:--</strong><span class="tactile-wheel-detail">${detail}</span></div></div>`;
+    mount.innerHTML=`
+      <button class="tactile-open" type="button" aria-expanded="false" aria-label="Open large tactile scrubber">◉ SCRUB</button>
+      <div class="tactile-panel" hidden>
+        <div class="tactile-panel-head">
+          <span>TACTILE SEEK</span>
+          <button class="tactile-close" type="button" aria-label="Close tactile scrubber">DONE ×</button>
+        </div>
+        <div class="tactile-wheel" role="slider" tabindex="0" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-disabled="true">
+          <div class="tactile-wheel-face">
+            <span class="tactile-wheel-kicker">${label}</span>
+            <strong class="tactile-wheel-time">0:00 / --:--</strong>
+            <span class="tactile-wheel-detail">${detail}</span>
+          </div>
+        </div>
+      </div>`;
+
+    const openBtn=mount.querySelector('.tactile-open');
+    const panel=mount.querySelector('.tactile-panel');
+    const closeBtn=mount.querySelector('.tactile-close');
     const wheel=mount.querySelector('.tactile-wheel');
     const timeText=mount.querySelector('.tactile-wheel-time');
     let dragging=false;
@@ -35,12 +54,36 @@
     let startTime=0;
     let lastHaptic=-1;
     let destroyed=false;
+    let isOpen=false;
 
     const state=()=>{
       const duration=Number(getDuration())||0;
       const time=Number(getTime())||0;
-      return {duration:Number.isFinite(duration)?Math.max(0,duration):0,time:Number.isFinite(time)?Math.max(0,time):0};
+      return {
+        duration:Number.isFinite(duration)?Math.max(0,duration):0,
+        time:Number.isFinite(time)?Math.max(0,time):0
+      };
     };
+
+    const setOpen=value=>{
+      const {duration}=state();
+      if(value&&!duration)return;
+      isOpen=Boolean(value);
+      mount.classList.toggle('is-open',isOpen);
+      host?.classList.toggle('tactile-mode',isOpen);
+      panel.hidden=!isOpen;
+      openBtn.hidden=isOpen;
+      openBtn.setAttribute('aria-expanded',isOpen?'true':'false');
+      document.body.classList.toggle('tactile-scrub-active',isOpen);
+      if(isOpen){
+        document.dispatchEvent(new CustomEvent('cmd:tactile-open',{detail:{mount}}));
+        requestAnimationFrame(()=>wheel.focus({preventScroll:true}));
+      }
+    };
+
+    document.addEventListener('cmd:tactile-open',event=>{
+      if(event.detail?.mount!==mount&&isOpen)setOpen(false);
+    });
 
     const render=()=>{
       if(destroyed)return;
@@ -51,6 +94,9 @@
       wheel.setAttribute('aria-valuetext',duration>0?`${fmt(time)} of ${fmt(duration)}`:'Loading duration');
       wheel.setAttribute('aria-disabled',duration>0?'false':'true');
       timeText.textContent=duration>0?`${fmt(time)} / ${fmt(duration)}`:'0:00 / --:--';
+      openBtn.disabled=!duration;
+      openBtn.setAttribute('aria-label',duration?'Open large tactile scrubber':'Scrubber available when audio is ready');
+      if(isOpen&&!duration)setOpen(false);
     };
 
     const angle=e=>{
@@ -65,6 +111,12 @@
       lastHaptic=tick;
       try{navigator.vibrate(5)}catch{}
     };
+
+    openBtn.addEventListener('click',()=>setOpen(true));
+    closeBtn.addEventListener('click',()=>{
+      setOpen(false);
+      requestAnimationFrame(()=>openBtn.focus({preventScroll:true}));
+    });
 
     wheel.addEventListener('pointerdown',e=>{
       const {duration,time}=state();
@@ -108,6 +160,12 @@
     wheel.addEventListener('lostpointercapture',()=>finish());
 
     wheel.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){
+        e.preventDefault();
+        setOpen(false);
+        openBtn.focus({preventScroll:true});
+        return;
+      }
       const {duration,time}=state();
       if(!duration)return;
       let target=time;
@@ -126,7 +184,17 @@
 
     render();
     const timer=window.setInterval(render,200);
-    return {wheel,destroy(){destroyed=true;window.clearInterval(timer);mount.innerHTML='';}};
+    return {
+      wheel,
+      open:()=>setOpen(true),
+      close:()=>setOpen(false),
+      destroy(){
+        destroyed=true;
+        window.clearInterval(timer);
+        if(isOpen)setOpen(false);
+        mount.innerHTML='';
+      }
+    };
   }
 
   window.CMDTactileScrubber={create};
