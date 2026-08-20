@@ -98,7 +98,6 @@ Historical material belongs under:
   crocodile-shoes/
     archive/
       round-the-bend-roughcopy.mp3
-      crocodile-shoes.mp3
     2026/
       late-night-warehouse-dub-remix.mp3
       2015-special-2026-remix.mp3
@@ -110,8 +109,6 @@ Historical material belongs under:
       heavyweight-dubstep-mix.mp3
       vocal-fix-cut.mp3
 ```
-
-The two Crocodile Shoes upload names `Crocodile Shoes.mp3` and `Crocodile Shoes 2015 special 2026 remix .mp3` currently point to the same Git blob. Both names are preserved in the archive structure, but the public story should not present them as two different recordings unless a genuinely different source file is supplied later.
 
 ## Content rules
 
