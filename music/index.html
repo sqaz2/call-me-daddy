@@ -18,6 +18,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/music/music.css?v=20260820-2">
+  <link rel="stylesheet" href="/tactile-scrubber.css?v=20260820-1">
 </head>
 <body class="music-page">
   <header class="topbar">
@@ -37,7 +38,7 @@
       <a class="back" href="/">← Call Me Daddy</a>
       <div class="eyebrow">The catalog starts here</div>
       <h1>MUSIC</h1>
-      <p class="lede">Tap any playable artwork once and the catalog becomes a continuous playlist. Songs roll into the next track automatically, and the bottom player gives you previous, play/pause, next and seeking while you browse.</p>
+      <p class="lede">Tap any playable artwork once and the catalog becomes a continuous playlist. Songs roll into the next track automatically. The giant scrub wheel is intentionally thumb-sized: drag around it to scan through the song without trying to hit a tiny timeline.</p>
       <div class="actions">
         <a class="btn primary" href="https://suno.com/@callmedaddy" target="_blank" rel="noopener">Call Me Daddy on Suno ↗</a>
         <a class="btn" href="https://youtube.com/@themusicsubject" target="_blank" rel="noopener">YouTube ↗</a>
@@ -60,6 +61,7 @@
 
   <div class="catalog-player" id="catalogPlayer" hidden>
     <audio id="catalogAudio" preload="metadata"></audio>
+    <div id="catalogTactile" class="tactile-scrubber-shell" aria-label="Large tactile song scrubber"></div>
     <div class="catalog-player-inner shell">
       <img id="playerCover" class="player-cover" alt="">
       <div class="player-copy">
@@ -79,7 +81,8 @@
   <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Music first. Then whatever happens next.</span></div></footer>
 
   <script src="/data/songs.js?v=20260818-1"></script>
-  <script src="/music/music.js?v=20260820-2"></script>
+  <script src="/tactile-scrubber.js?v=20260820-1"></script>
+  <script src="/music/music.js?v=20260820-3"></script>
   <script src="/motion.js"></script>
 </body>
 </html>
