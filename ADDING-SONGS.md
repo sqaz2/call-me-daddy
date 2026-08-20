@@ -53,7 +53,7 @@ Add one object to `/data/songs.js`:
 
 ## YouTube-only songs
 
-A song does not need to be re-uploaded as an MP3 if it already lives on YouTube. Add `youtubeId` and `youtubeUrl`, leave `audio` empty, use the YouTube thumbnail as `cover`, and point `experience` to a dedicated `/youtube/VIDEO_ID/` page. The catalog will show **Watch** instead of trying to use the MP3 player. YouTube pages use the privacy-enhanced embed and attempt to pull the public title/channel through YouTube oEmbed at runtime.
+A song does not need to be re-uploaded as an MP3 if it already lives on YouTube. Add `youtubeId` and `youtubeUrl`, leave `audio` empty, use the YouTube thumbnail as `cover`, and point `experience` to a dedicated `/youtube/VIDEO_ID/` page. In the catalog, local-audio artwork starts the custom bottom player; artwork for a YouTube-only release opens its song page instead. YouTube pages use the privacy-enhanced embed and attempt to pull the public title/channel through YouTube oEmbed at runtime.
 
 ## Every song page gets sharing
 
@@ -84,4 +84,4 @@ The component uses the page canonical URL and Open Graph metadata by default, so
 
 When songs are supplied through ChatGPT, the intended workflow is to place them in the correct dated folder (or create the YouTube-backed entry), update `/data/songs.js`, create/update the dedicated release page when appropriate, include sharing, and update the sitemap; you should not need to manually reorganize files afterward.
 
-The catalog player includes missing-image and missing-audio fallbacks so one bad asset does not break the whole page.
+The catalog player includes missing-image and missing-audio fallbacks so one bad asset does not break the whole page. Keep the interaction artwork-first: the image starts playback and the bottom dock handles play/pause and seeking rather than exposing a native audio control bar inside each card.
