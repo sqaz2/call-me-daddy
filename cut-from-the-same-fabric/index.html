@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="/share.css">
   <link rel="stylesheet" href="/cut-from-the-same-fabric/choice-art.css?v=20260817-2">
   <link rel="stylesheet" href="/cut-from-the-same-fabric/echo.css?v=20260817-2">
+  <link rel="stylesheet" href="/tactile-scrubber.css?v=20260820-1">
 </head>
 <body class="fabric-page">
   <header class="topbar">
@@ -53,7 +54,7 @@
     <section class="project-shell section" id="choose">
       <div class="section-head">
         <div><div class="eyebrow">Pick a side</div><h2>WHICH ONE<br>GOES FIRST?</h2></div>
-        <p class="section-copy">Start with either song. On phones the three-track route is prepared as one continuous audio session, so the instrumental and the other version can keep going even when the screen is locked.</p>
+        <p class="section-copy">Start with either song. On phones the three-track route is prepared as one continuous audio session, so the instrumental and the other version can keep going even when the screen is locked. Drag the big wheel to scan through what is playing without hunting for a tiny progress bar.</p>
       </div>
 
       <div class="choice-grid choice-art-grid">
@@ -88,6 +89,7 @@
 
       <div class="player">
         <audio id="audio" preload="metadata"></audio>
+        <div id="fabricTactile" class="tactile-scrubber-shell" aria-label="Large tactile song scrubber"></div>
         <div class="now">
           <div class="disc" aria-hidden="true"></div>
           <div class="trackmeta"><small id="nowLabel">Pick a starting side</small><strong id="nowTitle">Cut From the Same Fabric</strong></div>
@@ -135,7 +137,8 @@
   </main>
 
   <script src="/share.js"></script>
-  <script src="/cut-from-the-same-fabric/player.js?v=20260820-1"></script>
+  <script src="/tactile-scrubber.js?v=20260820-1"></script>
+  <script src="/cut-from-the-same-fabric/player.js?v=20260820-2"></script>
   <script src="/motion.js?v=20260817-2"></script>
   <script src="/cut-from-the-same-fabric/easter-egg.js?v=20260817-2"></script>
 </body>
