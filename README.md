@@ -19,7 +19,11 @@ See `SITE-MAP.md` for the full information architecture and archive/media map.
 
 ## Player rule
 
-The preferred interaction is artwork-first: tap the image to start the music, then use the custom player dock at the bottom. Avoid dropping visible native browser players or generic embedded streaming bars into release pages when the custom experience can control playback instead.
+The preferred interaction is artwork-first: tap the image to start the music, then use the custom player dock. Avoid dropping visible native browser players or generic embedded streaming bars into release pages when the custom experience can control playback instead.
+
+For touch devices, seeking is deliberately tactile rather than precision-pointer dependent. `tactile-scrubber.css` and `tactile-scrubber.js` provide a large circular jog wheel: one full rotation scans the full current audio duration, keyboard seeking remains available, and supported Android browsers get small haptic ticks while dragging.
+
+Player controls must not hug the physical screen edges. Fixed docks use the device safe-area insets plus an additional gesture gutter so Android/iPhone back gestures, browser edge swipes and the bottom home gesture are less likely to be triggered accidentally. We cannot override OS-level navigation gestures, so the design solves this by keeping interactive controls away from those zones.
 
 The main catalog follows the same rule used by the special release pages: artwork starts or pauses local audio, while external-only releases open from the artwork and retain their platform links.
 
