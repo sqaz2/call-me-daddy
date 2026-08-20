@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/old-files-new-tools/story.css?v=20260820-2">
+  <link rel="stylesheet" href="/tactile-scrubber.css?v=20260820-1">
 </head>
 <body class="oft-page">
   <header class="topbar">
@@ -155,6 +156,7 @@
 
   <div class="oft-player" id="oftPlayer" hidden>
     <audio id="oftAudio" preload="metadata"></audio>
+    <div id="oftTactile" class="tactile-scrubber-shell" aria-label="Large tactile song scrubber"></div>
     <div class="project-shell oft-player-inner">
       <div class="player-reel" aria-hidden="true"></div>
       <div class="player-copy"><small id="oftEra">Archive</small><strong id="oftTitle">Choose a recording</strong><span id="oftStatus"></span></div>
@@ -164,7 +166,8 @@
   </div>
 
   <footer class="footer"><div class="project-shell footer-inner"><span>Old Files / New Tools · MusicSubject</span><span>The archive stays. No promises about the archive sounding good.</span></div></footer>
-  <script src="/old-files-new-tools/player.js?v=20260820-1"></script>
+  <script src="/tactile-scrubber.js?v=20260820-1"></script>
+  <script src="/old-files-new-tools/player.js?v=20260820-2"></script>
   <script src="/motion.js"></script>
 </body>
 </html>
