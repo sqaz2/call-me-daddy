@@ -1,0 +1,128 @@
+# Site Map — MusicSubject × Call Me Daddy
+
+This is the working information architecture for `callmedaddy.musicsubject.com`.
+
+The site has three jobs:
+
+1. **Play the music** without forcing visitors out to a streaming service.
+2. **Give important releases their own story / experience** when a normal song card is not enough.
+3. **Preserve the history** so old recordings, aliases and source material have context instead of being mixed randomly into the current catalog.
+
+## Public route map
+
+### Front door
+
+- `/` — **Call Me Daddy × MusicSubject home**
+  - newest releases
+  - featured interactive projects
+  - routes into the current catalog
+  - routes into the historical / explicit archives
+  - external platform links
+
+### Listen
+
+- `/music/` — **main current music catalog**
+  - artwork-first playback
+  - continuous local-audio playlist
+  - previous / next controls
+  - platform links for releases that live elsewhere
+  - this is the default place to listen when a track does not need a special story page
+
+### Current release / project experiences
+
+- `/level-up/` — Level Up / New Tools Trilogy finale
+- `/back-to-sticks/` — Back to Sticks
+- `/the-musician-police/` — The Musician Police
+- `/cut-from-the-same-fabric/` — interactive three-track release; listener chooses which side starts
+- `/funhouse-meltdown/` — voice-to-song experiment
+- `/namaste-hamster/` — Namaste, Hamster release page
+- `/youtube/W47ebCMfrBI/` — YouTube-backed release page
+
+These pages are for songs where the **idea around the song** is part of the release.
+
+## History / archive branch
+
+### `/old-files-new-tools/`
+
+**MusicSubject personal recording history → modern reworks.**
+
+Current song families:
+
+- **nuRide Away** — oldest recording in this project
+  - archive source: old vocals
+  - 2026: Heavyweight Dubstep Mix
+  - 2026: Vocal Fix Cut
+- **Crocodile Shoes**
+  - archive source: `round the bend roughcopy`
+  - later song identity: Crocodile Shoes
+  - 2026: Late-Night Warehouse Dub Remix
+  - 2026: 2015 Special / 2026 Remix
+
+This branch should remain separate from the ordinary catalog because the **before / after relationship is the content**.
+
+### `/sqaz/`
+
+**Explicit archive / earlier identity.**
+
+Current anchor:
+
+- Sqaz — **Kill You**
+  - writing roots at age 13–14
+  - 2007 recording at age 17
+  - 2010 music-business / home-recording education
+  - 2026 remix and retrospective reading
+
+Sqaz should not be silently mixed into the Call Me Daddy playlist. A visitor should be able to deliberately find it, read the context, then listen.
+
+## Recommended historical path through the site
+
+For somebody intentionally exploring the history:
+
+`/sqaz/` → `/old-files-new-tools/` → `/music/`
+
+That creates a rough chronological movement from the earlier writing / rap era, through the home-studio and surviving old recordings, into the current MusicSubject / Call Me Daddy catalog.
+
+## Media organization
+
+Current release assets continue to live under dated paths such as:
+
+```text
+/media/songs/YYYY/MM/song-slug/
+/media/projects/YYYY/MM/project-slug/
+```
+
+Historical material belongs under:
+
+```text
+/media/archive/old-files-new-tools/
+  crocodile-shoes/
+    archive/
+      round-the-bend-roughcopy.mp3
+      crocodile-shoes.mp3
+    2026/
+      late-night-warehouse-dub-remix.mp3
+      2015-special-2026-remix.mp3
+
+  nuride-away/
+    archive/
+      vocals.mp3
+    2026/
+      heavyweight-dubstep-mix.mp3
+      vocal-fix-cut.mp3
+```
+
+The two Crocodile Shoes upload names `Crocodile Shoes.mp3` and `Crocodile Shoes 2015 special 2026 remix .mp3` currently point to the same Git blob. Both names are preserved in the archive structure, but the public story should not present them as two different recordings unless a genuinely different source file is supplied later.
+
+## Content rules
+
+- **Current catalog:** clean listening experience first.
+- **Project pages:** explain or dramatize the idea around the song.
+- **Old Files / New Tools:** preserve source → rework relationships and admit when an old file is rough.
+- **Sqaz:** explicit archive with deliberate context; keep the Sqaz identity distinct.
+- **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
+- **Artwork-first playback** remains the visual rule wherever possible.
+- **Mobile-first navigation:** important archive routes cannot exist only in the desktop nav because the desktop nav is hidden on small screens.
+
+## Next structural improvement
+
+Eventually the site can add `/archive/` as a small visual doorway containing **Sqaz** and **Old Files / New Tools**. It should be a directory, not another duplicate content page. The existing URLs remain canonical.
