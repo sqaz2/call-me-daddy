@@ -30,11 +30,30 @@
     }
   };
 
+  function loadTactileAssets(onReady){
+    if(!document.querySelector('link[data-tactile-scrubber]')){
+      const link=document.createElement('link');
+      link.rel='stylesheet';
+      link.href='/tactile-scrubber.css?v=20260820-1';
+      link.dataset.tactileScrubber='';
+      document.head.appendChild(link);
+    }
+    if(window.CMDTactileScrubber){onReady();return;}
+    const existing=document.querySelector('script[data-tactile-scrubber]');
+    if(existing){existing.addEventListener('load',onReady,{once:true});return;}
+    const script=document.createElement('script');
+    script.src='/tactile-scrubber.js?v=20260820-1';
+    script.dataset.tactileScrubber='';
+    script.addEventListener('load',onReady,{once:true});
+    document.head.appendChild(script);
+  }
+
   const dock=document.createElement('div');
   dock.className='trilogy-player-shell';
   dock.id='trilogyPlayer';
   dock.hidden=true;
   dock.innerHTML=`
+    <div id="trilogyTactile" class="tactile-scrubber-shell" aria-label="Large tactile song scrubber"></div>
     <div class="shell trilogy-player-inner">
       <audio id="trilogyAudio" preload="metadata"></audio>
       <div class="trilogy-now">
@@ -68,6 +87,7 @@
   const next=document.getElementById('trilogyNext');
   const timeline=document.getElementById('trilogyTimeline');
   const progress=document.getElementById('trilogyProgress');
+  const tactileMount=document.getElementById('trilogyTactile');
 
   let currentKey='';
   let wantsPlay=false;
@@ -77,6 +97,35 @@
   let youtubeState=-1;
   let youtubeTime=0;
   let youtubeDuration=0;
+  let tactile=null;
+
+  const currentDuration=()=>currentKey==='police'?youtubeDuration:(Number(audio.duration)||0);
+  const currentTime=()=>currentKey==='police'?youtubeTime:(Number(audio.currentTime)||0);
+  const seekCurrent=time=>{
+    const duration=currentDuration();
+    if(!duration)return;
+    const target=Math.max(0,Math.min(duration,time));
+    if(currentKey==='police'){
+      if(youtubeReady){
+        try{youtubePlayer.seekTo(target,true);youtubeTime=target}catch(_){ }
+      }
+    }else{
+      try{audio.currentTime=target}catch(_){ }
+    }
+  };
+
+  loadTactileAssets(()=>{
+    if(tactile||!window.CMDTactileScrubber)return;
+    tactile=window.CMDTactileScrubber.create({
+      mount:tactileMount,
+      getDuration:currentDuration,
+      getTime:currentTime,
+      seek:seekCurrent,
+      label:'DRAG TO SCAN',
+      detail:'ONE TURN = WHOLE SONG',
+      haptics:true
+    });
+  });
 
   const emitState=(playing)=>document.dispatchEvent(new CustomEvent('trilogy:playback',{detail:{playing,key:currentKey}}));
 
