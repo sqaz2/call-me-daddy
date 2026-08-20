@@ -7,7 +7,18 @@
   const status=document.getElementById('oftStatus');
   const progress=document.getElementById('oftProgress');
   const bar=document.getElementById('oftProgressBar');
+  const tactileMount=document.getElementById('oftTactile');
   let currentButton=null;
+
+  window.CMDTactileScrubber?.create({
+    mount:tactileMount,
+    getDuration:()=>audio.duration,
+    getTime:()=>audio.currentTime,
+    seek:time=>{if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=Math.max(0,Math.min(audio.duration,time));},
+    label:'DRAG TO SCAN',
+    detail:'ONE TURN = WHOLE RECORDING',
+    haptics:true
+  });
 
   function clearActive(){
     document.querySelectorAll('.tape-play,.ab-play').forEach(btn=>{
@@ -58,6 +69,7 @@
     status.textContent='Loading…';
     bar.style.width='0%';
     dock.hidden=false;
+    document.body.classList.add('oft-player-open');
     setMediaSession();
     audio.play().catch(()=>{
       status.textContent='Ready · tap play';
