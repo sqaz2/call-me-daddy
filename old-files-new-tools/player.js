@@ -20,6 +20,19 @@
     haptics:true
   });
 
+  function updateArtworkState(){
+    document.querySelectorAll('.release-art[data-play-target]').forEach(art=>{
+      const target=document.getElementById(art.dataset.playTarget);
+      const selected=target&&target===currentButton;
+      const playing=selected&&!audio.paused&&!audio.ended;
+      art.classList.toggle('is-selected',Boolean(selected));
+      art.classList.toggle('is-playing',Boolean(playing));
+      const cue=art.querySelector('.release-art-cue');
+      if(cue)cue.textContent=playing?'❚❚ TAP ARTWORK TO PAUSE':selected?'▶ TAP ARTWORK TO RESUME':'▶ TAP ARTWORK TO PLAY';
+      art.setAttribute('aria-pressed',playing?'true':'false');
+    });
+  }
+
   function clearActive(){
     document.querySelectorAll('.tape-play,.ab-play').forEach(btn=>{
       btn.classList.remove('is-playing');
@@ -32,7 +45,7 @@
   }
 
   function updateButtonState(){
-    if(!currentButton)return;
+    if(!currentButton){updateArtworkState();return;}
     clearActive();
     const base=currentButton.dataset.baseLabel||currentButton.textContent.replace(/^❚❚\s*/,'').replace(/^▶\s*/, '');
     currentButton.dataset.baseLabel=base;
@@ -42,15 +55,18 @@
     }else{
       currentButton.textContent=`▶ ${base}`;
     }
+    updateArtworkState();
   }
 
   function setMediaSession(){
     if(!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
+    const art=currentButton?.dataset.art;
     try{
       navigator.mediaSession.metadata=new MediaMetadata({
         title:title.textContent,
         artist:'MusicSubject',
-        album:'Old Files / New Tools'
+        album:'Old Files / New Tools',
+        artwork:art?[{src:new URL(art,location.href).href,sizes:'720x720',type:'image/webp'}]:[]
       });
     }catch{}
   }
@@ -71,6 +87,7 @@
     dock.hidden=false;
     document.body.classList.add('oft-player-open');
     setMediaSession();
+    updateArtworkState();
     audio.play().catch(()=>{
       status.textContent='Ready · tap play';
       play.textContent='▶';
@@ -81,6 +98,14 @@
   document.querySelectorAll('.tape-play,.ab-play').forEach(btn=>{
     btn.dataset.baseLabel=btn.textContent.replace(/^▶\s*/, '');
     btn.addEventListener('click',()=>choose(btn));
+  });
+
+  document.querySelectorAll('.release-art[data-play-target]').forEach(art=>{
+    art.setAttribute('aria-pressed','false');
+    art.addEventListener('click',()=>{
+      const target=document.getElementById(art.dataset.playTarget);
+      if(target)target.click();
+    });
   });
 
   play.addEventListener('click',()=>{
@@ -137,6 +162,7 @@
       navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
       navigator.mediaSession.setActionHandler('seekbackward',d=>{audio.currentTime=Math.max(0,audio.currentTime-(d.seekOffset||10))});
       navigator.mediaSession.setActionHandler('seekforward',d=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(d.seekOffset||10))});
+      navigator.mediaSession.setActionHandler('seekto',d=>{if(typeof d.seekTime==='number')audio.currentTime=Math.max(0,Math.min(audio.duration||Infinity,d.seekTime))});
     }catch{}
   }
 })();
