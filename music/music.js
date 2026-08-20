@@ -14,7 +14,18 @@
   const cover=document.getElementById('playerCover');
   const progress=document.getElementById('catalogProgress');
   const bar=document.getElementById('catalogProgressBar');
+  const tactileMount=document.getElementById('catalogTactile');
   let current=null;
+
+  window.CMDTactileScrubber?.create({
+    mount:tactileMount,
+    getDuration:()=>audio.duration,
+    getTime:()=>audio.currentTime,
+    seek:time=>{if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=Math.max(0,Math.min(audio.duration,time));},
+    label:'DRAG TO SCAN',
+    detail:'ONE TURN = WHOLE SONG',
+    haptics:true
+  });
 
   count.textContent=`${songs.length} ${songs.length===1?'track':'tracks'} · ${playableSongs.length} in continuous player`;
 
@@ -121,6 +132,7 @@
     cover.onerror=()=>{cover.removeAttribute('src');cover.alt='';};
     bar.style.width='0%';
     player.hidden=false;
+    document.body.classList.add('catalog-player-open');
     setActiveCard(current.id);
     updateMediaSession();
 
