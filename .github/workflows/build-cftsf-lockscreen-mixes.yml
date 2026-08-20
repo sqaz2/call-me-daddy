@@ -1,0 +1,68 @@
+name: Build Cut From the Same Fabric lockscreen mixes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-cftsf-lockscreen-mixes.yml'
+      - 'media/songs/2026/08/find-your-people/audio.mp3'
+      - 'media/songs/2026/08/cut-from-the-same-fabric-instrumental/audio.mp3'
+      - 'media/songs/2026/08/hell-has-people-too/audio.mp3'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+
+      - name: Build continuous routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v ffmpeg >/dev/null
+
+          UP='media/songs/2026/08/find-your-people/audio.mp3'
+          BEAT='media/songs/2026/08/cut-from-the-same-fabric-instrumental/audio.mp3'
+          DOWN='media/songs/2026/08/hell-has-people-too/audio.mp3'
+          OUT='media/projects/2026/08/cut-from-the-same-fabric'
+          mkdir -p "$OUT"
+
+          # Preserve the release's intentional one-way transition:
+          # Find Your People begins fading 18 seconds before its old ending,
+          # disappears over 6.5 seconds, while the instrumental begins under it
+          # and reaches full level over the opening 12 seconds.
+          ffmpeg -y -v warning \
+            -i "$UP" -i "$BEAT" -i "$DOWN" \
+            -filter_complex "[0:a]atrim=0:138.26,asetpts=PTS-STARTPTS,afade=t=out:st=131.76:d=6.5[up];[1:a]asetpts=PTS-STARTPTS,afade=t=in:st=0:d=12,adelay=131760|131760[beat];[up][beat]amix=inputs=2:duration=longest:normalize=0[firsttwo];[firsttwo][2:a]concat=n=2:v=0:a=1[out]" \
+            -map '[out]' -c:a libmp3lame -b:a 192k \
+            "$OUT/sequence-find-first.mp3"
+
+          # The opposite route intentionally stays a clean sequence.
+          ffmpeg -y -v warning \
+            -i "$DOWN" -i "$BEAT" -i "$UP" \
+            -filter_complex "[0:a][1:a][2:a]concat=n=3:v=0:a=1[out]" \
+            -map '[out]' -c:a libmp3lame -b:a 192k \
+            "$OUT/sequence-hell-first.mp3"
+
+          ffprobe -v error -show_entries format=duration,size -of default=nw=1 "$OUT/sequence-find-first.mp3"
+          ffprobe -v error -show_entries format=duration,size -of default=nw=1 "$OUT/sequence-hell-first.mp3"
+
+      - name: Commit generated mixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add media/projects/2026/08/cut-from-the-same-fabric/sequence-find-first.mp3 \
+                  media/projects/2026/08/cut-from-the-same-fabric/sequence-hell-first.mp3
+          if git diff --cached --quiet; then
+            echo 'Continuous mixes are already current.'
+            exit 0
+          fi
+          git commit -m 'Generate lock-screen safe Cut From the Same Fabric mixes'
+          git push
