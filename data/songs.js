@@ -11,6 +11,7 @@ window.CMD_SONGS = [
     audio: '/media/songs/2026/08/id-pick-you-first/audio.mp3',
     cover: '',
     video: '/media/songs/2026/08/id-pick-you-first/background.mp4',
+    catalogVideo: true,
     experience: '/id-pick-you-first/',
     sunoUrl: 'https://suno.com/s/mmvi7t8KYtONX3bQ',
     kind: 'song'
