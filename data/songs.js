@@ -1,5 +1,21 @@
 window.CMD_SONGS = [
   {
+    id: 'id-pick-you-first',
+    title: 'I’d Pick You First (remastered)',
+    artist: 'MusicSubject',
+    year: 2026,
+    month: 8,
+    date: '2026-08-21',
+    project: 'I’d Pick You First',
+    description: 'A ridiculous “would you still love me if…” relationship test becomes a gross punchline and, somehow, an actually sincere love song.',
+    audio: '/media/songs/2026/08/id-pick-you-first/audio.mp3',
+    cover: '',
+    video: '/media/songs/2026/08/id-pick-you-first/background.mp4',
+    experience: '/id-pick-you-first/',
+    sunoUrl: 'https://suno.com/s/mmvi7t8KYtONX3bQ',
+    kind: 'song'
+  },
+  {
     id: 'level-up',
     title: 'Level Up (Primal Dubstep Mix)',
     artist: 'MusicSubject × Call Me Daddy',
