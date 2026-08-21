@@ -28,15 +28,25 @@
     }catch(err){if(err?.name!=='AbortError'&&status)status.textContent='Could not open sharing.';return false;}
   }
 
-  function mount(el){
-    if(!el||el.dataset.shareReady==='1')return;
-    el.dataset.shareReady='1';
-    el.classList.add('share-block');
-    const data={
+  function getData(el){
+    return {
       title:el.dataset.shareTitle||pageTitle(),
       text:el.dataset.shareText||pageText(),
       url:el.dataset.shareUrl||canonical()
     };
+  }
+
+  function mountCompact(el,data){
+    el.classList.add('share-block','share-compact');
+    const statusId=`share-status-${Math.random().toString(36).slice(2)}`;
+    const label=el.dataset.shareButton||'↗ Share';
+    el.innerHTML=`<button class="share-btn share-primary" type="button" data-action="more">${label}</button><span class="share-status" id="${statusId}" aria-live="polite"></span>`;
+    const status=el.querySelector('.share-status');
+    el.querySelector('.share-btn')?.addEventListener('click',()=>nativeShare(data,status));
+  }
+
+  function mountFull(el,data){
+    el.classList.add('share-block');
     const statusId=`share-status-${Math.random().toString(36).slice(2)}`;
     el.innerHTML=`<div class="share-label">${el.dataset.shareLabel||'Share this'}</div><div class="share-buttons">
       <button class="share-btn" type="button" data-network="facebook">Facebook</button>
@@ -59,6 +69,13 @@
       }
       if(button.dataset.action==='more')await nativeShare(data,status);
     });
+  }
+
+  function mount(el){
+    if(!el||el.dataset.shareReady==='1')return;
+    el.dataset.shareReady='1';
+    const data=getData(el);
+    if(el.dataset.shareCompact==='1')mountCompact(el,data);else mountFull(el,data);
   }
 
   window.CMDShare={mount,nativeShare};
