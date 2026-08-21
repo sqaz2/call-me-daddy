@@ -30,6 +30,7 @@ The site has three jobs:
 
 ### Current release / project experiences
 
+- `/id-pick-you-first/` — I’d Pick You First; absurd relationship test → gross punchline → sincere love song, with the uploaded moving background
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks
 - `/the-musician-police/` — The Musician Police
@@ -91,6 +92,14 @@ Current release assets continue to live under dated paths such as:
 /media/projects/YYYY/MM/project-slug/
 ```
 
+`I’d Pick You First` currently uses:
+
+```text
+/media/songs/2026/08/id-pick-you-first/
+  audio.mp3
+  background.mp4
+```
+
 Historical material belongs under:
 
 ```text
@@ -119,6 +128,7 @@ Historical material belongs under:
 - **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
 - **Artwork-first playback** remains the visual rule wherever possible.
 - **Mobile-first navigation:** important archive routes cannot exist only in the desktop nav because the desktop nav is hidden on small screens.
+- **Search UI can wait while the catalog is small, but catalog metadata should stay structured now so title / artist / project / era / remix search can be added cleanly once the library becomes large.**
 
 ## Next structural improvement
 
