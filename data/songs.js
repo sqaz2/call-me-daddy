@@ -1,5 +1,19 @@
 window.CMD_SONGS = [
   {
+    id: 'power-pulse-uprising',
+    title: 'Power Pulse Uprising',
+    artist: 'MusicSubject × Call Me Daddy',
+    year: 2026,
+    month: 8,
+    date: '2026-08-22',
+    project: 'Reaction → Laugh → Song',
+    description: 'A reaction video became source material: isolate the laugh, turn that moment into a song, then keep refining the mix.',
+    audio: '/Power_Pulse_Uprising_Intro_Full_Yeah_Fix.mp3',
+    cover: '',
+    experience: '/power-pulse-uprising/',
+    kind: 'work in progress'
+  },
+  {
     id: 'id-pick-you-first',
     title: 'I’d Pick You First (remastered)',
     artist: 'MusicSubject',
