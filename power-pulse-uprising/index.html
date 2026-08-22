@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#090b12">
   <title>Power Pulse Uprising — Reaction → Laugh → Song</title>
-  <meta name="description" content="Power Pulse Uprising started with a reaction video. I isolated my laugh from the recording, turned that moment into a song, then kept editing the transition into the current mix.">
+  <meta name="description" content="Watch the original reaction that supplied the laugh, then hear how that moment became Power Pulse Uprising and vote on where the song should go next.">
   <meta property="og:type" content="music.song">
   <meta property="og:site_name" content="MusicSubject × Call Me Daddy">
   <meta property="og:title" content="Power Pulse Uprising — Reaction → Laugh → Song">
-  <meta property="og:description" content="A reaction video became source material: isolate the laugh, turn it into a song, then keep refining the mix. Listen to three directions and vote on what it should become.">
+  <meta property="og:description" content="Watch the reaction first. Then hear the laugh leave the video, become music, split into three directions, and vote on what should survive.">
   <meta property="og:url" content="https://callmedaddy.musicsubject.com/power-pulse-uprising/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Power Pulse Uprising — MusicSubject × Call Me Daddy">
-  <meta name="twitter:description" content="Reaction video → isolated laugh → song → three directions. Pick what should survive.">
+  <meta name="twitter:description" content="Reaction video → isolated laugh → music → three directions. Watch the source first, then pick what survives.">
   <link rel="canonical" href="https://callmedaddy.musicsubject.com/power-pulse-uprising/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/share.css">
-  <link rel="stylesheet" href="/power-pulse-uprising/pulse.css?v=20260822-2">
+  <link rel="stylesheet" href="/power-pulse-uprising/pulse.css?v=20260822-3">
 </head>
 <body class="pulse-page">
   <header class="topbar pulse-topbar">
@@ -27,6 +27,7 @@
       <nav class="navlinks" aria-label="Power Pulse Uprising navigation">
         <a href="/">Home</a>
         <a href="/music/">Music</a>
+        <a href="#source-video">Source</a>
         <a href="#process">Process</a>
         <a href="#vote">Vote</a>
       </nav>
@@ -44,21 +45,47 @@
           <div class="eyebrow">Reaction experiment · August 22, 2026 · Work in progress</div>
           <h1>POWER PULSE<br><span>UPRISING</span></h1>
           <p class="lede">This started as a video I recorded my reaction to. The reaction gave me another idea: isolate my laugh, pull that tiny human moment out of the video, and turn it into a song.</p>
-          <p class="pulse-status"><strong>Current state:</strong> I’m still chopping this thing apart. There are now three instrumental directions worth comparing, but I’m not treating any of them as the finished song.</p>
+          <p class="pulse-status"><strong>Start at the beginning:</strong> watch the actual reaction first. Then listen to what happened after I pulled the laugh out of it and started treating it like musical source material.</p>
           <div class="pulse-tags"><span>Reaction video</span><span>Isolated laugh</span><span>Source audio</span><span>Evolving mix</span></div>
           <div class="actions">
-            <a class="btn primary" href="#listen">▶ Hear the current build</a>
+            <a class="btn primary" href="#source-video">▶ Watch what started it</a>
+            <a class="btn" href="#listen">Then hear the music</a>
             <a class="btn" href="#vote">Pick what survives</a>
-            <a class="btn" href="#process">See the process</a>
             <a class="btn" href="/music/">More music</a>
           </div>
           <div data-share
                data-share-label="Share this project"
                data-share-title="Power Pulse Uprising — MusicSubject × Call Me Daddy"
-               data-share-text="This started as a reaction video. I isolated my laugh, turned it into music, and now there are three directions to choose from."></div>
+               data-share-text="A reaction video accidentally supplied the laugh. Watch the source, hear what it became, then vote on which direction should survive."></div>
         </div>
 
-        <div class="pulse-machine" id="listen">
+        <article class="source-video-card" id="source-video">
+          <div class="source-step">
+            <span>01</span>
+            <div><small>Original reaction</small><strong>Watch this first.</strong></div>
+          </div>
+          <div class="source-video-frame">
+            <video id="sourceVideo" controls playsinline preload="metadata">
+              <source src="/screen-20260822-084455-1787409870073.mp4~3.mp4" type="video/mp4">
+              Your browser does not support HTML video.
+            </video>
+          </div>
+          <p>This is the recording that accidentally supplied the laugh. Hear that moment in its original context before hearing what I did to it.</p>
+          <a class="video-next" href="#listen">Then hear what the laugh became ↓</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell pulse-listen-section" id="listen">
+      <div class="listen-layout">
+        <div class="listen-copy">
+          <div class="eyebrow">02 · Then hear what it became</div>
+          <h2>THE LAUGH<br>LEAVES THE VIDEO.</h2>
+          <p>Once I noticed the laugh as something usable, the reaction stopped being only a reaction. I isolated that sound, started cutting around it, and built the current Power Pulse mix from there.</p>
+          <p class="listen-note">This is still a candidate, not a finished release. The two other directions are farther down the page.</p>
+        </div>
+
+        <div class="pulse-machine">
           <div class="machine-meta"><span>Candidate A · current site mix</span><b>2026.08.22</b></div>
           <button class="pulse-orb" id="pulsePlay" type="button" aria-label="Play Power Pulse Uprising">
             <span class="orb-core" id="pulseIcon">▶</span>
@@ -68,7 +95,7 @@
           <div class="waveform" aria-hidden="true">
             <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
           </div>
-          <div class="track-copy"><small>MusicSubject × Call Me Daddy</small><strong>Power Pulse Uprising</strong><span id="pulseStatus">Tap the pulse to play</span></div>
+          <div class="track-copy"><small>MusicSubject × Call Me Daddy</small><strong>Power Pulse Uprising</strong><span id="pulseStatus">Tap the pulse to play candidate A</span></div>
           <div class="pulse-progress" id="pulseProgress" role="slider" tabindex="0" aria-label="Seek through Power Pulse Uprising" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pulseProgressBar"></span></div>
           <div class="pulse-time"><span id="pulseCurrent">0:00</span><span id="pulseDuration">--:--</span></div>
           <audio id="pulseAudio" preload="metadata" src="/Power_Pulse_Uprising_Intro_Full_Yeah_Fix.mp3"></audio>
@@ -84,7 +111,7 @@
 
       <div class="process-line">
         <article class="process-card">
-          <span>01</span><div><div class="kicker">Record</div><h3>The video came first.</h3><p>I recorded my reaction to a video. At that point, the laugh was just part of the reaction—not a planned vocal or a song component.</p></div>
+          <span>01</span><div><div class="kicker">Record</div><h3>The video came first.</h3><p>The reaction video above is the beginning of the story. At that point, the laugh was just part of the recording—not a planned vocal or a song component.</p></div>
         </article>
         <article class="process-card">
           <span>02</span><div><div class="kicker">Notice</div><h3>The laugh became the interesting part.</h3><p>I heard something in my own reaction worth keeping, so I isolated the laugh from the rest of the recording and treated it like source material.</p></div>
@@ -112,7 +139,7 @@
           <div class="candidate-number">A</div>
           <div class="kicker">On this site</div>
           <h3>Current chopped mix</h3>
-          <p>The version already living here: reaction/laugh intro, edited Power Pulse structure and the pieces I kept from the first round of chopping.</p>
+          <p>The version above: reaction/laugh intro, edited Power Pulse structure and the pieces I kept from the first round of chopping.</p>
           <div class="candidate-actions"><button class="btn" id="playCandidateA" type="button">▶ Play A here</button></div>
         </article>
 
@@ -173,8 +200,8 @@
           <h2>NOT A FINISHED ARCHIVE.<br>A LIVING ONE.</h2>
         </div>
         <div class="build-notes">
-          <p><strong>Source:</strong> reaction video recorded first.</p>
-          <p><strong>Extraction:</strong> laugh isolated from that reaction.</p>
+          <p><strong>Source:</strong> the original reaction video is now playable at the start of this page.</p>
+          <p><strong>Extraction:</strong> the laugh was isolated from that reaction.</p>
           <p><strong>Candidate A:</strong> the current locally hosted chopped/edit build.</p>
           <p><strong>Candidates B + C:</strong> two Suno generations kept only as alternate musical sketches.</p>
           <p><strong>Next decision:</strong> which instrumental has the strongest core—and whether this wants lyrics, comedy, darkness, an anthem, something weird, or almost no words at all.</p>
@@ -191,12 +218,13 @@
     </section>
   </main>
 
-  <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Reaction → laugh → three directions → whatever survives.</span></div></footer>
+  <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Watch → notice → isolate → build → vote.</span></div></footer>
 
   <script src="/share.js"></script>
   <script>
     (() => {
       const audio = document.getElementById('pulseAudio');
+      const sourceVideo = document.getElementById('sourceVideo');
       const play = document.getElementById('pulsePlay');
       const icon = document.getElementById('pulseIcon');
       const status = document.getElementById('pulseStatus');
@@ -223,6 +251,7 @@
       };
 
       const startAudio = async () => {
+        if (sourceVideo && !sourceVideo.paused) sourceVideo.pause();
         try {
           await audio.play();
         } catch (_) {
@@ -239,7 +268,12 @@
         if (audio.paused) await startAudio();
       });
 
+      sourceVideo?.addEventListener('play', () => {
+        if (!audio.paused) audio.pause();
+      });
+
       audio.addEventListener('play', () => {
+        if (sourceVideo && !sourceVideo.paused) sourceVideo.pause();
         icon.textContent = 'Ⅱ';
         status.textContent = 'Playing candidate A';
         machine.classList.add('is-playing');
@@ -268,58 +302,61 @@
         sync();
       });
 
-      const voteState = {
-        instrumental: localStorage.getItem('ppu-vote-instrumental') || '',
-        direction: localStorage.getItem('ppu-vote-direction') || ''
+      const state = {
+        instrumental: localStorage.getItem('powerPulseVoteInstrumental') || '',
+        direction: localStorage.getItem('powerPulseVoteDirection') || ''
       };
-      const voteSummary = document.getElementById('voteSummary');
+      const summary = document.getElementById('voteSummary');
       const shareVote = document.getElementById('shareVote');
 
-      const syncVotes = () => {
-        document.querySelectorAll('[data-vote-group]').forEach(group => {
+      const renderVotes = () => {
+        document.querySelectorAll('[data-vote-group]').forEach((group) => {
           const key = group.dataset.voteGroup;
-          group.querySelectorAll('[data-vote-value]').forEach(btn => {
-            btn.classList.toggle('is-selected', voteState[key] === btn.dataset.voteValue);
+          group.querySelectorAll('[data-vote-value]').forEach((button) => {
+            button.classList.toggle('is-selected', state[key] === button.dataset.voteValue);
+            button.setAttribute('aria-pressed', state[key] === button.dataset.voteValue ? 'true' : 'false');
           });
         });
-        if (voteState.instrumental && voteState.direction) {
-          voteSummary.textContent = `${voteState.instrumental} · ${voteState.direction}`;
+        if (state.instrumental && state.direction) {
+          summary.textContent = `${state.instrumental} + ${state.direction}`;
           shareVote.disabled = false;
+        } else if (state.instrumental) {
+          summary.textContent = `${state.instrumental} — now pick a song direction.`;
+          shareVote.disabled = true;
+        } else if (state.direction) {
+          summary.textContent = `${state.direction} — now pick an instrumental.`;
+          shareVote.disabled = true;
         } else {
-          voteSummary.textContent = voteState.instrumental || voteState.direction || 'Pick one from each question.';
+          summary.textContent = 'Pick one from each question.';
           shareVote.disabled = true;
         }
       };
 
-      document.querySelectorAll('[data-vote-group] [data-vote-value]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const group = btn.closest('[data-vote-group]').dataset.voteGroup;
-          voteState[group] = btn.dataset.voteValue;
-          localStorage.setItem(`ppu-vote-${group}`, voteState[group]);
-          syncVotes();
+      document.querySelectorAll('[data-vote-group] [data-vote-value]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const key = button.closest('[data-vote-group]').dataset.voteGroup;
+          state[key] = button.dataset.voteValue;
+          localStorage.setItem(key === 'instrumental' ? 'powerPulseVoteInstrumental' : 'powerPulseVoteDirection', state[key]);
+          renderVotes();
         });
       });
 
-      shareVote?.addEventListener('click', async () => {
-        if (!voteState.instrumental || !voteState.direction) return;
-        const text = `My Power Pulse Uprising vote: ${voteState.instrumental}. Make it ${voteState.direction}.`;
-        const voteUrl = location.href.split('#')[0] + '#vote';
-        if (navigator.share) {
-          try {
-            await navigator.share({title:'Power Pulse Uprising vote',text,url:voteUrl});
-            return;
-          } catch (_) {}
-        }
+      shareVote.addEventListener('click', async () => {
+        if (!state.instrumental || !state.direction) return;
+        const text = `My Power Pulse Uprising vote: ${state.instrumental}. Direction: ${state.direction}. What would you pick?`;
+        const url = 'https://callmedaddy.musicsubject.com/power-pulse-uprising/';
         try {
-          await navigator.clipboard.writeText(`${text}\n${voteUrl}`);
-          shareVote.textContent = 'Vote copied ✓';
-          window.setTimeout(() => { shareVote.textContent = 'Share my vote'; }, 1800);
-        } catch (_) {
-          window.prompt('Copy your vote:', `${text}\n${voteUrl}`);
-        }
+          if (navigator.share) {
+            await navigator.share({title:'Power Pulse Uprising vote',text,url});
+          } else if (navigator.clipboard) {
+            await navigator.clipboard.writeText(`${text} ${url}`);
+            shareVote.textContent = 'Vote copied ✓';
+            setTimeout(() => { shareVote.textContent = 'Share my vote'; }, 1800);
+          }
+        } catch (_) {}
       });
 
-      syncVotes();
+      renderVotes();
     })();
   </script>
   <script src="/motion.js"></script>
