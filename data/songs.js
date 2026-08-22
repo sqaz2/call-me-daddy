@@ -14,36 +14,6 @@ window.CMD_SONGS = [
     kind: 'work in progress'
   },
   {
-    id: 'power-pulse-laugh-remix-take-1',
-    title: 'Laugh Remix — Take 1',
-    artist: 'MusicSubject × Call Me Daddy',
-    year: 2026,
-    month: 8,
-    date: '2026-08-22',
-    project: 'Power Pulse Uprising',
-    description: 'The first Suno song generated from the isolated-laugh remix experiment. This is source material for the later manual chop-and-rebuild work.',
-    audio: '',
-    cover: '',
-    experience: '/power-pulse-uprising/',
-    sunoUrl: 'https://suno.com/s/V9VmdoMo5sJWff5O',
-    kind: 'Suno experiment'
-  },
-  {
-    id: 'power-pulse-laugh-remix-take-2',
-    title: 'Laugh Remix — Take 2',
-    artist: 'MusicSubject × Call Me Daddy',
-    year: 2026,
-    month: 8,
-    date: '2026-08-22',
-    project: 'Power Pulse Uprising',
-    description: 'The second Suno song generated from the isolated-laugh remix experiment, before the material was chopped into later edits and mixes.',
-    audio: '',
-    cover: '',
-    experience: '/power-pulse-uprising/',
-    sunoUrl: 'https://suno.com/s/ZaGMEk1sART3vKhc',
-    kind: 'Suno experiment'
-  },
-  {
     id: 'id-pick-you-first',
     title: 'I’d Pick You First (remastered)',
     artist: 'MusicSubject',
