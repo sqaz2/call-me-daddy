@@ -89,10 +89,52 @@
   color: #d1ccc3;
 }
 
-.release-card.pick-you-first,.release-card.level-up {
+.release-card.pulse-uprising,.release-card.pick-you-first,.release-card.level-up {
   grid-column: 1 / -1;
   min-height: 650px;
 }
+
+.release-card.pulse-uprising {
+  background: radial-gradient(circle at 72% 32%, rgba(116, 95, 255, .38), transparent 24rem), radial-gradient(circle at 22% 72%, rgba(77, 205, 231, .20), transparent 28rem), linear-gradient(155deg, #11152a, #08090e 72%);
+}
+.release-card.pulse-uprising:before,.release-card.pulse-uprising:after {
+  content: "";
+  position: absolute;
+  left: 67%;
+  top: 41%;
+  width: 230px;
+  height: 230px;
+  border: 1px solid rgba(163, 149, 255, .55);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 70px rgba(116,95,255,.18);
+}
+.release-card.pulse-uprising:after { width: 330px; height: 330px; border-color: rgba(77,205,231,.20); }
+.release-card.pulse-uprising .pulse-card-art {
+  position: absolute;
+  z-index: 1;
+  left: 67%;
+  top: 41%;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 30%, #d2caff, #735cff 45%, #302779 100%);
+  box-shadow: 0 0 60px rgba(117,92,255,.6);
+}
+.release-card.pulse-uprising .pulse-card-art:after {
+  content: "▶";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-left: 5px;
+  font-size: 2.4rem;
+  color: #fff;
+}
+.release-card.pulse-uprising .release-card-shade { background: linear-gradient(90deg, rgba(7,8,13,.92) 0%, rgba(7,8,13,.64) 43%, rgba(7,8,13,.14) 74%), linear-gradient(180deg, rgba(7,8,13,.02) 25%, rgba(7,8,13,.32) 67%, rgba(7,8,13,.96) 100%); }
+.release-card.pulse-uprising .release-card-copy { max-width: 760px; }
+.release-card.pulse-uprising small { color: #b9afff; }
 
 .release-card.pick-you-first{background:linear-gradient(160deg,#3a302d,#0c0b0b 72%)}
 .release-card.pick-you-first video{object-position:center}
@@ -171,8 +213,9 @@
   .latest-head { align-items: start; flex-direction: column; }
   .release-grid { grid-template-columns: 1fr; }
   .release-card { min-height: 74svh; max-height: 760px; }
-  .release-card.pick-you-first,.release-card.level-up { grid-column: auto; min-height: 78svh; }
-  .release-card.pick-you-first .release-card-shade,.release-card.level-up .release-card-shade { background: linear-gradient(180deg, rgba(5, 6, 7, .04) 26%, rgba(5, 6, 7, .23) 53%, rgba(5, 6, 7, .96) 100%); }
+  .release-card.pulse-uprising,.release-card.pick-you-first,.release-card.level-up { grid-column: auto; min-height: 78svh; }
+  .release-card.pulse-uprising .release-card-shade,.release-card.pick-you-first .release-card-shade,.release-card.level-up .release-card-shade { background: linear-gradient(180deg, rgba(5, 6, 7, .04) 26%, rgba(5, 6, 7, .23) 53%, rgba(5, 6, 7, .96) 100%); }
+  .release-card.pulse-uprising:before,.release-card.pulse-uprising:after,.release-card.pulse-uprising .pulse-card-art { left: 50%; top: 34%; }
   .release-card-copy { padding: 24px; }
   .release-card-copy strong { font-size: clamp(2.4rem, 10vw, 4.2rem); }
 }
