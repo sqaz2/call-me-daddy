@@ -77,6 +77,10 @@
     const card=document.createElement('article');
     card.className='song-card';
     card.dataset.song=song.id;
+    const hasBackgroundVideo=Boolean(song.catalogVideo&&song.video);
+    if(hasBackgroundVideo)card.classList.add('has-video');
+    if(hasBackgroundVideo&&song.cover)card.classList.add('has-cover');
+
     const destination=song.experience||song.youtubeUrl||'';
     const artAction=song.audio
       ? `<button class="song-art-hit" type="button" aria-label="Play ${safe(song.title)}"><span class="song-art-cue">▶ Tap artwork to play</span></button>`
@@ -84,8 +88,12 @@
         ? `<a class="song-art-hit" href="${safe(destination)}" aria-label="Open ${safe(song.title)}"><span class="song-art-cue">↗ Tap artwork to open</span></a>`
         : `<span class="song-art-hit is-disabled" aria-hidden="true"><span class="song-art-cue">Audio coming soon</span></span>`;
     const experienceLabel=song.youtubeUrl?'Song page →':'Open experience →';
+    const backgroundVideo=hasBackgroundVideo
+      ? `<video class="song-bg-video" autoplay muted loop playsinline preload="metadata"${song.cover?` poster="${safe(song.cover)}"`:''}><source src="${safe(song.video)}" type="video/mp4"></video>`
+      : '';
 
     card.innerHTML=`
+      ${backgroundVideo}
       <img class="song-cover" src="${safe(song.cover||'')}" alt="${safe(song.title)} cover" loading="lazy">
       ${artAction}
       <div class="song-card-body">
@@ -102,7 +110,8 @@
       </div>`;
 
     const img=card.querySelector('.song-cover');
-    if(!song.cover)card.classList.add('fallback');
+    if(!song.cover&&!hasBackgroundVideo)card.classList.add('fallback');
+    if(!song.cover&&hasBackgroundVideo)img?.remove();
     img?.addEventListener('error',()=>card.classList.add('fallback'),{once:true});
     card.querySelector('button.song-art-hit')?.addEventListener('click',()=>selectSong(song));
     grid.appendChild(card);
