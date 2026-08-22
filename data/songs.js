@@ -1,15 +1,17 @@
 window.CMD_SONGS = [
   {
-    id: 'power-pulse-uprising',
-    title: 'Power Pulse Uprising',
+    id: 'armando',
+    title: 'Armando',
     artist: 'MusicSubject × Call Me Daddy',
     year: 2026,
     month: 8,
     date: '2026-08-22',
-    project: 'Reaction → Laugh → Song',
+    project: 'Power Pulse Uprising · Reaction → Laugh → Song',
     description: 'A reaction video became source material: isolate the laugh, turn that moment into a song, then keep refining the mix.',
-    audio: '/Power_Pulse_Uprising_Intro_Full_Yeah_Fix.mp3',
-    cover: '',
+    audio: '/media/songs/2026/08/armando/audio.mp3',
+    cover: '/media/songs/2026/08/armando/cover.png',
+    video: '/media/songs/2026/08/armando/background.mp4',
+    catalogVideo: true,
     experience: '/power-pulse-uprising/',
     kind: 'work in progress'
   },
