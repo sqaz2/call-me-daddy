@@ -30,6 +30,7 @@ The site has three jobs:
 
 ### Current release / project experiences
 
+- `/power-pulse-uprising/` — evolving reaction-video experiment; recorded reaction → isolated laugh → song → iterative mix edits
 - `/id-pick-you-first/` — I’d Pick You First; absurd relationship test → gross punchline → sincere love song, with the uploaded moving background
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks
@@ -40,6 +41,8 @@ The site has three jobs:
 - `/youtube/W47ebCMfrBI/` — YouTube-backed release page
 
 These pages are for songs where the **idea around the song** is part of the release.
+
+`/power-pulse-uprising/` is intentionally a **living project page**. Preserve the origin story while adding later mixes, source media, visuals, and process notes as the work develops.
 
 ## History / archive branch
 
@@ -100,6 +103,14 @@ Current release assets continue to live under dated paths such as:
   background.mp4
 ```
 
+`Power Pulse Uprising` currently references the user-uploaded working mix at the repository root:
+
+```text
+/Power_Pulse_Uprising_Intro_Full_Yeah_Fix.mp3
+```
+
+When its media set is finalized, it can be normalized into the dated media layout without changing the public `/power-pulse-uprising/` route.
+
 Historical material belongs under:
 
 ```text
@@ -123,6 +134,7 @@ Historical material belongs under:
 
 - **Current catalog:** clean listening experience first.
 - **Project pages:** explain or dramatize the idea around the song.
+- **Living project pages:** preserve the original source/process story, then append later iterations rather than rewriting history.
 - **Old Files / New Tools:** preserve source → rework relationships and admit when an old file is rough.
 - **Sqaz:** explicit archive with deliberate context; keep the Sqaz identity distinct.
 - **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
