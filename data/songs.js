@@ -33,6 +33,19 @@ window.CMD_SONGS = [
     kind: 'song'
   },
   {
+    id: 'did-armando-die-after-you-held-his-beer',
+    title: 'Did Armando Die After You Held His Beer?',
+    artist: 'MusicSubject × Call Me Daddy',
+    year: 2026,
+    month: 8,
+    date: '2026-08-23',
+    project: 'Hold My Beer',
+    description: 'The “hold my beer” joke taken to its logical conclusion: you held the beer, Armando did something stupid, and now we have follow-up questions.',
+    audio: '/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',
+    cover: '/media/songs/2026/08/armando/cover.png',
+    kind: 'song'
+  },
+  {
     id: 'level-up',
     title: 'Level Up (Primal Dubstep Mix)',
     artist: 'MusicSubject × Call Me Daddy',
