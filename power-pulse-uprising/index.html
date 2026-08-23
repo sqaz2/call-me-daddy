@@ -81,7 +81,7 @@
           <div class="track-copy"><small>Chosen version</small><strong>Did Armando Die After You Held His Beer?</strong><span id="pulseStatus">Tap the artwork to play</span></div>
           <div class="pulse-progress" id="pulseProgress" role="slider" tabindex="0" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="pulseProgressBar"></span></div>
           <div class="pulse-time"><span id="pulseCurrent">0:00</span><span id="pulseDuration">--:--</span></div>
-          <audio id="pulseAudio" preload="metadata" src="/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3"></audio>
+          <audio id="pulseAudio" preload="auto" src="/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3"></audio>
         </div>
       </div>
     </section>
@@ -120,7 +120,7 @@
             <span class="history-step">01 · Earlier site mix</span>
             <h3>Armando</h3>
             <p>The laugh-driven version before the question became the hook.</p>
-            <button class="btn history-audio" type="button" data-process-src="/media/songs/2026/08/armando/audio.mp3">▶ Play earlier mix</button>
+            <button class="btn history-audio" type="button">▶ Play earlier mix</button>
           </article>
           <article class="armando-history-item">
             <span class="history-step">02 · Suno direction</span>
@@ -141,7 +141,6 @@
             <a class="btn primary" href="https://suno.com/s/UGp7Ky1VDub3Munu" target="_blank" rel="noopener">Chosen version on Suno ↗</a>
           </article>
         </div>
-        <audio id="armandoHistoryAudio" preload="metadata"></audio>
       </details>
     </section>
 
@@ -150,98 +149,8 @@
 
   <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Armando survived long enough to get a song.</span></div></footer>
 
+  <script src="/data/songs.js?v=20260823-3"></script>
   <script src="/share.js?v=20260823-2"></script>
-  <script>
-    (() => {
-      const audio=document.getElementById('pulseAudio');
-      const sourceVideo=document.getElementById('sourceVideo');
-      const play=document.getElementById('pulsePlay');
-      const icon=document.getElementById('pulseIcon');
-      const status=document.getElementById('pulseStatus');
-      const progress=document.getElementById('pulseProgress');
-      const bar=document.getElementById('pulseProgressBar');
-      const current=document.getElementById('pulseCurrent');
-      const duration=document.getElementById('pulseDuration');
-      const player=document.getElementById('armandoPlayer');
-      const historyAudio=document.getElementById('armandoHistoryAudio');
-      let historyButton=null;
-
-      const fmt=seconds=>{
-        if(!Number.isFinite(seconds))return '--:--';
-        const m=Math.floor(seconds/60), s=Math.floor(seconds%60);
-        return `${m}:${String(s).padStart(2,'0')}`;
-      };
-
-      const sync=()=>{
-        const d=audio.duration;
-        const ratio=d?audio.currentTime/d:0;
-        bar.style.width=`${ratio*100}%`;
-        current.textContent=fmt(audio.currentTime);
-        duration.textContent=fmt(d);
-        progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)));
-      };
-
-      const toggle=()=>{
-        if(audio.paused){
-          sourceVideo?.pause();
-          historyAudio?.pause();
-          audio.play().catch(()=>{});
-        }else audio.pause();
-      };
-
-      play.addEventListener('click',toggle);
-      audio.addEventListener('play',()=>{icon.textContent='❚❚';status.textContent='Playing';player.classList.add('is-playing')});
-      audio.addEventListener('pause',()=>{icon.textContent='▶';if(!audio.ended)status.textContent='Paused';player.classList.remove('is-playing')});
-      audio.addEventListener('ended',()=>{icon.textContent='▶';status.textContent='Play again';player.classList.remove('is-playing');sync()});
-      audio.addEventListener('loadedmetadata',sync);
-      audio.addEventListener('timeupdate',sync);
-      sourceVideo?.addEventListener('play',()=>{audio.pause();historyAudio?.pause()});
-
-      document.querySelector('.armando-history-drawer')?.addEventListener('toggle',e=>{
-        const b=e.currentTarget.querySelector('summary b');
-        if(b)b.textContent=e.currentTarget.open?'−':'+';
-      });
-      document.querySelectorAll('.history-audio').forEach(button=>button.addEventListener('click',()=>{
-        const src=button.dataset.processSrc;
-        if(!historyAudio||!src)return;
-        const same=historyAudio.dataset.src===src;
-        if(same&&!historyAudio.paused){historyAudio.pause();return;}
-        audio.pause();sourceVideo?.pause();
-        if(!same){historyAudio.src=src;historyAudio.dataset.src=src;}
-        historyButton=button;
-        historyAudio.play().catch(()=>{});
-      }));
-      historyAudio?.addEventListener('play',()=>{if(historyButton)historyButton.textContent='❚❚ Pause earlier mix'});
-      historyAudio?.addEventListener('pause',()=>{if(historyButton)historyButton.textContent='▶ Play earlier mix'});
-      historyAudio?.addEventListener('ended',()=>{if(historyButton)historyButton.textContent='▶ Play earlier mix'});
-
-      const seek=e=>{
-        if(!audio.duration)return;
-        const r=progress.getBoundingClientRect();
-        const x=('clientX' in e)?e.clientX:r.left;
-        audio.currentTime=Math.max(0,Math.min(audio.duration,((x-r.left)/r.width)*audio.duration));
-      };
-      progress.addEventListener('click',seek);
-      progress.addEventListener('keydown',e=>{
-        if(e.key==='ArrowRight'){audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+5);e.preventDefault()}
-        if(e.key==='ArrowLeft'){audio.currentTime=Math.max(0,audio.currentTime-5);e.preventDefault()}
-      });
-
-      if('mediaSession' in navigator){
-        try{
-          navigator.mediaSession.metadata=new MediaMetadata({
-            title:'Did Armando Die After You Held His Beer?',
-            artist:'MusicSubject × Call Me Daddy',
-            album:'Armando',
-            artwork:[{src:new URL('/media/songs/2026/08/armando/cover.png',location.href).href}]
-          });
-          navigator.mediaSession.setActionHandler('play',()=>audio.play());
-          navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
-          navigator.mediaSession.setActionHandler('seekbackward',()=>{audio.currentTime=Math.max(0,audio.currentTime-10)});
-          navigator.mediaSession.setActionHandler('seekforward',()=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+10)});
-        }catch{}
-      }
-    })();
-  </script>
+  <script src="/power-pulse-uprising/continuous-player.js?v=20260823-1"></script>
 </body>
 </html>
