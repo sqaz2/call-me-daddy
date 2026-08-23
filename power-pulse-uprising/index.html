@@ -19,9 +19,10 @@
   <link rel="canonical" href="https://callmedaddy.musicsubject.com/power-pulse-uprising/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
-  <link rel="stylesheet" href="/share.css?v=20260823-1">
+  <link rel="stylesheet" href="/share.css?v=20260823-2">
   <link rel="stylesheet" href="/power-pulse-uprising/pulse.css?v=20260822-3">
   <link rel="stylesheet" href="/power-pulse-uprising/armando.css?v=20260823-1">
+  <link rel="stylesheet" href="/power-pulse-uprising/armando-history.css?v=20260823-1">
 </head>
 <body class="pulse-page">
   <header class="topbar pulse-topbar">
@@ -107,12 +108,49 @@
       </details>
     </section>
 
+    <section class="armando-history shell" id="armandoHistory">
+      <div class="armando-history-intro">
+        <div><div class="eyebrow">Making-of archive</div><h2>THE VERSIONS<br>THAT GOT IT HERE.</h2></div>
+        <p>This page is also a historical record of making the music. The versions that lost still matter because they show how the winner happened.</p>
+      </div>
+      <details class="armando-history-drawer">
+        <summary><span>Expand making-of history</span><b>+</b></summary>
+        <div class="armando-history-list">
+          <article class="armando-history-item">
+            <span class="history-step">01 · Earlier site mix</span>
+            <h3>Armando</h3>
+            <p>The laugh-driven version before the question became the hook.</p>
+            <button class="btn history-audio" type="button" data-process-src="/media/songs/2026/08/armando/audio.mp3">▶ Play earlier mix</button>
+          </article>
+          <article class="armando-history-item">
+            <span class="history-step">02 · Suno direction</span>
+            <h3>Laugh remix sketch 1</h3>
+            <p>One branch of the idea while the song was still looking for its shape.</p>
+            <a class="btn" href="https://suno.com/s/V9VmdoMo5sJWff5O" target="_blank" rel="noopener">Open sketch 1 ↗</a>
+          </article>
+          <article class="armando-history-item">
+            <span class="history-step">03 · Suno direction</span>
+            <h3>Laugh remix sketch 2</h3>
+            <p>Another branch. Useful pieces survived even though the whole version did not.</p>
+            <a class="btn" href="https://suno.com/s/ZaGMEk1sART3vKhc" target="_blank" rel="noopener">Open sketch 2 ↗</a>
+          </article>
+          <article class="armando-history-item chosen">
+            <span class="history-step">04 · Chosen version</span>
+            <h3>Did Armando Die After You Held His Beer?</h3>
+            <p>The question gave the running “hold my beer” joke its payoff. This is the version that stayed.</p>
+            <a class="btn primary" href="https://suno.com/s/UGp7Ky1VDub3Munu" target="_blank" rel="noopener">Chosen version on Suno ↗</a>
+          </article>
+        </div>
+        <audio id="armandoHistoryAudio" preload="metadata"></audio>
+      </details>
+    </section>
+
     <section class="pulse-quote"><div class="shell"><span aria-hidden="true">↯</span><blockquote>“Hold my beer” was the setup. Armando became the follow-up question.</blockquote></div></section>
   </main>
 
   <footer class="footer"><div class="shell footer-inner"><span>© MusicSubject × Call Me Daddy</span><span>Armando survived long enough to get a song.</span></div></footer>
 
-  <script src="/share.js?v=20260823-1"></script>
+  <script src="/share.js?v=20260823-2"></script>
   <script>
     (() => {
       const audio=document.getElementById('pulseAudio');
@@ -125,6 +163,8 @@
       const current=document.getElementById('pulseCurrent');
       const duration=document.getElementById('pulseDuration');
       const player=document.getElementById('armandoPlayer');
+      const historyAudio=document.getElementById('armandoHistoryAudio');
+      let historyButton=null;
 
       const fmt=seconds=>{
         if(!Number.isFinite(seconds))return '--:--';
@@ -144,6 +184,7 @@
       const toggle=()=>{
         if(audio.paused){
           sourceVideo?.pause();
+          historyAudio?.pause();
           audio.play().catch(()=>{});
         }else audio.pause();
       };
@@ -154,7 +195,25 @@
       audio.addEventListener('ended',()=>{icon.textContent='▶';status.textContent='Play again';player.classList.remove('is-playing');sync()});
       audio.addEventListener('loadedmetadata',sync);
       audio.addEventListener('timeupdate',sync);
-      sourceVideo?.addEventListener('play',()=>audio.pause());
+      sourceVideo?.addEventListener('play',()=>{audio.pause();historyAudio?.pause()});
+
+      document.querySelector('.armando-history-drawer')?.addEventListener('toggle',e=>{
+        const b=e.currentTarget.querySelector('summary b');
+        if(b)b.textContent=e.currentTarget.open?'−':'+';
+      });
+      document.querySelectorAll('.history-audio').forEach(button=>button.addEventListener('click',()=>{
+        const src=button.dataset.processSrc;
+        if(!historyAudio||!src)return;
+        const same=historyAudio.dataset.src===src;
+        if(same&&!historyAudio.paused){historyAudio.pause();return;}
+        audio.pause();sourceVideo?.pause();
+        if(!same){historyAudio.src=src;historyAudio.dataset.src=src;}
+        historyButton=button;
+        historyAudio.play().catch(()=>{});
+      }));
+      historyAudio?.addEventListener('play',()=>{if(historyButton)historyButton.textContent='❚❚ Pause earlier mix'});
+      historyAudio?.addEventListener('pause',()=>{if(historyButton)historyButton.textContent='▶ Play earlier mix'});
+      historyAudio?.addEventListener('ended',()=>{if(historyButton)historyButton.textContent='▶ Play earlier mix'});
 
       const seek=e=>{
         if(!audio.duration)return;
