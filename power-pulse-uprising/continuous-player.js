@@ -55,6 +55,7 @@
   let countdownTimer=null;
   let countdownTick=null;
   let continuing=false;
+  let sessionActive=false;
 
   const fmt=seconds=>{
     if(!Number.isFinite(seconds))return '--:--';
@@ -81,12 +82,7 @@
     if(!('mediaSession' in navigator))return;
     try{
       const artwork=track.cover?[{src:new URL(track.cover,location.href).href}]:[];
-      navigator.mediaSession.metadata=new MediaMetadata({
-        title:track.title,
-        artist:track.artist,
-        album:track.project,
-        artwork
-      });
+      navigator.mediaSession.metadata=new MediaMetadata({title:track.title,artist:track.artist,album:track.project,artwork});
     }catch{}
   };
 
@@ -110,13 +106,14 @@
     audio.load();
     sync();
     if(status)status.textContent=autoplay?'Loading next…':'Tap the artwork to play';
-    if(autoplay)audio.play().catch(()=>{if(status)status.textContent='Tap artwork to continue';});
+    if(autoplay)audio.play().catch(()=>{continuing=false;if(status)status.textContent='Tap artwork to continue';});
   };
 
   const startCountdown=()=>{
     clearCountdown();
     if(index>=queue.length-1){
       continuing=false;
+      sessionActive=false;
       if(status)status.textContent='End of the current catalog';
       if(icon)icon.textContent='▶';
       return;
@@ -140,6 +137,8 @@
 
   play?.addEventListener('click',toggle);
   audio.addEventListener('play',()=>{
+    sessionActive=true;
+    continuing=false;
     sourceVideo?.pause();
     if(icon)icon.textContent='❚❚';
     if(status)status.textContent='Playing';
@@ -159,7 +158,7 @@
   });
   audio.addEventListener('loadedmetadata',sync);
   audio.addEventListener('timeupdate',sync);
-  sourceVideo?.addEventListener('play',()=>{clearCountdown();audio.pause();});
+  sourceVideo?.addEventListener('play',()=>{clearCountdown();audio.pause();sessionActive=false;});
 
   progress?.addEventListener('click',e=>{
     if(!audio.duration)return;
@@ -180,10 +179,10 @@
     document.getElementById('listen')?.scrollIntoView({behavior:'smooth',block:'center'});
   }));
 
-  // Keep this document alive while music is playing. Internal site links open
-  // separately, so browsers that allow background-tab audio can keep the session going.
+  // While a listening session is active, internal navigation opens separately so
+  // this audio document can stay alive in browsers that support background-tab audio.
   document.addEventListener('click',e=>{
-    if(audio.paused || audio.ended)return;
+    if(!sessionActive)return;
     const a=e.target.closest('a[href]');
     if(!a || a.target || a.hasAttribute('download'))return;
     const url=new URL(a.href,location.href);
