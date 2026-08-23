@@ -1,19 +1,19 @@
 window.CMD_SONGS = [
   {
     id: 'armando',
-    title: 'Armando',
+    title: 'Armando — Earlier Mix',
     artist: 'MusicSubject × Call Me Daddy',
     year: 2026,
     month: 8,
     date: '2026-08-22',
-    project: 'Power Pulse Uprising · Reaction → Laugh → Song',
-    description: 'A reaction video became source material: isolate the laugh, turn that moment into a song, then keep refining the mix.',
+    project: 'Armando',
+    description: 'The earlier laugh-driven mix that led to the chosen Armando version.',
     audio: '/media/songs/2026/08/armando/audio.mp3',
     cover: '/media/songs/2026/08/armando/cover.png',
     video: '/media/songs/2026/08/armando/background.mp4',
     catalogVideo: true,
     experience: '/power-pulse-uprising/',
-    kind: 'work in progress'
+    kind: 'earlier mix'
   },
   {
     id: 'id-pick-you-first',
@@ -39,11 +39,13 @@ window.CMD_SONGS = [
     year: 2026,
     month: 8,
     date: '2026-08-23',
-    project: 'Hold My Beer',
-    description: 'The “hold my beer” joke taken to its logical conclusion: you held the beer, Armando did something stupid, and now we have follow-up questions.',
+    project: 'Armando',
+    description: 'You held the beer. Armando made a decision. Now we have follow-up questions.',
     audio: '/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',
     cover: '/media/songs/2026/08/armando/cover.png',
-    kind: 'song'
+    experience: '/power-pulse-uprising/',
+    sunoUrl: 'https://suno.com/s/UGp7Ky1VDub3Munu',
+    kind: 'chosen version'
   },
   {
     id: 'level-up',
