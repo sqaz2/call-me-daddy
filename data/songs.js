@@ -148,6 +148,19 @@ window.CMD_SONGS = [
     kind: 'song'
   },
   {
+    id: 'i-wont-let-the-wifi-go',
+    title: 'I Won’t Let the Wi‑Fi Go (Dubstep Half-Time Remix)',
+    artist: 'MusicSubject × Call Me Daddy',
+    year: 2025,
+    project: 'Early AI Music',
+    description: '’80s musical inspiration translated into half-time dubstep during my early AI-music experiments.',
+    audio: '/media/songs/2025/i-wont-let-the-wifi-go/audio.mp3',
+    cover: '',
+    experience: '/i-wont-let-the-wifi-go/',
+    sunoUrl: 'https://suno.com/s/zscZ5X8zE8Oz42Bl',
+    kind: '2025 experiment'
+  },
+  {
     id: 'find-your-people',
     title: 'Find Your People',
     artist: 'Call Me Daddy',
