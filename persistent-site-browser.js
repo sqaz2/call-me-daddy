@@ -1,22 +1,123 @@
 (()=>{
-  if(window.top!==window.self || window.CMDPersistentSite)return;
+  const VERSION='20260824-5';
+  const CLAIM='cmd:claim-playback';
+  const PAUSE='cmd:pause-playback';
+  const REFRESH='cmd:refresh-clearance';
+  const isAudibleMedia=el=>el instanceof HTMLAudioElement||(el instanceof HTMLVideoElement&&!el.muted);
+
+  if(window.top!==window.self){
+    if(window.CMDPersistentSite?.version===VERSION)return;
+
+    const pauseLocal=()=>{
+      document.querySelectorAll('audio,video').forEach(el=>{
+        if(!isAudibleMedia(el))return;
+        try{el.pause()}catch{}
+      });
+      document.dispatchEvent(new CustomEvent('cmd:persistent-pause'));
+    };
+    const claimPlayback=()=>{
+      try{window.parent.postMessage({type:CLAIM},location.origin)}catch{}
+    };
+    const refresh=()=>{
+      try{window.parent.postMessage({type:REFRESH},location.origin)}catch{}
+    };
+
+    addEventListener('message',event=>{
+      if(event.origin!==location.origin)return;
+      if(event.data?.type===PAUSE)pauseLocal();
+    });
+    document.addEventListener('play',event=>{
+      if(isAudibleMedia(event.target))claimPlayback();
+    },true);
+
+    window.CMDPersistentSite={
+      version:VERSION,
+      setSession:value=>{if(value)claimPlayback()},
+      claimPlayback,
+      refreshClearance:refresh,
+      open:url=>{location.href=url},
+      makeSongLink(container,track,{show=false}={}){
+        if(!container)return null;
+        let link=container.querySelector('.cmd-now-song-link');
+        if(!link){link=document.createElement('a');link.className='cmd-now-song-link';link.textContent='Open this song →';container.appendChild(link)}
+        const href=track?.experience||'';
+        link.hidden=!(show&&href);
+        if(href)link.href=href;
+        return link;
+      }
+    };
+    return;
+  }
+
+  if(window.CMDPersistentSite?.version===VERSION)return;
 
   const originUrl=location.href;
-  let overlay=null,frame=null,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null;
+  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null;
+  const frames=new Set();
 
-  const playingAudio=()=>[...document.querySelectorAll('audio')].find(a=>!a.paused&&!a.ended);
-  const hasSession=()=>session||Boolean(playingAudio());
   const playerSelectors=[
-    '.catalog-player:not([hidden])',
-    '.sad-player:not([hidden])',
-    '.sad-song-player:not([hidden])',
-    '.trilogy-player-shell:not([hidden])',
-    '#pickPlayer:not([hidden])',
-    '#oftPlayer:not([hidden])',
-    '#armandoPlayer:not([hidden])',
-    '#wifiPlayer:not([hidden])',
-    '.player:not([hidden])'
+    '.catalog-player:not([hidden])','.sad-player:not([hidden])','.sad-song-player:not([hidden])',
+    '.trilogy-player-shell:not([hidden])','#pickPlayer:not([hidden])','#oftPlayer:not([hidden])',
+    '#armandoPlayer:not([hidden])','#wifiPlayer:not([hidden])','.player:not([hidden])'
   ];
+
+  const sameOriginUrl=value=>{
+    try{const u=new URL(value,location.href);return u.origin===location.origin?u:null}catch{return null}
+  };
+
+  const playingMediaIn=win=>{
+    try{return [...win.document.querySelectorAll('audio,video')].find(el=>isAudibleMedia(el)&&!el.paused&&!el.ended)||null}catch{return null}
+  };
+  const ownerIsActive=()=>ownerWindow!==window?session:Boolean(playingMediaIn(window)||session);
+
+  const pauseWindow=win=>{
+    if(!win)return;
+    if(win===window){
+      document.querySelectorAll('audio,video').forEach(el=>{
+        if(!isAudibleMedia(el))return;
+        try{el.pause()}catch{}
+      });
+      document.dispatchEvent(new CustomEvent('cmd:persistent-pause'));
+      return;
+    }
+    try{win.postMessage({type:PAUSE},location.origin)}catch{}
+    try{
+      win.document.querySelectorAll('audio,video').forEach(el=>{
+        if(!isAudibleMedia(el))return;
+        try{el.pause()}catch{}
+      });
+      win.document.dispatchEvent(new CustomEvent('cmd:persistent-pause'));
+    }catch{}
+  };
+
+  const frameForWindow=win=>[...frames].find(f=>f.contentWindow===win)||null;
+
+  const cleanupFrames=()=>{
+    const ownerFrame=frameForWindow(ownerWindow);
+    [...frames].forEach(frame=>{
+      if(frame===viewFrame||frame===ownerFrame)return;
+      frame.remove();
+      frames.delete(frame);
+    });
+  };
+
+  const updatePillState=()=>{
+    if(!overlay)return;
+    const pill=overlay.querySelector('.cmd-site-session-pill');
+    if(!pill)return;
+    const viewOwns=viewFrame&&viewFrame.contentWindow===ownerWindow;
+    pill.hidden=!overlay.classList.contains('is-open')||!session||Boolean(viewOwns);
+  };
+
+  const claimOwner=win=>{
+    if(!win)return;
+    if(ownerWindow!==win)pauseWindow(ownerWindow);
+    ownerWindow=win;
+    session=true;
+    cleanupFrames();
+    updatePillState();
+    scheduleClearance();
+  };
 
   const visibleBottomClearance=(doc,view)=>{
     if(!doc||!view)return 0;
@@ -25,11 +126,9 @@
     const seen=new Set();
     playerSelectors.forEach(selector=>{
       doc.querySelectorAll(selector).forEach(el=>{
-        if(seen.has(el))return;
-        seen.add(el);
-        const cs=view.getComputedStyle(el);
+        if(seen.has(el))return;seen.add(el);
+        const cs=view.getComputedStyle(el),r=el.getBoundingClientRect();
         if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0)return;
-        const r=el.getBoundingClientRect();
         if(r.width<40||r.height<24||r.bottom<vh-36||r.top>=vh)return;
         clearance=Math.max(clearance,Math.max(0,vh-r.top)+10);
       });
@@ -40,29 +139,53 @@
   const updatePillClearance=()=>{
     clearanceRaf=0;
     if(!overlay?.classList.contains('is-open'))return;
-    const pill=overlay.querySelector('.cmd-site-session-pill');
-    if(!pill)return;
+    const pill=overlay.querySelector('.cmd-site-session-pill');if(!pill)return;
     let clearance=0;
-    try{clearance=Math.max(clearance,visibleBottomClearance(frame?.contentDocument,frame?.contentWindow));}catch{}
+    try{clearance=Math.max(clearance,visibleBottomClearance(viewFrame?.contentDocument,viewFrame?.contentWindow))}catch{}
     const cap=Math.max(0,(window.innerHeight||0)-100);
     pill.style.setProperty('--cmd-player-clearance',`${Math.min(clearance,cap)}px`);
+    updatePillState();
   };
-
-  const scheduleClearance=()=>{
-    if(clearanceRaf)return;
-    clearanceRaf=requestAnimationFrame(updatePillClearance);
-  };
+  function scheduleClearance(){if(clearanceRaf)return;clearanceRaf=requestAnimationFrame(updatePillClearance)}
 
   const watchFrameLayout=()=>{
-    clearanceObserver?.disconnect();
-    clearanceObserver=null;
+    clearanceObserver?.disconnect();clearanceObserver=null;
     try{
-      const body=frame?.contentDocument?.body;
-      if(!body)return;
+      const body=viewFrame?.contentDocument?.body;if(!body)return;
       clearanceObserver=new MutationObserver(scheduleClearance);
       clearanceObserver.observe(body,{subtree:true,attributes:true,attributeFilter:['class','hidden','style']});
     }catch{}
     scheduleClearance();
+  };
+
+  const bindFrame=frame=>{
+    try{
+      const doc=frame.contentDocument;if(!doc)return;
+      doc.addEventListener('play',event=>{if(isAudibleMedia(event.target))claimOwner(frame.contentWindow)},true);
+      doc.addEventListener('click',event=>{
+        const a=event.target.closest('a[href]');
+        if(!a||a.target||a.hasAttribute('download'))return;
+        const url=sameOriginUrl(a.href);if(!url)return;
+        const frameUrl=new URL(frame.contentWindow.location.href);
+        if(url.pathname===frameUrl.pathname&&url.search===frameUrl.search&&url.hash)return;
+        event.preventDefault();
+        navigateInside(frame,url);
+      },true);
+    }catch{}
+  };
+
+  const makeFrame=url=>{
+    ensureOverlay();
+    const frame=document.createElement('iframe');
+    frame.className='cmd-site-frame';
+    frame.title='Call Me Daddy site';
+    frame.style.zIndex=String(1+frames.size);
+    overlay.insertBefore(frame,overlay.querySelector('.cmd-site-session-pill'));
+    frames.add(frame);viewFrame=frame;
+    frame.addEventListener('load',()=>{bindFrame(frame);watchFrameLayout();updatePillState()});
+    frame.src=url.href;
+    cleanupFrames();
+    return frame;
   };
 
   const ensureOverlay=()=>{
@@ -72,113 +195,88 @@
       .cmd-site-view{position:fixed;inset:0;z-index:2147482000;background:#070707;display:none}
       .cmd-site-view.is-open{display:block}
       .cmd-site-frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#080808}
-      .cmd-site-session-pill{position:absolute;z-index:3;right:max(12px,env(safe-area-inset-right));bottom:calc(max(12px,env(safe-area-inset-bottom)) + var(--cmd-player-clearance,0px));display:flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(8,8,8,.86);backdrop-filter:blur(14px);box-shadow:0 10px 35px rgba(0,0,0,.38);color:#f4f0e8;font:800 12px/1 system-ui,sans-serif;letter-spacing:.04em;transition:bottom .18s ease}
+      .cmd-site-session-pill{position:absolute;z-index:2147483000;right:max(12px,env(safe-area-inset-right));bottom:calc(max(12px,env(safe-area-inset-bottom)) + var(--cmd-player-clearance,0px));display:flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(8,8,8,.86);backdrop-filter:blur(14px);box-shadow:0 10px 35px rgba(0,0,0,.38);color:#f4f0e8;font:800 12px/1 system-ui,sans-serif;letter-spacing:.04em;transition:bottom .18s ease}
+      .cmd-site-session-pill[hidden]{display:none!important}
       .cmd-site-session-pill button{width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font:700 16px/1 system-ui;cursor:pointer}
       .cmd-now-song-link{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;min-height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.045);color:#f4f0e8;text-decoration:none;font:850 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
       .cmd-now-song-link[hidden]{display:none!important}
     `;
     document.head.appendChild(style);
-
-    overlay=document.createElement('div');
-    overlay.className='cmd-site-view';
-    overlay.innerHTML='<iframe class="cmd-site-frame" title="Call Me Daddy site"></iframe><div class="cmd-site-session-pill"><span>♪ music continues</span><button type="button" aria-label="Return to player">×</button></div>';
+    overlay=document.createElement('div');overlay.className='cmd-site-view';
+    overlay.innerHTML='<div class="cmd-site-session-pill" hidden><span>♪ music continues</span><button type="button" aria-label="Return to player">×</button></div>';
     document.body.appendChild(overlay);
-    frame=overlay.querySelector('iframe');
-    overlay.querySelector('button').addEventListener('click',closeView);
-    frame.addEventListener('load',()=>{bindFrame();watchFrameLayout();});
-  };
-
-  const sameOriginUrl=value=>{
-    try{const u=new URL(value,location.href);return u.origin===location.origin?u:null}catch{return null}
+    overlay.querySelector('button').addEventListener('click',returnToOwner);
   };
 
   const openView=(url,{push=true}={})=>{
-    ensureOverlay();
-    session=true;
-    overlay.classList.add('is-open');
-    document.documentElement.style.overflow='hidden';
+    ensureOverlay();session=true;overlay.classList.add('is-open');document.documentElement.style.overflow='hidden';
     if(push&&!internalNav)history.pushState({cmdView:url.href},'',url.href);
     internalNav=false;
-    frame.src=url.href;
-    scheduleClearance();
+    if(viewFrame&&viewFrame.contentWindow!==ownerWindow){viewFrame.src=url.href}else makeFrame(url);
+    updatePillState();scheduleClearance();
   };
+
+  function returnToOwner(){
+    if(ownerWindow===window){closeView();return}
+    const ownerFrame=frameForWindow(ownerWindow);if(!ownerFrame)return;
+    [...frames].forEach(frame=>{if(frame!==ownerFrame){frame.remove();frames.delete(frame)}});
+    viewFrame=ownerFrame;ownerFrame.style.zIndex='1';
+    updatePillState();watchFrameLayout();
+  }
 
   function closeView({historyBack=false}={}){
     if(!overlay)return;
-    overlay.classList.remove('is-open');
-    document.documentElement.style.overflow='';
-    clearanceObserver?.disconnect();
-    clearanceObserver=null;
-    if(!historyBack){
-      internalNav=true;
-      history.pushState({cmdHome:true},'',originUrl);
-      internalNav=false;
-    }
+    if(ownerWindow!==window){returnToOwner();return}
+    overlay.classList.remove('is-open');document.documentElement.style.overflow='';
+    clearanceObserver?.disconnect();clearanceObserver=null;
+    [...frames].forEach(f=>f.remove());frames.clear();viewFrame=null;
+    if(!historyBack){internalNav=true;history.pushState({cmdHome:true},'',originUrl);internalNav=false}
   }
 
-  const navigateInside=url=>{
-    if(!frame)return;
+  function navigateInside(fromFrame,url){
     history.pushState({cmdView:url.href},'',url.href);
-    frame.src=url.href;
-  };
+    if(fromFrame.contentWindow===ownerWindow){makeFrame(url)}
+    else{viewFrame=fromFrame;fromFrame.src=url.href}
+    updatePillState();
+  }
 
-  const bindFrame=()=>{
-    try{
-      const doc=frame.contentDocument;
-      if(!doc)return;
-      doc.addEventListener('click',e=>{
-        const a=e.target.closest('a[href]');
-        if(!a||a.target||a.hasAttribute('download'))return;
-        const url=sameOriginUrl(a.href);
-        if(!url)return;
-        const frameUrl=new URL(frame.contentWindow.location.href);
-        if(url.pathname===frameUrl.pathname&&url.search===frameUrl.search&&url.hash)return;
-        e.preventDefault();
-        navigateInside(url);
-      },true);
-    }catch{}
-  };
-
-  document.addEventListener('play',e=>{
-    if(e.target instanceof HTMLAudioElement)session=true;
+  document.addEventListener('play',event=>{if(isAudibleMedia(event.target))claimOwner(window)},true);
+  document.addEventListener('click',event=>{
+    if(!ownerIsActive())return;
+    const a=event.target.closest('a[href]');if(!a||a.target||a.hasAttribute('download'))return;
+    const url=sameOriginUrl(a.href);if(!url)return;
+    const here=new URL(originUrl);if(url.pathname===here.pathname&&url.search===here.search&&url.hash)return;
+    event.preventDefault();openView(url);
   },true);
 
-  document.addEventListener('click',e=>{
-    if(!hasSession())return;
-    const a=e.target.closest('a[href]');
-    if(!a||a.target||a.hasAttribute('download'))return;
-    const url=sameOriginUrl(a.href);
-    if(!url)return;
-    const here=new URL(originUrl);
-    if(url.pathname===here.pathname&&url.search===here.search&&url.hash)return;
-    e.preventDefault();
-    openView(url);
-  },true);
-
+  addEventListener('message',event=>{
+    if(event.origin!==location.origin)return;
+    if(event.data?.type===CLAIM){
+      const frame=[...frames].find(f=>f.contentWindow===event.source);
+      if(frame)claimOwner(frame.contentWindow);
+    }else if(event.data?.type===REFRESH)scheduleClearance();
+  });
   addEventListener('resize',scheduleClearance,{passive:true});
   addEventListener('orientationchange',scheduleClearance,{passive:true});
-  addEventListener('popstate',e=>{
+  addEventListener('popstate',event=>{
     if(!overlay?.classList.contains('is-open'))return;
-    const target=e.state?.cmdView;
-    if(target){
-      internalNav=true;
-      frame.src=target;
-      internalNav=false;
-    }else closeView({historyBack:true});
+    const target=event.state?.cmdView;
+    if(target){const url=sameOriginUrl(target);if(url)openView(url,{push:false})}
+    else if(ownerWindow===window)closeView({historyBack:true});
+    else returnToOwner();
   });
 
   window.CMDPersistentSite={
+    version:VERSION,
     open:url=>{const u=sameOriginUrl(url);if(u)openView(u)},
-    setSession:value=>{session=Boolean(value)},
+    setSession:value=>{session=Boolean(value);if(value)claimOwner(window);updatePillState()},
+    claimPlayback:()=>claimOwner(window),
     refreshClearance:scheduleClearance,
     makeSongLink(container,track,{show=false}={}){
       if(!container)return null;
       let link=container.querySelector('.cmd-now-song-link');
       if(!link){link=document.createElement('a');link.className='cmd-now-song-link';link.textContent='Open this song →';container.appendChild(link)}
-      const href=track?.experience||'';
-      link.hidden=!(show&&href);
-      if(href)link.href=href;
-      return link;
+      const href=track?.experience||'';link.hidden=!(show&&href);if(href)link.href=href;return link;
     }
   };
 })();
