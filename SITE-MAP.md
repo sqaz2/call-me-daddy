@@ -23,14 +23,15 @@ The site has three jobs:
 
 - `/music/` — **main current music catalog**
   - artwork-first playback
-  - continuous local-audio playlist
+  - endless shuffled local-audio cycles
+  - alternate versions rotate between cycles instead of repeating the same song identity in one cycle
   - previous / next controls
+  - persistent listening while navigating internal pages
   - platform links for releases that live elsewhere
-  - this is the default place to listen when a track does not need a special story page
 
 ### Current release / project experiences
 
-- `/power-pulse-uprising/` — evolving reaction-video experiment; recorded reaction → isolated laugh → song → iterative mix edits
+- `/power-pulse-uprising/` — **Did Armando Die After You Held His Beer?**; chosen Armando version plus making-of history
 - `/id-pick-you-first/` — I’d Pick You First; absurd relationship test → gross punchline → sincere love song, with the uploaded moving background
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks
@@ -38,11 +39,42 @@ The site has three jobs:
 - `/cut-from-the-same-fabric/` — interactive three-track release; listener chooses which side starts
 - `/funhouse-meltdown/` — voice-to-song experiment
 - `/namaste-hamster/` — Namaste, Hamster release page
+- `/i-wont-let-the-wifi-go/` — 2025 early AI-music experiment using ’80s musical inspiration in half-time dubstep
 - `/youtube/W47ebCMfrBI/` — YouTube-backed release page
 
 These pages are for songs where the **idea around the song** is part of the release.
 
-`/power-pulse-uprising/` is intentionally a **living project page**. Preserve the origin story while adding later mixes, source media, visuals, and process notes as the work develops.
+## When Things Got Heavy
+
+### `/sad-music/`
+
+**Sad / pressure / survival collection.** Current structure: **12 song identities / 18 local versions**.
+
+Alternate mixes stay grouped under one song identity. The collection page can play every archived version; the main catalog shuffle chooses only one version of each song per cycle and rotates alternates on later cycles.
+
+Current song pages:
+
+- `/sad-music/locked-in-these-walls/`
+- `/sad-music/under-watch/`
+- `/sad-music/seven-days-locked/`
+- `/sad-music/stomp-clamp/`
+- `/sad-music/broke-my-mug-not-my-song/`
+- `/sad-music/friction-the-what/`
+- `/sad-music/couple-friends-couple-calls/`
+- `/sad-music/i-need-love/`
+- `/sad-music/numbness-as-a-trap/`
+- `/sad-music/everybody-else-less/`
+- `/sad-music/never-come-back-down/`
+- `/sad-music/will-to-live/`
+
+`I Need Love` preserves a longer writing chain:
+
+- older original recording — approximately a decade before the 2024 rework
+- 2024 — **We Fall in Love Too Quickly**, AI reimagining on SoundCloud
+- 2026 — **I Need Love · Busker Mix 1**
+- 2026 — **I Need Love · Busker Mix 2**
+
+For this collection, prefer real photos tied to the songs as backgrounds when available; fall back to embedded/existing artwork before generating generic visuals.
 
 ## History / archive branch
 
@@ -95,21 +127,19 @@ Current release assets continue to live under dated paths such as:
 /media/projects/YYYY/MM/project-slug/
 ```
 
-`I’d Pick You First` currently uses:
+Collection media uses:
 
 ```text
-/media/songs/2026/08/id-pick-you-first/
-  audio.mp3
-  background.mp4
+/media/collections/sad-music/YYYY/song-slug/
 ```
 
-`Power Pulse Uprising` currently references the user-uploaded working mix at the repository root:
+For example:
 
 ```text
-/Power_Pulse_Uprising_Intro_Full_Yeah_Fix.mp3
+/media/collections/sad-music/2026/i-need-love/
+  busker-mix-1.mp3
+  busker-mix-2.mp3
 ```
-
-When its media set is finalized, it can be normalized into the dated media layout without changing the public `/power-pulse-uprising/` route.
 
 Historical material belongs under:
 
@@ -134,7 +164,7 @@ Historical material belongs under:
 
 - **Current catalog:** clean listening experience first.
 - **Project pages:** explain or dramatize the idea around the song.
-- **Living project pages:** preserve the original source/process story, then append later iterations rather than rewriting history.
+- **When Things Got Heavy:** real-photo backgrounds first when the song has a real visual tied to it; keep alternate mixes under one identity.
 - **Old Files / New Tools:** preserve source → rework relationships and admit when an old file is rough.
 - **Sqaz:** explicit archive with deliberate context; keep the Sqaz identity distinct.
 - **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
