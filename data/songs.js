@@ -198,5 +198,84 @@ window.CMD_SONGS = [
     cover: '/media/songs/2026/08/cut-from-the-same-fabric-instrumental/cover.png',
     experience: '/cut-from-the-same-fabric/',
     kind: 'instrumental'
+  },
+  {
+    id:'locked-in-these-walls', title:'Locked in These Walls', artist:'MusicSubject × Call Me Daddy', year:2025,
+    project:'When Things Got Heavy', description:'From the first stretch of van life: confinement, pressure and trying to make sense of the walls closing in.',
+    audio:'/media/collections/sad-music/2025/locked-in-these-walls/original.mp3', cover:'', experience:'/sad-music/locked-in-these-walls/', kind:'2 versions',
+    variants:[
+      {id:'remastered',label:'Remastered',audio:'/media/collections/sad-music/2025/locked-in-these-walls/original.mp3'},
+      {id:'edm-hybrid-vision',label:'EDM Hybrid Vision',audio:'/media/collections/sad-music/2025/locked-in-these-walls/edm.mp3'}
+    ]
+  },
+  {
+    id:'under-watch', title:'Under Watch', artist:'MusicSubject × Call Me Daddy', year:2025,
+    project:'When Things Got Heavy', description:'Part of the same 2025 van-life cluster: confinement, pressure and being watched.',
+    audio:'/media/collections/sad-music/2025/under-watch/dubstep.mp3', cover:'', experience:'/sad-music/under-watch/', kind:'song',
+    variants:[{id:'dubstep-survival',label:'Dubstep · survival grunge-pop',audio:'/media/collections/sad-music/2025/under-watch/dubstep.mp3'}]
+  },
+  {
+    id:'seven-days-locked', title:'Seven Days Locked', artist:'MusicSubject × Call Me Daddy', year:2025,
+    project:'When Things Got Heavy', description:'Another piece of the 2025 locked-in / under-watch period, preserved in two different mixes.',
+    audio:'/media/collections/sad-music/2025/seven-days-locked/main.mp3', cover:'', experience:'/sad-music/seven-days-locked/', kind:'2 versions',
+    variants:[
+      {id:'where-the-lights-fade',label:'Where the Lights Fade · Vicious With Myself',audio:'/media/collections/sad-music/2025/seven-days-locked/main.mp3'},
+      {id:'vicious-with-myself',label:'Vicious With Myself',audio:'/media/collections/sad-music/2025/seven-days-locked/vicious.mp3'}
+    ]
+  },
+  {
+    id:'stomp-clamp', title:'Stomp Clamp', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'Cheer while I’m building—not only after the win becomes obvious.',
+    audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3', cover:'', experience:'/sad-music/stomp-clamp/', kind:'song',
+    variants:[{id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo Mix',audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3'}]
+  },
+  {
+    id:'broke-my-mug-not-my-song', title:'Broke My Mug Not My Song', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'I survived my first Alberta winter outside. Then my favourite mug fell in the van and broke.',
+    audio:'/media/collections/sad-music/2026/broke-my-mug-not-my-song/main.mp3', cover:'', experience:'/sad-music/broke-my-mug-not-my-song/', kind:'song',
+    variants:[{id:'lofi-warehouse-techno',label:'Lo-fi Warehouse Techno Mix',audio:'/media/collections/sad-music/2026/broke-my-mug-not-my-song/main.mp3'}]
+  },
+  {
+    id:'friction-the-what', title:'Friction the What', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'The “you didn’t need acid” song.',
+    audio:'/media/collections/sad-music/2026/friction-the-what/may-2026.mp3', cover:'', experience:'/sad-music/friction-the-what/', kind:'song',
+    variants:[{id:'may-2026-remix',label:'May 2026 Remix',audio:'/media/collections/sad-music/2026/friction-the-what/may-2026.mp3'}]
+  },
+  {
+    id:'couple-friends-couple-calls', title:'Couple Friends Couple Calls', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'A relationship song with more history behind it.',
+    audio:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3', cover:'', experience:'/sad-music/couple-friends-couple-calls/', kind:'song',
+    variants:[{id:'late-night-warehouse',label:'Late Night Warehouse Mix',audio:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3'}]
+  },
+  {
+    id:'numbness-as-a-trap', title:'Numbness as a Trap', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'A ketamine song about numbness feeling like relief while becoming its own trap.',
+    audio:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3', cover:'', experience:'/sad-music/numbness-as-a-trap/', kind:'2 versions',
+    variants:[
+      {id:'may-2026-remix',label:'May 2026 Remix',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3'},
+      {id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/lofi-warehouse.mp3'}
+    ]
+  },
+  {
+    id:'everybody-else-less', title:'Everybody Else Less', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'Social-media haters from a fictional narrator’s perspective—not mine.',
+    audio:'/media/collections/sad-music/2026/everybody-else-less/main.mp3', cover:'', experience:'/sad-music/everybody-else-less/', kind:'song',
+    variants:[{id:'main',label:'Main Version',audio:'/media/collections/sad-music/2026/everybody-else-less/main.mp3'}]
+  },
+  {
+    id:'never-come-back-down', title:'Never Come Back Down', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'Written from a defeated, unlovable headspace earlier in 2026.',
+    audio:'/media/collections/sad-music/2026/never-come-back-down/lofi-warehouse.mp3', cover:'', experience:'/sad-music/never-come-back-down/', kind:'song',
+    variants:[{id:'lofi-warehouse-techno',label:'Lo-fi Warehouse Techno Remix',audio:'/media/collections/sad-music/2026/never-come-back-down/lofi-warehouse.mp3'}]
+  },
+  {
+    id:'will-to-live', title:'Will to Live', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'Made from a very low place as something that pushed back and encouraged me to keep going.',
+    audio:'/media/collections/sad-music/2026/will-to-live/2026.mp3', cover:'', experience:'/sad-music/will-to-live/', kind:'3 versions',
+    variants:[
+      {id:'2026',label:'2026 Version',audio:'/media/collections/sad-music/2026/will-to-live/2026.mp3'},
+      {id:'too-many-things',label:'Too Many Things I Haven’t Said',audio:'/media/collections/sad-music/2026/will-to-live/too-many-things.mp3'},
+      {id:'namaste-hamster-requiem',label:'Namaste, Hamster Requiem',audio:'/media/collections/sad-music/2026/will-to-live/namaste-hamster.mp3'}
+    ]
   }
 ];
