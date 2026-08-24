@@ -57,6 +57,17 @@ window.CMD_SAD_MUSIC = [
     versions:[{id:'late-night-warehouse',label:'Late Night Warehouse Mix',audio:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3',expectedPath:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3',sunoUrl:'https://suno.com/s/fe9A7wlMvkLwNLE6'}]
   },
   {
+    id:'i-need-love',title:'I Need Love',era:'2026',group:'2026 · relationships',
+    summary:'Two busker mixes built from lyrics that had already lived through earlier versions.',
+    story:'The lyrics trace back to a song I recorded roughly a decade before the 2024 AI reimagining. In 2024 I reworked it as We Fall in Love Too Quickly; in 2026 the same writing became I Need Love in two busker mixes.',
+    route:'/sad-music/i-need-love/',accent:'love',
+    historyLinks:[{label:'2024 · We Fall in Love Too Quickly · AI reimagining',url:'https://m.soundcloud.com/will-crowell/we-fall-in-love-too-quickly-2024-reimagined-with-ai'}],
+    versions:[
+      {id:'busker-mix-1',label:'Busker Mix 1',audio:'/media/collections/sad-music/2026/i-need-love/busker-mix-1.mp3',expectedPath:'/media/collections/sad-music/2026/i-need-love/busker-mix-1.mp3',sunoUrl:'https://suno.com/s/AAmCkY5JZsFkPw2a'},
+      {id:'busker-mix-2',label:'Busker Mix 2',audio:'/media/collections/sad-music/2026/i-need-love/busker-mix-2.mp3',expectedPath:'/media/collections/sad-music/2026/i-need-love/busker-mix-2.mp3',sunoUrl:'https://suno.com/s/v9bkFGezB3WnZ4Vq'}
+    ]
+  },
+  {
     id:'numbness-as-a-trap',title:'Numbness as a Trap',era:'2026',group:'2026 · numbness',
     summary:'A ketamine song built around the idea that numbness can feel like relief and still become its own trap.',
     story:'Two mixes survived, so both stay with the same song.',route:'/sad-music/numbness-as-a-trap/',accent:'numb',
