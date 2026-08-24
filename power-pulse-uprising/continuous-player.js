@@ -2,6 +2,12 @@
   const audio=document.getElementById('pulseAudio');
   if(!audio)return;
 
+  if(!window.CMDPersistentSite){
+    const script=document.createElement('script');
+    script.src='/persistent-site-browser.js?v=20260823-1';
+    document.head.appendChild(script);
+  }
+
   const sourceVideo=document.getElementById('sourceVideo');
   const play=document.getElementById('pulsePlay');
   const icon=document.getElementById('pulseIcon');
@@ -11,12 +17,18 @@
   const current=document.getElementById('pulseCurrent');
   const duration=document.getElementById('pulseDuration');
   const player=document.getElementById('armandoPlayer');
-  const trackTitle=player?.querySelector('.track-copy strong');
-  const trackLabel=player?.querySelector('.track-copy small');
+  const trackCopy=player?.querySelector('.track-copy');
+  const trackTitle=trackCopy?.querySelector('strong');
+  const trackLabel=trackCopy?.querySelector('small');
   const cover=player?.querySelector('.armando-cover-button img');
   const machineArtist=player?.querySelector('.machine-meta span');
   const machineProject=player?.querySelector('.machine-meta b');
   const historyDrawer=document.querySelector('.armando-history-drawer');
+  const songLink=document.createElement('a');
+  songLink.className='cmd-now-song-link';
+  songLink.textContent='Open this song →';
+  songLink.hidden=true;
+  trackCopy?.appendChild(songLink);
 
   const WAIT_SECONDS=4;
   const chosen={
@@ -26,7 +38,8 @@
     project:'Armando',
     label:'Chosen version',
     audio:'/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',
-    cover:'/media/songs/2026/08/armando/cover.png'
+    cover:'/media/songs/2026/08/armando/cover.png',
+    experience:'/power-pulse-uprising/'
   };
   const earlier={
     id:'armando',
@@ -35,7 +48,8 @@
     project:'Armando archive',
     label:'Earlier Armando mix',
     audio:'/media/songs/2026/08/armando/audio.mp3',
-    cover:'/media/songs/2026/08/armando/cover.png'
+    cover:'/media/songs/2026/08/armando/cover.png',
+    experience:'/power-pulse-uprising/'
   };
 
   const catalog=(window.CMD_SONGS||[])
@@ -47,7 +61,8 @@
       project:song.project||'Catalog',
       label:'From the catalog',
       audio:song.audio,
-      cover:song.cover||''
+      cover:song.cover||'',
+      experience:song.experience||''
     }));
 
   const queue=[chosen,earlier,...catalog];
@@ -93,6 +108,9 @@
     if(machineProject)machineProject.textContent=track.project.toUpperCase();
     if(cover && track.cover){cover.src=track.cover;cover.alt=`${track.title} artwork`;}
     play?.setAttribute('aria-label',`Play ${track.title}`);
+    const canOpen=track.label==='From the catalog'&&Boolean(track.experience);
+    songLink.hidden=!canOpen;
+    if(canOpen)songLink.href=track.experience;
     updateMediaSession(track);
   };
 
@@ -144,6 +162,7 @@
     if(status)status.textContent='Playing';
     player?.classList.add('is-playing');
     updateMediaSession(queue[index]);
+    window.CMDPersistentSite?.setSession(true);
   });
   audio.addEventListener('pause',()=>{
     if(icon && !audio.ended)icon.textContent='▶';
@@ -178,21 +197,6 @@
     loadTrack(1,{autoplay:true});
     document.getElementById('listen')?.scrollIntoView({behavior:'smooth',block:'center'});
   }));
-
-  // While a listening session is active, internal navigation opens separately so
-  // this audio document can stay alive in browsers that support background-tab audio.
-  document.addEventListener('click',e=>{
-    if(!sessionActive)return;
-    const a=e.target.closest('a[href]');
-    if(!a || a.target || a.hasAttribute('download'))return;
-    const url=new URL(a.href,location.href);
-    if(url.origin!==location.origin)return;
-    const sameDocument=url.pathname===location.pathname && url.search===location.search;
-    if(sameDocument && url.hash)return;
-    e.preventDefault();
-    const opened=window.open(url.href,'_blank','noopener');
-    if(!opened)location.href=url.href;
-  },true);
 
   if('mediaSession' in navigator){
     try{
