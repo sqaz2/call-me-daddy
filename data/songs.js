@@ -248,6 +248,15 @@ window.CMD_SONGS = [
     variants:[{id:'late-night-warehouse',label:'Late Night Warehouse Mix',audio:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3'}]
   },
   {
+    id:'i-need-love', title:'I Need Love', artist:'MusicSubject × Call Me Daddy', year:2026,
+    project:'When Things Got Heavy', description:'Two busker versions built from lyrics that trace back through a 2024 AI reimagining to an older recording.',
+    audio:'/media/collections/sad-music/2026/i-need-love/busker-mix-1.mp3', cover:'', experience:'/sad-music/i-need-love/', kind:'2 versions',
+    variants:[
+      {id:'busker-mix-1',label:'Busker Mix 1',audio:'/media/collections/sad-music/2026/i-need-love/busker-mix-1.mp3'},
+      {id:'busker-mix-2',label:'Busker Mix 2',audio:'/media/collections/sad-music/2026/i-need-love/busker-mix-2.mp3'}
+    ]
+  },
+  {
     id:'numbness-as-a-trap', title:'Numbness as a Trap', artist:'MusicSubject × Call Me Daddy', year:2026,
     project:'When Things Got Heavy', description:'A ketamine song about numbness feeling like relief while becoming its own trap.',
     audio:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3', cover:'', experience:'/sad-music/numbness-as-a-trap/', kind:'2 versions',
