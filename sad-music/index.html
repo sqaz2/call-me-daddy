@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07080d">
+  <title>When Things Got Heavy — MusicSubject × Call Me Daddy</title>
+  <meta name="description" content="A MusicSubject collection about confinement, loss, numbness, pressure and trying to keep going.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MusicSubject × Call Me Daddy">
+  <meta property="og:title" content="When Things Got Heavy">
+  <meta property="og:description" content="Sad music, pressure songs and the records that survived the mood that made them.">
+  <meta property="og:url" content="https://callmedaddy.musicsubject.com/sad-music/">
+  <link rel="canonical" href="https://callmedaddy.musicsubject.com/sad-music/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/share.css?v=20260823-2">
+  <link rel="stylesheet" href="/sad-music/sad.css?v=20260823-1">
+</head>
+<body class="sad-page">
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="/"><span class="brand-parent">MUSICSUBJECT</span><span class="brand-slash">×</span><span>CALL ME DADDY</span></a>
+      <nav class="navlinks" aria-label="Collection navigation"><a href="/music/">Music</a><a href="#collection">Collection</a><a href="#record">Why keep this</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="sad-hero">
+      <div class="sad-rain" aria-hidden="true"></div>
+      <div class="shell sad-hero-inner">
+        <a class="back" href="/music/">← Music</a>
+        <div class="eyebrow">2025–2026 · collection</div>
+        <h1>WHEN THINGS<br><span>GOT HEAVY.</span></h1>
+        <p class="lede">Confinement. Loss. Numbness. Haters. Wanting support. Trying to keep going.</p>
+        <div class="sad-hero-actions"><a class="btn primary" href="#collection">Open the collection ↓</a></div>
+        <div data-share data-share-compact="1" data-share-button="↗ Share collection" data-share-title="When Things Got Heavy — MusicSubject" data-share-lines="Apparently emotional damage also comes with a bassline.||A playlist for when life has too many tabs open and one of them is crying.||Sad music, but at least the subwoofer is emotionally available."></div>
+      </div>
+    </section>
+
+    <section class="shell sad-section" id="collection">
+      <div class="sad-head"><div><div class="eyebrow">The collection</div><h2>SONGS, NOT ESSAYS.</h2></div><p>Tap a song to open its page. The longer story stays folded until you want it.</p></div>
+      <div id="sadGroups" class="sad-groups"></div>
+    </section>
+
+    <section class="shell sad-record" id="record">
+      <div class="record-card">
+        <div class="eyebrow">Historical record</div>
+        <h2>THE FILES MATTER TOO.</h2>
+        <p>This collection also keeps the making-of history: alternate mixes stay grouped under the song that produced them instead of becoming fake “new releases.”</p>
+        <details><summary>Why keep the versions?</summary><p>Because the finished song is only half the record. The abandoned mix, the reroll and the version that almost worked show how the idea actually got made.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <div class="sad-player" id="sadPlayer" hidden>
+    <audio id="sadAudio" preload="metadata"></audio>
+    <div class="shell sad-player-inner">
+      <div class="sad-now"><small id="sadPlayerLabel">Collection</small><strong id="sadPlayerTitle">Choose a song</strong><span id="sadPlayerStatus"></span><a id="sadPlayerOpen" class="sad-open-song" href="#" hidden>Open this song →</a></div>
+      <div class="sad-controls"><button id="sadPrev" type="button" aria-label="Previous">↶</button><button id="sadPlay" class="main" type="button" aria-label="Play or pause">▶</button><button id="sadNext" type="button" aria-label="Next">↷</button></div>
+      <div class="sad-progress" id="sadProgress"><span id="sadProgressBar"></span></div>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="shell footer-inner"><span>MusicSubject × Call Me Daddy</span><span>Bad days. Good archive.</span></div></footer>
+
+  <script src="/data/sad-music.js?v=20260823-1"></script>
+  <script src="/share.js?v=20260823-2"></script>
+  <script src="/persistent-site-browser.js?v=20260823-1"></script>
+  <script src="/sad-music/sad.js?v=20260823-1"></script>
+</body>
+</html>
