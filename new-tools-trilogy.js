@@ -1,4 +1,16 @@
 (()=>{
+  let persistentScript=document.querySelector('script[data-cmd-persistent]');
+  if(!window.CMDPersistentSite&&!persistentScript){
+    persistentScript=document.createElement('script');
+    persistentScript.src='/persistent-site-browser.js?v=20260824-4';
+    persistentScript.dataset.cmdPersistent='';
+    document.head.appendChild(persistentScript);
+  }
+  const markListeningSession=()=>{
+    if(window.CMDPersistentSite){window.CMDPersistentSite.setSession(true);window.CMDPersistentSite.refreshClearance?.();return;}
+    persistentScript?.addEventListener('load',()=>{window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.()},{once:true});
+  };
+
   const order=['sticks','police','level'];
   const tracks={
     sticks:{
@@ -134,10 +146,7 @@
     play.textContent=playing?'❚❚':'▶';
     play.setAttribute('aria-label',playing?'Pause':'Play');
     status.textContent=message||(playing?'Playing':'Paused');
-    if(playing){
-      window.CMDPersistentSite?.setSession(true);
-      window.CMDPersistentSite?.refreshClearance?.();
-    }
+    if(playing)markListeningSession();
     emitState(playing);
   }
 
