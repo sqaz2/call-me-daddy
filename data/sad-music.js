@@ -14,6 +14,7 @@ window.CMD_SAD_MUSIC = [
     summary:'Part of the same June-ish 2025 cluster: confinement, pressure and being watched.',
     story:'This belongs with Locked in These Walls and Seven Days Locked as part of the same period.',
     route:'/sad-music/under-watch/',accent:'watch',
+    sunoUrls:['https://suno.com/s/JXEJNsgYCb1ZFK33','https://suno.com/s/A6dGZOCHP20uzlgj'],
     versions:[{id:'dubstep-survival',label:'Dubstep · survival grunge-pop',audio:'/media/collections/sad-music/2025/under-watch/dubstep.mp3',expectedPath:'/media/collections/sad-music/2025/under-watch/dubstep.mp3'}]
   },
   {
@@ -21,6 +22,7 @@ window.CMD_SAD_MUSIC = [
     summary:'The third song in the 2025 locked-in / under-watch cluster.',
     story:'Multiple mixes survived, so both stay attached to the same song instead of becoming separate releases.',
     route:'/sad-music/seven-days-locked/',accent:'seven',
+    sunoUrls:['https://suno.com/s/0zQXehx0OUs1vJdm','https://suno.com/s/oeQlWe0lSnVvH3Wj','https://suno.com/s/sBY4ZppT2oB66HKA'],
     versions:[
       {id:'where-the-lights-fade',label:'Where the Lights Fade · Vicious With Myself',audio:'/media/collections/sad-music/2025/seven-days-locked/main.mp3',expectedPath:'/media/collections/sad-music/2025/seven-days-locked/main.mp3'},
       {id:'vicious-with-myself',label:'Vicious With Myself',audio:'/media/collections/sad-music/2025/seven-days-locked/vicious.mp3',expectedPath:'/media/collections/sad-music/2025/seven-days-locked/vicious.mp3'}
@@ -31,6 +33,7 @@ window.CMD_SAD_MUSIC = [
     summary:'Cheer while I’m building—not only after the win becomes obvious.',
     story:'Support often arrives after success, when it is safest and least useful. This one is about wanting people in the room during the climb.',
     route:'/sad-music/stomp-clamp/',accent:'stomp',
+    sunoUrls:['https://suno.com/s/ZXiYRzpj7tNu9NMw'],
     versions:[{id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo Mix',audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3'}]
   },
   {
@@ -38,12 +41,14 @@ window.CMD_SAD_MUSIC = [
     summary:'I survived my first Alberta winter outside. Then my favourite mug fell in the van and broke.',
     story:'The mug had followed me through multiple car-sales jobs. Around the same time, the person who gave it to me stepped out of my life. The mug broke. The song didn’t.',
     route:'/sad-music/broke-my-mug-not-my-song/',accent:'mug',
+    sunoUrls:['https://suno.com/s/GxXKysLQxbnlpdPd'],
     versions:[{id:'lofi-warehouse-techno',label:'Lo-fi Warehouse Techno Mix',audio:'/media/collections/sad-music/2026/broke-my-mug-not-my-song/main.mp3',expectedPath:'/media/collections/sad-music/2026/broke-my-mug-not-my-song/main.mp3'}]
   },
   {
     id:'friction-the-what',title:'Friction the What',era:'2026',group:'2026 · altered perspective',
     summary:'The “you didn’t need acid” song.',story:'“You didn’t need acid” is the line that anchors this one.',
     route:'/sad-music/friction-the-what/',accent:'friction',
+    sunoUrls:['https://suno.com/s/AraDhcs7BWWvuvxg'],
     versions:[{id:'may-2026-remix',label:'May 2026 Remix',audio:'/media/collections/sad-music/2026/friction-the-what/may-2026.mp3',expectedPath:'/media/collections/sad-music/2026/friction-the-what/may-2026.mp3'}]
   },
   {
@@ -82,4 +87,12 @@ window.CMD_SAD_MUSIC = [
       {id:'namaste-hamster-requiem',label:'Namaste, Hamster Requiem',audio:'/media/collections/sad-music/2026/will-to-live/namaste-hamster.mp3',expectedPath:'/media/collections/sad-music/2026/will-to-live/namaste-hamster.mp3'}
     ]
   }
+];
+
+window.CMD_UNASSIGNED_SUNO = [
+  'https://suno.com/s/fe9A7wlMvkLwNLE6',
+  'https://suno.com/s/Z1iTliC41LPoeT7E',
+  'https://suno.com/s/CzOreUaRcNIoQGP2',
+  'https://suno.com/s/gBikiRKbxi4Xk1Jk',
+  'https://suno.com/s/jOr9CSygvDsRHMC9'
 ];
