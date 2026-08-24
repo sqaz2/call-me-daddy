@@ -17,6 +17,19 @@
   const tactileMount=document.getElementById('catalogTactile');
   let current=null;
 
+  if(!window.CMDPersistentSite){
+    const script=document.createElement('script');
+    script.src='/persistent-site-browser.js?v=20260823-1';
+    document.head.appendChild(script);
+  }
+
+  const playerCopy=player?.querySelector('.player-copy');
+  const songLink=document.createElement('a');
+  songLink.className='cmd-now-song-link';
+  songLink.textContent='Open this song →';
+  songLink.hidden=true;
+  playerCopy?.appendChild(songLink);
+
   window.CMDTactileScrubber?.create({
     mount:tactileMount,
     getDuration:()=>audio.duration,
@@ -129,6 +142,12 @@
     });
   }
 
+  function updateSongLink(){
+    const href=current?.experience||'';
+    songLink.hidden=!href;
+    if(href)songLink.href=href;
+  }
+
   function loadSong(song,autoplay=true){
     if(!song?.audio)return;
     current=song;
@@ -142,6 +161,7 @@
     bar.style.width='0%';
     player.hidden=false;
     document.body.classList.add('catalog-player-open');
+    updateSongLink();
     setActiveCard(current.id);
     updateMediaSession();
 
@@ -196,6 +216,7 @@
     play.setAttribute('aria-label','Pause');
     status.textContent=statusText('Playing');
     setActiveCard(current?.id);
+    window.CMDPersistentSite?.setSession(true);
     if('mediaSession' in navigator)navigator.mediaSession.playbackState='playing';
   });
   audio.addEventListener('pause',()=>{
