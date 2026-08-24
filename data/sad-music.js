@@ -54,27 +54,27 @@ window.CMD_SAD_MUSIC = [
   {
     id:'couple-friends-couple-calls',title:'Couple Friends Couple Calls',era:'2026',group:'2026 · relationships',
     summary:'A relationship song with more history behind it.',story:'',route:'/sad-music/couple-friends-couple-calls/',accent:'calls',
-    versions:[{id:'late-night-warehouse',label:'Late Night Warehouse Mix',audio:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3',expectedPath:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3'}]
+    versions:[{id:'late-night-warehouse',label:'Late Night Warehouse Mix',audio:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3',expectedPath:'/media/collections/sad-music/2026/couple-friends-couple-calls/main.mp3',sunoUrl:'https://suno.com/s/fe9A7wlMvkLwNLE6'}]
   },
   {
     id:'numbness-as-a-trap',title:'Numbness as a Trap',era:'2026',group:'2026 · numbness',
     summary:'A ketamine song built around the idea that numbness can feel like relief and still become its own trap.',
     story:'Two mixes survived, so both stay with the same song.',route:'/sad-music/numbness-as-a-trap/',accent:'numb',
     versions:[
-      {id:'may-2026-remix',label:'May 2026 Remix',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3',expectedPath:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3'},
-      {id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/numbness-as-a-trap/lofi-warehouse.mp3'}
+      {id:'may-20-2026',label:'May 20, 2026 Remix',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3',expectedPath:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3',sunoUrl:'https://suno.com/s/Z1iTliC41LPoeT7E'},
+      {id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/numbness-as-a-trap/lofi-warehouse.mp3',sunoUrl:'https://suno.com/s/CzOreUaRcNIoQGP2'}
     ]
   },
   {
     id:'everybody-else-less',title:'Everybody Else Less',era:'2026',group:'2026 · social media',
     summary:'Social-media haters from a fictional narrator’s perspective—not mine.',story:'Character writing, not a diary entry.',
     route:'/sad-music/everybody-else-less/',accent:'less',
-    versions:[{id:'main',label:'Main Version',audio:'/media/collections/sad-music/2026/everybody-else-less/main.mp3',expectedPath:'/media/collections/sad-music/2026/everybody-else-less/main.mp3'}]
+    versions:[{id:'main',label:'Main Version',audio:'/media/collections/sad-music/2026/everybody-else-less/main.mp3',expectedPath:'/media/collections/sad-music/2026/everybody-else-less/main.mp3',sunoUrl:'https://suno.com/s/jOr9CSygvDsRHMC9'}]
   },
   {
     id:'never-come-back-down',title:'Never Come Back Down',era:'2026',group:'2026 · defeated',
     summary:'Written earlier in 2026 from a defeated, unlovable headspace.',story:'',route:'/sad-music/never-come-back-down/',accent:'down',
-    versions:[{id:'lofi-warehouse-techno',label:'Lo-fi Warehouse Techno Remix',audio:'/media/collections/sad-music/2026/never-come-back-down/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/never-come-back-down/lofi-warehouse.mp3'}]
+    versions:[{id:'lofi-warehouse-techno',label:'Lo-fi Warehouse Techno Remix',audio:'/media/collections/sad-music/2026/never-come-back-down/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/never-come-back-down/lofi-warehouse.mp3',sunoUrl:'https://suno.com/s/gBikiRKbxi4Xk1Jk'}]
   },
   {
     id:'will-to-live',title:'Will to Live',era:'2026',group:'2026 · keep going',
@@ -89,10 +89,4 @@ window.CMD_SAD_MUSIC = [
   }
 ];
 
-window.CMD_UNASSIGNED_SUNO = [
-  'https://suno.com/s/fe9A7wlMvkLwNLE6',
-  'https://suno.com/s/Z1iTliC41LPoeT7E',
-  'https://suno.com/s/CzOreUaRcNIoQGP2',
-  'https://suno.com/s/gBikiRKbxi4Xk1Jk',
-  'https://suno.com/s/jOr9CSygvDsRHMC9'
-];
+window.CMD_UNASSIGNED_SUNO = [];
