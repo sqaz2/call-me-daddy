@@ -134,6 +134,10 @@
     play.textContent=playing?'❚❚':'▶';
     play.setAttribute('aria-label',playing?'Pause':'Play');
     status.textContent=message||(playing?'Playing':'Paused');
+    if(playing){
+      window.CMDPersistentSite?.setSession(true);
+      window.CMDPersistentSite?.refreshClearance?.();
+    }
     emitState(playing);
   }
 
@@ -202,6 +206,7 @@
   function showDock(){
     dock.hidden=false;
     document.body.classList.add('trilogy-player-open');
+    window.CMDPersistentSite?.refreshClearance?.();
   }
 
   function markSelected(key){
@@ -356,10 +361,6 @@
       if(youtubeDuration)progress.style.width=`${youtubeTime/youtubeDuration*100}%`;
     }catch(_){ }
   },500);
-
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden&&currentKey==='police'&&youtubeState===1)pauseYoutube();
-  });
 
   ensureYoutube();
 })();
