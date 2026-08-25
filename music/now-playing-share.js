@@ -15,12 +15,23 @@
 
   const abs=value=>{try{return new URL(value,location.href).href}catch{return value||''}};
   const variantsFor=song=>cycle.variants(song);
+  const playableSongs=songs.filter(song=>variantsFor(song).length);
+  const playableVersionCount=cycle.count(playableSongs);
+  const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
   const shareUrl=(songId,variantId)=>{
     const url=new URL('/music/',location.origin);
     url.searchParams.set('song',songId);
     if(variantId)url.searchParams.set('version',variantId);
     return url.href;
   };
+  const sharedRequest=(()=>{
+    try{
+      const q=new URLSearchParams(location.search);
+      const songId=q.get('song')||'';
+      return songId?{songId,variantId:q.get('version')||''}:null;
+    }catch{return null;}
+  })();
+
   const findCurrent=()=>{
     const src=abs(audio.currentSrc||audio.src||'');
     if(!src)return null;
@@ -67,17 +78,64 @@
     }catch{}
   });
 
-  const openSharedTrack=()=>{
-    let songId='';
-    try{songId=new URLSearchParams(location.search).get('song')||''}catch{}
-    if(!songId)return;
-    const card=[...document.querySelectorAll('.song-card')].find(el=>el.dataset.song===songId);
-    const button=card?.querySelector('button.song-art-hit');
-    if(!button)return;
-    window.setTimeout(()=>{
-      button.click();
-      card.scrollIntoView({block:'center',behavior:'smooth'});
-    },80);
-  };
-  openSharedTrack();
+  function mountSharedRadio(){
+    if(!sharedRequest)return;
+    const song=songs.find(item=>item.id===sharedRequest.songId);
+    if(!song)return;
+    const variants=variantsFor(song);
+    if(!variants.length)return;
+    const variant=(sharedRequest.variantId&&variants.find(v=>String(v.id||'')===sharedRequest.variantId))||variants[0];
+    const card=[...document.querySelectorAll('.song-card')].find(el=>el.dataset.song===song.id);
+    const artButton=card?.querySelector('button.song-art-hit');
+    if(!card||!artButton)return;
+
+    const variantLabel=variant.label||song.kind||'Version';
+    const hasAlternates=variants.length>1;
+    const sentLabel=hasAlternates?`${song.title} — ${variantLabel}`:song.title;
+    card.classList.add('shared-radio-target');
+    document.body.classList.add('cmd-radio-gated');
+    requestAnimationFrame(()=>card.scrollIntoView({block:'center',behavior:'auto'}));
+
+    const gate=document.createElement('div');
+    gate.className='cmd-radio-gate';
+    gate.id='cmdRadioGate';
+    gate.innerHTML=`
+      <section class="cmd-radio-intro" role="dialog" aria-modal="true" aria-labelledby="cmdRadioTitle">
+        <button class="cmd-radio-close" type="button" aria-label="Close radio introduction">×</button>
+        <div class="cmd-radio-kicker">CALL ME DADDY × MUSICSUBJECT</div>
+        <h2 id="cmdRadioTitle">RADIO.</h2>
+        <div class="cmd-radio-stats">${playableSongs.length} songs · ${playableVersionCount} playable versions · endless</div>
+        <div class="cmd-radio-sent"><small>You were sent</small><strong>${safe(sentLabel)}</strong></div>
+        <p>Starts with this exact version. Then the station keeps moving.</p>
+        <button class="cmd-radio-enter" type="button">Cue my song →</button>
+      </section>
+      <section class="cmd-radio-cue" hidden aria-label="Start shared song">
+        <button class="cmd-radio-big-play" type="button" aria-label="Play ${safe(sentLabel)}">
+          <span>▶</span><small>PLAY</small>
+        </button>
+        <div class="cmd-radio-cue-copy"><strong>${safe(song.title)}</strong><span>${safe(variantLabel)}</span><small>After it starts, tap the song artwork to pause or resume.</small></div>
+      </section>`;
+    document.body.appendChild(gate);
+
+    const intro=gate.querySelector('.cmd-radio-intro');
+    const cue=gate.querySelector('.cmd-radio-cue');
+    const revealCue=()=>{
+      intro.hidden=true;
+      cue.hidden=false;
+      gate.classList.add('is-cue');
+      gate.querySelector('.cmd-radio-big-play')?.focus({preventScroll:true});
+    };
+    gate.querySelector('.cmd-radio-close')?.addEventListener('click',revealCue);
+    gate.querySelector('.cmd-radio-enter')?.addEventListener('click',revealCue);
+    gate.querySelector('.cmd-radio-big-play')?.addEventListener('click',()=>{
+      artButton.click();
+      gate.classList.add('is-leaving');
+      document.body.classList.remove('cmd-radio-gated');
+      document.body.classList.add('cmd-radio-entered');
+      window.setTimeout(()=>gate.remove(),280);
+      window.setTimeout(()=>card.scrollIntoView({block:'center',behavior:'smooth'}),320);
+    });
+  }
+
+  mountSharedRadio();
 })();
