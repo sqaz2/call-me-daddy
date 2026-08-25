@@ -2,18 +2,21 @@
 
 This is the working information architecture for `callmedaddy.musicsubject.com`.
 
-The site has three jobs:
+The site has four jobs:
 
 1. **Play the music** without forcing visitors out to a streaming service.
 2. **Give important releases their own story / experience** when a normal song card is not enough.
 3. **Preserve the history** so old recordings, aliases and source material have context instead of being mixed randomly into the current catalog.
+4. **Show what changed** so a returning visitor can quickly see new music, experiments, archive finds and meaningful site updates.
 
 ## Public route map
 
 ### Front door
 
 - `/` — **Call Me Daddy × MusicSubject home**
+  - latest public briefing
   - newest releases
+  - intention-radio entry points
   - featured interactive projects
   - routes into the current catalog
   - routes into the historical / explicit archives
@@ -23,11 +26,23 @@ The site has three jobs:
 
 - `/music/` — **main current music catalog**
   - artwork-first playback
-  - endless shuffled local-audio cycles
+  - intention-weighted radio routes
   - alternate versions rotate between cycles instead of repeating the same song identity in one cycle
   - previous / next controls
   - persistent listening while navigating internal pages
   - platform links for releases that live elsewhere
+
+### Updates
+
+- `/updates/` — **public update history**
+  - new music
+  - remixes / alternate versions
+  - archive finds
+  - experiments
+  - meaningful site/player changes
+- `/updates/<entry-id>/` — stable, social-previewable page for one public update
+
+`data/briefing.js` is the public feed. Music metadata remains authoritative in `data/songs.js`; song-backed update entries should reference a catalog `songId` instead of duplicating the song metadata.
 
 ### Current release / project experiences
 
@@ -48,9 +63,9 @@ These pages are for songs where the **idea around the song** is part of the rele
 
 ### `/sad-music/`
 
-**Sad / pressure / survival collection.** Current structure: **12 song identities / 18 local versions**.
+**Sad / pressure / survival collection.** The public song/version count is derived from catalog data at runtime; do not hard-code it in homepage copy or documentation.
 
-Alternate mixes stay grouped under one song identity. The collection page can play every archived version; the main catalog shuffle chooses only one version of each song per cycle and rotates alternates on later cycles.
+Alternate mixes stay grouped under one song identity. The collection page can play every archived version; the main catalog radio chooses only one version of each song per cycle and rotates alternates on later cycles.
 
 Current song pages:
 
@@ -164,14 +179,15 @@ Historical material belongs under:
 
 - **Current catalog:** clean listening experience first.
 - **Project pages:** explain or dramatize the idea around the song.
+- **Updates:** listener-facing changes, not a raw Git commit log.
 - **When Things Got Heavy:** real-photo backgrounds first when the song has a real visual tied to it; keep alternate mixes under one identity.
 - **Old Files / New Tools:** preserve source → rework relationships and admit when an old file is rough.
 - **Sqaz:** explicit archive with deliberate context; keep the Sqaz identity distinct.
 - **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
 - **Artwork-first playback** remains the visual rule wherever possible.
-- **Mobile-first navigation:** important archive routes cannot exist only in the desktop nav because the desktop nav is hidden on small screens.
+- **Mobile-first navigation:** the shared top navigation remains usable on small screens as a horizontally scrollable route bar instead of disappearing.
 - **Search UI can wait while the catalog is small, but catalog metadata should stay structured now so title / artist / project / era / remix search can be added cleanly once the library becomes large.**
 
-## Next structural improvement
+## Structural rule
 
-Eventually the site can add `/archive/` as a small visual doorway containing **Sqaz** and **Old Files / New Tools**. It should be a directory, not another duplicate content page. The existing URLs remain canonical.
+`/archive/` is the visual doorway into historical material. Keep **Sqaz**, **Old Files / New Tools**, and song-lineage pages canonical at their existing URLs rather than duplicating their content inside the directory page.
