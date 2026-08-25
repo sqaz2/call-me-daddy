@@ -1,5 +1,11 @@
 (()=>{
   const songs=Array.isArray(window.CMD_SONGS)?window.CMD_SONGS:[];
+  const archiveLove=songs.find(song=>song.id==='i-need-love');
+  if(archiveLove){
+    archiveLove.project='Archive · song lineage';
+    archiveLove.description='Older recording → 2024 AI reimagining → two 2026 busker versions.';
+    archiveLove.experience='/archive/i-need-love/';
+  }
   const cycleEngine=window.CMDCatalogCycle;
   const variantsFor=song=>cycleEngine?cycleEngine.variants(song):(song?.audio?[{id:'main',label:song.kind||'Main version',audio:song.audio}]:[]);
   const playableSongs=songs.filter(song=>variantsFor(song).length);
