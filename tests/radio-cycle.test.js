@@ -66,11 +66,17 @@ test('a cycle contains each playable song identity once',()=>{
   assert.equal(new Set(ids(cycle)).size,cycle.length);
 });
 
-test('new August 25 uploads are catalogued without duplicating Numbness',()=>{
+test('August 25 uploads are catalogued and song families stay grouped',()=>{
   const {window}=loadRadio();
-  assert.ok(window.CMD_SONGS.some(song=>song.id==='side-chick-finder'));
+  ['where-monsters-are','hard-earned-light','survival-mode','the-tune-of-magical-song','side-chick-finder','one-brick'].forEach(id=>{
+    assert.ok(window.CMD_SONGS.some(song=>song.id===id),`${id} should exist`);
+  });
   const oneBrick=window.CMD_SONGS.find(song=>song.id==='one-brick');
-  assert.equal(oneBrick.variants.length,2);
+  assert.equal(oneBrick.variants.length,1);
+  const monsters=window.CMD_SONGS.find(song=>song.id==='where-monsters-are');
+  assert.equal(monsters.variants.length,1);
+  const magical=window.CMD_SONGS.find(song=>song.id==='the-tune-of-magical-song');
+  assert.equal(magical.variants.length,1);
   const numbness=window.CMD_SONGS.find(song=>song.id==='numbness-as-a-trap');
   assert.equal(numbness.variants.length,3);
   assert.ok(numbness.variants.some(version=>version.id==='barbershop-wobble-edit'));

@@ -57,10 +57,27 @@ test('song catalog ids are unique', () => {
   assert.equal(new Set(ids).size, ids.length, 'song ids must be unique');
 });
 
-test('new upload batch resolves to two new song identities plus a Numbness version', () => {
-  assert.ok(songs.some(song => song.id === 'side-chick-finder'));
-  assert.equal(songs.find(song => song.id === 'one-brick')?.variants?.length, 2);
+test('August 25 upload metadata reflects the current song families', () => {
+  ['where-monsters-are','hard-earned-light','survival-mode','the-tune-of-magical-song','side-chick-finder','one-brick'].forEach(id=>{
+    assert.ok(songs.some(song=>song.id===id),`${id} should exist`);
+  });
+  assert.equal(songs.find(song => song.id === 'one-brick')?.variants?.length, 1);
   assert.equal(songs.find(song => song.id === 'numbness-as-a-trap')?.variants?.length, 3);
+});
+
+test('new raw uploads were moved out of repository root', () => {
+  [
+    'Hard-Earned Light (Epic Dubstep Mix) (Remix) (Remix).mp3',
+    'Survival Mode (Celtic North Remix) (1).mp3',
+    'The Tune of Magical Song (Deep Dark Dubstep Drop Mix) (Remastered).mp3',
+    'Where Monsters Are (dnb Folk Tale).mp3'
+  ].forEach(file=>assert.equal(fs.existsSync(path.join(root,file)),false,`${file} should not remain at repository root`));
+  [
+    'media/songs/2026/08/hard-earned-light/epic-dubstep-mix.mp3',
+    'media/songs/2026/08/survival-mode/celtic-north-remix.mp3',
+    'media/songs/2026/08/the-tune-of-magical-song/deep-dark-dubstep-drop-remastered.mp3',
+    'media/songs/2026/08/where-monsters-are/dnb-folk-tale.mp3'
+  ].forEach(file=>assert.ok(fs.existsSync(path.join(root,file)),`${file} should exist`));
 });
 
 test('every public feed entry has a static previewable update page', () => {
