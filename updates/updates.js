@@ -65,7 +65,8 @@
       song,
       title: entry.title || song?.title || entry.id,
       summary: entry.summary || entry.cardSummary || song?.description || '',
-      href: entry.href || song?.experience || (entry.songId ? `/music/?song=${encodeURIComponent(entry.songId)}` : '')
+      href: entry.href || song?.experience || (entry.songId ? `/music/?song=${encodeURIComponent(entry.songId)}` : ''),
+      updateHref: entry.sharePath || `/updates/${encodeURIComponent(entry.id)}/`
     };
   }).sort((a, b) => score(b.published) - score(a.published));
 
@@ -90,8 +91,8 @@
         <p>${escapeHtml(entry.summary)}</p>
         <div class="update-actions">
           ${entry.href ? `<a href="${escapeHtml(entry.href)}">${escapeHtml(entry.cta || (entry.song ? 'Open release' : 'Open'))} →</a>` : ''}
-          <a href="#${encodeURIComponent(entry.id)}" aria-label="Permanent link to ${escapeHtml(entry.title)}">Permalink</a>
-          <button class="update-share" type="button" data-share="${escapeHtml(entry.id)}" data-title="${escapeHtml(entry.title)}">Share update</button>
+          <a href="${escapeHtml(entry.updateHref)}" aria-label="Permanent page for ${escapeHtml(entry.title)}">Open update</a>
+          <button class="update-share" type="button" data-share="${escapeHtml(entry.updateHref)}" data-title="${escapeHtml(entry.title)}">Share update</button>
         </div>
       </article>`).join('');
 
@@ -113,12 +114,11 @@
   if (releaseCount) releaseCount.textContent = String(featuredCount);
   if (catalogCount) catalogCount.textContent = String(songs.length);
 
-  const shareUrl = id => `${location.origin}/updates/#${encodeURIComponent(id)}`;
+  const absoluteUrl = path => new URL(path, location.origin).href;
   document.querySelectorAll('[data-share]').forEach(button => {
     button.addEventListener('click', async () => {
-      const id = button.dataset.share || '';
       const title = button.dataset.title || 'Call Me Daddy update';
-      const url = shareUrl(id);
+      const url = absoluteUrl(button.dataset.share || '/updates/');
       try {
         if (navigator.share) {
           await navigator.share({ title, text: title, url });
@@ -133,7 +133,7 @@
           await navigator.clipboard.writeText(url);
           button.textContent = 'Link copied';
         } catch (_) {
-          location.hash = id;
+          location.href = url;
         }
       }
     });
