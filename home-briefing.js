@@ -49,6 +49,19 @@
     }
   };
 
+  const currentDateKey = () => {
+    try {
+      return new Intl.DateTimeFormat('en-CA', {
+        timeZone: zone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).format(new Date());
+    } catch {
+      return new Date().toISOString().slice(0, 10);
+    }
+  };
+
   const prettyDate = value => {
     const text = String(value || '');
     if (monthOnly(text)) {
@@ -85,14 +98,16 @@
     return Number.isFinite(parsed) ? parsed : 0;
   };
 
-  const intents = [
-    ['surprise', 'Surprise me', 'No lane. Just make it good.'],
-    ['laugh', 'Make me laugh', 'Comedy, satire and bad decisions.'],
-    ['think', 'Make me think', 'Concepts, contrast and story arcs.'],
-    ['level-up', 'Level me up', 'Forward motion without the motivational-poster voice.'],
-    ['heavy', 'Hit me hard', 'Pressure, survival and the heavier catalog.'],
-    ['old-files', 'Old files', 'Earlier recordings and the road into the new stuff.']
+  const configIntents = Array.isArray(window.CMD_RADIO_CONFIG?.intents) ? window.CMD_RADIO_CONFIG.intents : [];
+  const fallbackIntents = [
+    { id: 'surprise', label: 'Play the site', description: 'The whole catalog, weighted toward fresh turns, clean variety and things you have not just heard.' },
+    { id: 'laugh', label: 'Make me laugh', description: 'Comedy, satire, shock-value punchlines and songs that should not work nearly this well.' },
+    { id: 'think', label: 'Make me think', description: 'Ideas, contradictions, creative process and songs that change depending on what plays beside them.' },
+    { id: 'level-up', label: 'Level me up', description: 'Adaptation, survival, better people and enough momentum to move instead of shrinking.' },
+    { id: 'heavy', label: 'Give me heavy', description: 'Confinement, pressure, grief, numbness and the records that pushed back instead of pretending.' },
+    { id: 'old-files', label: 'Show old files', description: 'Older writing, resurfaced recordings and the new versions that grew out of them.' }
   ];
+  const intents = configIntents.length ? configIntents : fallbackIntents;
 
   loadSongs().then(songs => {
     const bySongId = new Map((songs || []).map(song => [song.id, song]));
@@ -103,7 +118,8 @@
         song,
         title: entry.title || song?.title || entry.id,
         summary: entry.summary || entry.cardSummary || song?.description || '',
-        href: entry.href || song?.experience || (entry.songId ? `/music/?song=${encodeURIComponent(entry.songId)}` : '')
+        href: entry.href || song?.experience || (entry.songId ? `/music/?song=${encodeURIComponent(entry.songId)}` : ''),
+        updateHref: entry.sharePath || `/updates/${encodeURIComponent(entry.id)}/`
       };
     };
 
@@ -117,6 +133,10 @@
     const latestKey = dateKey(dayEntries[0].published);
     const latestEntries = dayEntries.filter(entry => dateKey(entry.published) === latestKey);
     const latestLabel = prettyDate(dayEntries[0].published);
+    const isToday = latestKey === currentDateKey();
+    const briefingTitle = isToday ? 'WHAT CHANGED<br>TODAY.' : 'LATEST<br>CHANGES.';
+    const briefingKicker = isToday ? `Daily briefing · ${latestLabel}` : `Latest briefing · ${latestLabel}`;
+    const heroLabel = isToday ? 'What changed today ↓' : 'Latest changes ↓';
 
     const feed = latestEntries.map((entry, index) => `
       <article class="briefing-item${index === 0 ? ' briefing-item-lead' : ''}" id="home-${escapeHtml(entry.id)}">
@@ -128,14 +148,14 @@
         <p>${escapeHtml(entry.summary)}</p>
         <div class="briefing-item-actions">
           ${entry.href ? `<a href="${escapeHtml(entry.href)}">${escapeHtml(entry.cta || 'Open')} <span aria-hidden="true">→</span></a>` : ''}
-          <a class="briefing-permalink" href="/updates/#${encodeURIComponent(entry.id)}">Update link</a>
+          <a class="briefing-permalink" href="${escapeHtml(entry.updateHref)}">Open update</a>
         </div>
       </article>
     `).join('');
 
-    const radioLanes = intents.map(([id, label, description]) => `
-      <a class="briefing-intent" href="/music/?intent=${encodeURIComponent(id)}">
-        <span><strong>${escapeHtml(label)}</strong><small>${escapeHtml(description)}</small></span>
+    const radioLanes = intents.map(intent => `
+      <a class="briefing-intent" href="/music/?intent=${encodeURIComponent(intent.id)}">
+        <span><strong>${escapeHtml(intent.label)}</strong><small>${escapeHtml(intent.description)}</small></span>
         <b aria-hidden="true">→</b>
       </a>
     `).join('');
@@ -146,8 +166,8 @@
     section.innerHTML = `
       <div class="briefing-head">
         <div>
-          <div class="eyebrow">Daily briefing · ${escapeHtml(latestLabel)}</div>
-          <h2>WHAT CHANGED<br>TODAY.</h2>
+          <div class="eyebrow">${escapeHtml(briefingKicker)}</div>
+          <h2>${briefingTitle}</h2>
         </div>
         <div class="briefing-status">
           <span class="briefing-live-dot" aria-hidden="true"></span>
@@ -193,9 +213,9 @@
         const media = entry.cardClass === 'pulse-uprising'
           ? '<span class="pulse-card-art" aria-hidden="true"></span>'
           : video
-            ? `<video autoplay muted loop playsinline preload="metadata"><source src="${escapeHtml(video)}" type="video/mp4"></video>`
+            ? `<video autoplay muted loop playsinline preload="none" poster="${escapeHtml(cover)}"><source src="${escapeHtml(video)}" type="video/mp4"></video>`
             : cover
-              ? `<img src="${escapeHtml(cover)}" alt="${escapeHtml(entry.title)}" onerror="this.style.display='none'">`
+              ? `<img src="${escapeHtml(cover)}" alt="${escapeHtml(entry.title)}" loading="lazy" decoding="async" onerror="this.style.display='none'">`
               : '';
         const meta = [prettyDate(entry.published), song?.artist || entry.type].filter(Boolean).join(' · ');
         return `
@@ -230,7 +250,7 @@
     const primary = heroActions?.querySelector('.btn.primary');
     if (primary) {
       primary.href = '#briefing';
-      primary.textContent = 'What changed today ↓';
+      primary.textContent = heroLabel;
     }
     if (heroActions && !heroActions.querySelector('[data-radio-entry]')) {
       const radioButton = document.createElement('a');
