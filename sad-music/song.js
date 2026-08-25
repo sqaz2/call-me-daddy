@@ -1,5 +1,5 @@
 (()=>{
-  const id=document.body.dataset.sadSong,songs=Array.isArray(window.CMD_SAD_MUSIC)?window.CMD_SAD_MUSIC:[],song=songs.find(s=>s.id===id),app=document.getElementById('sadSongApp');if(!song||!app)return;
+  const id=document.body.dataset.sadSong,songs=(Array.isArray(window.CMD_SAD_MUSIC)?window.CMD_SAD_MUSIC:[]).filter(s=>s.id!=='i-need-love'),song=songs.find(s=>s.id===id),app=document.getElementById('sadSongApp');if(!song||!app)return;
   const safe=(v='')=>String(v).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));document.title=`${song.title} — MusicSubject × Call Me Daddy`;
   const shareLines={
     'locked-in-these-walls':['Three walls, one van, zero interior-design awards.','Apparently confinement has excellent acoustics.'],
@@ -9,7 +9,6 @@
     'broke-my-mug-not-my-song':['The mug died. The song survived. Alberta winter remains a suspect.','RIP mug. Your sacrifice has been monetized into emotional bass.'],
     'friction-the-what':['You didn’t need acid. Apparently you needed this link.','Friction the What: cheaper than explaining the title sober.'],
     'couple-friends-couple-calls':['Relationships: now available in confusing audio format.','Couple friends. Couple calls. Several unanswered questions.'],
-    'i-need-love':['Apparently these lyrics have survived more eras than some relationships.','Old recording → 2024 AI rework → busker mixes. The lyrics refused retirement.'],
     'numbness-as-a-trap':['Numbness called itself relief and got caught lying.','Turns out feeling nothing still has consequences. In stereo.'],
     'everybody-else-less':['A fictional hater has logged on. Hide the comments.','Social-media villain origin story, now with bass.'],
     'never-come-back-down':['This song looked at rock bottom and asked if there was basement parking.','Never Come Back Down: terrible motivational slogan, decent song title.'],
@@ -32,15 +31,7 @@
   function media(t){if(!('mediaSession'in navigator))return;try{navigator.mediaSession.metadata=new MediaMetadata({title:t.song.title,artist:'MusicSubject × Call Me Daddy',album:t.version.label})}catch{}}
   function paint(t){if(!t)return;pTitle.textContent=t.song.title;pLabel.textContent=t.version.label;pStatus.textContent='Playing';pOpen.hidden=t.song.id===song.id;pOpen.href=t.song.route;media(t)}
   function sourceUrl(path){try{return new URL(path,location.href).href}catch{return path||''}}
-  function syncTrackFromAudio(){
-    if(inGap||!queue.length)return;
-    const src=audio.currentSrc||audio.src;
-    if(!src)return;
-    const qi=queue.findIndex(t=>sourceUrl(t.version.audio)===src);
-    if(qi<0)return;
-    if(index!==qi)index=qi;
-    paint(queue[index]);
-  }
+  function syncTrackFromAudio(){if(inGap||!queue.length)return;const src=audio.currentSrc||audio.src;if(!src)return;const qi=queue.findIndex(t=>sourceUrl(t.version.audio)===src);if(qi<0)return;if(index!==qi)index=qi;paint(queue[index]);}
   function load(i,auto=true){if(!queue.length)return;inGap=false;pending=-1;index=(i+queue.length)%queue.length;const t=queue[index];audio.src=t.version.audio;audio.load();paint(t);player.hidden=false;window.CMDPersistentSite?.refreshClearance?.();if(auto)audio.play().catch(()=>pStatus.textContent='Tap play to continue')}
   async function gap(){if(!queue.length)return;pending=(index+1)%queue.length;pStatus.textContent=`Next: ${queue[pending].song.title}…`;pPlay.textContent='⋯';await gapReady;if(!window.CMD_SILENT_GAP){load(pending,true);return}inGap=true;audio.src=window.CMD_SILENT_GAP;audio.load();audio.play().catch(()=>load(pending,true))}
   pPlay?.addEventListener('click',()=>{if(index<0){const first=queue.findIndex(x=>x.song.id===song.id);if(first>=0)load(first,true);return}if(inGap){audio.pause();load(pending,false);return}if(audio.paused)audio.play().catch(()=>{});else audio.pause()});pPrev?.addEventListener('click',()=>queue.length&&load(index-1,true));pNext?.addEventListener('click',()=>queue.length&&load(index+1,true));
