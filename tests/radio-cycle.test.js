@@ -9,6 +9,7 @@ const sourceFiles=[
   'data/songs.js',
   'data/archive-catalog.js',
   'data/radio-intents.js',
+  'data/2026-08-25-uploads.js',
   'catalog-cycle.js'
 ];
 
@@ -63,6 +64,16 @@ test('a cycle contains each playable song identity once',()=>{
   const playable=window.CMD_SONGS.filter(song=>window.CMDCatalogCycle.variants(song).length);
   assert.equal(cycle.length,playable.length);
   assert.equal(new Set(ids(cycle)).size,cycle.length);
+});
+
+test('new August 25 uploads are catalogued without duplicating Numbness',()=>{
+  const {window}=loadRadio();
+  assert.ok(window.CMD_SONGS.some(song=>song.id==='side-chick-finder'));
+  const oneBrick=window.CMD_SONGS.find(song=>song.id==='one-brick');
+  assert.equal(oneBrick.variants.length,2);
+  const numbness=window.CMD_SONGS.find(song=>song.id==='numbness-as-a-trap');
+  assert.equal(numbness.variants.length,3);
+  assert.ok(numbness.variants.some(version=>version.id==='barbershop-wobble-edit'));
 });
 
 test('Level me up protects the trilogy order and skips unavailable audio',()=>{

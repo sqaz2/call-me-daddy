@@ -8,6 +8,8 @@ const root = path.resolve(__dirname, '..');
 const sandbox = { window: {} };
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(root, 'data/songs.js'), 'utf8'), sandbox, { filename: 'data/songs.js' });
+vm.runInContext(fs.readFileSync(path.join(root, 'data/radio-intents.js'), 'utf8'), sandbox, { filename: 'data/radio-intents.js' });
+vm.runInContext(fs.readFileSync(path.join(root, 'data/2026-08-25-uploads.js'), 'utf8'), sandbox, { filename: 'data/2026-08-25-uploads.js' });
 vm.runInContext(fs.readFileSync(path.join(root, 'data/briefing.js'), 'utf8'), sandbox, { filename: 'data/briefing.js' });
 
 const songs = sandbox.window.CMD_SONGS;
@@ -53,6 +55,12 @@ test('featured release order is explicit and collision-free', () => {
 test('song catalog ids are unique', () => {
   const ids = songs.map(song => song.id);
   assert.equal(new Set(ids).size, ids.length, 'song ids must be unique');
+});
+
+test('new upload batch resolves to two new song identities plus a Numbness version', () => {
+  assert.ok(songs.some(song => song.id === 'side-chick-finder'));
+  assert.equal(songs.find(song => song.id === 'one-brick')?.variants?.length, 2);
+  assert.equal(songs.find(song => song.id === 'numbness-as-a-trap')?.variants?.length, 3);
 });
 
 test('every public feed entry has a static previewable update page', () => {
