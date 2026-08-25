@@ -17,12 +17,13 @@
       artist:'MusicSubject × Call Me Daddy',
       year:2026,
       project:'Archive',
-      description:'A song fragment surfaced from long-term memory, was captured in a YouTube Short, then became a 2026 special remix.',
+      description:'A negative song resurfaced from long-term memory, became a 2026 special remix, then got rewritten in a positive direction.',
       audio:'/media/archive/2010-wows/2026/special-remix.mp3',
       cover:'https://i.ytimg.com/vi/Vay_RvzdeGs/hqdefault.jpg',
       experience:'/archive/2010-wows/',
       youtubeId:'Vay_RvzdeGs',
       youtubeUrl:'https://youtube.com/shorts/Vay_RvzdeGs?feature=share',
+      positiveSunoUrl:'https://suno.com/s/Zooqq8Q9KsTbnAjw',
       kind:'2026 special remix',
       variants:[{id:'special-2026-remix',label:'Special 2026 Remix',audio:'/media/archive/2010-wows/2026/special-remix.mp3'}]
     });
