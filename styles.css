@@ -386,7 +386,47 @@ button { font: inherit; }
 }
 
 @media (max-width: 820px) {
-  .navlinks { display: none; }
+  .topbar { overflow: hidden; }
+  .nav {
+    min-height: 68px;
+    height: auto;
+    padding: 10px 0 8px;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 8px;
+  }
+  .navlinks {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0 2px;
+    scroll-snap-type: x proximity;
+  }
+  .navlinks::-webkit-scrollbar { display: none; }
+  .navlinks a {
+    flex: 0 0 auto;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 999px;
+    background: rgba(255,255,255,.025);
+    color: #b8b4ad;
+    font-size: .76rem;
+    font-weight: 760;
+    scroll-snap-align: start;
+  }
+  .navlinks a[aria-current="page"] {
+    color: #080808;
+    background: #efede6;
+    border-color: #efede6;
+  }
   .brand { gap: 6px; font-size: .74rem; letter-spacing: .035em; }
   .brand-parent { display: inline; font-size: .58rem; letter-spacing: .09em; }
   .brand-slash { display: inline; }
@@ -415,6 +455,7 @@ button { font: inherit; }
   .project-shell { width: min(100% - 24px, 1100px); }
   .brand { font-size: .67rem; }
   .brand-parent { font-size: .53rem; }
+  .navlinks a { min-height: 34px; padding: 0 11px; font-size: .72rem; }
   .hero h1 { font-size: clamp(3.7rem,20vw,6rem); }
   .project-hero h1 { font-size: clamp(3.25rem,16vw,5.5rem); }
   .choice { padding: 22px; }
