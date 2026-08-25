@@ -1,6 +1,6 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-08-25T06:10:00-06:00",
+  updated: "2026-08-25T06:20:00-06:00",
   entries: [
     {
       id: "release-side-chick-finder",
@@ -22,9 +22,9 @@ window.CMD_BRIEFING = {
       featured: true,
       featuredOrder: 2,
       cardLines: ["ONE", "BRICK"],
-      cardTag: "Two versions",
-      cardSummary: "Barbershop Dubstep A Cappella plus the mystery thirty-six_bricks upload, kept under one song identity until its exact mix label is confirmed.",
-      badge: "2 versions"
+      cardTag: "Barbershop Dubstep A Cappella",
+      cardSummary: "One Brick rebuilt as a Barbershop Dubstep A Cappella mix.",
+      badge: "Uploaded today"
     },
     {
       id: "numbness-barbershop-wobble",
