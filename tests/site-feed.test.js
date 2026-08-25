@@ -12,6 +12,7 @@ vm.runInContext(fs.readFileSync(path.join(root, 'data/briefing.js'), 'utf8'), sa
 
 const songs = sandbox.window.CMD_SONGS;
 const feed = sandbox.window.CMD_BRIEFING;
+const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
 const safeId = /^[a-z0-9][a-z0-9-]*$/;
 const acceptedDate = /^\d{4}-\d{2}(?:-\d{2}(?:T.*)?)?$/;
@@ -52,4 +53,54 @@ test('featured release order is explicit and collision-free', () => {
 test('song catalog ids are unique', () => {
   const ids = songs.map(song => song.id);
   assert.equal(new Set(ids).size, ids.length, 'song ids must be unique');
+});
+
+test('every public feed entry has a static previewable update page', () => {
+  feed.entries.forEach(entry => {
+    const page = path.join(root, 'updates', entry.id, 'index.html');
+    assert.ok(fs.existsSync(page), `${entry.id} needs updates/${entry.id}/index.html`);
+    const html = fs.readFileSync(page, 'utf8');
+    assert.match(html, /property="og:title"/, `${entry.id} needs an Open Graph title`);
+    assert.match(html, /property="og:description"/, `${entry.id} needs an Open Graph description`);
+    assert.match(html, /property="og:url"/, `${entry.id} needs an Open Graph URL`);
+  });
+});
+
+test('update sharing uses real post URLs instead of fragment-only URLs', () => {
+  const updates = read('updates/updates.js');
+  const home = read('home-briefing.js');
+  assert.ok(updates.includes("`/updates/${encodeURIComponent(entry.id)}/`"), 'updates page must build post URLs');
+  assert.ok(home.includes("`/updates/${encodeURIComponent(entry.id)}/`"), 'homepage must build post URLs');
+  assert.ok(!updates.includes("`/updates/#${encodeURIComponent(entry.id)}`"), 'updates sharing must not use fragment-only URLs');
+});
+
+test('homepage radio labels come from canonical radio configuration', () => {
+  const home = read('home-briefing.js');
+  const index = read('index.html');
+  assert.match(home, /CMD_RADIO_CONFIG\?\.intents/, 'homepage must read the canonical intention config');
+  assert.ok(index.indexOf('/data/radio-intents.js') < index.indexOf('/home-briefing.js'), 'radio config must load before homepage briefing');
+});
+
+test('mobile navigation remains available instead of disappearing', () => {
+  const css = read('styles.css');
+  assert.ok(css.includes('overflow-x: auto'), 'mobile nav should be horizontally scrollable');
+  assert.ok(!/\.navlinks\s*\{\s*display:\s*none/.test(css), 'mobile nav must not be hidden');
+});
+
+test('sitemap includes updates, Armando, and all public update posts', () => {
+  const sitemap = read('sitemap.xml');
+  assert.ok(sitemap.includes('https://callmedaddy.musicsubject.com/updates/'), 'sitemap needs updates root');
+  assert.ok(sitemap.includes('https://callmedaddy.musicsubject.com/power-pulse-uprising/'), 'sitemap needs Armando release');
+  feed.entries.forEach(entry => {
+    assert.ok(sitemap.includes(`https://callmedaddy.musicsubject.com/updates/${entry.id}/`), `sitemap needs update page for ${entry.id}`);
+  });
+});
+
+test('key archive collections expose large-card social metadata', () => {
+  ['old-files-new-tools/index.html', 'sad-music/index.html', 'sqaz/index.html'].forEach(file => {
+    const html = read(file);
+    assert.match(html, /property="og:image"/, `${file} needs og:image`);
+    assert.match(html, /name="twitter:card" content="summary_large_image"/, `${file} needs a large Twitter/X card`);
+    assert.match(html, /name="twitter:image"/, `${file} needs twitter:image`);
+  });
 });
