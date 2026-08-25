@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260824-5';
+  const VERSION='20260824-6';
   const CLAIM='cmd:claim-playback';
   const PAUSE='cmd:pause-playback';
   const REFRESH='cmd:refresh-clearance';
@@ -52,17 +52,31 @@
   if(window.CMDPersistentSite?.version===VERSION)return;
 
   const originUrl=location.href;
+  const initialReferrer=(()=>{try{const u=new URL(document.referrer);return u.origin===location.origin?u.href:''}catch{return''}})();
   let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null;
+  let backGuardArmed=false;
   const frames=new Set();
 
   const playerSelectors=[
     '.catalog-player:not([hidden])','.sad-player:not([hidden])','.sad-song-player:not([hidden])',
     '.trilogy-player-shell:not([hidden])','#pickPlayer:not([hidden])','#oftPlayer:not([hidden])',
-    '#armandoPlayer:not([hidden])','#wifiPlayer:not([hidden])','.player:not([hidden])'
+    '#armandoPlayer:not([hidden])','#wifiPlayer:not([hidden])','.archive-player:not([hidden])','.player:not([hidden])'
   ];
 
   const sameOriginUrl=value=>{
     try{const u=new URL(value,location.href);return u.origin===location.origin?u:null}catch{return null}
+  };
+
+  const armBackGuard=()=>{
+    if(backGuardArmed||!initialReferrer)return;
+    const target=sameOriginUrl(initialReferrer);
+    if(!target)return;
+    backGuardArmed=true;
+    try{
+      const current=history.state&&typeof history.state==='object'?history.state:{};
+      history.replaceState({...current,cmdOwnerBase:true,cmdBackTarget:target.href},'',location.href);
+      history.pushState({cmdOwnerGuard:true,cmdBackTarget:target.href},'',location.href);
+    }catch{}
   };
 
   const playingMediaIn=win=>{
@@ -114,6 +128,7 @@
     if(ownerWindow!==win)pauseWindow(ownerWindow);
     ownerWindow=win;
     session=true;
+    if(win===window)armBackGuard();
     cleanupFrames();
     updatePillState();
     scheduleClearance();
@@ -216,6 +231,13 @@
     updatePillState();scheduleClearance();
   };
 
+  function openBackTarget(url){
+    ensureOverlay();session=true;overlay.classList.add('is-open');document.documentElement.style.overflow='hidden';
+    try{history.pushState({cmdView:url.href,cmdBackView:true},'',url.href)}catch{}
+    makeFrame(url);
+    updatePillState();scheduleClearance();
+  }
+
   function returnToOwner(){
     if(ownerWindow===window){closeView();return}
     const ownerFrame=frameForWindow(ownerWindow);if(!ownerFrame)return;
@@ -259,7 +281,14 @@
   addEventListener('resize',scheduleClearance,{passive:true});
   addEventListener('orientationchange',scheduleClearance,{passive:true});
   addEventListener('popstate',event=>{
-    if(!overlay?.classList.contains('is-open'))return;
+    const overlayOpen=Boolean(overlay?.classList.contains('is-open'));
+    if(!overlayOpen){
+      if(session&&ownerWindow===window&&event.state?.cmdOwnerBase){
+        const url=sameOriginUrl(event.state.cmdBackTarget||initialReferrer);
+        if(url){openBackTarget(url);return}
+      }
+      return;
+    }
     const target=event.state?.cmdView;
     if(target){const url=sameOriginUrl(target);if(url)openView(url,{push:false})}
     else if(ownerWindow===window)closeView({historyBack:true});
