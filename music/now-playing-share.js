@@ -17,7 +17,7 @@
   const variantsFor=song=>cycle.variants(song);
   const playableSongs=songs.filter(song=>variantsFor(song).length);
   const playableVersionCount=cycle.count(playableSongs);
-  const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  const safe=(value='')=>{const node=document.createElement('span');node.textContent=String(value);return node.innerHTML;};
   const shareUrl=(songId,variantId)=>{
     const url=new URL('/music/',location.origin);
     url.searchParams.set('song',songId);
@@ -93,8 +93,8 @@
     const hasAlternates=variants.length>1;
     const sentLabel=hasAlternates?`${song.title} — ${variantLabel}`:song.title;
     card.classList.add('shared-radio-target');
-    document.body.classList.add('cmd-radio-gated');
     requestAnimationFrame(()=>card.scrollIntoView({block:'center',behavior:'auto'}));
+    document.body.classList.add('cmd-radio-gated');
 
     const gate=document.createElement('div');
     gate.className='cmd-radio-gate';
