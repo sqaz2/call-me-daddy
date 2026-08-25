@@ -21,13 +21,12 @@
       month:8,
       date:'2026-08-25',
       project:'One Brick',
-      description:'Two uploads from the One Brick idea stay together as one song identity while the exact label for the thirty-six_bricks version is still being identified.',
+      description:'One Brick rebuilt as a Barbershop Dubstep A Cappella mix.',
       audio:'/media/songs/2026/08/one-brick/barbershop-dubstep-acappella.mp3',
       cover:'',
-      kind:'2 versions',
+      kind:'Barbershop Dubstep A Cappella Mix',
       variants:[
-        {id:'barbershop-dubstep-acappella',label:'Barbershop Dubstep A Cappella Mix',audio:'/media/songs/2026/08/one-brick/barbershop-dubstep-acappella.mp3'},
-        {id:'thirty-six-bricks',label:'Thirty-Six Bricks · exact mix label pending',audio:'/media/songs/2026/08/one-brick/thirty-six-bricks.mp3'}
+        {id:'barbershop-dubstep-acappella',label:'Barbershop Dubstep A Cappella Mix',audio:'/media/songs/2026/08/one-brick/barbershop-dubstep-acappella.mp3'}
       ]
     }
   ];
