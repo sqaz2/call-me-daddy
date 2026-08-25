@@ -5,6 +5,14 @@
   const cycle=window.CMDCatalogCycle;
   if(!audio||!controls||!songs.length||!cycle)return;
 
+  const love=songs.find(song=>song.id==='i-need-love');
+  if(love){
+    love.description='Older recording → 2024 AI reimagining → 2026 busker, ska-punk and dubstep branches.';
+    const card=[...document.querySelectorAll('.song-card')].find(el=>el.dataset.song==='i-need-love');
+    const copy=card?.querySelector('.song-card-body p');
+    if(copy)copy.textContent=love.description;
+  }
+
   const abs=value=>{try{return new URL(value,location.href).href}catch{return value||''}};
   const variantsFor=song=>cycle.variants(song);
   const shareUrl=(songId,variantId)=>{
