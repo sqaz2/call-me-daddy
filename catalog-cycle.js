@@ -14,17 +14,31 @@
     return song?.audio?[{id:'main',label:song.kind||'Main version',audio:song.audio,cover:song.cover||''}]:[];
   };
   const count=songs=>(songs||[]).reduce((n,s)=>n+variants(s).length,0);
+  const sharedRequest=(()=>{
+    try{
+      const q=new URLSearchParams(location.search);
+      const songId=q.get('song')||'';
+      if(!songId)return null;
+      return {songId,variantId:q.get('version')||''};
+    }catch{return null;}
+  })();
+  let sharedConsumed=false;
 
   function build(songs,{lastSongId=null,excludeIds=[]}={}){
     const excluded=new Set(excludeIds);
     const state=read();
     const selected=[];
+    const shared=!sharedConsumed?sharedRequest:null;
     (songs||[]).forEach(song=>{
       if(!song||excluded.has(song.id))return;
       const list=variants(song);
       if(!list.length)return;
       let cursor=Number(state[song.id]);
       if(!Number.isInteger(cursor)||cursor<0||cursor>=list.length)cursor=Math.floor(Math.random()*list.length);
+      if(shared&&song.id===shared.songId&&shared.variantId){
+        const forced=list.findIndex(v=>String(v.id||'')===shared.variantId);
+        if(forced>=0)cursor=forced;
+      }
       const variant=list[cursor];
       if(list.length>1)state[song.id]=(cursor+1)%list.length;
       selected.push({
@@ -39,6 +53,11 @@
     });
     write(state);
     const cycle=shuffle(selected);
+    if(shared){
+      const sharedIndex=cycle.findIndex(track=>track.songId===shared.songId);
+      if(sharedIndex>0)[cycle[0],cycle[sharedIndex]]=[cycle[sharedIndex],cycle[0]];
+      sharedConsumed=true;
+    }
     if(lastSongId&&cycle.length>1&&cycle[0]?.songId===lastSongId){
       const swap=cycle.findIndex((track,i)=>i>0&&track.songId!==lastSongId);
       if(swap>0)[cycle[0],cycle[swap]]=[cycle[swap],cycle[0]];
