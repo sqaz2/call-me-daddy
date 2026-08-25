@@ -1,0 +1,29 @@
+name: Site checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: JavaScript syntax
+        run: |
+          node --check data/songs.js
+          node --check data/briefing.js
+          node --check data/radio-intents.js
+          node --check catalog-cycle.js
+          node --check home-briefing.js
+          node --check music/music.js
+          node --check music/now-playing-share.js
+          node --check updates/updates.js
+      - name: Radio engine tests
+        run: node --test tests/radio-cycle.test.js
+      - name: Public feed tests
+        run: node --test tests/site-feed.test.js
