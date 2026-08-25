@@ -5,9 +5,10 @@
   if(love){
     Object.assign(love,{
       project:'Archive',
-      description:'Older writing carried from an earlier recording into a 2024 AI reimagining, then into two 2026 busker mixes.',
+      description:'Older writing carried from an earlier recording into a 2024 AI reimagining, then into 2026 busker and ska-punk versions.',
       experience:'/archive/i-need-love/',
-      kind:'2 archive versions'
+      kind:'3 archive interpretations',
+      skaPunkSunoUrl:'https://suno.com/s/UvNslBjOSmZlYvMM'
     });
   }
   if(!songs.some(s=>s.id==='2010-wows')){
