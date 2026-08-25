@@ -6,8 +6,9 @@ See `SITE-MAP.md` for the full information architecture and archive/media map.
 
 ## Main areas
 
-- `/` — homepage and current releases
-- `/music/` — growing music catalog and continuous player
+- `/` — homepage, daily briefing and current releases
+- `/updates/` — running public history of new music, experiments, archive finds and meaningful site changes
+- `/music/` — growing music catalog and intention-driven continuous player
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks release story
 - `/the-musician-police/` — The Musician Police release story
@@ -23,9 +24,13 @@ The preferred interaction is artwork-first: tap the image to start the music, th
 
 The main catalog follows the same rule used by the special release pages: artwork starts or pauses local audio, while external-only releases open from the artwork and retain their platform links.
 
-## Adding music
+The music page also supports intention-driven radio routes. The listener can ask to be surprised, laugh, think, level up, go heavy, or explore old files; the route weights the catalog accordingly while preserving controlled randomness and protected story sequences where order matters.
 
-See `ADDING-SONGS.md`. The current catalog data lives in `data/songs.js`; current song/project media use dated folders in `media/`.
+## Adding music and public updates
+
+See `ADDING-SONGS.md` for catalog/media work. The catalog data lives in `data/songs.js`; current song/project media use dated folders in `media/`.
+
+See `BRIEFING.md` for the public feed. `data/briefing.js` drives the homepage daily briefing, featured release cards and `/updates/`. Release entries should reference `data/songs.js` by `songId` so music metadata has one authoritative home.
 
 Historical source/rework projects use `media/archive/`. The Old Files / New Tools material is organized under:
 
