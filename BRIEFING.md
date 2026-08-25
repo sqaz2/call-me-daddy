@@ -1,37 +1,88 @@
-# Homepage briefing
+# Public feed: releases + updates
 
-The homepage daily briefing is intentionally data-driven.
+`data/briefing.js` is the public activity feed for the site.
 
-## Add an update
+It now has two jobs:
 
-Edit `data/briefing.js` and add a new object at the top of `entries`.
+1. drive the homepage **What Changed Today** briefing;
+2. drive the featured release cards and the full `/updates/` history.
 
-Required fields:
+The catalog itself remains authoritative for music metadata in `data/songs.js`. Feed entries should point at a catalog song with `songId` instead of copying its title, artist, artwork, audio or description unless the public update deliberately needs different wording.
 
-- `id` — unique stable slug
-- `published` — ISO timestamp with offset
-- `type` — short label such as `New song`, `Experiment`, `Archive`, `Site update`
-- `title`
-- `summary`
+## Add an ordinary update
 
-Optional fields:
+Add an object near the top of `entries`:
 
-- `href`
-- `cta`
-- `badge`
+```js
+{
+  id: "short-stable-slug",
+  published: "2026-08-25T12:00:00-06:00",
+  type: "Site update",
+  title: "Human-facing headline.",
+  summary: "What changed and why somebody should care.",
+  href: "/where-it-goes/",
+  cta: "Open it",
+  badge: "Optional badge"
+}
+```
 
-The homepage automatically groups the newest publication date into the visible daily briefing. Older entries can stay in the data file without crowding the front page.
+## Add a song/release update
 
-Use the `America/Edmonton` timezone for publication grouping so “today” stays consistent even when visitors are elsewhere.
+Prefer a catalog reference:
 
-## What belongs here
+```js
+{
+  id: "release-example",
+  published: "2026-08-25",
+  type: "New release",
+  songId: "catalog-song-id"
+}
+```
 
-Use the briefing for meaningful public changes:
+The update page will inherit the song title, artist, description and release/experience link from `data/songs.js`.
 
-- a new song or alternate version
-- a new old-file discovery or archive context
-- a new interactive release
-- a new listening route
-- a meaningful site/player change
+To feature it in the large homepage release grid, add:
 
-Do not turn it into a Git commit log. The briefing is the human-facing story of what changed.
+```js
+featured: true,
+featuredOrder: 1,
+cardClass: "optional-existing-style-class",
+cardLines: ["LINE ONE", "LINE TWO"],
+cardTag: "Short label",
+cardSummary: "Optional shorter card copy"
+```
+
+Use `cover`, `video` or `href` only when the update intentionally differs from the linked song metadata. Project-level releases may reference the closest catalog song while overriding the public project title/link.
+
+## Dates
+
+Use `America/Edmonton` for timestamps.
+
+Accepted forms:
+
+- exact timestamp: `2026-08-25T12:00:00-06:00`
+- exact known day: `2026-08-25`
+- known month only: `2026-08`
+
+Do not invent an exact day for historical material. Month-only items render as `Exact day not recorded` in `/updates/`.
+
+## What appears where
+
+- Homepage daily briefing: every feed entry on the newest exact day.
+- Homepage release grid: entries with `featured: true`, ordered by `featuredOrder`.
+- `/updates/`: every feed entry, grouped by date.
+- Stable share URL: `/updates/#ENTRY_ID`.
+
+The homepage also computes collection counts from `data/songs.js`; do not type song/version counts into feed data.
+
+## Editorial rule
+
+This is not a Git commit log. Include changes a listener could care about:
+
+- a new song or alternate version;
+- a new old-file discovery or archive context;
+- a new interactive release;
+- a new listening route;
+- a meaningful player/site change.
+
+Tiny implementation fixes stay in GitHub history, not the public feed.
