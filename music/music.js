@@ -10,8 +10,15 @@
   const variantsFor=song=>cycleEngine?cycleEngine.variants(song):(song?.audio?[{id:'main',label:song.kind||'Main version',audio:song.audio}]:[]);
   const playableSongs=songs.filter(song=>variantsFor(song).length);
   const totalVersions=cycleEngine?cycleEngine.count(playableSongs):playableSongs.length;
+  const intents=cycleEngine?.intents||[];
+  const intentById=new Map(intents.map(intent=>[intent.id,intent]));
+  const initialQuery=(()=>{try{return new URLSearchParams(location.search)}catch{return new URLSearchParams()}})();
+  let activeIntent=cycleEngine?.normalizeIntent(initialQuery.get('intent'))||'surprise';
+  let radioSeed=cycleEngine?.cleanSeed(initialQuery.get('seed'))||cycleEngine?.createSeed?.()||Date.now().toString(36);
+  let deterministicRoute=initialQuery.get('share')==='1';
   const grid=document.getElementById('songGrid');
   const count=document.getElementById('catalogCount');
+  const intentMount=document.getElementById('intentRadio');
   const player=document.getElementById('catalogPlayer');
   const audio=document.getElementById('catalogAudio');
   const play=document.getElementById('catalogPlay');
@@ -29,6 +36,8 @@
   let cycleIndex=-1;
   let cycleNumber=0;
   let lastSongId=null;
+
+  const activeIntentInfo=()=>intentById.get(activeIntent)||intents[0]||{id:'surprise',label:'Play the site',kicker:'Controlled chaos',description:'The catalog decides what happens next.',shareText:'Press play and let Call Me Daddy decide what happens next.'};
 
   if(!window.CMDPersistentSite){
     const script=document.createElement('script');
@@ -53,7 +62,7 @@
     haptics:true
   });
 
-  count.textContent=`${playableSongs.length} songs · ${totalVersions} playable versions · endless shuffle`;
+  count.textContent=`${playableSongs.length} songs · ${totalVersions} playable versions · intention radio`;
 
   if(!songs.length){
     grid.innerHTML='<p class="catalog-empty">No tracks have been added yet.</p>';
@@ -63,8 +72,92 @@
   const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
   const buildCycle=()=>{
     cycleNumber+=1;
-    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
+    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
     cycleIndex=-1;
+  };
+
+  function stationUrl(){
+    const url=new URL('/music/',location.origin);
+    url.searchParams.set('intent',activeIntent);
+    url.searchParams.set('seed',radioSeed);
+    url.searchParams.set('share','1');
+    return url.href;
+  }
+
+  function syncUrl(){
+    try{
+      const url=new URL(location.href);
+      ['song','version','share'].forEach(key=>url.searchParams.delete(key));
+      url.searchParams.set('intent',activeIntent);
+      url.searchParams.set('seed',radioSeed);
+      history.replaceState({},'',url);
+    }catch{}
+  }
+
+  function renderIntentState(message=''){
+    if(!intentMount)return;
+    const info=activeIntentInfo();
+    intentMount.querySelectorAll('[data-intent]').forEach(button=>{
+      const selected=button.dataset.intent===activeIntent;
+      button.classList.toggle('is-active',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+    const labelNode=intentMount.querySelector('[data-radio-label]');
+    const descriptionNode=intentMount.querySelector('[data-radio-description]');
+    const playNode=intentMount.querySelector('[data-radio-play]');
+    const statusNode=intentMount.querySelector('[data-radio-status]');
+    if(labelNode)labelNode.textContent=`${info.kicker} · ${info.label}`;
+    if(descriptionNode)descriptionNode.textContent=info.description;
+    if(playNode)playNode.textContent=`▶ ${info.label}`;
+    if(statusNode)statusNode.textContent=message;
+  }
+
+  function mountIntentionRadio(){
+    if(!intentMount||!intents.length)return;
+    intentMount.innerHTML=`
+      <div class="intent-radio-head">
+        <div><div class="kicker">Tell the station what you came for</div><h2>PLAY WITH INTENTION.</h2></div>
+        <p>Not a playlist. A weighted route through old files, new ideas and the stories hiding between songs.</p>
+      </div>
+      <div class="intent-grid" role="group" aria-label="Choose a listening intention">
+        ${intents.map(intent=>`<button class="intent-choice" type="button" data-intent="${safe(intent.id)}" aria-pressed="false"><small>${safe(intent.kicker)}</small><strong>${safe(intent.label)}</strong></button>`).join('')}
+      </div>
+      <div class="intent-now">
+        <div class="intent-now-copy"><small data-radio-label></small><p data-radio-description></p><span data-radio-status aria-live="polite"></span></div>
+        <div class="intent-now-actions"><button class="btn primary" type="button" data-radio-play></button><button class="btn" type="button" data-radio-share>↗ Share this route</button></div>
+      </div>`;
+    intentMount.addEventListener('click',event=>{
+      const intentButton=event.target.closest('[data-intent]');
+      if(intentButton){startIntent(intentButton.dataset.intent);return;}
+      if(event.target.closest('[data-radio-play]')){startIntent(activeIntent);return;}
+      if(event.target.closest('[data-radio-share]'))shareStation();
+    });
+    renderIntentState();
+  }
+
+  function startIntent(intent){
+    activeIntent=cycleEngine?.normalizeIntent(intent)||'surprise';
+    radioSeed=cycleEngine?.createSeed?.()||Date.now().toString(36);
+    deterministicRoute=false;
+    cycle=[];
+    cycleIndex=-1;
+    cycleNumber=0;
+    syncUrl();
+    renderIntentState('New route built.');
+    nextTrack();
+  }
+
+  async function shareStation(){
+    const info=activeIntentInfo();
+    const data={title:`${info.label} — Call Me Daddy Radio`,text:info.shareText,url:stationUrl()};
+    if(window.CMDShare?.nativeShare)await window.CMDShare.nativeShare(data);
+    else try{await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
+    renderIntentState('Route ready to send. The same seed rebuilds the same order.');
+  }
+
+  window.CMDRadio={
+    getState:()=>({...activeIntentInfo(),intent:activeIntent,seed:radioSeed,url:stationUrl(),cycle:cycleNumber}),
+    start:startIntent
   };
 
   function updateMediaSession(){
@@ -81,7 +174,7 @@
 
   function statusText(prefix='Playing'){
     if(!current||!cycle.length)return prefix;
-    return `${prefix} · cycle ${cycleNumber} · ${cycleIndex+1}/${cycle.length}`;
+    return `${prefix} · ${activeIntentInfo().label} · cycle ${cycleNumber} · ${cycleIndex+1}/${cycle.length}`;
   }
 
   async function hydrateYoutubeCard(song,card){
@@ -245,8 +338,13 @@
     play.setAttribute('aria-label','Pause');
     status.textContent=statusText('Playing');
     setActiveCard(lastSongId);
+    cycleEngine?.remember?.(current);
     window.CMDPersistentSite?.setSession(true);
     if('mediaSession' in navigator)navigator.mediaSession.playbackState='playing';
+  });
+  audio.addEventListener('playing',()=>{
+    if(current)status.textContent=statusText('Playing');
+    setActiveCard(lastSongId);
   });
   audio.addEventListener('pause',()=>{
     play.textContent='▶';
@@ -256,7 +354,11 @@
     if('mediaSession' in navigator)navigator.mediaSession.playbackState='paused';
   });
   audio.addEventListener('waiting',()=>{if(current)status.textContent=statusText('Buffering')});
-  audio.addEventListener('canplay',()=>{if(current&&audio.paused&&!audio.ended){status.textContent=statusText('Ready');setActiveCard(lastSongId)}});
+  audio.addEventListener('canplay',()=>{
+    if(!current||audio.ended)return;
+    status.textContent=statusText(audio.paused?'Ready':'Playing');
+    setActiveCard(lastSongId);
+  });
   audio.addEventListener('ended',()=>{bar.style.width='100%';nextTrack();});
   audio.addEventListener('error',()=>{
     status.textContent='This version could not be loaded. Skipping…';
@@ -289,5 +391,6 @@
     }catch{}
   }
 
+  mountIntentionRadio();
   buildCycle();
 })();

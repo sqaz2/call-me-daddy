@@ -17,7 +17,8 @@
   <link rel="canonical" href="https://callmedaddy.musicsubject.com/music/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
-  <link rel="stylesheet" href="/music/music.css?v=20260824-5">
+  <link rel="stylesheet" href="/music/music.css?v=20260825-1">
+  <link rel="stylesheet" href="/music/intent-radio.css?v=20260825-1">
   <link rel="stylesheet" href="/tactile-scrubber.css?v=20260820-2">
 </head>
 <body class="music-page">
@@ -39,7 +40,7 @@
       <a class="back" href="/">← Call Me Daddy</a>
       <div class="eyebrow">The catalog starts here</div>
       <h1>MUSIC</h1>
-      <p class="lede">Tap artwork once and leave it running. Every cycle reshuffles the songs; alternate versions rotate automatically.</p>
+      <p class="lede">Tell the station what you need—or give it control. It uses intention, recency, variety, story order and controlled randomness to choose what plays next.</p>
       <div class="actions">
         <a class="btn primary" href="https://suno.com/@callmedaddy" target="_blank" rel="noopener">Suno ↗</a>
         <a class="btn" href="https://youtube.com/@themusicsubject" target="_blank" rel="noopener">YouTube ↗</a>
@@ -48,6 +49,8 @@
         <a class="btn" href="/sqaz/">Sqaz · Explicit Archive</a>
       </div>
     </section>
+
+    <section class="shell intent-radio" id="intentRadio" aria-label="Intention radio"></section>
 
     <section class="shell music-section" aria-labelledby="catalogTitle">
       <div class="music-head">
@@ -85,12 +88,13 @@
 
   <script src="/data/songs.js?v=20260824-5"></script>
   <script src="/data/archive-catalog.js?v=20260824-3"></script>
-  <script src="/catalog-cycle.js?v=20260824-2"></script>
+  <script src="/data/radio-intents.js?v=20260825-1"></script>
+  <script src="/catalog-cycle.js?v=20260825-1"></script>
   <script src="/tactile-scrubber.js?v=20260820-2"></script>
   <script src="/persistent-site-browser.js?v=20260824-6"></script>
   <script src="/share.js?v=20260823-2"></script>
-  <script src="/music/music.js?v=20260824-2"></script>
-  <script src="/music/now-playing-share.js?v=20260824-4"></script>
+  <script src="/music/music.js?v=20260825-1"></script>
+  <script src="/music/now-playing-share.js?v=20260825-1"></script>
   <script src="/motion.js"></script>
 </body>
 </html>

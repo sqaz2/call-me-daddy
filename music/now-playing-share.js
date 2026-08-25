@@ -22,13 +22,17 @@
     const url=new URL('/music/',location.origin);
     url.searchParams.set('song',songId);
     if(variantId)url.searchParams.set('version',variantId);
+    const radio=window.CMDRadio?.getState?.();
+    if(radio?.intent)url.searchParams.set('intent',radio.intent);
+    if(radio?.seed)url.searchParams.set('seed',radio.seed);
+    url.searchParams.set('share','1');
     return url.href;
   };
   const sharedRequest=(()=>{
     try{
       const q=new URLSearchParams(location.search);
       const songId=q.get('song')||'';
-      return songId?{songId,variantId:q.get('version')||''}:null;
+      return songId?{songId,variantId:q.get('version')||'',intent:q.get('intent')||''}:null;
     }catch{return null;}
   })();
 
@@ -92,6 +96,8 @@
     const variantLabel=variant.label||song.kind||'Version';
     const hasAlternates=variants.length>1;
     const sentLabel=hasAlternates?`${song.title} — ${variantLabel}`:song.title;
+    const radioState=window.CMDRadio?.getState?.();
+    const intentLabel=radioState?.label||'Play the site';
     card.classList.add('shared-radio-target');
     requestAnimationFrame(()=>card.scrollIntoView({block:'center',behavior:'auto'}));
     document.body.classList.add('cmd-radio-gated');
@@ -104,9 +110,9 @@
         <button class="cmd-radio-close" type="button" aria-label="Close radio introduction">×</button>
         <div class="cmd-radio-kicker">CALL ME DADDY × MUSICSUBJECT</div>
         <h2 id="cmdRadioTitle">RADIO.</h2>
-        <div class="cmd-radio-stats">${playableSongs.length} songs · ${playableVersionCount} playable versions · endless</div>
+        <div class="cmd-radio-stats">${playableSongs.length} songs · ${playableVersionCount} playable versions · ${safe(intentLabel)}</div>
         <div class="cmd-radio-sent"><small>You were sent</small><strong>${safe(sentLabel)}</strong></div>
-        <p>Starts with this exact version. Then the station keeps moving.</p>
+        <p>Starts with this exact version. Then the <strong>${safe(intentLabel)}</strong> route keeps moving.</p>
         <button class="cmd-radio-enter" type="button">Cue my song →</button>
       </section>
       <section class="cmd-radio-cue" hidden aria-label="Start shared song">

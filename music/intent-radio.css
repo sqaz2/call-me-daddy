@@ -1,0 +1,38 @@
+.intent-radio{padding:4px 0 46px}
+.intent-radio:empty{display:none}
+.intent-radio-head{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);align-items:end;gap:34px;padding:30px 0 24px;border-top:1px solid rgba(255,255,255,.12)}
+.intent-radio-head h2{margin:7px 0 0;font-size:clamp(2.5rem,7vw,5.2rem);line-height:.86;letter-spacing:-.06em}
+.intent-radio-head>p{margin:0;color:#aaa59e;line-height:1.55}
+.intent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.intent-choice{min-height:112px;padding:18px;border:1px solid rgba(255,255,255,.11);border-radius:19px;background:#111;color:#f2efe8;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease,color .18s ease}
+.intent-choice:hover,.intent-choice:focus-visible{transform:translateY(-2px);border-color:rgba(255,255,255,.3);outline:none}
+.intent-choice small,.intent-choice strong{display:block}
+.intent-choice small{margin-bottom:17px;color:#8f8a83;font-size:.64rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+.intent-choice strong{font-size:1.22rem;line-height:1.05}
+.intent-choice.is-active{border-color:#e8e3d9;background:#e8e3d9;color:#090909}
+.intent-choice.is-active small{color:#5f5a54}
+.intent-now{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:10px;padding:20px;border:1px solid rgba(255,255,255,.11);border-radius:20px;background:linear-gradient(105deg,#151412,#0d0d0d)}
+.intent-now-copy{max-width:660px}
+.intent-now-copy small{display:block;color:#a49d91;font-size:.67rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+.intent-now-copy p{margin:6px 0 0;color:#d0cbc2}
+.intent-now-copy span{display:block;min-height:1em;margin-top:5px;color:#8e8981;font-size:.72rem}
+.intent-now-actions{display:flex;flex:0 0 auto;gap:9px}
+.intent-now-actions .btn{font:inherit;cursor:pointer}
+
+@media(max-width:900px){
+  .intent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .intent-now{align-items:flex-start;flex-direction:column}
+}
+
+@media(max-width:620px){
+  .intent-radio-head{grid-template-columns:1fr;gap:12px;padding-top:24px}
+  .intent-grid{grid-template-columns:1fr}
+  .intent-choice{min-height:88px}
+  .intent-choice small{margin-bottom:10px}
+  .intent-now-actions{width:100%;flex-direction:column}
+  .intent-now-actions .btn{width:100%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .intent-choice{transition:none}
+}
