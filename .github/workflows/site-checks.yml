@@ -30,6 +30,8 @@ jobs:
           node --check worker/index.mjs
       - name: Radio engine tests
         run: node --test tests/radio-cycle.test.js
+      - name: Four-track player handoff tests
+        run: node --test tests/four-track-player.test.js
       - name: Public feed tests
         run: node --test tests/site-feed.test.js
       - name: Streaming delivery tests
