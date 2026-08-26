@@ -26,7 +26,6 @@ jobs:
           node --check music/music.js
           node --check music/now-playing-share.js
           node --check anti-generative-ai-diss/collection.js
-          node --check anti-generative-ai-diss/player.js
           node --check updates/updates.js
           node --check worker/index.mjs
       - name: Radio engine tests

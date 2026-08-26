@@ -36,7 +36,7 @@
 
 .trilogy-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   align-items: stretch;
 }
@@ -164,6 +164,7 @@
 .trilogy-art.is-selected::after { content: "PLAYING IN THE DOCK"; }
 .trilogy-sticks .trilogy-art img { object-position: 50% 50%; }
 .trilogy-level .trilogy-art img { object-position: 50% 45%; }
+.trilogy-diss .trilogy-art img { object-position: 50% 50%; }
 
 .trilogy-card.is-selected {
   border-color: rgba(239, 186, 104, .62);
@@ -367,14 +368,12 @@ body.trilogy-player-open {
 
 @media (max-width: 960px) {
   .trilogy-grid { grid-template-columns: 1fr 1fr; }
-  .trilogy-level { grid-column: 1 / -1; }
 }
 
 @media (max-width: 760px) {
   .trilogy-section { padding: 76px 0 80px; }
   .trilogy-head { grid-template-columns: 1fr; gap: 20px; align-items: start; }
   .trilogy-grid { grid-template-columns: 1fr; }
-  .trilogy-level { grid-column: auto; }
   .trilogy-card { padding: 18px; }
 
   .trilogy-player-shell { bottom: calc(7px + env(safe-area-inset-bottom)); }

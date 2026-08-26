@@ -5,6 +5,7 @@ window.CMD_ANTI_AI_COLLECTION = {
   tracks: [
     {
       id: 'back-to-sticks',
+      playerKey: 'sticks',
       order: 1,
       lane: 'call-me-daddy',
       title: 'Back to Sticks',
@@ -16,6 +17,7 @@ window.CMD_ANTI_AI_COLLECTION = {
     },
     {
       id: 'the-musician-police',
+      playerKey: 'police',
       order: 2,
       lane: 'call-me-daddy',
       title: 'The Musician Police',
@@ -27,6 +29,7 @@ window.CMD_ANTI_AI_COLLECTION = {
     },
     {
       id: 'level-up',
+      playerKey: 'level',
       order: 3,
       lane: 'call-me-daddy',
       title: 'Level Up',
@@ -38,6 +41,7 @@ window.CMD_ANTI_AI_COLLECTION = {
     },
     {
       id: 'anti-generative-ai-diss',
+      playerKey: 'diss',
       order: 4,
       lane: 'call-me-daddy',
       title: 'Anti Generative AI Diss',

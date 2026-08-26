@@ -18,7 +18,10 @@
         <strong>${safe(track.title)}</strong>
         <span>${safe(track.artist)}</span>
         <p>${safe(track.summary)}</p>
-        <a href="${safe(track.href)}">${track.current?'You are here':'Open track'} →</a>
+        <div class="anti-track-actions">
+          ${track.playerKey?`<button type="button" data-trilogy-track="${safe(track.playerKey)}" aria-label="Play ${safe(track.title)}">▶ Play here</button>`:''}
+          <a href="${track.current?'#origin':safe(track.href)}">${track.current?'Story above ↑':'Open track page →'}</a>
+        </div>
       </div>
     </article>`).join('');
 

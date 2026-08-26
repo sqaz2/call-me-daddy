@@ -20,6 +20,11 @@
   box-shadow: 0 24px 75px rgba(72, 41, 24, .32);
 }
 
+.anti-track.is-selected {
+  border-color: rgba(215, 177, 138, .82);
+  box-shadow: 0 24px 75px rgba(72, 41, 24, .42), inset 0 0 0 1px rgba(215, 177, 138, .2);
+}
+
 .anti-track img,
 .anti-track-shade {
   position: absolute;
@@ -85,7 +90,14 @@
   color: #e3d9d1;
 }
 
-.anti-track-copy a {
+.anti-track-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+
+.anti-track-actions a,
+.anti-track-actions button {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
@@ -97,6 +109,21 @@
   font-weight: 820;
   text-decoration: none;
   backdrop-filter: blur(10px);
+}
+
+.anti-track-actions button {
+  border-color: rgba(215, 177, 138, .5);
+  background: #d7b18a;
+  color: #17100c;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 850;
+}
+
+.anti-track-actions a:focus-visible,
+.anti-track-actions button:focus-visible {
+  outline: 3px solid #f3eee8;
+  outline-offset: 3px;
 }
 
 .anti-community {
