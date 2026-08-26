@@ -8,7 +8,17 @@
   const progress=document.getElementById('oftProgress');
   const bar=document.getElementById('oftProgressBar');
   const tactileMount=document.getElementById('oftTactile');
+  const localButtons=[...document.querySelectorAll('.tape-play,.ab-play')];
+  const radio=window.CMDPlaylistRadio?.create({intent:'old-files'});
+  const shareButton=document.createElement('button');
+  shareButton.className='player-btn';
+  shareButton.type='button';
+  shareButton.setAttribute('aria-label','Share current song');
+  shareButton.title='Share current song';
+  shareButton.textContent='↗';
+  play.after(shareButton);
   let currentButton=null;
+  let currentRadioTrack=null;
 
   window.CMDTactileScrubber?.create({
     mount:tactileMount,
@@ -78,6 +88,7 @@
       if(audio.paused)audio.play().catch(()=>{});else audio.pause();
       return;
     }
+    currentRadioTrack=null;
     currentButton=btn;
     audio.src=src;
     title.textContent=btn.dataset.title||'Archive recording';
@@ -93,6 +104,32 @@
       play.textContent='▶';
       updateButtonState();
     });
+  }
+
+  function loadRadio(){
+    const track=radio?.next();
+    if(!track){status.textContent='Radio unavailable · open Music';play.textContent='▶';return;}
+    currentButton=null;
+    currentRadioTrack=track;
+    clearActive();
+    audio.src=track.audio;
+    title.textContent=track.title;
+    era.textContent=`Play the site${track.variantCount>1?` · ${track.variantLabel}`:''}`;
+    status.textContent='Loading…';
+    bar.style.width='0%';
+    dock.hidden=false;
+    document.body.classList.add('oft-player-open');
+    if('mediaSession' in navigator&&typeof MediaMetadata!=='undefined'){
+      try{navigator.mediaSession.metadata=new MediaMetadata({title:track.title,artist:track.artist||'Call Me Daddy',album:track.project||'Play the site',artwork:track.cover?[{src:new URL(track.cover,location.href).href}]:[]})}catch{}
+    }
+    audio.play().catch(()=>{status.textContent='Ready · tap play';play.textContent='▶'});
+  }
+
+  function nextTrack(){
+    if(currentRadioTrack){loadRadio();return;}
+    const index=localButtons.indexOf(currentButton);
+    if(index>=0&&index<localButtons.length-1){choose(localButtons[index+1]);return;}
+    loadRadio();
   }
 
   document.querySelectorAll('.tape-play,.ab-play').forEach(btn=>{
@@ -112,6 +149,10 @@
     if(!audio.src)return;
     if(audio.paused)audio.play().catch(()=>{});else audio.pause();
   });
+  shareButton.addEventListener('click',()=>{
+    if(currentRadioTrack){window.CMDPlaylistRadio?.share(currentRadioTrack);return;}
+    currentButton?.closest('article')?.querySelector('[data-share] .share-btn')?.click();
+  });
 
   audio.addEventListener('play',()=>{
     play.textContent='❚❚';
@@ -130,15 +171,15 @@
   audio.addEventListener('waiting',()=>{status.textContent='Buffering…'});
   audio.addEventListener('canplay',()=>{if(audio.paused&&!audio.ended)status.textContent='Ready'});
   audio.addEventListener('ended',()=>{
-    status.textContent='Finished';
-    play.textContent='▶';
     bar.style.width='100%';
     updateButtonState();
+    nextTrack();
   });
   audio.addEventListener('error',()=>{
-    status.textContent='This file could not be loaded.';
+    status.textContent='Skipping unavailable track…';
     play.textContent='▶';
     updateButtonState();
+    window.setTimeout(nextTrack,500);
   });
   audio.addEventListener('timeupdate',()=>{
     if(audio.duration){
@@ -160,6 +201,7 @@
     try{
       navigator.mediaSession.setActionHandler('play',()=>audio.play().catch(()=>{}));
       navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
+      navigator.mediaSession.setActionHandler('nexttrack',nextTrack);
       navigator.mediaSession.setActionHandler('seekbackward',d=>{audio.currentTime=Math.max(0,audio.currentTime-(d.seekOffset||10))});
       navigator.mediaSession.setActionHandler('seekforward',d=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(d.seekOffset||10))});
       navigator.mediaSession.setActionHandler('seekto',d=>{if(typeof d.seekTime==='number')audio.currentTime=Math.max(0,Math.min(audio.duration||Infinity,d.seekTime))});

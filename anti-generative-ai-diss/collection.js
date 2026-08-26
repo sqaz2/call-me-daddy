@@ -20,10 +20,18 @@
         <p>${safe(track.summary)}</p>
         <div class="anti-track-actions">
           ${track.playerKey?`<button type="button" data-trilogy-track="${safe(track.playerKey)}" aria-label="Play ${safe(track.title)}">▶ Play here</button>`:''}
+          <button type="button" data-share-track="${safe(track.id)}">↗ Share single</button>
           <a href="${track.current?'#origin':safe(track.href)}">${track.current?'Story above ↑':'Open track page →'}</a>
         </div>
       </div>
     </article>`).join('');
+
+  mount.addEventListener('click',event=>{
+    const button=event.target.closest('[data-share-track]');if(!button)return;
+    const track=tracks.find(item=>item.id===button.dataset.shareTrack);if(!track)return;
+    const data={title:`${track.title} — Call Me Daddy`,text:`Listen to ${track.title}.`,url:new URL(track.href,location.origin).href};
+    if(window.CMDShare?.nativeShare)window.CMDShare.nativeShare(data);else if(navigator.share)navigator.share(data);
+  });
 
   if(community&&data.community){
     const item=data.community;

@@ -1,17 +1,20 @@
 const tracks={
   up:{
+    id:'find-your-people',
     title:'Find Your People',
     src:'/media/songs/2026/08/find-your-people/audio.mp3',
     duration:149.760,
     artwork:'/media/projects/2026/08/cut-from-the-same-fabric/find-your-people-720.webp'
   },
   beat:{
+    id:'cut-from-the-same-fabric-instrumental',
     title:'Cut From the Same Fabric — Instrumental',
     src:'/media/songs/2026/08/cut-from-the-same-fabric-instrumental/audio.mp3',
     duration:186.576,
     artwork:'/media/projects/2026/08/cut-from-the-same-fabric/cover-720.jpg'
   },
   down:{
+    id:'hell-has-people-too',
     title:'HELL HAS PEOPLE TOO',
     src:'/media/songs/2026/08/hell-has-people-too/audio.mp3',
     duration:223.752,
@@ -53,6 +56,14 @@ const audio=document.getElementById('audio'),
   seq1=document.getElementById('seq1'),
   seq3=document.getElementById('seq3');
 
+const shareBtn=document.createElement('button');
+shareBtn.className='iconbtn';
+shareBtn.type='button';
+shareBtn.setAttribute('aria-label','Share current song');
+shareBtn.title='Share current song';
+shareBtn.textContent='↗';
+nextBtn.after(shareBtn);
+
 const crossAudio=document.createElement('audio');
 crossAudio.id='crossfadeAudio';
 crossAudio.preload='metadata';
@@ -76,6 +87,8 @@ let mediaSource=null;
 let mediaSourceUrl='';
 let mediaBuildToken=0;
 let lastMetadataKey='';
+let radioTrack=null;
+const radio=window.CMDPlaylistRadio?.create({excludeIds:Object.values(tracks).map(track=>track.id),lastSongId:tracks.down.id});
 const renderedReady={up:false,down:false};
 
 const ua=navigator.userAgent||'';
@@ -157,6 +170,18 @@ function setMediaMetadata(key,force=false){
       artwork:[
         {src:new URL(tracks[key].artwork,location.href).href,sizes:'720x720'}
       ]
+    });
+  }catch(_){ }
+}
+
+function setRadioMetadata(track){
+  if(!track||!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
+  try{
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title:track.title,
+      artist:track.artist||'Call Me Daddy',
+      album:track.project||'Play the site',
+      artwork:track.cover?[{src:new URL(track.cover,location.href).href}]:[]
     });
   }catch(_){ }
 }
@@ -337,6 +362,30 @@ function loadLegacy(autoplay=false){
   }
 }
 
+function loadRadio(autoplay=true){
+  const track=radio?.next();
+  if(!track){
+    playBtn.textContent='▶';
+    nowLabel.textContent='Radio unavailable · open Music';
+    return;
+  }
+  stopCrossfade();
+  releaseMediaSource();
+  playbackMode='radio';
+  radioTrack=track;
+  activeAudio=audio;
+  singleSegments=[];
+  audio.pause();
+  audio.src=track.audio;
+  audio.volume=1;
+  audio.load();
+  progress.style.width='0%';
+  nowTitle.textContent=track.title;
+  nowLabel.textContent=`Play the site${track.variantCount>1?` · ${track.variantLabel}`:''}`;
+  setRadioMetadata(track);
+  if(autoplay)audio.play().catch(()=>{nowLabel.textContent='Ready · tap ▶ to continue'});
+}
+
 function toggle(){
   if(!order.length){choose('up');return;}
   if(activeAudio.paused){
@@ -347,6 +396,11 @@ function toggle(){
 
 function step(delta){
   if(!order.length)return;
+  if(playbackMode==='radio'){
+    if(delta>0)loadRadio(true);
+    else if(audio.currentTime>5){audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});}
+    return;
+  }
   if(playbackMode==='single'){
     const {segmentIndex}=segmentForTime(audio.currentTime);
     let targetIndex=segmentIndex;
@@ -446,16 +500,18 @@ function beginPositiveCrossfade(){
 function handleEnded(el){
   if(el!==activeAudio)return;
   if(playbackMode==='single'){
-    playBtn.textContent='▶';
-    setPlaybackState('none');
+    loadRadio(true);
+    return;
+  }
+  if(playbackMode==='radio'){
+    loadRadio(true);
     return;
   }
   if(index<order.length-1){
     index++;
     loadLegacy(true);
   }else{
-    playBtn.textContent='▶';
-    setPlaybackState('none');
+    loadRadio(true);
   }
 }
 
@@ -491,6 +547,16 @@ document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>c
 playBtn.addEventListener('click',toggle);
 prevBtn.addEventListener('click',()=>step(-1));
 nextBtn.addEventListener('click',()=>step(1));
+shareBtn.addEventListener('click',()=>{
+  if(playbackMode==='radio'){window.CMDPlaylistRadio?.share(radioTrack);return;}
+  const key=playbackMode==='single'?segmentForTime(audio.currentTime).segment?.key:order[index];
+  const track=tracks[key];
+  if(track)window.CMDPlaylistRadio?.share({...track,songId:track.id,variantId:'main'});
+});
+document.querySelectorAll('[data-fabric-share]').forEach(button=>button.addEventListener('click',()=>{
+  const track=tracks[button.dataset.fabricShare];
+  if(track)window.CMDPlaylistRadio?.share({...track,songId:track.id,variantId:'main'});
+}));
 
 audio.addEventListener('play',()=>{
   if(activeAudio===audio){
@@ -514,6 +580,15 @@ audio.addEventListener('loadedmetadata',()=>{
     singleSegments[singleSegments.length-1].end=Math.max(singleSegments[singleSegments.length-1].start+.1,audio.duration);
     updateSingleUI();
   }
+});
+audio.addEventListener('error',()=>{
+  if(playbackMode==='single'){startLegacy(currentPath,true);return;}
+  nowLabel.textContent='Skipping unavailable track…';
+  window.setTimeout(()=>{
+    if(playbackMode==='radio'){loadRadio(true);return;}
+    if(index<order.length-1){index++;loadLegacy(true);return;}
+    loadRadio(true);
+  },500);
 });
 
 crossAudio.addEventListener('play',()=>{

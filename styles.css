@@ -464,6 +464,10 @@ button { font: inherit; }
   .trackmeta strong { max-width: 185px; }
 }
 
+.cmd-now-share { display: inline-flex; align-items: center; min-height: 30px; margin-top: 5px; padding: 0; border: 0; background: transparent; color: inherit; font: 800 .68rem/1 system-ui, sans-serif; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; opacity: .82; }
+.cmd-now-share:hover, .cmd-now-share:focus-visible { opacity: 1; text-decoration: underline; }
+.song-share-action { font: 760 .88rem/1 system-ui, sans-serif; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }

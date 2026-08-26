@@ -18,6 +18,12 @@ The exact-song URL contract remains supported:
 
 The requested version is first. Radio continues afterward.
 
+## Collection-player contract
+
+Every page that presents a local playlist or version collection must keep playing after its own sequence ends. The local sequence stays first; then `playlist-radio.js` hands the same page player into the weighted intention engine. The first radio cycle excludes the local songs just heard, later cycles restore the full catalog, and an unavailable file is skipped instead of ending the session.
+
+Already-endless players (the main catalog and When Things Got Heavy) keep their native cycles. The four-song anti-AI run uses the same contract inside `new-tools-trilogy.js`.
+
 ## Selection math
 
 `catalog-cycle.js` combines:
@@ -52,6 +58,8 @@ node --check catalog-cycle.js
 node --check data/radio-intents.js
 node --check music/music.js
 node --check music/now-playing-share.js
+node --check playlist-radio.js
+node --test tests/playlist-continuity.test.js
 ```
 
 The tests cover seeded reproducibility, unique identities, protected story order, unavailable-track skipping, version rotation, legacy exact shares, invalid intentions, and complete profile coverage.

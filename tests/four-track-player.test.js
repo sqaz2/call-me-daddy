@@ -58,7 +58,7 @@ function createHarness(){
   document.body.appendChild=element=>{
     if(element.id)elements.set(element.id,element);
     if(element.id==='trilogyPlayer'){
-      ['trilogyTactile','trilogyNowCover','trilogyYoutube','trilogyNowLabel','trilogyNowTitle','trilogyStatus','trilogyPrev','trilogyPlay','trilogyNext','trilogyTimeline','trilogyProgress'].forEach(id=>elements.set(id,new FakeElement(id.includes('Prev')||id.includes('Play')||id.includes('Next')||id.includes('Timeline')?'button':'div',id)));
+      ['trilogyTactile','trilogyNowCover','trilogyYoutube','trilogyNowLabel','trilogyNowTitle','trilogyStatus','trilogyPrev','trilogyPlay','trilogyNext','trilogyShare','trilogyTimeline','trilogyProgress'].forEach(id=>elements.set(id,new FakeElement(id.includes('Prev')||id.includes('Play')||id.includes('Next')||id.includes('Share')||id.includes('Timeline')?'button':'div',id)));
       elements.set('trilogyAudio',new FakeAudio('trilogyAudio',location));
     }
     return element;

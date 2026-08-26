@@ -4,7 +4,7 @@ The main catalog lives at `/music/` and is generated from `/data/songs.js`.
 
 ## Keep special projects separate
 
-`/cut-from-the-same-fabric/` has custom three-track sequencing and its one-way crossfade. Do not add ordinary catalog songs to that player.
+`/cut-from-the-same-fabric/` has custom three-track sequencing and its one-way crossfade. Do not insert ordinary catalog songs into that three-track sequence. After the sequence finishes, the shared playlist tail takes over and continues through intention radio.
 
 ## Media layout by year and month
 
@@ -85,3 +85,9 @@ The component uses the page canonical URL and Open Graph metadata by default, so
 When songs are supplied through ChatGPT, the intended workflow is to place them in the correct dated folder (or create the YouTube-backed entry), update `/data/songs.js`, create/update the dedicated release page when appropriate, include sharing, and update the sitemap; you should not need to manually reorganize files afterward.
 
 The catalog player includes missing-image and missing-audio fallbacks so one bad asset does not break the whole page. Keep the interaction artwork-first: the image starts playback and the bottom dock handles play/pause and seeking rather than exposing a native audio control bar inside each card.
+
+The main catalog renderer automatically adds a direct **Share song** control to every card. Version collections should also expose a share control beside each version. Use the exact-song URL contract so the recipient gets that song/version first and the radio continues afterward:
+
+```text
+/music/?song=SONG_ID&version=VERSION_ID&intent=INTENT&share=1
+```

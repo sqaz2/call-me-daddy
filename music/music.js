@@ -84,6 +84,24 @@
     return url.href;
   }
 
+  function songShareUrl(song,variant){
+    if(!variant)return new URL(song.experience||song.youtubeUrl||'/music/',location.origin).href;
+    const url=new URL('/music/',location.origin);
+    url.searchParams.set('song',song.id);
+    if(variant.id)url.searchParams.set('version',variant.id);
+    url.searchParams.set('intent',activeIntent);
+    url.searchParams.set('seed',radioSeed);
+    url.searchParams.set('share','1');
+    return url.href;
+  }
+
+  async function shareSong(song,variant){
+    const detail=variant&&variantsFor(song).length>1?` — ${variant.label||song.kind||'Version'}`:'';
+    const data={title:`${song.title}${detail}`,text:`Listen to ${song.title}${detail}.`,url:songShareUrl(song,variant)};
+    if(window.CMDShare?.nativeShare)return window.CMDShare.nativeShare(data);
+    try{if(navigator.share)return navigator.share(data);await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
+  }
+
   function syncUrl(){
     try{
       const url=new URL(location.href);
@@ -227,6 +245,7 @@
         <h3>${safe(song.title)}</h3>
         <p>${safe(song.description||'')}</p>
         <div class="song-actions">
+          <button class="song-link song-share-action" type="button">↗ Share song</button>
           ${song.experience&&playable?`<a class="song-link" href="${safe(song.experience)}">${experienceLabel}</a>`:''}
           ${song.youtubeUrl?`<a class="song-link" href="${safe(song.youtubeUrl)}" target="_blank" rel="noopener">YouTube ↗</a>`:''}
           ${song.youtubeMusicUrl?`<a class="song-link" href="${safe(song.youtubeMusicUrl)}" target="_blank" rel="noopener">YouTube Music ↗</a>`:''}
@@ -240,6 +259,7 @@
     if(!song.cover&&hasBackgroundVideo)img?.remove();
     img?.addEventListener('error',()=>card.classList.add('fallback'),{once:true});
     card.querySelector('button.song-art-hit')?.addEventListener('click',()=>selectSong(song));
+    card.querySelector('.song-share-action')?.addEventListener('click',()=>shareSong(song,songVariants[0]||null));
     grid.appendChild(card);
     hydrateYoutubeCard(song,card);
   });
