@@ -9,6 +9,7 @@ See `SITE-MAP.md` for the full information architecture and archive/media map.
 - `/` — homepage, daily briefing and current releases
 - `/updates/` — running public history of new music, experiments, archive finds and meaningful site changes
 - `/music/` — growing music catalog and intention-driven continuous player
+- `/anti-generative-ai-diss/` — four-track anti-gatekeeping collection, origin story and invitation-ready guest lane
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks release story
 - `/the-musician-police/` — The Musician Police release story
@@ -25,6 +26,8 @@ The preferred interaction is artwork-first: tap the image to start the music, th
 The main catalog follows the same rule used by the special release pages: artwork starts or pauses local audio, while external-only releases open from the artwork and retain their platform links.
 
 The music page also supports intention-driven radio routes. The listener can ask to be surprised, laugh, think, level up, go heavy, or explore old files; the route weights the catalog accordingly while preserving controlled randomness and protected story sequences where order matters.
+
+Audio and video requests pass through the range-aware delivery layer documented in `STREAMING.md`. Public `/media/...` URLs remain stable while individual files can migrate to R2 later.
 
 ## Adding music and public updates
 

@@ -51,6 +51,7 @@ The site has four jobs:
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks
 - `/the-musician-police/` — The Musician Police
+- `/anti-generative-ai-diss/` — the fourth anti-gatekeeping track, all four connected songs, origin story and an invitation-ready guest lane
 - `/cut-from-the-same-fabric/` — interactive three-track release; listener chooses which side starts
 - `/funhouse-meltdown/` — voice-to-song experiment
 - `/namaste-hamster/` — Namaste, Hamster release page
