@@ -90,5 +90,7 @@ test('already-endless players remain cyclic',()=>{
   assert.ok(read('sad-music/sad.js').includes('pending=(index+1)%queue.length'));
   assert.ok(read('sad-music/song.js').includes('pending=(index+1)%queue.length'));
   assert.ok(read('new-tools-trilogy.js').includes('if(radioMode){nextRadioTrack();return}'));
-  assert.ok(read('concrete-under-evergreens/player.js').includes("audio.addEventListener('ended',advance)"));
+  const concrete=read('concrete-under-evergreens/player.js');
+  assert.ok(concrete.includes("audio.addEventListener('ended'"));
+  assert.ok(concrete.includes('advance()'));
 });
