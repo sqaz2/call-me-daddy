@@ -6,9 +6,11 @@
     document.head.appendChild(compactStyle);
   }
 
-  const playCoverSrc='/media/songs/2026/08/concrete-under-evergreens/evergreens-cover.jpg';
+  const playCoverSrc='/media/songs/2026/08/concrete-under-evergreens/evergreens-cover.png';
   const pageCover=document.querySelector('.concrete-cover-button img');
   if(pageCover){pageCover.src=playCoverSrc;pageCover.alt='Concrete patches beneath evergreen trees';}
+  const heroVideo=document.querySelector('.concrete-hero-video');
+  if(heroVideo)heroVideo.poster=playCoverSrc;
 
   const player=document.getElementById('concretePlayer');
   const audio=document.getElementById('concreteAudio');
