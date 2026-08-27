@@ -11,7 +11,6 @@
   const share=document.getElementById('concretePlayerShare');
   const progress=document.getElementById('concreteProgress');
   const bar=document.getElementById('concreteProgressBar');
-  const video=document.getElementById('concreteVideo');
   if(!player||!audio)return;
 
   const fallback={
@@ -78,12 +77,11 @@
   share.addEventListener('click',()=>window.CMDPlaylistRadio?.share(current));
   progress.addEventListener('click',event=>{if(!audio.duration)return;const rect=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((event.clientX-rect.left)/rect.width)*audio.duration))});
 
-  audio.addEventListener('play',()=>{video?.pause();play.textContent='❚❚';status.textContent='Playing';window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.();window.CMDCatalogCycle?.remember?.(current);try{navigator.mediaSession.playbackState='playing'}catch{}});
+  audio.addEventListener('play',()=>{play.textContent='❚❚';status.textContent='Playing';window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.();window.CMDCatalogCycle?.remember?.(current);try{navigator.mediaSession.playbackState='playing'}catch{}});
   audio.addEventListener('pause',()=>{if(!audio.ended){play.textContent='▶';status.textContent='Paused'}try{navigator.mediaSession.playbackState='paused'}catch{}});
   audio.addEventListener('ended',advance);
   audio.addEventListener('timeupdate',()=>{if(audio.duration)bar.style.width=`${audio.currentTime/audio.duration*100}%`});
   audio.addEventListener('error',()=>{if(!audio.src)return;status.textContent='Skipping unavailable track…';window.setTimeout(advance,500)});
-  video?.addEventListener('play',()=>{if(!audio.paused)audio.pause()});
   document.querySelector('.concrete-lyrics details')?.addEventListener('toggle',event=>{const marker=event.currentTarget.querySelector('summary b');if(marker)marker.textContent=event.currentTarget.open?'−':'+'});
 
   if('mediaSession' in navigator){try{
