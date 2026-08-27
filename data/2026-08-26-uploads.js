@@ -39,7 +39,7 @@
     project:'Lacombe Civic Emergency',
     description:'Two small wheelbarrows of leftover concrete beneath the trees at Big Dipper Park became one extremely necessary satirical community ballad. The dumping is not celebrated; the scale of the online emergency is.',
     audio:'/media/songs/2026/08/concrete-under-evergreens/audio.mp3',
-    cover:'/media/songs/2026/08/concrete-under-evergreens/cover.jpg',
+    cover:'/media/songs/2026/08/concrete-under-evergreens/cover.png',
     backgroundVideo:'/media/songs/2026/08/concrete-under-evergreens/background-loop.mp4',
     experience:'/concrete-under-evergreens/',
     sourceUrl:'https://www.facebook.com/groups/2281023172270130/posts/2869734633398978/',
@@ -63,7 +63,7 @@
         cardTag:'Lacombe · thoughts, care & sub-bass',
         cardSummary:'Two small wheelbarrows beneath the trees became one notified city, an absurdly cinematic ambient background and a completely proportionate 5:44 musical response.',
         badge:'The city was notified',
-        cover:'/media/songs/2026/08/concrete-under-evergreens/cover.jpg'
+        cover:'/media/songs/2026/08/concrete-under-evergreens/cover.png'
       });
     }
     window.CMD_BRIEFING.updated='2026-08-26T23:25:00-06:00';
