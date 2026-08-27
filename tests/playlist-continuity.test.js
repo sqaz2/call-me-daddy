@@ -67,6 +67,14 @@ test('songs and versions expose direct share controls before update blurbs',()=>
   assert.ok(catalog.includes("url.searchParams.set('song',song.id)"));
   assert.ok(catalog.includes("url.searchParams.set('version',variant.id)"));
 
+  const nowPlaying=read('music/now-playing-share.js');
+  assert.ok(nowPlaying.includes("song?.shareUrl||song?.experience"));
+  assert.ok(nowPlaying.includes(".song-share-action"));
+  assert.ok(nowPlaying.includes('songShareUrl(song,variant)'));
+
+  const sharedRadio=read('playlist-radio.js');
+  assert.ok(sharedRadio.includes("track?.shareUrl||track?.experience"));
+
   const sadCollection=read('sad-music/sad.js');
   const sadSong=read('sad-music/song.js');
   assert.ok(sadCollection.includes('sad-share-song'));
@@ -79,6 +87,8 @@ test('songs and versions expose direct share controls before update blurbs',()=>
   const concrete=read('concrete-under-evergreens/index.html');
   assert.ok(concrete.includes('data-share-label="Send thoughts &amp; bass"'));
   assert.ok(concrete.includes('id="concretePlayerShare"'));
+  assert.ok(concrete.includes('concrete-under-evergreens/cover.png'));
+  assert.ok(concrete.includes('og:image:type" content="image/png"'));
 
   const oldFiles=read('old-files-new-tools/index.html');
   assert.equal((oldFiles.match(/class="(?:tape-play|ab-play)/g)||[]).length,(oldFiles.match(/class="song-share/g)||[]).length);
