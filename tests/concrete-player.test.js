@@ -33,17 +33,11 @@ class FakeAudio extends FakeElement{
   finish(){this.currentTime=this.duration;this.paused=true;this.ended=true;this.dispatch('ended');}
 }
 
-class FakeVideo extends FakeElement{
-  constructor(id){super('video',id);this.paused=true;}
-  pause(){this.paused=true;}
-}
-
 function createHarness(){
   const location={href:'https://callmedaddy.musicsubject.com/concrete-under-evergreens/',origin:'https://callmedaddy.musicsubject.com',search:''};
   const ids=['concretePlayer','concretePlayerCover','concretePlayerLabel','concretePlayerTitle','concretePlayerStatus','concretePlay','concretePrev','concreteNext','concretePlayerShare','concreteProgress','concreteProgressBar'];
   const elements=new Map(ids.map(id=>[id,new FakeElement(id==='concretePlayerCover'?'img':id==='concretePlayerTitle'?'a':id.includes('Play')||id.includes('Prev')||id.includes('Next')||id.includes('Share')||id.includes('Progress')?'button':'div',id)]));
   elements.set('concreteAudio',new FakeAudio('concreteAudio',location));
-  elements.set('concreteVideo',new FakeVideo('concreteVideo'));
   const triggers=[new FakeElement('button'),new FakeElement('button'),new FakeElement('button')];
   const marker=new FakeElement('b');
   const details=new FakeElement('details');
@@ -87,4 +81,13 @@ test('Next hands the single into endless radio without waiting for the ending',(
   assert.equal(elements.get('concretePlayerLabel').textContent.startsWith('Play the site'),true);
   assert.doesNotMatch(audio.src,/concrete-under-evergreens\/audio\.mp3$/);
   assert.equal(audio.paused,false);
+});
+
+test('the cinematic clip is ambient hero background, not a standalone evidence player',()=>{
+  const html=fs.readFileSync(path.join(root,'concrete-under-evergreens/index.html'),'utf8');
+  assert.match(html,/class="concrete-hero-video"[^>]*autoplay[^>]*muted[^>]*loop[^>]*playsinline/);
+  assert.match(html,/background-loop\.mp4/);
+  assert.doesNotMatch(html,/<video[^>]*controls/);
+  assert.doesNotMatch(html,/Dramatic reconstruction/i);
+  assert.doesNotMatch(html,/concrete-video-frame/);
 });
