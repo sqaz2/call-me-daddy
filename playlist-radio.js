@@ -53,6 +53,12 @@
   }
 
   function shareUrl(track){
+    const dedicated=track?.shareUrl||track?.experience;
+    if(dedicated){
+      const url=new URL(dedicated,location.origin);
+      if(track?.variantId&&track?.variantCount>1)url.searchParams.set('version',track.variantId);
+      return url.href;
+    }
     const url=new URL('/music/',location.origin);
     url.searchParams.set('song',track?.songId||track?.id||'');
     if(track?.variantId)url.searchParams.set('version',track.variantId);
