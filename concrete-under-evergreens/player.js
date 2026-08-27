@@ -1,4 +1,9 @@
 (()=>{
+  const compactStyle=document.createElement('link');
+  compactStyle.rel='stylesheet';
+  compactStyle.href='/concrete-under-evergreens/compact.css?v=20260827-1';
+  document.head?.appendChild(compactStyle);
+
   const player=document.getElementById('concretePlayer');
   const audio=document.getElementById('concreteAudio');
   const cover=document.getElementById('concretePlayerCover');
@@ -11,6 +16,8 @@
   const share=document.getElementById('concretePlayerShare');
   const progress=document.getElementById('concreteProgress');
   const bar=document.getElementById('concreteProgressBar');
+  const coverButton=document.querySelector('.concrete-cover-button');
+  const coverPlay=document.querySelector('.concrete-cover-play');
   if(!player||!audio)return;
 
   const fallback={
@@ -27,6 +34,11 @@
   let index=-1;
   let current=null;
 
+  const syncCoverState=()=>{
+    const localPlaying=index===0&&!audio.paused&&!audio.ended;
+    if(coverPlay)coverPlay.hidden=localPlaying;
+    if(coverButton?.setAttribute)coverButton.setAttribute('aria-label',localPlaying?'Pause Concrete Under Evergreens':'Play Concrete Under Evergreens');
+  };
   const media=track=>{
     if(!track||!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
     try{navigator.mediaSession.metadata=new MediaMetadata({title:track.title,artist:track.artist||'Call Me Daddy',album:track.project||'Play the site',artwork:track.cover?[{src:new URL(track.cover,location.href).href}]:[]})}catch{}
@@ -41,6 +53,7 @@
     status.textContent='Loading…';
     bar.style.width='0%';
     media(track);
+    syncCoverState();
   };
   const load=(target,autoplay=true)=>{
     index=Math.max(0,Math.min(queue.length-1,target));
@@ -51,7 +64,7 @@
     player.hidden=false;
     document.body.classList.add('concrete-player-open');
     window.CMDPersistentSite?.refreshClearance?.();
-    if(autoplay)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue'});
+    if(autoplay)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue';syncCoverState()});
   };
   const ensureNext=()=>{
     if(index<queue.length-1)return index+1;
@@ -62,26 +75,29 @@
   };
   const advance=()=>{
     const target=ensureNext();
-    if(target<0){status.textContent='Radio unavailable · open Music';play.textContent='▶';return;}
+    if(target<0){status.textContent='Radio unavailable · open Music';play.textContent='▶';syncCoverState();return;}
     load(target,true);
   };
   const start=()=>{
     if(index!==0)load(0,true);
-    else if(audio.paused)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue'});
+    else if(audio.paused)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue';syncCoverState()});
   };
 
-  document.querySelectorAll('[data-concrete-play]').forEach(button=>button.addEventListener('click',start));
+  document.querySelectorAll('[data-concrete-play]').forEach(button=>button.addEventListener('click',()=>{
+    if(index===0&&!audio.paused){audio.pause();return;}
+    start();
+  }));
   play.addEventListener('click',()=>{if(index<0){load(0,true);return}if(audio.paused)audio.play().catch(()=>{});else audio.pause()});
   next.addEventListener('click',advance);
   previous.addEventListener('click',()=>{if(index>0)load(index-1,true);else if(index===0){audio.currentTime=0;audio.play().catch(()=>{})}});
-  share.addEventListener('click',()=>window.CMDPlaylistRadio?.share(current));
+  share.addEventListener('click',()=>window.CMDPlaylistRadio?.share(current||local));
   progress.addEventListener('click',event=>{if(!audio.duration)return;const rect=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((event.clientX-rect.left)/rect.width)*audio.duration))});
 
-  audio.addEventListener('play',()=>{play.textContent='❚❚';status.textContent='Playing';window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.();window.CMDCatalogCycle?.remember?.(current);try{navigator.mediaSession.playbackState='playing'}catch{}});
-  audio.addEventListener('pause',()=>{if(!audio.ended){play.textContent='▶';status.textContent='Paused'}try{navigator.mediaSession.playbackState='paused'}catch{}});
-  audio.addEventListener('ended',advance);
+  audio.addEventListener('play',()=>{play.textContent='❚❚';status.textContent='Playing';syncCoverState();window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.();window.CMDCatalogCycle?.remember?.(current);try{navigator.mediaSession.playbackState='playing'}catch{}});
+  audio.addEventListener('pause',()=>{if(!audio.ended){play.textContent='▶';status.textContent='Paused'}syncCoverState();try{navigator.mediaSession.playbackState='paused'}catch{}});
+  audio.addEventListener('ended',()=>{syncCoverState();advance()});
   audio.addEventListener('timeupdate',()=>{if(audio.duration)bar.style.width=`${audio.currentTime/audio.duration*100}%`});
-  audio.addEventListener('error',()=>{if(!audio.src)return;status.textContent='Skipping unavailable track…';window.setTimeout(advance,500)});
+  audio.addEventListener('error',()=>{if(!audio.src)return;status.textContent='Skipping unavailable track…';syncCoverState();window.setTimeout(advance,500)});
   document.querySelector('.concrete-lyrics details')?.addEventListener('toggle',event=>{const marker=event.currentTarget.querySelector('summary b');if(marker)marker.textContent=event.currentTarget.open?'−':'+'});
 
   if('mediaSession' in navigator){try{
@@ -92,4 +108,5 @@
     navigator.mediaSession.setActionHandler('seekbackward',details=>{audio.currentTime=Math.max(0,audio.currentTime-(details.seekOffset||10))});
     navigator.mediaSession.setActionHandler('seekforward',details=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(details.seekOffset||10))});
   }catch{}}
+  syncCoverState();
 })();
