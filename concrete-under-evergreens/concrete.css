@@ -3,10 +3,11 @@ body.concrete-page{background:#07100f;color:var(--concrete-ink);padding-bottom:0
 body.concrete-player-open{padding-bottom:116px}
 .concrete-page::before{background:radial-gradient(circle at 14% 4%,rgba(128,175,174,.14),transparent 32rem),radial-gradient(circle at 86% 58%,rgba(67,105,91,.12),transparent 34rem)}
 .concrete-topbar{background:rgba(4,12,11,.82);border-color:rgba(205,225,220,.09)}
-.concrete-hero{position:relative;min-height:calc(100svh - 68px);display:flex;align-items:center;overflow:hidden;padding:68px 0 74px;background:linear-gradient(135deg,#07100f 0%,#0d1a18 56%,#07100f 100%)}
-.concrete-hero::before{content:"";position:absolute;inset:-8%;background:linear-gradient(90deg,rgba(7,16,15,.98) 5%,rgba(7,16,15,.74) 52%,rgba(7,16,15,.22)),url('/media/songs/2026/08/concrete-under-evergreens/cover.jpg') center right/64vmax auto no-repeat;filter:saturate(.68);opacity:.56}
-.concrete-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 65%,#07100f),repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 7px)}
-.concrete-hero-glow{position:absolute;width:36rem;height:36rem;right:8%;top:5%;border:1px solid rgba(195,219,215,.12);border-radius:50%;box-shadow:0 0 0 70px rgba(195,219,215,.025),0 0 0 140px rgba(195,219,215,.016)}
+.concrete-hero{position:relative;min-height:calc(100svh - 68px);display:flex;align-items:center;overflow:hidden;padding:68px 0 74px;background:#07100f}
+.concrete-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 46%;filter:saturate(.68) contrast(1.04) brightness(.78);opacity:.64;pointer-events:none}
+.concrete-hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,16,15,.98) 2%,rgba(7,16,15,.78) 48%,rgba(7,16,15,.28) 78%,rgba(7,16,15,.14)),linear-gradient(180deg,rgba(7,16,15,.08) 50%,#07100f 100%)}
+.concrete-hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 7px)}
+.concrete-hero-glow{position:absolute;z-index:1;width:36rem;height:36rem;right:8%;top:5%;border:1px solid rgba(195,219,215,.12);border-radius:50%;box-shadow:0 0 0 70px rgba(195,219,215,.025),0 0 0 140px rgba(195,219,215,.016)}
 .concrete-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.06fr .74fr;gap:clamp(32px,7vw,96px);align-items:center}
 .concrete-back{display:inline-flex;margin-bottom:34px;color:var(--concrete-mist);font-size:.88rem}
 .concrete-eyebrow,.concrete-kicker{text-transform:uppercase;letter-spacing:.18em;font-weight:800;font-size:.7rem;color:#a8c0bc}
@@ -29,7 +30,7 @@ body.concrete-player-open{padding-bottom:116px}
 .concrete-section{padding:clamp(74px,10vw,128px) 0}
 .concrete-section-head{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:end;margin-bottom:48px}
 .concrete-section h2,.concrete-dispatch strong{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:clamp(3rem,8vw,7rem);line-height:.8;letter-spacing:-.065em;margin:12px 0 0}
-.concrete-section-head p,.concrete-film-copy p,.concrete-care-card p{color:#bdc9c5;font-size:clamp(1rem,2vw,1.22rem);max-width:700px}
+.concrete-section-head p,.concrete-care-card p{color:#bdc9c5;font-size:clamp(1rem,2vw,1.22rem);max-width:700px}
 .concrete-incident{background:linear-gradient(180deg,#07100f,#0b1614)}
 .concrete-tally{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--concrete-line);border-radius:28px;overflow:hidden}
 .concrete-tally article{min-height:180px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;background:rgba(255,255,255,.018);border-right:1px solid var(--concrete-line)}
@@ -43,11 +44,6 @@ body.concrete-player-open{padding-bottom:116px}
 .concrete-care h2{max-width:880px}
 .concrete-care-card p{color:#263a36;max-width:880px}
 .concrete-care-line{margin-top:34px!important;padding-top:24px;border-top:1px solid rgba(7,16,15,.2);font-family:Georgia,"Times New Roman",serif;font-style:italic}
-.concrete-film{background:#06100e}
-.concrete-film-grid{display:grid;grid-template-columns:.82fr .72fr;gap:clamp(34px,8vw,110px);align-items:center}
-.concrete-video-frame{padding:10px;border:1px solid var(--concrete-line);background:#0c1816;box-shadow:0 32px 90px rgba(0,0,0,.4)}
-.concrete-video-frame video{display:block;width:100%;aspect-ratio:720/1250;max-height:75svh;object-fit:contain;background:#030706}
-.concrete-video-caption{display:flex;justify-content:space-between;gap:12px;padding:12px 4px 2px;color:#8fa7a2;text-transform:uppercase;letter-spacing:.13em;font-size:.64rem;font-weight:800}
 .concrete-lyrics{background:linear-gradient(180deg,#07100f,#0a1513)}
 .concrete-lyrics details{border-top:1px solid var(--concrete-line);border-bottom:1px solid var(--concrete-line)}
 .concrete-lyrics summary{list-style:none;cursor:pointer;padding:28px 0;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -79,15 +75,15 @@ body.concrete-player-open{padding-bottom:116px}
 @media(max-width:820px){
   body.concrete-player-open{padding-bottom:102px}
   .concrete-hero{padding:46px 0 68px;min-height:auto}
-  .concrete-hero::before{background:linear-gradient(180deg,rgba(7,16,15,.7),#07100f 92%),url('/media/songs/2026/08/concrete-under-evergreens/cover.jpg') top center/130vw auto no-repeat;opacity:.58}
-  .concrete-hero-grid,.concrete-section-head,.concrete-film-grid{grid-template-columns:1fr}
+  .concrete-hero-video{object-position:center 42%;opacity:.56}
+  .concrete-hero::before{background:linear-gradient(180deg,rgba(7,16,15,.58) 0%,rgba(7,16,15,.72) 44%,#07100f 96%)}
+  .concrete-hero-grid,.concrete-section-head{grid-template-columns:1fr}
   .concrete-hero h1{font-size:clamp(3.75rem,20vw,6.4rem)}
   .concrete-cover-card{width:min(88vw,500px);margin:12px auto 0;transform:rotate(.8deg)}
   .concrete-tally{grid-template-columns:1fr}
   .concrete-tally article{min-height:120px;border-right:0;border-bottom:1px solid var(--concrete-line)}
   .concrete-tally article:last-child{border-bottom:0}
   .concrete-lyric-sheet{columns:1}
-  .concrete-video-frame{width:min(90vw,520px);margin:auto}
   .concrete-player{padding-top:8px}
   .concrete-player-inner{grid-template-columns:46px minmax(0,1fr) auto;gap:7px 9px}
   .concrete-player img{width:46px;height:46px}
@@ -103,4 +99,4 @@ body.concrete-player-open{padding-bottom:116px}
   .concrete-player img{width:42px;height:42px}
   .concrete-player-controls button{width:36px;height:36px}
 }
-@media(prefers-reduced-motion:reduce){.concrete-btn{transition:none}}
+@media(prefers-reduced-motion:reduce){.concrete-btn{transition:none}.concrete-hero-video{display:none}}
