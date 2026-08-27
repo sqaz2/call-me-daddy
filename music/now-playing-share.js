@@ -18,7 +18,7 @@
   const playableSongs=songs.filter(song=>variantsFor(song).length);
   const playableVersionCount=cycle.count(playableSongs);
   const safe=(value='')=>{const node=document.createElement('span');node.textContent=String(value);return node.innerHTML;};
-  const shareUrl=(songId,variantId)=>{
+  const legacyShareUrl=(songId,variantId)=>{
     const url=new URL('/music/',location.origin);
     url.searchParams.set('song',songId);
     if(variantId)url.searchParams.set('version',variantId);
@@ -27,6 +27,26 @@
     if(radio?.seed)url.searchParams.set('seed',radio.seed);
     url.searchParams.set('share','1');
     return url.href;
+  };
+  const songShareUrl=(song,variant)=>{
+    const dedicated=song?.shareUrl||song?.experience;
+    if(dedicated){
+      const url=new URL(dedicated,location.origin);
+      if(variant?.id&&variantsFor(song).length>1)url.searchParams.set('version',variant.id);
+      return url.href;
+    }
+    return legacyShareUrl(song?.id||'',variant?.id||'');
+  };
+  const shareSong=async(song,variant)=>{
+    if(!song)return;
+    const versions=variantsFor(song);
+    const detail=variant&&versions.length>1?` — ${variant.label||song.kind||'Version'}`:'';
+    const data={title:`${song.title}${detail}`,text:`Listen to ${song.title}${detail}.`,url:songShareUrl(song,variant)};
+    if(window.CMDShare?.nativeShare){await window.CMDShare.nativeShare(data);return;}
+    try{
+      if(navigator.share){await navigator.share(data);return;}
+      await navigator.clipboard?.writeText(`${data.text}\n${data.url}`);
+    }catch{}
   };
   const sharedRequest=(()=>{
     try{
@@ -57,6 +77,17 @@
     return null;
   };
 
+  document.addEventListener('click',event=>{
+    const button=event.target.closest?.('.song-share-action');
+    if(!button)return;
+    const card=button.closest('.song-card');
+    const song=songs.find(item=>item.id===card?.dataset.song);
+    if(!song)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    shareSong(song,variantsFor(song)[0]||null);
+  },true);
+
   const share=document.createElement('button');
   share.id='catalogShare';
   share.className='catalog-skip catalog-share';
@@ -69,17 +100,7 @@
   share.addEventListener('click',async()=>{
     const current=findCurrent();
     if(!current)return;
-    const detail=current.variantCount>1?` — ${current.variantLabel}`:'';
-    const data={
-      title:`${current.song.title}${detail}`,
-      text:`Listen to ${current.song.title}${detail}.`,
-      url:shareUrl(current.songId,current.variantId)
-    };
-    if(window.CMDShare?.nativeShare){await window.CMDShare.nativeShare(data);return;}
-    try{
-      if(navigator.share){await navigator.share(data);return;}
-      await navigator.clipboard?.writeText(`${data.text}\n${data.url}`);
-    }catch{}
+    await shareSong(current.song,current.variant);
   });
 
   function mountSharedRadio(){
