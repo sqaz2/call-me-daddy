@@ -1,5 +1,5 @@
 :root{--concrete-bg:#07100f;--concrete-panel:#0e1a18;--concrete-ink:#f0eee5;--concrete-mist:#b8c8c5;--concrete-blue:#9ebbc1;--concrete-line:rgba(205,225,220,.16);--concrete-stone:#c9c9c1}
-body.concrete-page{background:#07100f;color:var(--concrete-ink);padding-bottom:0}
+body.concrete-page{background:#07100f;color:var(--concrete-ink);padding-bottom:0;overflow-x:clip}
 body.concrete-player-open{padding-bottom:116px}
 .concrete-page::before{background:radial-gradient(circle at 14% 4%,rgba(128,175,174,.14),transparent 32rem),radial-gradient(circle at 86% 58%,rgba(67,105,91,.12),transparent 34rem)}
 .concrete-topbar{background:rgba(4,12,11,.82);border-color:rgba(205,225,220,.09)}
@@ -8,10 +8,11 @@ body.concrete-player-open{padding-bottom:116px}
 .concrete-hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,16,15,.98) 2%,rgba(7,16,15,.78) 48%,rgba(7,16,15,.28) 78%,rgba(7,16,15,.14)),linear-gradient(180deg,rgba(7,16,15,.08) 50%,#07100f 100%)}
 .concrete-hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 7px)}
 .concrete-hero-glow{position:absolute;z-index:1;width:36rem;height:36rem;right:8%;top:5%;border:1px solid rgba(195,219,215,.12);border-radius:50%;box-shadow:0 0 0 70px rgba(195,219,215,.025),0 0 0 140px rgba(195,219,215,.016)}
-.concrete-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.06fr .74fr;gap:clamp(32px,7vw,96px);align-items:center}
+.concrete-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.06fr .74fr;gap:clamp(32px,7vw,96px);align-items:center;min-width:0}
+.concrete-hero-copy{min-width:0;max-width:100%}
 .concrete-back{display:inline-flex;margin-bottom:34px;color:var(--concrete-mist);font-size:.88rem}
 .concrete-eyebrow,.concrete-kicker{text-transform:uppercase;letter-spacing:.18em;font-weight:800;font-size:.7rem;color:#a8c0bc}
-.concrete-hero h1{margin:18px 0 20px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(4rem,10.7vw,8.8rem);font-weight:500;line-height:.76;letter-spacing:-.075em}
+.concrete-hero h1{margin:18px 0 20px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(4rem,10.7vw,8.8rem);font-weight:500;line-height:.76;letter-spacing:-.075em;max-width:100%}
 .concrete-hero h1 em{color:transparent;-webkit-text-stroke:1px rgba(225,235,231,.58);font-style:italic;font-weight:400}
 .concrete-lede{max-width:620px;margin:0;color:#d1d8d4;font-size:clamp(1.05rem,2vw,1.3rem)}
 .concrete-actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:28px}
@@ -77,9 +78,11 @@ body.concrete-player-open{padding-bottom:116px}
   .concrete-hero{padding:46px 0 68px;min-height:auto}
   .concrete-hero-video{object-position:center 42%;opacity:.56}
   .concrete-hero::before{background:linear-gradient(180deg,rgba(7,16,15,.58) 0%,rgba(7,16,15,.72) 44%,#07100f 96%)}
-  .concrete-hero-grid,.concrete-section-head{grid-template-columns:1fr}
-  .concrete-hero h1{font-size:clamp(3.75rem,20vw,6.4rem)}
-  .concrete-cover-card{width:min(88vw,500px);margin:12px auto 0;transform:rotate(.8deg)}
+  .concrete-hero-grid,.concrete-section-head{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%}
+  .concrete-hero-copy,.concrete-hero-grid>*{min-width:0;max-width:100%}
+  .concrete-hero h1{font-size:clamp(3.1rem,15vw,5.1rem);line-height:.8;letter-spacing:-.07em;width:100%;max-width:100%}
+  .concrete-lede{width:100%;max-width:100%;font-size:clamp(1rem,4.7vw,1.2rem);overflow-wrap:anywhere}
+  .concrete-cover-card{width:min(88vw,500px);max-width:100%;margin:12px auto 0;transform:rotate(.8deg)}
   .concrete-tally{grid-template-columns:1fr}
   .concrete-tally article{min-height:120px;border-right:0;border-bottom:1px solid var(--concrete-line)}
   .concrete-tally article:last-child{border-bottom:0}
@@ -93,6 +96,7 @@ body.concrete-player-open{padding-bottom:116px}
   .concrete-player-copy a{font-size:.92rem}
 }
 @media(max-width:460px){
+  .concrete-hero h1{font-size:clamp(2.85rem,14.5vw,4.1rem)}
   .concrete-cover-card figcaption{display:grid}
   .concrete-player-controls #concretePlayerShare{display:none}
   .concrete-player-inner{grid-template-columns:42px minmax(0,1fr) 78px}
