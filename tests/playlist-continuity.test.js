@@ -31,7 +31,8 @@ test('every finite collection player hands its last local song into endless radi
     'i-wont-let-the-wifi-go/wifi.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()'],
     'cut-from-the-same-fabric/player.js':['CMDPlaylistRadio?.create',"playbackMode==='radio'",'loadRadio(true)'],
     'old-files-new-tools/player.js':['CMDPlaylistRadio?.create','nextTrack','loadRadio()'],
-    'archive/continuous-tail.js':['CMDPlaylistRadio?.create',"audio.addEventListener('ended'",'loadRadio()']
+    'archive/continuous-tail.js':['CMDPlaylistRadio?.create',"audio.addEventListener('ended'",'loadRadio()'],
+    'concrete-under-evergreens/player.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()']
   };
   for(const [file,markers] of Object.entries(players)){
     const source=read(file);
@@ -47,7 +48,8 @@ test('collection pages load the radio math before their local player',()=>{
     'cut-from-the-same-fabric/index.html':'/cut-from-the-same-fabric/player.js',
     'old-files-new-tools/index.html':'/old-files-new-tools/player.js',
     'archive/i-need-love/index.html':'/archive/continuous-tail.js',
-    'archive/2010-wows/index.html':'/archive/continuous-tail.js'
+    'archive/2010-wows/index.html':'/archive/continuous-tail.js',
+    'concrete-under-evergreens/index.html':'/concrete-under-evergreens/player.js'
   };
   for(const [file,player] of Object.entries(pages)){
     const html=read(file),playerIndex=html.indexOf(player);
@@ -74,6 +76,10 @@ test('songs and versions expose direct share controls before update blurbs',()=>
   assert.ok(antiAi.includes('data-share-track'));
   assert.ok(read('new-tools-trilogy.js').includes('trilogyShare'));
 
+  const concrete=read('concrete-under-evergreens/index.html');
+  assert.ok(concrete.includes('data-share-label="Send thoughts &amp; bass"'));
+  assert.ok(concrete.includes('id="concretePlayerShare"'));
+
   const oldFiles=read('old-files-new-tools/index.html');
   assert.equal((oldFiles.match(/class="(?:tape-play|ab-play)/g)||[]).length,(oldFiles.match(/class="song-share/g)||[]).length);
   assert.ok(read('archive/continuous-tail.js').includes('Share this version'));
@@ -84,4 +90,5 @@ test('already-endless players remain cyclic',()=>{
   assert.ok(read('sad-music/sad.js').includes('pending=(index+1)%queue.length'));
   assert.ok(read('sad-music/song.js').includes('pending=(index+1)%queue.length'));
   assert.ok(read('new-tools-trilogy.js').includes('if(radioMode){nextRadioTrack();return}'));
+  assert.ok(read('concrete-under-evergreens/player.js').includes("audio.addEventListener('ended',advance)"));
 });

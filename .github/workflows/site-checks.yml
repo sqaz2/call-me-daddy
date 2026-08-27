@@ -26,12 +26,17 @@ jobs:
           node --check music/music.js
           node --check music/now-playing-share.js
           node --check anti-generative-ai-diss/collection.js
+          node --check concrete-under-evergreens/player.js
           node --check updates/updates.js
           node --check worker/index.mjs
       - name: Radio engine tests
         run: node --test tests/radio-cycle.test.js
       - name: Four-track player handoff tests
         run: node --test tests/four-track-player.test.js
+      - name: Concrete Under Evergreens player tests
+        run: node --test tests/concrete-player.test.js
+      - name: Playlist continuity tests
+        run: node --test tests/playlist-continuity.test.js
       - name: Public feed tests
         run: node --test tests/site-feed.test.js
       - name: Streaming delivery tests
