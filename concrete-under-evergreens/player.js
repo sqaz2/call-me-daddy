@@ -6,6 +6,10 @@
     document.head.appendChild(compactStyle);
   }
 
+  const playCoverSrc='/media/songs/2026/08/concrete-under-evergreens/evergreens-cover.jpg';
+  const pageCover=document.querySelector('.concrete-cover-button img');
+  if(pageCover){pageCover.src=playCoverSrc;pageCover.alt='Concrete patches beneath evergreen trees';}
+
   const player=document.getElementById('concretePlayer');
   const audio=document.getElementById('concreteAudio');
   const cover=document.getElementById('concretePlayerCover');
@@ -26,11 +30,11 @@
     id:'concrete-under-evergreens',songId:'concrete-under-evergreens',variantId:'main',variantCount:1,
     title:'Concrete Under Evergreens',artist:'Call Me Daddy',project:'Lacombe Civic Emergency',
     audio:'/media/songs/2026/08/concrete-under-evergreens/audio.mp3',
-    cover:'/media/songs/2026/08/concrete-under-evergreens/cover.jpg',
+    cover:playCoverSrc,
     experience:'/concrete-under-evergreens/',radioIntent:'laugh'
   };
   const catalogSong=(window.CMD_SONGS||[]).find(song=>song.id===fallback.id);
-  const local={...fallback,...catalogSong,songId:fallback.id,variantId:'main',variantCount:1,radioIntent:'laugh'};
+  const local={...fallback,...catalogSong,songId:fallback.id,variantId:'main',variantCount:1,cover:playCoverSrc,radioIntent:'laugh'};
   const radio=window.CMDPlaylistRadio?.create({intent:'laugh',excludeIds:[local.id],lastSongId:local.id});
   const queue=[local];
   let index=-1;
