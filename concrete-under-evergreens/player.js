@@ -2,7 +2,7 @@
   if(document.createElement&&document.head?.appendChild){
     const compactStyle=document.createElement('link');
     compactStyle.rel='stylesheet';
-    compactStyle.href='/concrete-under-evergreens/compact.css?v=20260827-1';
+    compactStyle.href='/concrete-under-evergreens/compact.css?v=20260827-2';
     document.head.appendChild(compactStyle);
   }
 
