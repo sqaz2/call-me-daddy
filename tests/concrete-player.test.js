@@ -64,8 +64,7 @@ test('the release starts locally, shares exactly, then continues into Play the s
   assert.equal(elements.get('concretePlayerLabel').textContent,'Lacombe civic ballad');
   assert.equal(audio.paused,false);
   elements.get('concretePlayerShare').click();
-  assert.match(getShared().url,/song=concrete-under-evergreens/);
-  assert.match(getShared().url,/version=main/);
+  assert.equal(getShared().url,'https://callmedaddy.musicsubject.com/concrete-under-evergreens/');
 
   audio.finish();
   assert.equal(elements.get('concretePlayerLabel').textContent.startsWith('Play the site'),true);

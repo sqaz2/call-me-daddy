@@ -22,11 +22,14 @@ jobs:
           node --check data/2026-08-26-uploads.js
           node --check data/anti-ai-collection.js
           node --check catalog-cycle.js
+          node --check continuous-playback.js
+          node --check persistent-site-browser.js
           node --check home-briefing.js
           node --check music/music.js
           node --check music/now-playing-share.js
           node --check anti-generative-ai-diss/collection.js
           node --check concrete-under-evergreens/player.js
+          node --check funhouse-meltdown/player.js
           node --check updates/updates.js
           node --check worker/index.mjs
       - name: Radio engine tests
@@ -37,6 +40,8 @@ jobs:
         run: node --test tests/concrete-player.test.js
       - name: Playlist continuity tests
         run: node --test tests/playlist-continuity.test.js
+      - name: Background playback recovery tests
+        run: node --test tests/continuous-playback.test.js
       - name: Public feed tests
         run: node --test tests/site-feed.test.js
       - name: Streaming delivery tests

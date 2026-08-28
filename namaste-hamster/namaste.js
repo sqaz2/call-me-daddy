@@ -1,45 +1,22 @@
 (()=>{
-  const audio=document.getElementById('namasteAudio');
-  const player=document.getElementById('namastePlayer');
-  const play=document.getElementById('namastePlay');
-  const heroPlay=document.getElementById('heroPlay');
-  const coverPlay=document.getElementById('coverPlay');
-  const progress=document.getElementById('namasteProgress');
-  const bar=document.getElementById('namasteProgressBar');
-  const status=document.getElementById('namasteStatus');
-  const video=document.querySelector('.namaste-video');
-  if(!audio||!player||!play)return;
+  const audio=document.getElementById('namasteAudio'),player=document.getElementById('namastePlayer'),play=document.getElementById('namastePlay'),heroPlay=document.getElementById('heroPlay'),coverPlay=document.getElementById('coverPlay'),progress=document.getElementById('namasteProgress'),bar=document.getElementById('namasteProgressBar'),status=document.getElementById('namasteStatus'),video=document.querySelector('.namaste-video'),copy=player?.querySelector('.namaste-player-copy'),copyLabel=copy?.querySelector('small'),copyTitle=copy?.querySelector('strong'),miniCover=player?.querySelector('.namaste-mini-cover');
+  if(!audio||!player||!play||!window.CMDContinuousPlayback)return;
 
-  const setButton=()=>{
-    const playing=!audio.paused;
-    play.textContent=playing?'❚❚':'▶';
-    if(heroPlay)heroPlay.textContent=playing?'❚❚ Pause the song':'▶ Play the song';
-    if(status)status.textContent=playing?'Playing':'Paused';
-    if(coverPlay)coverPlay.classList.toggle('is-playing',playing);
-  };
-
-  const toggle=()=>{
-    player.hidden=false;
-    if(audio.paused){
-      status.textContent='Loading…';
-      audio.play().catch(()=>{status.textContent='Tap play to start';setButton();});
-    }else audio.pause();
-  };
-
-  [play,heroPlay,coverPlay].forEach(el=>el?.addEventListener('click',toggle));
-
-  audio.addEventListener('play',()=>{setButton();if(video)video.playbackRate=.82;});
-  audio.addEventListener('pause',()=>{setButton();if(video)video.playbackRate=1;});
-  audio.addEventListener('waiting',()=>{status.textContent='Buffering…';});
-  audio.addEventListener('canplay',()=>{if(audio.paused)status.textContent='Ready';});
-  audio.addEventListener('ended',()=>{setButton();status.textContent='Finished';bar.style.width='100%';if(video)video.playbackRate=1;});
-  audio.addEventListener('error',()=>{player.hidden=false;status.textContent='Audio is being added.';play.textContent='▶';if(heroPlay)heroPlay.textContent='Audio coming online';});
-  audio.addEventListener('timeupdate',()=>{if(audio.duration)bar.style.width=`${audio.currentTime/audio.duration*100}%`;});
-
-  progress?.addEventListener('click',e=>{
-    if(!audio.duration)return;
-    const r=progress.getBoundingClientRect();
-    const ratio=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-    audio.currentTime=ratio*audio.duration;
+  const self={id:'namaste-hamster',songId:'namaste-hamster',title:'Namaste, Hamster',artist:'Call Me Daddy × MusicSubject',project:'Namaste, Hamster',audio:'/media/songs/2026/08/namaste-hamster/audio.mp3',cover:'/media/songs/2026/08/namaste-hamster/cover.jpg',experience:'/namaste-hamster/'};
+  const songLink=document.createElement('a');songLink.className='cmd-now-song-link';songLink.textContent='Open this song →';songLink.hidden=true;copy?.appendChild(songLink);
+  const shareButton=document.createElement('button');shareButton.className='cmd-now-share';shareButton.type='button';shareButton.textContent='↗ Share this song';copy?.appendChild(shareButton);
+  let active=self,activeIndex=0;
+  const setButtons=playing=>{play.textContent=playing?'❚❚':'▶';if(heroPlay)heroPlay.textContent=playing?'❚❚ Pause the music':'▶ Play the music';if(coverPlay)coverPlay.classList.toggle('is-playing',playing)};
+  const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;if(state.reason!=='ready')player.hidden=false;if(copyLabel)copyLabel.textContent=activeIndex===0?'Call Me Daddy':'Play the site';if(copyTitle)copyTitle.textContent=track.title;if(miniCover&&track.cover){miniCover.src=track.cover;miniCover.alt=`${track.title} artwork`}songLink.hidden=!(activeIndex>0&&track.experience);if(!songLink.hidden)songLink.href=track.experience;status.textContent=state.reason==='ready'?'Ready':'Loading next…';window.CMDPersistentSite?.refreshClearance?.()};
+  const controller=window.CMDContinuousPlayback.create({
+    id:'namaste-endless-player',audio,tracks:[self],localCount:1,excludeIds:[self.id],lastSongId:self.id,route:'/namaste-hamster/',
+    onTrack:paint,
+    onTime:(time,total)=>{if(total)bar.style.width=`${time/total*100}%`},
+    onPlayState:playing=>{setButtons(playing);status.textContent=playing?'Playing':(!audio.ended?'Paused':status.textContent);if(video)video.playbackRate=playing ? .82 : 1},
+    onStatus:kind=>{if(kind==='waiting'||kind==='stalled')status.textContent='Buffering…';else if(kind==='blocked')status.textContent='Tap play to continue';else if(kind==='error')status.textContent='Skipping unavailable track…';else if(kind==='failed')status.textContent='Playback needs a tap'}
   });
+  const toggle=()=>{player.hidden=false;controller.toggle()};
+  [play,heroPlay,coverPlay].forEach(element=>element?.addEventListener('click',toggle));
+  shareButton.addEventListener('click',()=>window.CMDPlaylistRadio?.share(active));
+  progress?.addEventListener('click',event=>{if(!audio.duration)return;const rect=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,(event.clientX-rect.left)/rect.width*audio.duration))});
 })();

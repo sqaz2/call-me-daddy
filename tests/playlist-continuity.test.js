@@ -27,8 +27,8 @@ test('shared playlist tail excludes the local set once, then rebuilds forever',(
 
 test('every finite collection player hands its last local song into endless radio',()=>{
   const players={
-    'power-pulse-uprising/continuous-player.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()'],
-    'i-wont-let-the-wifi-go/wifi.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()'],
+    'power-pulse-uprising/continuous-player.js':['CMDContinuousPlayback.create',"tracks:[chosen,earlier]",'excludeIds:[chosen.id,earlier.id]'],
+    'i-wont-let-the-wifi-go/wifi.js':['CMDContinuousPlayback.create','tracks:[self]','excludeIds:[self.id]'],
     'cut-from-the-same-fabric/player.js':['CMDPlaylistRadio?.create',"playbackMode==='radio'",'loadRadio(true)'],
     'old-files-new-tools/player.js':['CMDPlaylistRadio?.create','nextTrack','loadRadio()'],
     'archive/continuous-tail.js':['CMDPlaylistRadio?.create',"audio.addEventListener('ended'",'loadRadio()'],
@@ -41,6 +41,20 @@ test('every finite collection player hands its last local song into endless radi
   }
 });
 
+test('single-release pages no longer stop after their opening song',()=>{
+  const players={
+    'namaste-hamster/namaste.js':'namaste-endless-player',
+    'id-pick-you-first/player.js':'pick-endless-player',
+    'funhouse-meltdown/player.js':'funhouse-endless-player'
+  };
+  for(const [file,id] of Object.entries(players)){
+    const source=read(file);
+    assert.ok(source.includes('CMDContinuousPlayback.create'),`${file} needs the continuous player`);
+    assert.ok(source.includes(id),`${file} needs a stable recovery id`);
+    assert.ok(!source.includes("textContent='Finished'"),`${file} must not end at Finished`);
+  }
+});
+
 test('collection pages load the radio math before their local player',()=>{
   const pages={
     'power-pulse-uprising/index.html':'/power-pulse-uprising/continuous-player.js',
@@ -49,7 +63,10 @@ test('collection pages load the radio math before their local player',()=>{
     'old-files-new-tools/index.html':'/old-files-new-tools/player.js',
     'archive/i-need-love/index.html':'/archive/continuous-tail.js',
     'archive/2010-wows/index.html':'/archive/continuous-tail.js',
-    'concrete-under-evergreens/index.html':'/concrete-under-evergreens/player.js'
+    'concrete-under-evergreens/index.html':'/concrete-under-evergreens/player.js',
+    'namaste-hamster/index.html':'/namaste-hamster/namaste.js',
+    'id-pick-you-first/index.html':'/id-pick-you-first/player.js',
+    'funhouse-meltdown/index.html':'/funhouse-meltdown/player.js'
   };
   for(const [file,player] of Object.entries(pages)){
     const html=read(file),playerIndex=html.indexOf(player);
@@ -97,10 +114,34 @@ test('songs and versions expose direct share controls before update blurbs',()=>
 
 test('already-endless players remain cyclic',()=>{
   assert.ok(read('music/music.js').includes("audio.addEventListener('ended',()=>{bar.style.width='100%';nextTrack();})"));
-  assert.ok(read('sad-music/sad.js').includes('pending=(index+1)%queue.length'));
-  assert.ok(read('sad-music/song.js').includes('pending=(index+1)%queue.length'));
+  assert.ok(read('sad-music/sad.js').includes('loopLocal:true'));
+  assert.ok(read('sad-music/song.js').includes('loopLocal:true'));
   assert.ok(read('new-tools-trilogy.js').includes('if(radioMode){nextRadioTrack();return}'));
   const concrete=read('concrete-under-evergreens/player.js');
   assert.ok(concrete.includes("audio.addEventListener('ended'"));
   assert.ok(concrete.includes('advance()'));
+});
+
+test('background-sensitive players use immediate transitions without a silent media file',()=>{
+  const players=['power-pulse-uprising/continuous-player.js','i-wont-let-the-wifi-go/wifi.js','sad-music/sad.js','sad-music/song.js','namaste-hamster/namaste.js','id-pick-you-first/player.js','funhouse-meltdown/player.js'];
+  for(const file of players){
+    const source=read(file);
+    assert.ok(source.includes('CMDContinuousPlayback.create'),`${file} must use the shared transition guard`);
+    assert.ok(!source.includes('CMD_SILENT_GAP'),`${file} must not use silent handoff audio`);
+    assert.ok(!source.includes('silent-gap.js'),`${file} must not load the old gap file`);
+  }
+  const pages=fs.readdirSync(path.join(root,'sad-music'),{withFileTypes:true}).filter(entry=>entry.isDirectory()).map(entry=>`sad-music/${entry.name}/index.html`).filter(file=>fs.existsSync(path.join(root,file))&&read(file).includes('/sad-music/song.js'));
+  pages.push('sad-music/index.html','power-pulse-uprising/index.html','i-wont-let-the-wifi-go/index.html','namaste-hamster/index.html','id-pick-you-first/index.html','funhouse-meltdown/index.html');
+  for(const file of pages){
+    const html=read(file),guard=html.indexOf('/continuous-playback.js'),player=Math.max(html.indexOf('/sad-music/song.js'),html.indexOf('/sad-music/sad.js'),html.indexOf('/power-pulse-uprising/continuous-player.js'),html.indexOf('/i-wont-let-the-wifi-go/wifi.js'),html.indexOf('/namaste-hamster/namaste.js'),html.indexOf('/id-pick-you-first/player.js'),html.indexOf('/funhouse-meltdown/player.js'));
+    assert.ok(guard>0&&player>guard,`${file} must load the recovery layer before its player`);
+  }
+});
+
+test('every page with an audio element has a continuous controller',()=>{
+  const controllers=['/continuous-playback.js','/music/music.js','/cut-from-the-same-fabric/player.js','/old-files-new-tools/player.js','/archive/continuous-tail.js','/concrete-under-evergreens/player.js'];
+  const walk=directory=>fs.readdirSync(directory,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()&&!entry.name.startsWith('.')?walk(path.join(directory,entry.name)):entry.isFile()&&entry.name.endsWith('.html')?[path.join(directory,entry.name)]:[]);
+  const pages=walk(root).filter(file=>read(path.relative(root,file)).includes('<audio'));
+  assert.ok(pages.length>0);
+  pages.forEach(file=>{const relative=path.relative(root,file),html=read(relative);assert.ok(controllers.some(controller=>html.includes(controller)),`${relative} needs a player that continues after ended`)});
 });

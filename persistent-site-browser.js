@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260824-6';
+  const VERSION='20260827-1';
   const CLAIM='cmd:claim-playback';
   const PAUSE='cmd:pause-playback';
   const REFRESH='cmd:refresh-clearance';
@@ -53,9 +53,31 @@
 
   const originUrl=location.href;
   const initialReferrer=(()=>{try{const u=new URL(document.referrer);return u.origin===location.origin?u.href:''}catch{return''}})();
-  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null;
+  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null,resumePrompt=null;
   let backGuardArmed=false;
   const frames=new Set();
+  const PLAYBACK_KEY='cmd:playback-session:v1';
+
+  const readPlaybackSnapshot=()=>{try{const snapshot=JSON.parse(sessionStorage.getItem(PLAYBACK_KEY)||'null');return snapshot&&snapshot.wantsPlayback&&Date.now()-snapshot.updatedAt<12*60*60*1000?snapshot:null}catch{return null}};
+  const removeResumePrompt=()=>{resumePrompt?.remove();resumePrompt=null};
+  const offerPlaybackResume=()=>{
+    const snapshot=readPlaybackSnapshot();
+    if(!snapshot?.page||new URLSearchParams(location.search).get('cmdResume')==='1')return;
+    let target;try{target=new URL(snapshot.page,location.origin)}catch{return}
+    if(target.pathname===location.pathname&&target.search===location.search)return;
+    const mount=()=>{
+      if(resumePrompt||playingMediaIn(window))return;
+      const style=document.createElement('style');
+      style.textContent='.cmd-resume-music{position:fixed;z-index:2147483600;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;max-width:520px;margin:auto;padding:10px;border:1px solid rgba(255,255,255,.2);border-radius:18px;background:rgba(8,8,8,.94);backdrop-filter:blur(16px);box-shadow:0 12px 38px rgba(0,0,0,.5);color:#f4f0e8;font:800 12px/1.25 system-ui,sans-serif}.cmd-resume-music strong{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmd-resume-music button{min-height:38px;border:0;border-radius:999px;padding:0 15px;background:#f4f0e8;color:#080808;font:900 12px/1 system-ui,sans-serif;cursor:pointer}.cmd-resume-music .cmd-resume-dismiss{width:34px;padding:0;background:rgba(255,255,255,.1);color:#fff}';
+      document.head.appendChild(style);
+      resumePrompt=document.createElement('div');resumePrompt.className='cmd-resume-music';resumePrompt.setAttribute('role','region');resumePrompt.setAttribute('aria-label','Resume music');
+      const title=document.createElement('strong');title.textContent=`♪ ${snapshot.track?.title||'Your music'}`;
+      const resume=document.createElement('button');resume.type='button';resume.textContent='Resume music';resume.addEventListener('click',()=>{target.searchParams.set('cmdResume','1');location.href=target.href});
+      const dismiss=document.createElement('button');dismiss.type='button';dismiss.className='cmd-resume-dismiss';dismiss.setAttribute('aria-label','Dismiss resume music');dismiss.textContent='×';dismiss.addEventListener('click',()=>{try{sessionStorage.setItem(PLAYBACK_KEY,JSON.stringify({...snapshot,wantsPlayback:false,updatedAt:Date.now()}))}catch{}removeResumePrompt()});
+      resumePrompt.append(title,resume,dismiss);document.body.appendChild(resumePrompt);
+    };
+    if(document.body)mount();else addEventListener('DOMContentLoaded',mount,{once:true});
+  };
 
   const playerSelectors=[
     '.catalog-player:not([hidden])','.sad-player:not([hidden])','.sad-song-player:not([hidden])',
@@ -125,6 +147,7 @@
 
   const claimOwner=win=>{
     if(!win)return;
+    removeResumePrompt();
     if(ownerWindow!==win)pauseWindow(ownerWindow);
     ownerWindow=win;
     session=true;
@@ -308,4 +331,5 @@
       const href=track?.experience||'';link.hidden=!(show&&href);if(href)link.href=href;return link;
     }
   };
+  offerPlaybackResume();
 })();

@@ -2,7 +2,7 @@
   let persistentScript=document.querySelector('script[data-cmd-persistent]');
   if(!window.CMDPersistentSite&&!persistentScript){
     persistentScript=document.createElement('script');
-    persistentScript.src='/persistent-site-browser.js?v=20260824-6';
+    persistentScript.src='/persistent-site-browser.js?v=20260827-1';
     persistentScript.dataset.cmdPersistent='';
     document.head.appendChild(persistentScript);
   }

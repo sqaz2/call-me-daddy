@@ -1,29 +1,34 @@
 (()=>{
-  const audio=document.getElementById('wifiAudio'); if(!audio)return;
-  const loadHelper=(src,key)=>new Promise(resolve=>{if(window[key])return resolve();const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=resolve;document.head.appendChild(s)});
-  loadHelper('/persistent-site-browser.js?v=20260824-4','CMDPersistentSite');
-  const gapReady=loadHelper('/silent-gap.js?v=20260823-1','CMD_SILENT_GAP');
+  const audio=document.getElementById('wifiAudio');
+  if(!audio||!window.CMDContinuousPlayback)return;
+
   const play=document.getElementById('wifiPlay'),icon=document.getElementById('wifiIcon'),status=document.getElementById('wifiStatus'),progress=document.getElementById('wifiProgress'),bar=document.getElementById('wifiProgressBar'),current=document.getElementById('wifiCurrent'),duration=document.getElementById('wifiDuration'),nextUp=document.getElementById('wifiNext'),history=document.querySelector('.wifi-history details'),player=document.getElementById('wifiPlayer');
   const songLink=document.createElement('a');songLink.className='cmd-now-song-link';songLink.textContent='Open this song →';songLink.hidden=true;player?.appendChild(songLink);
   const shareButton=document.createElement('button');shareButton.className='cmd-now-share';shareButton.type='button';shareButton.textContent='↗ Share this song';player?.appendChild(shareButton);
-  const self={id:'i-wont-let-the-wifi-go',title:'I Won’t Let the Wi‑Fi Go',artist:'MusicSubject × Call Me Daddy',project:'2025 · early AI-music experiment',audio:'/media/songs/2025/i-wont-let-the-wifi-go/audio.mp3',cover:'',experience:'/i-wont-let-the-wifi-go/'};
-  const queue=[self];const radio=window.CMDPlaylistRadio?.create({excludeIds:[self.id],lastSongId:self.id});let index=0,inGap=false,pending=-1;
-  const fmt=s=>Number.isFinite(s)?`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`:'--:--';
-  const sync=()=>{if(inGap)return;const d=audio.duration,r=d?audio.currentTime/d:0;bar.style.width=`${r*100}%`;current.textContent=fmt(audio.currentTime);duration.textContent=fmt(d);progress.setAttribute('aria-valuenow',String(Math.round(r*100)))};
-  const media=t=>{if(!('mediaSession'in navigator))return;try{navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:t.artist,album:t.project,artwork:t.cover?[{src:new URL(t.cover,location.href).href}]:[]})}catch{}};
-  const paint=t=>{status.textContent=t.title===self.title?'Play':t.title;nextUp.textContent=index===0?'Start here. Play the site takes over automatically afterward.':`Play the site · ${t.variantLabel||t.title}`;const can=index>0&&t.experience;songLink.hidden=!can;if(can)songLink.href=t.experience;media(t)};
-  const load=(i,auto=true)=>{inGap=false;pending=-1;index=Math.max(0,Math.min(queue.length-1,i));const t=queue[index];audio.src=t.audio;audio.load();paint(t);sync();window.CMDPersistentSite?.refreshClearance?.();if(auto)audio.play().catch(()=>{status.textContent='Tap to continue'})};
-  const ensureNext=()=>{if(index<queue.length-1)return index+1;const track=radio?.next();if(!track)return -1;queue.push(track);return queue.length-1};
-  const gap=async()=>{pending=ensureNext();if(pending<0){nextUp.textContent='Radio unavailable · open Music';icon.textContent='▶';return}const n=queue[pending];nextUp.textContent=`Next: ${n.title}…`;status.textContent='4-second pause';icon.textContent='⋯';await gapReady;if(!window.CMD_SILENT_GAP){load(pending,true);return}inGap=true;audio.src=window.CMD_SILENT_GAP;audio.load();audio.play().catch(()=>load(pending,true))};
-  play.addEventListener('click',()=>{if(inGap){audio.pause();load(pending,false);return}if(audio.paused)audio.play().catch(()=>{});else audio.pause()});
-  shareButton.addEventListener('click',()=>window.CMDPlaylistRadio?.share(queue[index]));
-  audio.addEventListener('play',()=>{icon.textContent=inGap?'⋯':'❚❚';if(!inGap)status.textContent=index===0?'Playing':queue[index].title;if(!inGap)media(queue[index]);window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.();if('mediaSession'in navigator)navigator.mediaSession.playbackState='playing'});
-  audio.addEventListener('pause',()=>{if(!inGap&&!audio.ended){icon.textContent='▶';status.textContent='Paused'}if('mediaSession'in navigator)navigator.mediaSession.playbackState='paused'});
-  audio.addEventListener('ended',()=>{if(inGap){const target=pending;inGap=false;load(target,true)}else{bar.style.width='100%';gap()}});
-  audio.addEventListener('error',()=>{if(!audio.src)return;if(inGap&&pending>=0){const target=pending;inGap=false;load(target,true);return}status.textContent='Skipping unavailable track…';window.setTimeout(gap,500)});
-  audio.addEventListener('loadedmetadata',sync);audio.addEventListener('timeupdate',sync);
-  progress.addEventListener('click',e=>{if(inGap||!audio.duration)return;const r=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((e.clientX-r.left)/r.width)*audio.duration))});
-  history?.addEventListener('toggle',()=>{const b=history.querySelector('summary b');if(b)b.textContent=history.open?'−':'+'});
-  if('mediaSession'in navigator){try{navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause());navigator.mediaSession.setActionHandler('nexttrack',()=>{const target=ensureNext();if(target>=0)load(target,true)});navigator.mediaSession.setActionHandler('previoustrack',()=>{if(index>0)load(index-1,true)})}catch{}}
-  paint(self);sync();
+  const self={id:'i-wont-let-the-wifi-go',songId:'i-wont-let-the-wifi-go',title:'I Won’t Let the Wi‑Fi Go',artist:'MusicSubject × Call Me Daddy',project:'2025 · early AI-music experiment',audio:'/media/songs/2025/i-wont-let-the-wifi-go/audio.mp3',cover:'',experience:'/i-wont-let-the-wifi-go/'};
+  let active=self,activeIndex=0;
+  const fmt=value=>Number.isFinite(value)?`${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`:'--:--';
+  const sync=(time=audio.currentTime,total=audio.duration)=>{const ratio=total?time/total:0;bar.style.width=`${ratio*100}%`;current.textContent=fmt(time);duration.textContent=fmt(total);progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)))};
+  const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;status.textContent=state.reason==='ready'?'Play':'Loading next…';nextUp.textContent=activeIndex===0?'Start here. Play the site takes over automatically afterward.':`Play the site · ${track.variantLabel||track.title}`;const can=activeIndex>0&&track.experience;songLink.hidden=!can;if(can)songLink.href=track.experience;sync();window.CMDPersistentSite?.refreshClearance?.()};
+  const controller=window.CMDContinuousPlayback.create({
+    id:'wifi-endless-player',
+    audio,
+    tracks:[self],
+    localCount:1,
+    excludeIds:[self.id],
+    lastSongId:self.id,
+    route:'/i-wont-let-the-wifi-go/',
+    onTrack:paint,
+    onTime:sync,
+    onReady:()=>sync(),
+    onPlayState:playing=>{icon.textContent=playing?'❚❚':'▶';if(playing)status.textContent=activeIndex===0?'Playing':active.title;else if(!audio.ended)status.textContent='Paused'},
+    onStatus:kind=>{if(kind==='waiting'||kind==='stalled')status.textContent='Buffering…';else if(kind==='blocked')status.textContent='Tap to continue';else if(kind==='error')status.textContent='Skipping unavailable track…';else if(kind==='failed')status.textContent='Playback needs a tap';else if(kind==='unavailable')status.textContent='Radio unavailable · open Music'},
+    onNeedsTap:()=>{icon.textContent='▶'}
+  });
+
+  play.addEventListener('click',()=>controller.toggle());
+  shareButton.addEventListener('click',()=>window.CMDPlaylistRadio?.share(active));
+  progress.addEventListener('click',event=>{if(!audio.duration)return;const rect=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((event.clientX-rect.left)/rect.width)*audio.duration))});
+  history?.addEventListener('toggle',()=>{const button=history.querySelector('summary b');if(button)button.textContent=history.open?'−':'+'});
+  sync();
 })();

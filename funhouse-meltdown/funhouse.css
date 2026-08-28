@@ -256,6 +256,21 @@
   accent-color: var(--funhouse-pink);
 }
 
+.audio-status {
+  display: inline-block;
+  margin-top: 7px;
+  color: #c5b4cf;
+  font-size: .72rem;
+}
+
+.audio-wrap .btn {
+  float: right;
+  min-height: 30px;
+  margin-top: 5px;
+  padding: 0 11px;
+  font-size: .66rem;
+}
+
 .funhouse-story { padding: 94px 0 100px; }
 
 .funhouse-story h2 {

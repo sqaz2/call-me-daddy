@@ -1,6 +1,6 @@
 (()=>{
   if(window.CMDTactileScrubber)return;
-  if(!window.CMDPersistentSite){const script=document.createElement('script');script.src='/persistent-site-browser.js?v=20260823-1';document.head.appendChild(script)}
+  if(!window.CMDPersistentSite){const script=document.createElement('script');script.src='/persistent-site-browser.js?v=20260827-1';document.head.appendChild(script)}
 
   const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
   const fmt=value=>{const sec=Math.max(0,Number(value)||0),mins=Math.floor(sec/60),secs=Math.floor(sec%60).toString().padStart(2,'0');return `${mins}:${secs}`};

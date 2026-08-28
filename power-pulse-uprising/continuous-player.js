@@ -1,32 +1,37 @@
 (()=>{
-  const audio=document.getElementById('pulseAudio'); if(!audio)return;
-  const loadHelper=(src,key)=>new Promise(resolve=>{if(window[key])return resolve();const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=resolve;document.head.appendChild(s)});
-  loadHelper('/persistent-site-browser.js?v=20260824-4','CMDPersistentSite');
-  const gapReady=loadHelper('/silent-gap.js?v=20260823-1','CMD_SILENT_GAP');
+  const audio=document.getElementById('pulseAudio');
+  if(!audio||!window.CMDContinuousPlayback)return;
+
   const sourceVideo=document.getElementById('sourceVideo'),play=document.getElementById('pulsePlay'),icon=document.getElementById('pulseIcon'),status=document.getElementById('pulseStatus'),progress=document.getElementById('pulseProgress'),bar=document.getElementById('pulseProgressBar'),current=document.getElementById('pulseCurrent'),duration=document.getElementById('pulseDuration'),player=document.getElementById('armandoPlayer'),trackCopy=player?.querySelector('.track-copy'),trackTitle=trackCopy?.querySelector('strong'),trackLabel=trackCopy?.querySelector('small'),cover=player?.querySelector('.armando-cover-button img'),machineArtist=player?.querySelector('.machine-meta span'),machineProject=player?.querySelector('.machine-meta b'),historyDrawer=document.querySelector('.armando-history-drawer');
   const songLink=document.createElement('a');songLink.className='cmd-now-song-link';songLink.textContent='Open this song →';songLink.hidden=true;trackCopy?.appendChild(songLink);
   const shareButton=document.createElement('button');shareButton.className='cmd-now-share';shareButton.type='button';shareButton.textContent='↗ Share this song';trackCopy?.appendChild(shareButton);
-  const chosen={id:'did-armando-die-after-you-held-his-beer',title:'Did Armando Die After You Held His Beer?',artist:'MusicSubject × Call Me Daddy',project:'Armando',label:'Chosen version',audio:'/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/'};
-  const earlier={id:'armando',title:'Armando — Earlier Mix',artist:'MusicSubject × Call Me Daddy',project:'Armando archive',label:'Earlier Armando mix',audio:'/media/songs/2026/08/armando/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/'};
-  const queue=[chosen,earlier];const radio=window.CMDPlaylistRadio?.create({excludeIds:queue.map(t=>t.id),lastSongId:earlier.id});let index=0,inGap=false,pending=-1,continuing=false;
-  const fmt=s=>Number.isFinite(s)?`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`:'--:--';
-  const sync=()=>{if(inGap)return;const d=audio.duration,r=d?audio.currentTime/d:0;if(bar)bar.style.width=`${r*100}%`;if(current)current.textContent=fmt(audio.currentTime);if(duration)duration.textContent=fmt(d);progress?.setAttribute('aria-valuenow',String(Math.round(r*100)))};
-  const media=t=>{if(!('mediaSession'in navigator))return;try{navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:t.artist,album:t.project,artwork:t.cover?[{src:new URL(t.cover,location.href).href}]:[]})}catch{}};
-  const paint=t=>{if(trackTitle)trackTitle.textContent=t.title;if(trackLabel)trackLabel.textContent=t.label||(t.variantCount>1?`Play the site · ${t.variantLabel}`:'Play the site');if(machineArtist)machineArtist.textContent=t.artist;if(machineProject)machineProject.textContent=(t.project||'Call Me Daddy radio').toUpperCase();if(cover&&t.cover){cover.src=t.cover;cover.alt=`${t.title} artwork`}const can=index>1&&t.experience;songLink.hidden=!can;if(can)songLink.href=t.experience;media(t)};
-  const load=(i,auto=true)=>{inGap=false;pending=-1;index=Math.max(0,Math.min(queue.length-1,i));const t=queue[index];paint(t);audio.src=t.audio;audio.load();sync();window.CMDPersistentSite?.refreshClearance?.();if(status)status.textContent=auto?'Loading next…':'Tap artwork to play';if(auto)audio.play().catch(()=>{continuing=false;if(status)status.textContent='Tap artwork to continue'})};
-  const ensureNext=()=>{if(index<queue.length-1)return index+1;const track=radio?.next();if(!track)return -1;queue.push(track);return queue.length-1};
-  const gap=async()=>{pending=ensureNext();if(pending<0){continuing=false;if(status)status.textContent='Radio unavailable · open Music';if(icon)icon.textContent='▶';return}continuing=true;if(status)status.textContent=`Next: ${queue[pending].title}…`;if(icon)icon.textContent='⋯';await gapReady;if(!window.CMD_SILENT_GAP){load(pending,true);return}inGap=true;audio.src=window.CMD_SILENT_GAP;audio.load();audio.play().catch(()=>load(pending,true))};
-  const toggle=()=>{if(inGap){audio.pause();load(pending,false);return}if(audio.ended){audio.currentTime=0;audio.play().catch(()=>{});return}if(audio.paused){sourceVideo?.pause();audio.play().catch(()=>{})}else audio.pause()};
-  play?.addEventListener('click',toggle);
-  shareButton.addEventListener('click',()=>window.CMDPlaylistRadio?.share(queue[index]));
-  audio.addEventListener('play',()=>{sourceVideo?.pause();if(icon)icon.textContent=inGap?'⋯':'❚❚';if(!inGap&&status)status.textContent='Playing';player?.classList.toggle('is-playing',!inGap);if(!inGap)media(queue[index]);window.CMDPersistentSite?.setSession(true);window.CMDPersistentSite?.refreshClearance?.()});
-  audio.addEventListener('pause',()=>{if(!inGap&&icon&&!audio.ended)icon.textContent='▶';if(!inGap&&status&&!audio.ended&&!continuing)status.textContent='Paused';if(!inGap)player?.classList.remove('is-playing')});
-  audio.addEventListener('ended',()=>{if(inGap){const target=pending;inGap=false;load(target,true)}else{player?.classList.remove('is-playing');sync();gap()}});
-  audio.addEventListener('error',()=>{if(!audio.src)return;if(inGap&&pending>=0){const target=pending;inGap=false;load(target,true);return}if(status)status.textContent='Skipping unavailable track…';window.setTimeout(gap,500)});
-  audio.addEventListener('loadedmetadata',sync);audio.addEventListener('timeupdate',sync);sourceVideo?.addEventListener('play',()=>{audio.pause()});
-  progress?.addEventListener('click',e=>{if(inGap||!audio.duration)return;const r=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((e.clientX-r.left)/r.width)*audio.duration))});
-  historyDrawer?.addEventListener('toggle',e=>{const b=e.currentTarget.querySelector('summary b');if(b)b.textContent=e.currentTarget.open?'−':'+'});
-  document.querySelectorAll('.history-audio').forEach(b=>b.addEventListener('click',()=>{load(1,true);document.getElementById('listen')?.scrollIntoView({behavior:'smooth',block:'center'})}));
-  if('mediaSession'in navigator){try{navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause());navigator.mediaSession.setActionHandler('nexttrack',()=>{const target=ensureNext();if(target>=0)load(target,true)});navigator.mediaSession.setActionHandler('previoustrack',()=>{if(index>0)load(index-1,true)})}catch{}}
-  paint(queue[0]);sync();
+  const chosen={id:'did-armando-die-after-you-held-his-beer',songId:'did-armando-die-after-you-held-his-beer',title:'Did Armando Die After You Held His Beer?',artist:'MusicSubject × Call Me Daddy',project:'Armando',label:'Chosen version',audio:'/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/'};
+  const earlier={id:'armando',songId:'armando',title:'Armando — Earlier Mix',artist:'MusicSubject × Call Me Daddy',project:'Armando archive',label:'Earlier Armando mix',audio:'/media/songs/2026/08/armando/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/'};
+  let active=chosen,activeIndex=0;
+  const fmt=value=>Number.isFinite(value)?`${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`:'--:--';
+  const sync=(time=audio.currentTime,total=audio.duration)=>{const ratio=total?time/total:0;if(bar)bar.style.width=`${ratio*100}%`;if(current)current.textContent=fmt(time);if(duration)duration.textContent=fmt(total);progress?.setAttribute('aria-valuenow',String(Math.round(ratio*100)))};
+  const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;if(trackTitle)trackTitle.textContent=track.title;if(trackLabel)trackLabel.textContent=track.label||(track.variantCount>1?`Play the site · ${track.variantLabel}`:'Play the site');if(machineArtist)machineArtist.textContent=track.artist||'MusicSubject × Call Me Daddy';if(machineProject)machineProject.textContent=(track.project||'Call Me Daddy radio').toUpperCase();if(cover&&track.cover){cover.src=track.cover;cover.alt=`${track.title} artwork`}const can=activeIndex>1&&track.experience;songLink.hidden=!can;if(can)songLink.href=track.experience;if(status)status.textContent=state.reason==='ready'?'Tap artwork to play':'Loading next…';sync()};
+  const controller=window.CMDContinuousPlayback.create({
+    id:'armando-endless-player',
+    audio,
+    tracks:[chosen,earlier],
+    localCount:2,
+    excludeIds:[chosen.id,earlier.id],
+    lastSongId:earlier.id,
+    route:'/power-pulse-uprising/',
+    onTrack:paint,
+    onTime:sync,
+    onReady:()=>sync(),
+    onPlayState:playing=>{if(playing)sourceVideo?.pause();if(icon)icon.textContent=playing?'❚❚':'▶';if(status)status.textContent=playing?'Playing':(!audio.ended?'Paused':status.textContent);player?.classList.toggle('is-playing',playing)},
+    onStatus:kind=>{if(!status)return;if(kind==='waiting'||kind==='stalled')status.textContent='Buffering…';else if(kind==='blocked')status.textContent='Tap artwork to continue';else if(kind==='error')status.textContent='Skipping unavailable track…';else if(kind==='failed')status.textContent='Playback needs a tap';else if(kind==='unavailable')status.textContent='Radio unavailable · open Music'},
+    onNeedsTap:()=>{if(icon)icon.textContent='▶'}
+  });
+
+  play?.addEventListener('click',()=>{if(audio.paused){sourceVideo?.pause();controller.play()}else controller.pause()});
+  shareButton.addEventListener('click',()=>window.CMDPlaylistRadio?.share(active));
+  sourceVideo?.addEventListener('play',()=>controller.pause());
+  progress?.addEventListener('click',event=>{if(!audio.duration)return;const rect=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((event.clientX-rect.left)/rect.width)*audio.duration))});
+  historyDrawer?.addEventListener('toggle',event=>{const button=event.currentTarget.querySelector('summary b');if(button)button.textContent=event.currentTarget.open?'−':'+'});
+  document.querySelectorAll('.history-audio').forEach(button=>button.addEventListener('click',()=>{controller.load(1,{autoplay:true,reason:'history'});document.getElementById('listen')?.scrollIntoView({behavior:'smooth',block:'center'})}));
+  sync();
 })();
