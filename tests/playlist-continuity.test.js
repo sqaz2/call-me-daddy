@@ -11,7 +11,7 @@ test('shared playlist tail excludes the local set once, then rebuilds forever',(
   const storage=new Map();
   const window={};
   const context=vm.createContext({window,location:{search:'',origin:'https://callmedaddy.musicsubject.com',href:'https://callmedaddy.musicsubject.com/music/'},localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,String(value))},crypto:{getRandomValues:values=>{values[0]=123;values[1]=456;return values;}},URL,URLSearchParams,Date,Math,Uint32Array});
-  ['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','catalog-cycle.js','playlist-radio.js'].forEach(file=>vm.runInContext(read(file),context,{filename:file}));
+  ['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','catalog-cycle.js','playlist-radio.js'].forEach(file=>vm.runInContext(read(file),context,{filename:file}));
   const excluded=['find-your-people','cut-from-the-same-fabric-instrumental','hell-has-people-too'];
   const controller=window.CMDPlaylistRadio.create({excludeIds:excluded,seed:'playlist-tail-test'});
   const first=[];

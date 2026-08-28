@@ -5,7 +5,7 @@ const path=require('node:path');
 const vm=require('node:vm');
 
 const root=path.resolve(__dirname,'..');
-const radioFiles=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','catalog-cycle.js'];
+const radioFiles=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','catalog-cycle.js'];
 
 class FakeClassList{
   constructor(){this.values=new Set();}

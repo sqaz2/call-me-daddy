@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
-const sourceFiles=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','catalog-cycle.js'];
+const sourceFiles=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','catalog-cycle.js'];
 function loadRadio(search=''){const storage=new Map();const window={};const context=vm.createContext({window,location:{search},localStorage:{getItem:key=>storage.has(key)?storage.get(key):null,setItem:(key,value)=>storage.set(key,String(value))},crypto:{getRandomValues:values=>{values[0]=123456789;values[1]=987654321;return values;}},URLSearchParams,Date,Math,Uint32Array});sourceFiles.forEach(file=>vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file}));return {window,storage};}
 function build(search='',options={}){const {window}=loadRadio(search);const cycle=window.CMDCatalogCycle.build(window.CMD_SONGS,{intent:'surprise',seed:'route-test-42',cycleNumber:1,ignoreHistory:true,...options});return {window,cycle};}
 const ids=cycle=>Array.from(cycle,track=>track.songId);
