@@ -51,6 +51,10 @@ Add one object to `/data/songs.js`:
 
 `experience` is optional. Use it when a song has a custom page or interactive release.
 
+## Keep aliases and remixes under one song identity
+
+Different filenames do not automatically mean different songs. Put alternate titles in an `aliases` array and put playable remixes in `variants`. For example, `Make Me an Animal`, `Make Me Animal`, and `Animal Day` belong to one catalog entry; each actual uploaded mix belongs under that entry instead of inflating the song count.
+
 ## YouTube-only songs
 
 A song does not need to be re-uploaded as an MP3 if it already lives on YouTube. Add `youtubeId` and `youtubeUrl`, leave `audio` empty, use the YouTube thumbnail as `cover`, and point `experience` to a dedicated `/youtube/VIDEO_ID/` page. In the catalog, local-audio artwork starts the custom bottom player; artwork for a YouTube-only release opens its song page instead. YouTube pages use the privacy-enhanced embed and attempt to pull the public title/channel through YouTube oEmbed at runtime.

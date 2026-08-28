@@ -32,7 +32,8 @@ test('every finite collection player hands its last local song into endless radi
     'cut-from-the-same-fabric/player.js':['CMDPlaylistRadio?.create',"playbackMode==='radio'",'loadRadio(true)'],
     'old-files-new-tools/player.js':['CMDPlaylistRadio?.create','nextTrack','loadRadio()'],
     'archive/continuous-tail.js':['CMDPlaylistRadio?.create',"audio.addEventListener('ended'",'loadRadio()'],
-    'concrete-under-evergreens/player.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()']
+    'concrete-under-evergreens/player.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()'],
+    'archive/wild-ways/player.js':['CMDContinuousPlayback.create','localCount:tracks.length','excludeIds:[song.id]']
   };
   for(const [file,markers] of Object.entries(players)){
     const source=read(file);
@@ -66,7 +67,8 @@ test('collection pages load the radio math before their local player',()=>{
     'concrete-under-evergreens/index.html':'/concrete-under-evergreens/player.js',
     'namaste-hamster/index.html':'/namaste-hamster/namaste.js',
     'id-pick-you-first/index.html':'/id-pick-you-first/player.js',
-    'funhouse-meltdown/index.html':'/funhouse-meltdown/player.js'
+    'funhouse-meltdown/index.html':'/funhouse-meltdown/player.js',
+    'archive/wild-ways/index.html':'/archive/wild-ways/player.js'
   };
   for(const [file,player] of Object.entries(pages)){
     const html=read(file),playerIndex=html.indexOf(player);

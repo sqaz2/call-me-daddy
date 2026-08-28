@@ -94,6 +94,17 @@ For this collection, prefer real photos tied to the songs as backgrounds when av
 
 ## History / archive branch
 
+### `/archive/wild-ways/`
+
+**One Nova Scotia song source → three playable AI-era versions.**
+
+- 2019 — keyboard-and-vocal practice in Nova Scotia; the raw rehearsal is historical context and is not currently a playable upload
+- 2026 — AI-built version using Will's voice
+- 2026 — EDM Remix
+- 2026 — Crowd Drop Remix
+
+All three playable files remain variants of the single `wild-ways` catalog identity.
+
 ### `/old-files-new-tools/`
 
 **MusicSubject personal recording history → modern reworks.**
@@ -183,6 +194,7 @@ Historical material belongs under:
 - **Updates:** listener-facing changes, not a raw Git commit log.
 - **When Things Got Heavy:** real-photo backgrounds first when the song has a real visual tied to it; keep alternate mixes under one identity.
 - **Old Files / New Tools:** preserve source → rework relationships and admit when an old file is rough.
+- **Aliases stay attached to one identity:** `Make Me an Animal`, `Make Me Animal`, and `Animal Day` are one song family unless the artist explicitly separates them later.
 - **Sqaz:** explicit archive with deliberate context; keep the Sqaz identity distinct.
 - **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
 - **Artwork-first playback** remains the visual rule wherever possible.

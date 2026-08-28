@@ -71,7 +71,7 @@ Do not invent an exact day for historical material. Month-only items render as `
 - Homepage daily briefing: every feed entry on the newest exact day.
 - Homepage release grid: entries with `featured: true`, ordered by `featuredOrder`.
 - `/updates/`: every feed entry, grouped by date.
-- Stable share URL: `/updates/#ENTRY_ID`.
+- Stable share URL: `/updates/ENTRY_ID/`.
 
 The homepage also computes collection counts from `data/songs.js`; do not type song/version counts into feed data.
 

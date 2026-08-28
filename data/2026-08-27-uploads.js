@@ -1,6 +1,59 @@
 (()=>{
   const additions=[
     {
+      id:'wild-ways',
+      title:'Wild Ways',
+      artist:'MusicSubject × Call Me Daddy',
+      year:2019,
+      project:'Wild Ways · Old Files / New Tools',
+      description:'Wild Ways began as keyboard-and-voice practice in Nova Scotia in 2019. The main playable version was built with AI using my voice; two dance-focused remixes take the same song into EDM and crowd-drop territory.',
+      lineage:'2019 Nova Scotia keyboard-and-vocal practice → 2026 AI-built voice version → 2026 EDM and crowd-drop remixes.',
+      aliases:['Wild Ways 2019'],
+      audio:'/media/archive/wild-ways/2026/ai-voice-version.mp3',
+      cover:'',
+      experience:'/archive/wild-ways/',
+      shareUrl:'/updates/archive-wild-ways/',
+      kind:'2019 voice source → 3 AI-era versions',
+      variants:[
+        {
+          id:'ai-voice-version',
+          label:'AI Voice Version from the 2019 Source',
+          audio:'/media/archive/wild-ways/2026/ai-voice-version.mp3'
+        },
+        {
+          id:'edm-remix',
+          label:'EDM Remix',
+          audio:'/media/archive/wild-ways/2026/edm-remix.mp3'
+        },
+        {
+          id:'crowd-drop-remix',
+          label:'2026 Crowd Drop Remix',
+          audio:'/media/archive/wild-ways/2026/crowd-drop-remix.mp3'
+        }
+      ]
+    },
+    {
+      id:'make-me-an-animal',
+      title:'Make Me an Animal',
+      artist:'Call Me Daddy',
+      year:2026,
+      month:8,
+      date:'2026-08-27',
+      project:'Make Me an Animal',
+      description:'Make Me an Animal—also known in the files as Animal Day—arrives here as an EDM Switch-Up Mix. Any other Animal versions that surface belong to this same song family.',
+      aliases:['Animal Day','Make Me Animal'],
+      audio:'/media/songs/2026/08/make-me-an-animal/edm-switch-up-mix.mp3',
+      cover:'',
+      experience:'/updates/release-make-me-an-animal/',
+      shareUrl:'/updates/release-make-me-an-animal/',
+      kind:'EDM Switch-Up Mix',
+      variants:[{
+        id:'edm-switch-up-mix',
+        label:'EDM Switch-Up Mix',
+        audio:'/media/songs/2026/08/make-me-an-animal/edm-switch-up-mix.mp3'
+      }]
+    },
+    {
       id:'what-is-my-opponent-threatening-right-now',
       title:'What Is My Opponent Threatening Right Now? (Can I Get Mated?)',
       artist:'Call Me Daddy',
@@ -69,6 +122,8 @@
   }
 
   if(window.CMD_RADIO_CONFIG?.profiles){
+    window.CMD_RADIO_CONFIG.profiles['wild-ways']={surprise:92,laugh:18,think:86,'level-up':76,heavy:48,'old-files':100};
+    window.CMD_RADIO_CONFIG.profiles['make-me-an-animal']={surprise:100,laugh:64,think:42,'level-up':84,heavy:76,'old-files':6};
     window.CMD_RADIO_CONFIG.profiles['what-is-my-opponent-threatening-right-now']={surprise:94,laugh:84,think:100,'level-up':92,heavy:34,'old-files':10};
     window.CMD_RADIO_CONFIG.profiles['september-26th-heartbreak']={surprise:78,laugh:4,think:92,'level-up':62,heavy:88,'old-files':100};
     window.CMD_RADIO_CONFIG.profiles['heartbreak-you-water-me']={surprise:80,laugh:4,think:94,'level-up':60,heavy:90,'old-files':100};
@@ -77,6 +132,34 @@
   if(window.CMD_BRIEFING?.entries){
     const entries=[
       {
+        id:'archive-wild-ways',
+        published:'2026-08-27T23:36:40-06:00',
+        type:'Old file · three-version lineage',
+        songId:'wild-ways',
+        href:'/archive/wild-ways/',
+        cta:'Hear all 3 versions',
+        featured:true,
+        featuredOrder:1,
+        cardLines:['WILD','WAYS'],
+        cardTag:'Nova Scotia 2019 → AI voice → dance remixes',
+        cardSummary:'Keyboard-and-voice practice from Nova Scotia became an AI-built version using my voice, then split into EDM and crowd-drop remixes.',
+        badge:'3 versions · one song'
+      },
+      {
+        id:'release-make-me-an-animal',
+        published:'2026-08-27T23:36:40-06:00',
+        type:'New release · EDM',
+        songId:'make-me-an-animal',
+        href:'/music/?song=make-me-an-animal&version=edm-switch-up-mix&intent=surprise&share=1',
+        cta:'Play the EDM Switch-Up Mix',
+        featured:true,
+        featuredOrder:2,
+        cardLines:['MAKE ME AN','ANIMAL'],
+        cardTag:'Animal Day · EDM Switch-Up Mix',
+        cardSummary:'Make Me an Animal and Animal Day are one song family. This is the EDM Switch-Up Mix—the only uploaded version so far.',
+        badge:'One song · one uploaded version'
+      },
+      {
         id:'release-what-is-my-opponent-threatening-right-now',
         published:'2026-08-27T23:11:40-06:00',
         type:'New release · chess',
@@ -84,7 +167,7 @@
         href:'/music/?song=what-is-my-opponent-threatening-right-now&version=can-i-get-mated&intent=think&share=1',
         cta:'Play the chess song',
         featured:true,
-        featuredOrder:1,
+        featuredOrder:3,
         cardLines:['WHAT IS MY OPPONENT','THREATENING RIGHT NOW?'],
         cardTag:'Chess anxiety · tactical survival',
         cardSummary:'Before every move: what are they threatening, and can I get mated? The blunder check finally has a soundtrack.',
@@ -109,13 +192,14 @@
         badge:'Nova Scotia rehearsal'
       }
     ];
-    if(entries.some(entry=>entry.featured&&!window.CMD_BRIEFING.entries.some(existing=>existing.id===entry.id))){
-      window.CMD_BRIEFING.entries.forEach(entry=>{if(entry.featured&&Number.isInteger(entry.featuredOrder))entry.featuredOrder+=1;});
+    const missingFeatured=entries.filter(entry=>entry.featured&&!window.CMD_BRIEFING.entries.some(existing=>existing.id===entry.id));
+    if(missingFeatured.length){
+      window.CMD_BRIEFING.entries.forEach(entry=>{if(entry.featured&&Number.isInteger(entry.featuredOrder))entry.featuredOrder+=missingFeatured.length;});
     }
     for(let index=entries.length-1;index>=0;index-=1){
       const entry=entries[index];
       if(!window.CMD_BRIEFING.entries.some(existing=>existing.id===entry.id))window.CMD_BRIEFING.entries.unshift(entry);
     }
-    window.CMD_BRIEFING.updated='2026-08-27T23:11:40-06:00';
+    window.CMD_BRIEFING.updated='2026-08-27T23:36:40-06:00';
   }
 })();
