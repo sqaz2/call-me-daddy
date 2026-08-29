@@ -22,8 +22,10 @@ jobs:
           node --check data/2026-08-26-uploads.js
           node --check data/2026-08-27-uploads.js
           node --check data/2026-08-29-uploads.js
+          node --check data/artwork-fallback.js
           node --check data/anti-ai-collection.js
           node --check catalog-cycle.js
+          node --check playlist-radio.js
           node --check continuous-playback.js
           node --check persistent-site-browser.js
           node --check home-briefing.js
@@ -39,6 +41,8 @@ jobs:
         run: node --test tests/radio-cycle.test.js
       - name: August 29 upload tests
         run: node --test tests/aug29-uploads.test.js
+      - name: Artwork fallback tests
+        run: node --test tests/artwork-fallback.test.js
       - name: Four-track player handoff tests
         run: node --test tests/four-track-player.test.js
       - name: Concrete Under Evergreens player tests

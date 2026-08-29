@@ -2,7 +2,13 @@
   if(window.CMDPlaylistRadio)return;
 
   const engine=window.CMDCatalogCycle;
+  const fallbackCover=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const songs=Array.isArray(window.CMD_SONGS)?window.CMD_SONGS:[];
+  songs.forEach(song=>{
+    if(!song||song.cover)return;
+    song.cover=fallbackCover;
+    song.coverIsFallback=true;
+  });
   const playable=songs.filter(song=>engine?.variants(song).length);
   const cleanIds=ids=>[...new Set((ids||[]).filter(Boolean).map(String))];
 
