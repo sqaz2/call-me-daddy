@@ -1,0 +1,58 @@
+.song-card.is-placeholder-cover .song-cover,
+.release-card.is-placeholder-cover img {
+  opacity: .16 !important;
+  filter: grayscale(.35) saturate(.35) contrast(.82) brightness(.62);
+}
+
+.song-card.has-video.has-cover.is-placeholder-cover .song-cover {
+  opacity: .13 !important;
+  filter: grayscale(.28) saturate(.42) contrast(.84) brightness(.68);
+}
+
+.song-card.is-placeholder-cover::before {
+  background: linear-gradient(180deg, rgba(5,5,5,.28) 12%, rgba(5,5,5,.48) 48%, rgba(8,8,8,.94) 82%, #080808 100%);
+}
+
+.release-card.is-placeholder-cover .release-card-shade {
+  background: linear-gradient(180deg, rgba(0,0,0,.42) 15%, rgba(0,0,0,.58) 58%, rgba(0,0,0,.96) 100%) !important;
+}
+
+.placeholder-cover-label {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 39%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100% - 48px);
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 999px;
+  background: rgba(7,7,7,.56);
+  color: rgba(255,255,255,.68);
+  font-size: .64rem;
+  font-weight: 850;
+  letter-spacing: .16em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+.catalog-player.is-placeholder-cover .player-cover {
+  opacity: .34;
+  filter: grayscale(.25) saturate(.45) brightness(.72);
+}
+
+@media (max-width: 620px) {
+  .placeholder-cover-label {
+    top: 36%;
+    max-width: calc(100% - 36px);
+    padding: 7px 10px;
+    font-size: .58rem;
+  }
+}
