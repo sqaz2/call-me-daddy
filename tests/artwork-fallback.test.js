@@ -40,3 +40,20 @@ test('playlist radio gives missing artwork the same fallback',()=>{
   assert.ok(source.includes("'/media/site/image-coming-soon.jpg'"));
   assert.ok(source.includes('song.cover=fallbackCover'));
 });
+
+test('placeholder artwork is visibly subdued without changing real covers',()=>{
+  const css=read('placeholder-art.css');
+  const js=read('placeholder-art.js');
+  assert.match(css,/\.song-card\.is-placeholder-cover \.song-cover/);
+  assert.match(css,/\.release-card\.is-placeholder-cover img/);
+  assert.match(css,/opacity:\s*\.16/);
+  assert.match(css,/\.catalog-player\.is-placeholder-cover \.player-cover/);
+  assert.ok(js.includes("'/media/site/image-coming-soon.jpg'"));
+  assert.ok(js.includes("label.textContent='Cover coming soon'"));
+  assert.ok(js.includes('MutationObserver'));
+  ['index.html','music/index.html'].forEach(file=>{
+    const html=read(file);
+    assert.ok(html.includes('/placeholder-art.css?v=20260901-1'),`${file} should load placeholder styling`);
+    assert.ok(html.includes('/placeholder-art.js?v=20260901-1'),`${file} should load placeholder detection`);
+  });
+});
