@@ -29,6 +29,7 @@ jobs:
           node --check continuous-playback.js
           node --check persistent-site-browser.js
           node --check home-briefing.js
+          node --check placeholder-art.js
           node --check music/music.js
           node --check music/now-playing-share.js
           node --check anti-generative-ai-diss/collection.js
