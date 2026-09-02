@@ -8,14 +8,14 @@
       month:9,
       date:'2026-09-02',
       project:'’Twas the Tism, M’Lord',
-      description:'A medieval Halloween meme turned into dark cinematic R&B and dubstep, then cut into micro-stutters before the outro glitches itself apart.',
-      lineage:'Meme seed → multiple Suno cuts → chosen dark R&B/dubstep direction → surgical micro-stutter edits → continuous glitch-out final.',
-      aliases:['’Twas the Tism, Mm-Lord','Twas the Tism M’Lord'],
+      description:'A medieval meme turned into dark cinematic R&B and dubstep, then tightened with micro-stutters before the shorter final edit glitches itself apart.',
+      lineage:'Meme seed → multiple Suno cuts → chosen dark R&B/dubstep direction → shortened final arrangement → surgical micro-stutter edits → continuous glitch-out final.',
+      aliases:['Twas the Tism M’Lord'],
       audio:'/Twas_the_Tism_full_glitch_tweakout_final.mp3',
       cover:'/28475.jpeg',
       experience:'/twas-the-tism-mlord/',
       shareUrl:'/twas-the-tism-mlord/',
-      kind:'Halloween dubstep · final glitch edit',
+      kind:'dark R&B / dubstep · final glitch edit',
       variants:[
         {
           id:'final-glitch-edit',
