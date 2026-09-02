@@ -10,7 +10,7 @@ A music upload is not complete when the file is merely in GitHub. The agent owns
 2. Put audio, artwork, and video in the dated `media/` structure. Use clean, stable filenames. Keep special-project assets with their project.
 3. Inspect embedded media metadata. Remove unrelated source/tool metadata. When tags are being written, use the approved song title and credit (`MusicSubject`, `Call Me Daddy`, or `MusicSubject × Call Me Daddy` as supplied) and `callmedaddy.musicsubject.com`; never invent credits, dates, or backstory.
 4. Give a new song one manifest in `content/releases/`, based on `content/releases/_template.json`. Do not create another dated `data/YYYY-MM-DD-uploads.js` patch.
-5. Give the song a real listener route. A dedicated release page must have accurate canonical/Open Graph data, the reusable share controls, artwork-first playback, and continuous handoff into the site radio. Do not expose a generic native audio bar when the custom player can control it.
+5. Give the song a real listener route. A dedicated release page must have accurate canonical/Open Graph data, the reusable share controls, artwork-first playback, visible Previous, Play/Pause, and Next controls, and continuous handoff into the site radio. Shared continuous playback must keep the audio alive and use the five-second “Up next” page-follow prompt before opening a different song’s listener route. Do not expose a generic native audio bar when the custom player can control it.
 6. Run `node scripts/sync-releases.mjs`. This one command must put the release into the catalog, homepage briefing and release grid, Updates feed, intention radio, static shareable update page, and sitemap.
 7. Run `node scripts/sync-releases.mjs --check`, all JavaScript syntax checks, and the complete test suite. Fix failures; never delete or weaken a test just to publish.
 8. When publishing is authorized, commit and push the exact checked state, then verify the GitHub Site checks and the live Cloudflare deployment. Do not report the release finished while validation is failing.
@@ -24,6 +24,7 @@ A music upload is not complete when the file is merely in GitHub. The agent owns
 - Every catalog identity needs six intention scores: `surprise`, `laugh`, `think`, `level-up`, `heavy`, and `old-files`.
 - Keep variants and aliases under one song identity. If an existing legacy record needs a new version, update or migrate that identity; do not add a second record with the same song ID.
 - Preserve the special three-track sequencing for Cut From the Same Fabric. Ordinary releases never join that sequence.
+- Preserve continuous playback when the visible page follows a new song. Use `CMDPersistentSite.followTrack`; do not hard-navigate the owner window or remove the “Stay here” escape from the countdown.
 - Preserve existing user changes and existing working players. A release update is not permission for a visual redesign.
 
 ## Definition of done

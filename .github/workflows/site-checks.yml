@@ -56,6 +56,8 @@ jobs:
         run: node --test tests/playlist-continuity.test.js
       - name: Background playback recovery tests
         run: node --test tests/continuous-playback.test.js
+      - name: Page-follow navigation tests
+        run: node --test tests/persistent-site-browser.test.js
       - name: Public feed tests
         run: node --test tests/site-feed.test.js
       - name: Release workflow tests

@@ -19,6 +19,8 @@
   const label = copy?.querySelector('small');
   const title = copy?.querySelector('strong');
   const status = document.getElementById('playerStatus');
+  const previous = document.getElementById('playerPrevious');
+  const next = document.getElementById('playerNext');
 
   window.CMD_TISM_ENDLESS = window.CMDContinuousPlayback.create({
     id: 'twas-the-tism-endless-player',
@@ -37,6 +39,7 @@
         mini.alt = `${track.title || 'Song'} artwork`;
       }
       if (status) status.textContent = state.reason === 'ready' ? 'Ready' : 'Loading next…';
+      if (previous) previous.disabled = (state.index || 0) <= 0;
     },
     onPlayState: playing => {
       if (status) status.textContent = playing ? 'Playing' : (!audio.ended ? 'Paused' : status.textContent);
@@ -48,5 +51,12 @@
       else if (kind === 'error') status.textContent = 'Skipping unavailable track…';
       else if (kind === 'failed') status.textContent = 'Playback needs a tap';
     }
+  });
+
+  previous?.addEventListener('click', () => {
+    if (!window.CMD_TISM_ENDLESS.previous() && status) status.textContent = 'No previous song yet';
+  });
+  next?.addEventListener('click', () => {
+    if (!window.CMD_TISM_ENDLESS.next('button-next') && status) status.textContent = 'No next song available';
   });
 })();

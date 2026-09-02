@@ -19,6 +19,7 @@
   function create(options={}){
     const audio=options.audio;
     if(!audio)throw new Error('CMDContinuousPlayback requires an audio element');
+    audio.__cmdContinuousPlayback=true;
 
     const id=String(options.id||audio.id||location.pathname);
     const queue=(options.tracks||[]).filter(track=>track?.audio).slice();
@@ -38,6 +39,7 @@
     let lastSnapshotAt=0;
     let consecutiveErrors=0;
     let sourceTransition=false;
+    let pendingPageFollow=null;
     let destroyed=false;
 
     const status=(kind,detail)=>options.onStatus?.(kind,detail,current);
@@ -100,6 +102,8 @@
     const pause=()=>{
       wantsPlayback=false;
       sourceTransition=false;
+      pendingPageFollow=null;
+      window.CMDPersistentSite?.cancelFollow?.();
       audio.pause();
       persist(true);
     };
@@ -111,6 +115,7 @@
       pendingPosition=position>0?position:null;
       pendingAutoplay=Boolean(autoplay&&pendingPosition!==null);
       sourceTransition=true;
+      pendingPageFollow=options.followPages===false||reason==='restore'||!current.experience?null:{track:current,reason};
       options.onTrack?.(current,{index,reason,radio:index>=Number(options.localCount??options.tracks?.length??queue.length)});
       setMediaSession(current);
       audio.src=current.audio;
@@ -145,10 +150,19 @@
       options.onPlayState?.(true,currentTrack());
       window.CMDPersistentSite?.setSession?.(true);
       window.CMDPersistentSite?.refreshClearance?.();
+      if(pendingPageFollow){
+        const request=pendingPageFollow;
+        pendingPageFollow=null;
+        window.CMDPersistentSite?.followTrack?.(request.track,{reason:request.reason,seconds:Number(options.pageFollowSeconds)||5});
+      }
       persist(true);
     });
     audio.addEventListener('pause',()=>{
-      if(!sourceTransition&&!audio.ended&&document.visibilityState!=='hidden')wantsPlayback=false;
+      if(!sourceTransition&&!audio.ended&&document.visibilityState!=='hidden'){
+        wantsPlayback=false;
+        pendingPageFollow=null;
+        window.CMDPersistentSite?.cancelFollow?.();
+      }
       if('mediaSession'in navigator){try{navigator.mediaSession.playbackState='paused'}catch{}}
       options.onPlayState?.(false,currentTrack());
       persist(true);
@@ -223,7 +237,7 @@
       play,pause,toggle,next,previous,load,
       current:currentTrack,
       getState:()=>({id,index,wantsPlayback,current:currentTrack(),length:queue.length}),
-      destroy:()=>{destroyed=true}
+      destroy:()=>{destroyed=true;audio.__cmdContinuousPlayback=false;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.()}
     };
   }
 

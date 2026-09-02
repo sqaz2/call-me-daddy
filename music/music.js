@@ -41,7 +41,7 @@
 
   if(!window.CMDPersistentSite){
     const script=document.createElement('script');
-    script.src='/persistent-site-browser.js?v=20260827-1';
+    script.src='/persistent-site-browser.js?v=20260902-1';
     document.head.appendChild(script);
   }
 

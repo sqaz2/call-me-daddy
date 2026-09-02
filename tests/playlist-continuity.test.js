@@ -56,6 +56,26 @@ test('single-release pages no longer stop after their opening song',()=>{
   }
 });
 
+test('M’Lord exposes working previous and next controls',()=>{
+  const html=read('twas-the-tism-mlord/index.html');
+  const player=read('twas-the-tism-mlord/player.js');
+  assert.ok(html.includes('id="playerPrevious"'));
+  assert.ok(html.includes('id="playerNext"'));
+  assert.ok(player.includes('CMD_TISM_ENDLESS.previous()'));
+  assert.ok(player.includes("CMD_TISM_ENDLESS.next('button-next')"));
+});
+
+test('shared continuous playback follows song routes through a cancellable countdown',()=>{
+  const playback=read('continuous-playback.js');
+  const browser=read('persistent-site-browser.js');
+  assert.ok(playback.includes('CMDPersistentSite?.followTrack'));
+  assert.ok(browser.includes("label.textContent='Up next'"));
+  assert.ok(browser.includes("stay.textContent='Stay here'"));
+  assert.ok(browser.includes("now.textContent='Open now'"));
+  assert.ok(browser.includes('followDeadline=Date.now()+delay*1000'));
+  assert.ok(browser.includes('catalogTrackForMedia'));
+});
+
 test('collection pages load the radio math before their local player',()=>{
   const pages={
     'power-pulse-uprising/index.html':'/power-pulse-uprising/continuous-player.js',

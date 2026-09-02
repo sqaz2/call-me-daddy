@@ -67,7 +67,7 @@
     .tism-art-copy small{display:block;color:var(--tism-gold);font-weight:900;letter-spacing:.15em;text-transform:uppercase}.tism-art-copy strong{display:block;font-size:1.12rem;margin-top:4px}.tism-art-copy span{display:block;color:#d3c8d4;font-size:.83rem;margin-top:4px}
     .tism-play-orb{display:grid;place-items:center;flex:0 0 54px;height:54px;border-radius:50%;background:rgba(255,247,232,.94);color:#0a070b;font-size:1.2rem;box-shadow:0 0 0 6px rgba(255,255,255,.08)}
     .tism-player{position:sticky;bottom:12px;z-index:8;margin:-1px auto 30px;width:min(940px,calc(100% - 28px));border:1px solid var(--tism-line);border-radius:22px;background:rgba(12,8,15,.9);backdrop-filter:blur(20px);box-shadow:0 28px 80px rgba(0,0,0,.58);padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px 14px;align-items:center}
-    .tism-player[hidden]{display:none}.tism-mini{width:48px;height:48px;border-radius:10px;object-fit:cover}.tism-player-copy small{display:block;color:var(--tism-gold);font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;font-weight:900}.tism-player-copy strong{display:block;margin-top:2px}.tism-player-copy span{display:block;color:var(--tism-soft);font-size:.76rem;margin-top:2px}.tism-toggle{width:46px;height:46px;border:0;border-radius:50%;cursor:pointer;background:var(--tism-ink);color:#080609;font-size:1.05rem}.tism-progress{grid-column:1/-1;height:12px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;cursor:pointer;position:relative}.tism-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--tism-cyan),var(--tism-violet),var(--tism-red),var(--tism-gold));border-radius:inherit}.tism-times{grid-column:1/-1;display:flex;justify-content:space-between;color:var(--tism-soft);font-size:.7rem;margin-top:-7px}
+    .tism-player[hidden]{display:none}.tism-mini{width:48px;height:48px;border-radius:10px;object-fit:cover}.tism-player-copy small{display:block;color:var(--tism-gold);font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;font-weight:900}.tism-player-copy strong{display:block;margin-top:2px}.tism-player-copy span{display:block;color:var(--tism-soft);font-size:.76rem;margin-top:2px}.tism-player-controls{display:flex;align-items:center;gap:7px}.tism-player-controls button{display:grid;place-items:center;border:0;cursor:pointer}.tism-toggle{width:46px;height:46px;border-radius:50%;background:var(--tism-ink);color:#080609;font-size:1.05rem}.tism-skip{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.09);color:var(--tism-ink);font-size:1rem}.tism-skip:disabled{cursor:not-allowed;opacity:.34}.tism-player-controls button:focus-visible{outline:2px solid var(--tism-gold);outline-offset:3px}.tism-progress{grid-column:1/-1;height:12px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;cursor:pointer;position:relative}.tism-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--tism-cyan),var(--tism-violet),var(--tism-red),var(--tism-gold));border-radius:inherit}.tism-times{grid-column:1/-1;display:flex;justify-content:space-between;color:var(--tism-soft);font-size:.7rem;margin-top:-7px}
     .tism-section{padding:76px 0}.tism-section.alt{background:linear-gradient(180deg,#0a070c,#120b15 48%,#080609)}
     .tism-head{display:grid;grid-template-columns:.75fr 1fr;gap:30px;align-items:end;margin-bottom:34px}.tism-head h2{font-size:clamp(2.35rem,6.7vw,5.6rem);line-height:.88;letter-spacing:-.065em;margin:0;text-transform:uppercase}.tism-head p{color:var(--tism-soft);font-size:1.05rem;line-height:1.65;margin:0;max-width:620px}
     .tism-hook{border:1px solid var(--tism-line);border-radius:28px;padding:clamp(26px,6vw,58px);background:radial-gradient(circle at 90% 0,rgba(185,121,255,.12),transparent 34%),linear-gradient(145deg,#17101c,#0c090e);box-shadow:0 25px 80px rgba(0,0,0,.32)}
@@ -79,6 +79,7 @@
     .tism-cutroom{margin-top:22px;border:1px solid var(--tism-line);border-radius:22px;background:rgba(255,255,255,.035);overflow:hidden}.tism-cutroom summary{cursor:pointer;padding:20px 22px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;list-style:none}.tism-cutroom summary::-webkit-details-marker{display:none}.tism-cutroom summary:after{content:"+";float:right;color:var(--tism-gold);font-size:1.3rem}.tism-cutroom[open] summary:after{content:"−"}.tism-cutroom-body{padding:0 22px 22px;color:var(--tism-soft);line-height:1.65}.tism-cutroom-body strong{color:var(--tism-ink)}
     .tism-finale{padding:90px 0 100px;text-align:center;position:relative;overflow:hidden}.tism-finale:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(185,121,255,.13),transparent 35%),repeating-linear-gradient(90deg,transparent 0 17px,rgba(67,233,255,.025) 17px 18px);pointer-events:none}.tism-finale .shell{position:relative}.tism-finale h2{font-size:clamp(3rem,10vw,8rem);line-height:.82;letter-spacing:-.07em;text-transform:uppercase;margin:0}.tism-finale h2 span{color:var(--tism-gold)}.tism-finale p{color:var(--tism-soft);font-size:1.05rem;max-width:580px;margin:24px auto 0}.tism-finale .tism-actions{justify-content:center}
     @media(max-width:820px){.tism-hero{min-height:auto;padding-top:94px}.tism-hero-grid,.tism-head{grid-template-columns:1fr}.tism-art-player{max-width:520px;margin-top:4px}.tism-grid3,.tism-timeline{grid-template-columns:1fr}.tism-stage{border-right:0;border-bottom:1px solid var(--tism-line);min-height:0}.tism-stage:last-child{border-bottom:0}.tism-lines,.tism-edit-map{grid-template-columns:1fr}.tism-title{font-size:clamp(3.35rem,17vw,6.2rem)}.tism-hero-bg:after{background:linear-gradient(180deg,rgba(7,5,9,.40),rgba(7,5,9,.68) 48%,#070509 100%)}}
+    @media(max-width:560px){.tism-player{grid-template-columns:auto 1fr}.tism-player-controls{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.2fr 1fr}.tism-player-controls button{width:100%;height:42px;border-radius:999px}}
     @media(prefers-reduced-motion:reduce){.tism-title:after{animation:none}.tism-art-player img{transition:none}}
   </style>
 </head>
@@ -118,7 +119,11 @@
     <div class="tism-player" id="tismPlayer" hidden>
       <img class="tism-mini" src="/media/songs/2026/09/twas-the-tism-mlord/cover.jpg" alt="">
       <div class="tism-player-copy"><small>Final glitch edit</small><strong>’Twas the Tism, M’Lord</strong><span id="playerStatus">Ready</span></div>
-      <button class="tism-toggle" id="playerToggle" type="button" aria-label="Play or pause">▶</button>
+      <div class="tism-player-controls" role="group" aria-label="Playback controls">
+        <button class="tism-skip" id="playerPrevious" type="button" aria-label="Previous song" title="Previous song" disabled>↶</button>
+        <button class="tism-toggle" id="playerToggle" type="button" aria-label="Play or pause">▶</button>
+        <button class="tism-skip" id="playerNext" type="button" aria-label="Next song" title="Next song">↷</button>
+      </div>
       <div class="tism-progress" id="progress" role="slider" tabindex="0" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressBar"></span></div>
       <div class="tism-times"><span id="currentTime">0:00</span><span id="duration">3:30</span></div>
       <audio id="songAudio" preload="metadata" src="/media/songs/2026/09/twas-the-tism-mlord/audio.mp3"></audio>
@@ -212,8 +217,8 @@ Voices in one song.</p></article>
   <script src="/data/2026-08-29-uploads.js?v=20260829-3"></script>
   <script src="/catalog-cycle.js?v=20260825-1"></script>
   <script src="/playlist-radio.js?v=20260826-1"></script>
-  <script src="/persistent-site-browser.js?v=20260827-1"></script>
-  <script src="/continuous-playback.js?v=20260827-1"></script>
+  <script src="/persistent-site-browser.js?v=20260902-1"></script>
+  <script src="/continuous-playback.js?v=20260902-1"></script>
   <script>
     (()=>{
       const audio=document.getElementById('songAudio');

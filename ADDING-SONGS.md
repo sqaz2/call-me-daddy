@@ -45,8 +45,12 @@ Create the local route named by `song.experience` before running the sync tool. 
 - accurate `<title>`, canonical URL, Open Graph and X metadata;
 - `share.css`, a `data-share` control, and `share.js`;
 - artwork-first play/pause behavior;
-- the shared continuous-playback handoff so the site does not stop after one song; and
+- visible Previous, Play/Pause, and Next controls;
+- the shared continuous-playback handoff so the site does not stop after one song;
+- the shared five-second “Up next” prompt that follows a different song into its listener page without unloading the playing audio; and
 - mobile-first controls without a visible generic browser audio bar.
+
+The page-follow prompt is part of `continuous-playback.js` and `persistent-site-browser.js`. Keep both scripts in that order, let “Stay here” cancel the move, and never replace the handoff with `location.href` in the window that owns the playing audio.
 
 Project pages may be more elaborate, but ordinary releases do not join the protected Cut From the Same Fabric three-track sequence.
 
