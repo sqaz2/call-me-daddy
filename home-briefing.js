@@ -201,7 +201,10 @@
 
     const featured = entries
       .filter(entry => entry.featured)
-      .sort((a, b) => (Number(a.featuredOrder) || 999) - (Number(b.featuredOrder) || 999));
+      .sort((a, b) => {
+        const byDate = dateScore(b.published) - dateScore(a.published);
+        return byDate || (Number(a.featuredOrder) || 999) - (Number(b.featuredOrder) || 999);
+      });
     const releaseGrid = document.querySelector('.release-grid');
     if (releaseGrid && featured.length) {
       releaseGrid.innerHTML = featured.map(entry => {

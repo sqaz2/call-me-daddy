@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "song-slug",
+    "title": "Song Title",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-02",
+    "project": "Song Title",
+    "description": "What the song is and why it belongs here.",
+    "audio": "/media/songs/2026/09/song-slug/audio.mp3",
+    "cover": "/media/songs/2026/09/song-slug/cover.jpg",
+    "experience": "/song-slug/",
+    "shareUrl": "/song-slug/",
+    "kind": "song",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Main version",
+        "audio": "/media/songs/2026/09/song-slug/audio.mp3"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 20,
+    "think": 50,
+    "level-up": 50,
+    "heavy": 50,
+    "old-files": 10
+  },
+  "update": {
+    "id": "release-song-slug",
+    "published": "2026-09-02T12:00:00-06:00",
+    "type": "New release",
+    "songId": "song-slug",
+    "title": "Song Title",
+    "summary": "The listener-facing release summary.",
+    "href": "/song-slug/",
+    "sharePath": "/updates/release-song-slug/",
+    "cta": "Open the song page",
+    "featured": true,
+    "cover": "/media/songs/2026/09/song-slug/cover.jpg",
+    "cardLines": [
+      "SONG",
+      "TITLE"
+    ],
+    "cardTag": "Short style or story label",
+    "cardSummary": "The shorter homepage-card version.",
+    "badge": "New release",
+    "intent": "surprise"
+  }
+}

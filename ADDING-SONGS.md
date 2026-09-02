@@ -1,97 +1,127 @@
-# Adding songs to Call Me Daddy
+# Adding music to Call Me Daddy
 
-The main catalog lives at `/music/` and is generated from `/data/songs.js`.
+The release manifest is the single source of truth for a new song. Do not make a new dated JavaScript upload patch and do not separately hand-edit Home, Music, Updates, radio, and the sitemap.
 
-## Keep special projects separate
+## New-release workflow
 
-`/cut-from-the-same-fabric/` has custom three-track sequencing and its one-way crossfade. Do not insert ordinary catalog songs into that three-track sequence. After the sequence finishes, the shared playlist tail takes over and continues through intention radio.
+### 1. Identify the release correctly
 
-## Media layout by year and month
+Decide whether the upload is:
 
-Songs are organized by release year, release month, then song slug:
+- a genuinely new song identity;
+- another version or remix of an existing song;
+- an older recording or archive source; or
+- media for an existing special project.
 
-```
+Aliases and remixes stay under one song ID. Different filenames do not automatically mean different songs. `Make Me an Animal`, `Make Me Animal`, and `Animal Day`, for example, remain one identity with multiple versions.
+
+Do not invent a creation date, backstory, base-master relationship, or credit when it has not been confirmed.
+
+### 2. Store the media
+
+Use dated, stable paths for current songs:
+
+```text
 /media/songs/YYYY/MM/song-slug/audio.mp3
 /media/songs/YYYY/MM/song-slug/cover.jpg
+/media/songs/YYYY/MM/song-slug/background.mp4
 ```
 
-Example:
+Use `/media/archive/` for historical sources and reworks. Use `/media/projects/YYYY/MM/` for project-only media. Keep the public paths stable after release.
 
-```
-/media/songs/2026/08/find-your-people/audio.mp3
-/media/songs/2026/08/find-your-people/cover.png
-```
+Before publishing, inspect the final media:
 
-Special project-only media can use the same date pattern under `/media/projects/`:
+- confirm the chosen audio is the intended final edit;
+- remove unrelated embedded source/tool metadata;
+- use the approved title and artist credit when writing tags;
+- use `callmedaddy.musicsubject.com` as the site URL where the format supports it;
+- confirm artwork orientation and file type; and
+- confirm every referenced local file actually exists.
 
-```
-/media/projects/YYYY/MM/project-slug/cover.png
-/media/projects/YYYY/MM/project-slug/video.mp4
-```
+### 3. Create the listener page
 
-## Add one catalog entry
+Create the local route named by `song.experience` before running the sync tool. A dedicated song/release page needs:
 
-Add one object to `/data/songs.js`:
+- accurate `<title>`, canonical URL, Open Graph and X metadata;
+- `share.css`, a `data-share` control, and `share.js`;
+- artwork-first play/pause behavior;
+- the shared continuous-playback handoff so the site does not stop after one song; and
+- mobile-first controls without a visible generic browser audio bar.
 
-```js
-{
-  id: 'song-slug',
-  title: 'Song Title',
-  artist: 'Call Me Daddy',
-  year: 2026,
-  month: 8,
-  project: '',
-  description: 'Short description.',
-  audio: '/media/songs/2026/08/song-slug/audio.mp3',
-  cover: '/media/songs/2026/08/song-slug/cover.jpg',
-  experience: '',
-  kind: 'song'
-}
+Project pages may be more elaborate, but ordinary releases do not join the protected Cut From the Same Fabric three-track sequence.
+
+### 4. Add one manifest
+
+Copy `content/releases/_template.json` to:
+
+```text
+content/releases/YYYY-MM-DD-song-slug.json
 ```
 
-`experience` is optional. Use it when a song has a custom page or interactive release.
+Fill all three sections:
 
-## Keep aliases and remixes under one song identity
+- `song` — catalog identity, assets, variants, description and listener route;
+- `radio` — a 0–100 score for all six intention lanes; and
+- `update` — the homepage/Updates wording, date, share URL and card content.
 
-Different filenames do not automatically mean different songs. Put alternate titles in an `aliases` array and put playable remixes in `variants`. For example, `Make Me an Animal`, `Make Me Animal`, and `Animal Day` belong to one catalog entry; each actual uploaded mix belongs under that entry instead of inflating the song count.
+Use an `America/Edmonton` offset for exact public timestamps. A new release normally has `update.featured: true`; that is the contract that puts it on the homepage.
 
-## YouTube-only songs
+The update permalink must be exactly:
 
-A song does not need to be re-uploaded as an MP3 if it already lives on YouTube. Add `youtubeId` and `youtubeUrl`, leave `audio` empty, use the YouTube thumbnail as `cover`, and point `experience` to a dedicated `/youtube/VIDEO_ID/` page. In the catalog, local-audio artwork starts the custom bottom player; artwork for a YouTube-only release opens its song page instead. YouTube pages use the privacy-enhanced embed and attempt to pull the public title/channel through YouTube oEmbed at runtime.
-
-## Every song page gets sharing
-
-Any dedicated song or release page must include the reusable share controls so visitors can send it directly to Facebook, X, WhatsApp, Bluesky, Reddit, Telegram, copy the link, or use their device share sheet.
-
-In the page `<head>` include:
-
-```html
-<link rel="stylesheet" href="/share.css">
+```text
+/updates/UPDATE_ID/
 ```
 
-Place this where the share controls should appear:
+Do not add `featuredOrder`. The sync tool assigns a collision-free tie-break order, while the homepage places newer publication dates first.
 
-```html
-<div data-share
-     data-share-label="Share this song"
-     data-share-title="Song Title — Call Me Daddy"
-     data-share-text="Short share message."></div>
+### 5. Synchronize everything
+
+Run:
+
+```text
+node scripts/sync-releases.mjs
 ```
 
-Then load this near the end of the page:
+That command updates the generated release blocks in:
 
-```html
-<script src="/share.js"></script>
+- `data/songs.js` for Music and every shared player;
+- `data/briefing.js` for the homepage and Updates;
+- `data/radio-intents.js` for intention radio;
+- `sitemap.xml`; and
+- `updates/UPDATE_ID/index.html`, including canonical, Open Graph, X, play and share links.
+
+The files inside `RELEASE-MANIFEST:*` markers are generated. Change the manifest and rerun the command instead of editing those blocks.
+
+### 6. Validate before publishing
+
+Run:
+
+```text
+node scripts/sync-releases.mjs --check
+node --test tests/*.test.js tests/*.test.mjs
 ```
 
-The component uses the page canonical URL and Open Graph metadata by default, so every song page should also have accurate canonical, `og:title`, `og:description`, and `og:image` tags.
+Also run the JavaScript syntax checks in `.github/workflows/site-checks.yml`. The sync check rejects missing assets/pages, bad IDs, wrong update permalinks, incomplete radio profiles, stale generated output, and a release that is not featured on Home.
 
-When songs are supplied through ChatGPT, the intended workflow is to place them in the correct dated folder (or create the YouTube-backed entry), update `/data/songs.js`, create/update the dedicated release page when appropriate, include sharing, and update the sitemap; you should not need to manually reorganize files afterward.
+Do not call a release complete until all of these are true:
 
-The catalog player includes missing-image and missing-audio fallbacks so one bad asset does not break the whole page. Keep the interaction artwork-first: the image starts playback and the bottom dock handles play/pause and seeking rather than exposing a native audio control bar inside each card.
+- Home shows it in the newest briefing and release cards;
+- Music contains the song and versions;
+- Updates contains it and its stable update page;
+- direct sharing has correct artwork and wording;
+- the dedicated page continues into radio;
+- the sitemap contains both routes;
+- local checks and GitHub Site checks pass; and
+- the live Cloudflare site has the published change.
 
-The main catalog renderer automatically adds a direct **Share song** control to every card. Version collections should also expose a share control beside each version. Use the exact-song URL contract so the recipient gets that song/version first and the radio continues afterward:
+## Existing-song versions
+
+If the song already has a release manifest, edit that manifest and keep the version in its `variants` array. If it is still defined in a legacy dated data file, update or migrate the existing identity rather than creating a second manifest with the same ID. Add a listener-facing public update when the new version matters, and keep the exact-song URL contract:
 
 ```text
 /music/?song=SONG_ID&version=VERSION_ID&intent=INTENT&share=1
 ```
+
+## YouTube-only songs
+
+A local MP3 is not required when the release already lives on YouTube. Use `youtubeId` and `youtubeUrl`, point `cover` at the YouTube thumbnail, leave `audio` empty, and provide a dedicated `/youtube/VIDEO_ID/` experience page. The manifest and sync workflow are otherwise the same.

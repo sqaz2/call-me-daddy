@@ -1,13 +1,13 @@
-Call Me Daddy media assets
+MUSICSUBJECT x CALL ME DADDY — NEW MUSIC
 
-Upload the contents of the assets folder into the root of the GitHub repository:
-sqaz2/call-me-daddy
+Do not stop after uploading a file and do not create another dated data/*-uploads.js file.
 
-Expected paths:
-assets/audio/find-your-people.mp3
-assets/audio/cut-from-the-same-fabric-instrumental.mp3
-assets/audio/hell-has-people-too.mp3
-assets/video/cut-from-the-same-fabric.mp4
-assets/images/cut-from-the-same-fabric.png
-assets/images/find-your-people.png
-assets/images/hell-has-people-too.png
+1. Read AGENTS.md and ADDING-SONGS.md.
+2. Put the final media in its dated media/ folder.
+3. Create or update the listener page.
+4. Add one content/releases/YYYY-MM-DD-song-slug.json manifest.
+5. Run: node scripts/sync-releases.mjs
+6. Run: node scripts/sync-releases.mjs --check
+7. Run the complete test suite and publish only after Site checks pass.
+
+The sync command carries one release record to Home, Music, Updates, radio, sharing and the sitemap.

@@ -121,3 +121,15 @@ window.CMD_RADIO_CONFIG = {
     }
   ]
 };
+/* RELEASE-MANIFEST:RADIO:START */
+Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "twas-the-tism-mlord": {
+    "surprise": 100,
+    "laugh": 94,
+    "think": 68,
+    "level-up": 54,
+    "heavy": 88,
+    "old-files": 4
+  }
+});
+/* RELEASE-MANIFEST:RADIO:END */

@@ -31,9 +31,9 @@ Audio and video requests pass through the range-aware delivery layer documented 
 
 ## Adding music and public updates
 
-See `ADDING-SONGS.md` for catalog/media work. The catalog data lives in `data/songs.js`; current song/project media use dated folders in `media/`.
+See `AGENTS.md` for the agent's full release responsibility and `ADDING-SONGS.md` for the release-manifest workflow. New releases get one source record in `content/releases/`; `node scripts/sync-releases.mjs` carries it into the catalog, homepage, Updates, radio, static sharing page and sitemap. Current song/project media use dated folders in `media/`.
 
-See `BRIEFING.md` for the public feed. `data/briefing.js` drives the homepage daily briefing, featured release cards and `/updates/`. Release entries should reference `data/songs.js` by `songId` so music metadata has one authoritative home.
+See `BRIEFING.md` for the public feed. `data/briefing.js` drives the homepage daily briefing, featured release cards and `/updates/`. Its generated release block comes from the same manifest as the generated catalog and radio records, so a new release cannot silently reach Music while missing Home.
 
 Historical source/rework projects use `media/archive/`. The Old Files / New Tools material is organized under:
 

@@ -2,6 +2,8 @@
 
 `data/briefing.js` is the public activity feed for the site.
 
+New music releases must not be typed directly into its generated block. Add them through `content/releases/*.json` and run `node scripts/sync-releases.mjs`; the sync tool updates the homepage/feed record, share page and sitemap together. The manual examples below remain for listener-facing site updates that are not music releases.
+
 It now has two jobs:
 
 1. drive the homepage **What Changed Today** briefing;
