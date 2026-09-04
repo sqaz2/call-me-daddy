@@ -106,8 +106,7 @@
     });
   }
 
-  function loadRadio(){
-    const track=radio?.next();
+  function loadRadioTrack(track){
     if(!track){status.textContent='Radio unavailable · open Music';play.textContent='▶';return;}
     currentButton=null;
     currentRadioTrack=track;
@@ -125,11 +124,27 @@
     audio.play().catch(()=>{status.textContent='Ready · tap play';play.textContent='▶'});
   }
 
+  function loadRadio(){loadRadioTrack(radio?.next())}
+
   function nextTrack(){
     if(currentRadioTrack){loadRadio();return;}
     const index=localButtons.indexOf(currentButton);
     if(index>=0&&index<localButtons.length-1){choose(localButtons[index+1]);return;}
     loadRadio();
+  }
+
+  function previousTrack(){
+    if(audio.currentTime>5){audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});return;}
+    if(currentRadioTrack){const track=radio?.previous?.();if(track&&track!==currentRadioTrack)loadRadioTrack(track);else{audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{})}return;}
+    const index=localButtons.indexOf(currentButton);
+    if(index>0)choose(localButtons[index-1]);else{audio.currentTime=0;if(audio.paused&&audio.src)audio.play().catch(()=>{})}
+  }
+
+  function currentTrack(){
+    if(currentRadioTrack)return currentRadioTrack;
+    if(!currentButton)return null;
+    const card=currentButton.closest('article');
+    return {id:currentButton.id||currentButton.dataset.title,songId:currentButton.id||currentButton.dataset.title,title:currentButton.dataset.title||'Archive recording',artist:'MusicSubject',project:'Old Files / New Tools',variantLabel:currentButton.dataset.era||'Archive',audio:currentButton.dataset.src,cover:currentButton.dataset.art||'',experience:`${location.pathname}${card?.id?`#${card.id}`:''}`};
   }
 
   document.querySelectorAll('.tape-play,.ab-play').forEach(btn=>{
@@ -201,10 +216,16 @@
     try{
       navigator.mediaSession.setActionHandler('play',()=>audio.play().catch(()=>{}));
       navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
+      navigator.mediaSession.setActionHandler('previoustrack',previousTrack);
       navigator.mediaSession.setActionHandler('nexttrack',nextTrack);
       navigator.mediaSession.setActionHandler('seekbackward',d=>{audio.currentTime=Math.max(0,audio.currentTime-(d.seekOffset||10))});
       navigator.mediaSession.setActionHandler('seekforward',d=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(d.seekOffset||10))});
       navigator.mediaSession.setActionHandler('seekto',d=>{if(typeof d.seekTime==='number')audio.currentTime=Math.max(0,Math.min(audio.duration||Infinity,d.seekTime))});
     }catch{}
   }
+  window.CMDUniversalPlayer?.connect({
+    id:'old-files-universal',media:audio,getTrack:currentTrack,getContext:track=>track?.variantLabel||'Old Files / New Tools',
+    play:()=>audio.src&&audio.play(),pause:()=>audio.pause(),toggle:()=>audio.src&&(audio.paused?audio.play():audio.pause()),
+    previous:previousTrack,next:nextTrack,share:()=>{if(currentRadioTrack)return window.CMDPlaylistRadio?.share(currentRadioTrack);return currentButton?.closest('article')?.querySelector('[data-share] .share-btn')?.click()},replaceElement:dock
+  });
 })();

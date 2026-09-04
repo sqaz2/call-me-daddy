@@ -40,7 +40,11 @@ test('one manifest reaches catalog, homepage feed, radio, sharing and sitemap', 
     );
     assert.ok(fs.existsSync(path.join(root, 'updates', manifest.update.id, 'index.html')));
     assert.ok(read('sitemap.xml').includes(`https://callmedaddy.musicsubject.com${manifest.update.sharePath}`));
-    assert.ok(read('sitemap.xml').includes(`https://callmedaddy.musicsubject.com${manifest.song.experience}`));
+    if (manifest.song.experience) {
+      assert.ok(read('sitemap.xml').includes(`https://callmedaddy.musicsubject.com${manifest.song.experience}`));
+    } else {
+      assert.match(manifest.update.href, /^\/music\/\?song=/, `${manifest.song.id} needs an exact catalog route until its story exists`);
+    }
   }
 });
 
@@ -65,8 +69,17 @@ test('new dated upload patches cannot bypass the release manifest workflow', () 
   assert.deepEqual(forbidden, []);
 });
 
+test('the release workflow rejects invented listener and share routes', () => {
+  const source = read('scripts/sync-releases.mjs');
+  assert.ok(source.includes('requireLocalPage(song.experience'));
+  assert.ok(source.includes('requireLocalPage(song.shareUrl'));
+  assert.ok(source.includes('requireLocalPage(update.href'));
+});
+
 test('featured homepage cards are newest-first', () => {
   const source = read('home-briefing.js');
   assert.ok(source.includes('const byDate = dateScore(b.published) - dateScore(a.published)'));
   assert.ok(source.includes('return byDate ||'));
+  assert.ok(source.includes('featured.slice(0, 8)'), 'Home should stay curated instead of rendering the whole release history');
+  assert.ok(source.includes("storyReady ? 'Story ready' : 'Story coming soon'"));
 });

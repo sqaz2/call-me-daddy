@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='20260902-1';
+  const VERSION='20260904-1';
   const CLAIM='cmd:claim-playback';
   const PAUSE='cmd:pause-playback';
   const REFRESH='cmd:refresh-clearance';
@@ -110,6 +110,7 @@
   };
 
   const playerSelectors=[
+    '.cmd-universal-player:not([hidden])',
     '.catalog-player:not([hidden])','.sad-player:not([hidden])','.sad-song-player:not([hidden])',
     '.trilogy-player-shell:not([hidden])','#pickPlayer:not([hidden])','#oftPlayer:not([hidden])',
     '#armandoPlayer:not([hidden])','#wifiPlayer:not([hidden])','#tismPlayer:not([hidden])','.archive-player:not([hidden])','.player:not([hidden])'
@@ -240,7 +241,8 @@
     const pill=overlay.querySelector('.cmd-site-session-pill');
     if(!pill)return;
     const viewOwns=viewFrame&&viewFrame.contentWindow===ownerWindow;
-    pill.hidden=!overlay.classList.contains('is-open')||!session||Boolean(viewOwns);
+    const ownerPlayerVisible=ownerWindow===window&&document.querySelector?.('.cmd-universal-player:not([hidden])');
+    pill.hidden=!overlay.classList.contains('is-open')||!session||Boolean(viewOwns)||Boolean(ownerPlayerVisible);
   };
 
   const claimOwner=win=>{

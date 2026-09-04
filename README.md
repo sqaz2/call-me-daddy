@@ -19,13 +19,15 @@ See `SITE-MAP.md` for the full information architecture and archive/media map.
 - `/old-files-new-tools/` — old recordings and their 2026 reworks, organized by song family
 - `/sqaz/` — explicit Sqaz archive, currently centered on Kill You (2007 → 2026)
 
-## Player rule
+## Player and discovery rule
 
-The preferred interaction is artwork-first: tap the image to start the music, then use the custom player dock at the bottom. Avoid dropping visible native browser players or generic embedded streaming bars into release pages when the custom experience can control playback instead.
+The preferred interaction is artwork-first: tap the image to start the music, then use `universal-player.js` for the persistent Previous, Play/Pause, Next, seek, share and story controls. Release artwork can still act as a page-specific launcher, but it should not create a second bottom-player state machine. Avoid visible native browser players when the universal transport can control playback instead.
 
 The main catalog follows the same rule used by the special release pages: artwork starts or pauses local audio, while external-only releases open from the artwork and retain their platform links.
 
 The music page also supports intention-driven radio routes. The listener can ask to be surprised, laugh, think, level up, go heavy, or explore old files; the route weights the catalog accordingly while preserving controlled randomness and protected story sequences where order matters.
+
+Home and Music use `music/discovery.js` for the same title/idea search, listener-facing intention categories and story status. A playable song without a declared `experience` stays in the catalog as **Story coming soon** with an **Ask me about this song** action; the site must never invent a route for it.
 
 Audio and video requests pass through the range-aware delivery layer documented in `STREAMING.md`. Public `/media/...` URLs remain stable while individual files can migrate to R2 later.
 

@@ -60,6 +60,15 @@ function requireLocalPage(value, label) {
   if (!fs.existsSync(target)) report(`${label} does not exist: ${value}`);
 }
 
+function isExactCatalogRoute(value, songId) {
+  try {
+    const url = new URL(value, 'https://callmedaddy.musicsubject.com');
+    return url.pathname === '/music/' && url.searchParams.get('song') === songId;
+  } catch {
+    return false;
+  }
+}
+
 function parseManifest(file) {
   const relative = path.relative(root, file);
   try {
@@ -86,6 +95,7 @@ function validateManifest(manifest, relative) {
   requireLocalAsset(song.cover, `${relative} song.cover`);
   for (const variant of song.variants || []) requireLocalAsset(variant?.audio, `${relative} variant ${variant?.id || '(missing id)'}`);
   requireLocalPage(song.experience, `${relative} song.experience`);
+  requireLocalPage(song.shareUrl, `${relative} song.shareUrl`);
 
   if (!radio || typeof radio !== 'object') {
     report(`${relative} needs a radio profile`);
@@ -102,10 +112,15 @@ function validateManifest(manifest, relative) {
   if (!validDate.test(String(update.published || ''))) report(`${relative} has an unsupported update.published value`);
   if (!String(update.summary || '').trim()) report(`${relative} needs update.summary`);
   if (!String(update.href || '').trim()) report(`${relative} needs update.href`);
+  requireLocalPage(update.href, `${relative} update.href`);
   const expectedSharePath = `/updates/${update.id}/`;
   if (update.sharePath !== expectedSharePath) report(`${relative} update.sharePath must be ${expectedSharePath}`);
   if (update.featured !== true) report(`${relative} must set update.featured to true so new music reaches the homepage`);
   if (!Array.isArray(update.cardLines) || !update.cardLines.length) report(`${relative} needs update.cardLines for the homepage card`);
+  if (!song.experience && song.audio) {
+    if (!isExactCatalogRoute(song.shareUrl, song.id)) report(`${relative} song.shareUrl must target /music/?song=${song.id} until its story exists`);
+    if (!isExactCatalogRoute(update.href, song.id)) report(`${relative} update.href must target /music/?song=${song.id} until its story exists`);
+  }
 }
 
 const files = fs.readdirSync(releaseRoot)
@@ -239,7 +254,7 @@ function renderUpdatePage(release, update) {
     <div class="update-post-meta"><span>${escapeHtml(prettyDate(update.published))}</span><span>${escapeHtml(update.type || 'New release')}</span></div>
     <h1>${escapeHtml(title)}</h1>
     <p class="lede">${escapeHtml(summary)}</p>
-    <div class="update-post-actions"><a class="btn primary" href="${escapeHtml(update.href || song.experience || player)}">${escapeHtml(update.cta || 'Open the song')}</a><a class="btn" href="${escapeHtml(player)}">Play and share</a><a class="btn" href="/music/">Browse music</a></div>
+    <div class="update-post-actions"><a class="btn primary" href="${escapeHtml(update.href || song.experience || player)}">${escapeHtml(update.cta || (song.experience ? 'Open the song' : 'Play this song'))}</a><a class="btn" href="${escapeHtml(player)}">Play and share</a><a class="btn" href="/music/">Browse music</a></div>
     <div data-share data-share-label="Share this release" data-share-title="${escapeHtml(title)} — Call Me Daddy" data-share-text="${escapeHtml(summary)}"></div>
     <p class="update-post-note">${escapeHtml(note)}</p>
   </main>

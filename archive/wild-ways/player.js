@@ -50,6 +50,7 @@
     excludeIds:[song.id],
     lastSongId:song.id,
     route:'/archive/wild-ways/',
+    replacePlayer:player,
     onTrack:paint,
     onTime:syncProgress,
     onReady:()=>syncProgress(),

@@ -76,6 +76,23 @@ test('shared continuous playback follows song routes through a cancellable count
   assert.ok(browser.includes('catalogTrackForMedia'));
 });
 
+test('Cut From the Same Fabric keeps its protected order but Next exits into radio',()=>{
+  const player=read('cut-from-the-same-fabric/player.js');
+  assert.ok(player.includes('if(segmentIndex>=singleSegments.length-1){loadRadio(true);return;}'));
+  assert.ok(player.includes('if(index>=order.length-1){loadRadio(true);return;}'));
+  assert.ok(player.includes('if(audio.currentTime>5){audio.currentTime=0'));
+  assert.ok(!player.includes('(index+delta+order.length)%order.length'));
+});
+
+test('the New Tools player uses the same smart Previous rule as the universal player',()=>{
+  const player=read('new-tools-trilogy.js');
+  assert.ok(player.includes('if(currentTime()>5){seekCurrent(0)'));
+  assert.ok(player.includes('if(i<=0){seekCurrent(0)'));
+  assert.ok(player.includes('if(i===order.length-1){startRadioHandoff();return}'));
+  assert.ok(player.includes("followTrack?.(currentUniversalTrack(),{seconds:5,reason:'youtube-play'})"));
+  assert.ok(!player.includes('(i+delta+order.length)%order.length'));
+});
+
 test('collection pages load the radio math before their local player',()=>{
   const pages={
     'power-pulse-uprising/index.html':'/power-pulse-uprising/continuous-player.js',

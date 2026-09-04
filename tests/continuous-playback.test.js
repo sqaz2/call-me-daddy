@@ -36,6 +36,9 @@ function environment({storage=new Map(),navigationType='navigate',search=''}={})
   const document=new FakeTarget();
   document.visibilityState='visible';
   document.wasDiscarded=false;
+  document.head={children:[],appendChild(node){node.parentNode=this;this.children.push(node);return node}};
+  document.createElement=tag=>({tagName:String(tag).toUpperCase(),dataset:{},parentNode:null,remove(){if(this.parentNode)this.parentNode.children=this.parentNode.children.filter(child=>child!==this)}});
+  document.querySelector=()=>null;
   const windowEvents=new FakeTarget();
   const followCalls=[];
   const cancelCalls=[];
@@ -67,6 +70,59 @@ test('ended moves to the prepared next song immediately on the same audio elemen
   assert.equal(audio.src,'/second.mp3');
   assert.equal(audio.playCalls,2);
   assert.equal(controller.current().title,'Second');
+});
+
+test('the next song is preloaded before the current song ends',()=>{
+  const env=environment();
+  const audio=new FakeAudio('/first.mp3');
+  env.window.CMDContinuousPlayback.create({
+    id:'release-player',audio,
+    tracks:[
+      {id:'first',title:'First',audio:'/first.mp3'},
+      {id:'second',title:'Second',audio:'/second.mp3'}
+    ]
+  });
+  const preload=env.document.head.children.find(node=>node.rel==='preload'&&node.as==='audio');
+  assert.ok(preload);
+  assert.equal(preload.href,'https://callmedaddy.musicsubject.com/second.mp3');
+});
+
+test('previous restarts after five seconds, then moves to the prior song near the beginning',()=>{
+  const env=environment();
+  const audio=new FakeAudio('/first.mp3');
+  const controller=env.window.CMDContinuousPlayback.create({
+    id:'release-player',audio,
+    tracks:[
+      {id:'first',title:'First',audio:'/first.mp3'},
+      {id:'second',title:'Second',audio:'/second.mp3'}
+    ]
+  });
+  controller.load(1,{autoplay:false});
+  audio.currentTime=12;
+  assert.equal(controller.previous(),true);
+  assert.equal(controller.current().id,'second');
+  assert.equal(audio.currentTime,0);
+  assert.equal(audio.playCalls,1);
+
+  audio.currentTime=2;
+  assert.equal(controller.previous(),true);
+  assert.equal(controller.current().id,'first');
+  assert.equal(audio.src,'/first.mp3');
+});
+
+test('the shared observer reports the active track and playback state',()=>{
+  const env=environment();
+  const events=[];
+  const unsubscribe=env.window.CMDContinuousPlayback.subscribe(event=>events.push(event));
+  const audio=new FakeAudio('/first.mp3');
+  const controller=env.window.CMDContinuousPlayback.create({id:'release-player',audio,tracks:[{id:'first',title:'First',audio:'/first.mp3'}],loopLocal:true});
+  controller.play();
+  audio.currentTime=9;
+  audio.emit('timeupdate');
+  assert.deepEqual(events.map(event=>event.type),['track','play','time']);
+  assert.equal(env.window.CMDContinuousPlayback.getActive().track.title,'First');
+  assert.equal(env.window.CMDContinuousPlayback.getActive().state.hasPlayed,true);
+  unsubscribe();
 });
 
 test('a newly playing track starts the shared five-second page-follow prompt',()=>{

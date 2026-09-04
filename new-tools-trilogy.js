@@ -2,7 +2,7 @@
   let persistentScript=document.querySelector('script[data-cmd-persistent]');
   if(!window.CMDPersistentSite&&!persistentScript){
     persistentScript=document.createElement('script');
-    persistentScript.src='/persistent-site-browser.js?v=20260902-1';
+    persistentScript.src='/persistent-site-browser.js?v=20260904-1';
     persistentScript.dataset.cmdPersistent='';
     document.head.appendChild(persistentScript);
   }
@@ -32,8 +32,9 @@
     <div class="shell trilogy-player-inner"><audio id="trilogyAudio" preload="metadata"></audio><div class="trilogy-now"><div class="trilogy-player-cover" aria-hidden="true"><img id="trilogyNowCover" alt=""><div id="trilogyYoutube"></div></div><div class="trilogy-player-meta"><small id="trilogyNowLabel">Tap a song image</small><a id="trilogyNowTitle" href="#">New Tools · four-track run</a><span id="trilogyStatus">Ready</span></div><div class="trilogy-controls"><button id="trilogyPrev" type="button" aria-label="Previous song">↶</button><button id="trilogyPlay" type="button" aria-label="Play">▶</button><button id="trilogyNext" type="button" aria-label="Next song">↷</button><button id="trilogyShare" type="button" aria-label="Share current song" title="Share current song">↗</button></div></div><button class="trilogy-timeline" id="trilogyTimeline" type="button" aria-label="Seek through the current song"><span id="trilogyProgress"></span></button></div>`;document.body.appendChild(dock);
 
   const audio=document.getElementById('trilogyAudio'),youtubeMount=document.getElementById('trilogyYoutube'),cover=document.getElementById('trilogyNowCover'),label=document.getElementById('trilogyNowLabel'),title=document.getElementById('trilogyNowTitle'),status=document.getElementById('trilogyStatus'),play=document.getElementById('trilogyPlay'),prev=document.getElementById('trilogyPrev'),next=document.getElementById('trilogyNext'),share=document.getElementById('trilogyShare'),timeline=document.getElementById('trilogyTimeline'),progress=document.getElementById('trilogyProgress'),tactileMount=document.getElementById('trilogyTactile');
-  let currentKey='',wantsPlay=false,youtubePlayer=null,youtubeReady=false,youtubeRequested=false,youtubeState=-1,youtubeTime=0,youtubeDuration=0,tactile=null;
+  let currentKey='',wantsPlay=false,youtubePlayer=null,youtubeReady=false,youtubeRequested=false,youtubeState=-1,youtubeTime=0,youtubeDuration=0,tactile=null,followedYoutubeKey='';
   let radioMode=false,radioCycle=[],radioIndex=-1,radioCycleNumber=0,radioSeed='',currentRadioTrack=null;
+  let universal=null;
   const usesYoutube=()=>!radioMode&&currentKey==='police';
   const usesLocalAudio=()=>radioMode||Boolean(tracks[currentKey]?.src);
   const currentDuration=()=>usesYoutube()?youtubeDuration:(Number(audio.duration)||0),currentTime=()=>usesYoutube()?youtubeTime:(Number(audio.currentTime)||0);
@@ -41,8 +42,9 @@
 
   loadTactileAssets(()=>{if(tactile||!window.CMDTactileScrubber)return;tactile=window.CMDTactileScrubber.create({mount:tactileMount,getDuration:currentDuration,getTime:currentTime,seek:seekCurrent,label:'DRAG TO SCAN',detail:'ONE TURN = WHOLE SONG',haptics:true})});
   const emitState=playing=>document.dispatchEvent(new CustomEvent('trilogy:playback',{detail:{playing,key:currentKey,mode:radioMode?'radio':'four-track'}}));
-  function setPlaying(playing,message=''){dock.classList.toggle('is-playing',playing);play.textContent=playing?'❚❚':'▶';play.setAttribute('aria-label',playing?'Pause':'Play');status.textContent=message||(playing?(radioMode?'Playing · Play the site':'Playing'):'Paused');if(playing)markListeningSession();emitState(playing)}
-  function handleYoutubeState(state){youtubeState=Number(state);if(currentKey!=='police')return;if(youtubeState===1)setPlaying(true);else if(youtubeState===2)setPlaying(false);else if(youtubeState===0)advance()}
+  function currentUniversalTrack(){const track=radioMode?currentRadioTrack:tracks[currentKey];if(!track)return null;return {...track,songId:track.songId||track.id,variantId:track.variantId||'main',audio:track.audio||track.src||'',cover:track.cover||'',experience:track.experience||track.page||''}}
+  function setPlaying(playing,message=''){dock.classList.toggle('is-playing',playing);play.textContent=playing?'❚❚':'▶';play.setAttribute('aria-label',playing?'Pause':'Play');status.textContent=message||(playing?(radioMode?'Playing · Play the site':'Playing'):'Paused');if(playing)markListeningSession();universal?.update({track:currentUniversalTrack(),playing,status:status.textContent,show:playing});emitState(playing)}
+  function handleYoutubeState(state){youtubeState=Number(state);if(currentKey!=='police')return;if(youtubeState===1){setPlaying(true);if(followedYoutubeKey!==currentKey){followedYoutubeKey=currentKey;window.CMDPersistentSite?.followTrack?.(currentUniversalTrack(),{seconds:5,reason:'youtube-play'})}}else if(youtubeState===2)setPlaying(false);else if(youtubeState===0)advance()}
   function createYoutubePlayer(){if(youtubePlayer||!window.YT?.Player)return;youtubePlayer=new window.YT.Player(youtubeMount,{width:'200',height:'200',videoId:tracks.police.youtubeId,playerVars:{autoplay:0,controls:0,playsinline:1,rel:0,origin:location.origin},events:{onReady:event=>{youtubeReady=true;youtubeDuration=Number(event.target.getDuration())||0;if(currentKey==='police'&&wantsPlay){status.textContent='Starting official release…';event.target.playVideo()}},onStateChange:event=>handleYoutubeState(event.data),onError:()=>{if(currentKey!=='police')return;wantsPlay=false;setPlaying(false,'Official player unavailable · open song page')}}})}
   function ensureYoutube(){if(youtubePlayer)return;if(window.YT?.Player){createYoutubePlayer();return}if(youtubeRequested)return;youtubeRequested=true;const previousReady=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{if(typeof previousReady==='function')previousReady();createYoutubePlayer()};const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.addEventListener('error',()=>{if(currentKey==='police')setPlaying(false,'Official player unavailable · open song page')});document.head.appendChild(script)}
   function pauseYoutube(){wantsPlay=false;if(youtubeReady)try{youtubePlayer.pauseVideo()}catch{}}
@@ -92,7 +94,17 @@
   function playYoutube(){wantsPlay=true;ensureYoutube();status.textContent=youtubeReady?'Starting official release…':'Loading official release…';if(youtubeReady)try{youtubePlayer.playVideo()}catch{}}
   function selectTrack(key,autoplay=true){const track=tracks[key];if(!track)return;audio.pause();pauseYoutube();radioMode=false;currentRadioTrack=null;currentKey=key;youtubeState=-1;youtubeTime=0;youtubeDuration=0;updateDock(key);if(track.src){if(audio.src!==new URL(track.src,location.href).href){audio.src=track.src;audio.load()}else try{audio.currentTime=0}catch{}status.textContent=autoplay?'Starting…':'Ready';if(autoplay)playLocal();else setPlaying(false)}else{status.textContent=autoplay?'Loading official release…':'Official YouTube release';if(autoplay)playYoutube();else setPlaying(false)}}
   function toggle(){if(!currentKey){selectTrack('sticks',true);return}if(radioMode||tracks[currentKey]?.src){if(audio.paused)playLocal();else{wantsPlay=false;audio.pause()}}else if(youtubeState===1){pauseYoutube();setPlaying(false)}else playYoutube()}
-  function step(delta,autoplay=true){if(radioMode){if(delta>0)nextRadioTrack();else previousRadioTrack();return}const i=currentKey?order.indexOf(currentKey):0;if(delta>0&&i===order.length-1){startRadioHandoff();return}selectTrack(order[(i+delta+order.length)%order.length],autoplay)}
+  function step(delta,autoplay=true){
+    if(radioMode){if(delta>0)nextRadioTrack();else previousRadioTrack();return}
+    const i=currentKey?order.indexOf(currentKey):0;
+    if(delta<0){
+      if(currentTime()>5){seekCurrent(0);if(autoplay){if(usesYoutube()&&youtubeState!==1)playYoutube();else if(!usesYoutube()&&audio.paused)playLocal()}return}
+      if(i<=0){seekCurrent(0);if(autoplay){if(usesYoutube()&&youtubeState!==1)playYoutube();else if(!usesYoutube()&&audio.paused)playLocal()}return}
+      selectTrack(order[i-1],autoplay);return;
+    }
+    if(i===order.length-1){startRadioHandoff();return}
+    selectTrack(order[i+1],autoplay);
+  }
   function advance(){if(radioMode){nextRadioTrack();return}const i=order.indexOf(currentKey);if(i>=0&&i<order.length-1)selectTrack(order[i+1],true);else startRadioHandoff()}
   async function shareCurrent(){
     const track=radioMode?currentRadioTrack:tracks[currentKey];if(!track)return;
@@ -106,7 +118,13 @@
   play.addEventListener('click',toggle);prev.addEventListener('click',()=>step(-1,true));next.addEventListener('click',()=>step(1,true));share?.addEventListener('click',shareCurrent);
   audio.addEventListener('play',()=>{if(usesLocalAudio()){wantsPlay=true;if(radioMode&&currentRadioTrack)window.CMDCatalogCycle?.remember?.(currentRadioTrack);setPlaying(true)}});audio.addEventListener('playing',()=>{if(usesLocalAudio())setPlaying(true)});audio.addEventListener('pause',()=>{if(usesLocalAudio()&&!audio.ended)setPlaying(false)});audio.addEventListener('waiting',()=>{if(usesLocalAudio())status.textContent=radioMode?'Buffering · Play the site':'Buffering…'});audio.addEventListener('ended',advance);audio.addEventListener('timeupdate',()=>{if(usesLocalAudio()&&Number.isFinite(audio.duration)&&audio.duration>0)progress.style.width=`${audio.currentTime/audio.duration*100}%`});audio.addEventListener('error',()=>{if(!audio.src)return;wantsPlay=false;if(radioMode){setPlaying(false,'Skipping unavailable radio track…');window.setTimeout(nextRadioTrack,500)}else setPlaying(false,'Audio could not load')});
   timeline.addEventListener('click',event=>{if(!currentKey)return;const rect=timeline.getBoundingClientRect(),ratio=Math.max(0,Math.min(1,(event.clientX-rect.left)/rect.width));if(usesLocalAudio()&&Number.isFinite(audio.duration))audio.currentTime=ratio*audio.duration;else if(youtubeDuration&&youtubeReady)try{youtubePlayer.seekTo(ratio*youtubeDuration,true)}catch{}});
-  window.setInterval(()=>{if(currentKey!=='police'||!youtubeReady)return;try{youtubeTime=Number(youtubePlayer.getCurrentTime())||0;youtubeDuration=Number(youtubePlayer.getDuration())||youtubeDuration;if(youtubeDuration)progress.style.width=`${youtubeTime/youtubeDuration*100}%`}catch{}},500);
+  window.setInterval(()=>{if(currentKey!=='police'||!youtubeReady)return;try{youtubeTime=Number(youtubePlayer.getCurrentTime())||0;youtubeDuration=Number(youtubePlayer.getDuration())||youtubeDuration;if(youtubeDuration)progress.style.width=`${youtubeTime/youtubeDuration*100}%`;universal?.refresh()}catch{}},500);
   document.addEventListener('cmd:persistent-pause',()=>{audio.pause();pauseYoutube();if(currentKey)setPlaying(false,'Paused')});
+  universal=window.CMDUniversalPlayer?.connect({
+    id:'new-tools-universal',media:audio,getTrack:currentUniversalTrack,getTime:currentTime,getDuration:currentDuration,
+    getContext:track=>radioMode?`Play the site · cycle ${radioCycleNumber}`:track?.tone||'New Tools',
+    play:()=>{if(!currentKey)selectTrack('sticks',true);else if(usesYoutube())playYoutube();else playLocal()},
+    pause:()=>{if(usesYoutube()){pauseYoutube();setPlaying(false)}else audio.pause()},toggle,previous:()=>step(-1,true),next:()=>step(1,true),seek:seekCurrent,share:shareCurrent
+  })||null;
   ensureYoutube();
 })();

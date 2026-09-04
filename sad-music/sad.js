@@ -44,6 +44,7 @@
       localCount:queue.length,
       loopLocal:true,
       route:'/sad-music/',
+      replacePlayer:player,
       onTrack:paint,
       onTime:sync,
       onPlayState:playing=>{play.textContent=playing?'❚❚':'▶';if(playing)status.textContent='Playing';else if(!audio.ended)status.textContent='Paused'},

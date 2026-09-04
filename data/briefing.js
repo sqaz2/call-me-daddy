@@ -21,7 +21,7 @@ window.CMD_BRIEFING = {
       ],
       "cardTag": "Medieval meme · dark R&B / dubstep",
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
-      "badge": "New today",
+      "badge": "Final release",
       "intent": "laugh",
       "featuredOrder": 21
     },

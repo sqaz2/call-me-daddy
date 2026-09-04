@@ -9,7 +9,7 @@
   const setButtons=playing=>{play.textContent=playing?'❚❚':'▶';if(heroPlay)heroPlay.textContent=playing?'❚❚ Pause the music':'▶ Play the music';if(coverPlay)coverPlay.classList.toggle('is-playing',playing)};
   const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;if(state.reason!=='ready')player.hidden=false;if(copyLabel)copyLabel.textContent=activeIndex===0?'Call Me Daddy':'Play the site';if(copyTitle)copyTitle.textContent=track.title;if(miniCover&&track.cover){miniCover.src=track.cover;miniCover.alt=`${track.title} artwork`}songLink.hidden=!(activeIndex>0&&track.experience);if(!songLink.hidden)songLink.href=track.experience;status.textContent=state.reason==='ready'?'Ready':'Loading next…';window.CMDPersistentSite?.refreshClearance?.()};
   const controller=window.CMDContinuousPlayback.create({
-    id:'namaste-endless-player',audio,tracks:[self],localCount:1,excludeIds:[self.id],lastSongId:self.id,route:'/namaste-hamster/',
+    id:'namaste-endless-player',audio,tracks:[self],localCount:1,excludeIds:[self.id],lastSongId:self.id,route:'/namaste-hamster/',replacePlayer:player,
     onTrack:paint,
     onTime:(time,total)=>{if(total)bar.style.width=`${time/total*100}%`},
     onPlayState:playing=>{setButtons(playing);status.textContent=playing?'Playing':(!audio.ended?'Paused':status.textContent);if(video)video.playbackRate=playing ? .82 : 1},

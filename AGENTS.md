@@ -25,6 +25,8 @@ A music upload is not complete when the file is merely in GitHub. The agent owns
 - Keep variants and aliases under one song identity. If an existing legacy record needs a new version, update or migrate that identity; do not add a second record with the same song ID.
 - Preserve the special three-track sequencing for Cut From the Same Fabric. Ordinary releases never join that sequence.
 - Preserve continuous playback when the visible page follows a new song. Use `CMDPersistentSite.followTrack`; do not hard-navigate the owner window or remove the “Stay here” escape from the countdown.
+- `universal-player.js` is the shared transport UI. Ordinary releases may add page-specific launch buttons and visual reactions, but must not add another independent bottom-player state machine.
+- Never invent an `experience` route for a song whose story page has not been built. Leave the route empty so discovery renders **Story coming soon** and **Ask me about this song** while keeping the audio playable.
 - Preserve existing user changes and existing working players. A release update is not permission for a visual redesign.
 
 ## Definition of done

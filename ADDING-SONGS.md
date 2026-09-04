@@ -4,6 +4,16 @@ The release manifest is the single source of truth for a new song. Do not make a
 
 ## New-release workflow
 
+### The default bundle going forward
+
+A normal new release lands as one bundle: final audio, finished artwork, one real song page, one release manifest, and the six intention scores. The manifest then fans that bundle out to Home, Music, Updates, radio, sharing and the sitemap.
+
+Do not create a placeholder song route just to satisfy the workflow. If an older catalog song has playable audio but no real page yet, leave `experience` empty. Music and the homepage finder will label it **Story coming soon**, keep playback on the catalog, and offer **Ask me about this song** instead of sending people to an invented page.
+
+The manifest also supports that honest state for a new upload whose story is not ready. Use an empty `song.experience`, and point `song.shareUrl` and `update.href` at its exact `/music/?song=...&version=...&intent=...&share=1` route. Set `update.cta` to `Play this song`. The sync check rejects made-up local routes; adding the real experience later automatically changes discovery to **Story ready**.
+
+Old songs can be upgraded one at a time. When a real page is ready, add that route to the existing song identity; do not make a second song record and do not wait until every old song has a page.
+
 ### 1. Identify the release correctly
 
 Decide whether the upload is:
@@ -53,6 +63,8 @@ Create the local route named by `song.experience` before running the sync tool. 
 The page-follow prompt is part of `continuous-playback.js` and `persistent-site-browser.js`. Keep both scripts in that order, let “Stay here” cancel the move, and never replace the handoff with `location.href` in the window that owns the playing audio.
 
 Project pages may be more elaborate, but ordinary releases do not join the protected Cut From the Same Fabric three-track sequence.
+
+The persistent transport belongs to `universal-player.js`; ordinary pages should not invent another bottom player. Page-specific artwork and buttons may launch or mirror playback, while the shared player owns title/artwork state, Previous, Play/Pause, Next, seeking, sharing, recovery and the five-second page-follow handoff. A special project may keep its own sequencing adapter when the music itself requires it, but it must still report the active track to the universal player.
 
 ### 4. Add one manifest
 
@@ -125,6 +137,8 @@ If the song already has a release manifest, edit that manifest and keep the vers
 ```text
 /music/?song=SONG_ID&version=VERSION_ID&intent=INTENT&share=1
 ```
+
+For a legacy song with no information page, that exact-song URL is the listening/share route, not a pretend `experience`. Its catalog card remains marked **Story coming soon** until you intentionally build the page.
 
 ## YouTube-only songs
 

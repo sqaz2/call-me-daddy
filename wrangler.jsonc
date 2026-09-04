@@ -7,6 +7,8 @@
     "directory": ".",
     "binding": "ASSETS",
     "run_worker_first": [
+      "/28475.jpeg",
+      "/Twas_the_Tism_full_glitch_tweakout_final.mp3",
       "/media/*.aac",
       "/media/*.flac",
       "/media/*.m4a",

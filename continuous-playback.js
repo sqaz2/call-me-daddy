@@ -3,6 +3,8 @@
 
   const STORAGE_KEY='cmd:playback-session:v1';
   const MAX_SNAPSHOT_AGE=12*60*60*1000;
+  const observers=new Set();
+  let activeSession=null;
   const absolute=value=>{try{return new URL(value,location.href).href}catch{return String(value||'')}};
   const cleanRoute=value=>{try{const url=new URL(value,location.href);url.searchParams.delete('cmdResume');return `${url.pathname}${url.search}${url.hash}`}catch{return location.pathname}};
   const readSnapshot=()=>{try{const value=JSON.parse(sessionStorage.getItem(STORAGE_KEY)||'null');return value&&Date.now()-value.updatedAt<MAX_SNAPSHOT_AGE?value:null}catch{return null}};
@@ -14,6 +16,16 @@
       if(track[key]!==undefined)copy[key]=track[key];
       return copy;
     },{});
+  };
+  const publish=payload=>{
+    activeSession=payload;
+    observers.forEach(observer=>{try{observer(payload)}catch{}});
+  };
+  const subscribe=observer=>{
+    if(typeof observer!=='function')return()=>{};
+    observers.add(observer);
+    if(activeSession){try{observer(activeSession)}catch{}}
+    return()=>observers.delete(observer);
   };
 
   function create(options={}){
@@ -41,9 +53,15 @@
     let sourceTransition=false;
     let pendingPageFollow=null;
     let destroyed=false;
+    let controller=null;
+    let preloadLink=null;
 
     const status=(kind,detail)=>options.onStatus?.(kind,detail,current);
     const currentTrack=()=>queue[index]||current;
+    const announce=(type,detail={})=>publish({
+      type,id,audio,controller,track:currentTrack(),options,
+      state:{index,wantsPlayback,hasPlayed,length:queue.length,...detail}
+    });
     const persist=(force=false)=>{
       if(!hasPlayed)return;
       const existing=readSnapshot();
@@ -79,12 +97,19 @@
       if(!('mediaSession'in navigator)||!Number.isFinite(audio.duration)||audio.duration<=0)return;
       try{navigator.mediaSession.setPositionState({duration:audio.duration,playbackRate:audio.playbackRate||1,position:Math.min(audio.currentTime,audio.duration)})}catch{}
     };
+    const primeNext=track=>{
+      if(!track?.audio||!document?.createElement||!document?.head?.appendChild)return;
+      const href=absolute(track.audio);
+      if(preloadLink?.href===href)return;
+      if(!preloadLink){preloadLink=document.createElement('link');preloadLink.rel='preload';preloadLink.as='audio';preloadLink.dataset.cmdNextAudio='';document.head.appendChild(preloadLink)}
+      preloadLink.href=href;
+    };
     const ensureNext=()=>{
-      if(preparedIndex>=0)return preparedIndex;
-      if(index<queue.length-1){preparedIndex=index+1;return preparedIndex;}
+      if(preparedIndex>=0){primeNext(queue[preparedIndex]);return preparedIndex;}
+      if(index<queue.length-1){preparedIndex=index+1;primeNext(queue[preparedIndex]);return preparedIndex;}
       const track=radio?.next?.();
-      if(track?.audio){queue.push(track);preparedIndex=queue.length-1;return preparedIndex;}
-      if(options.loopLocal&&queue.length){preparedIndex=0;return preparedIndex;}
+      if(track?.audio){queue.push(track);preparedIndex=queue.length-1;primeNext(track);return preparedIndex;}
+      if(options.loopLocal&&queue.length){preparedIndex=0;primeNext(queue[0]);return preparedIndex;}
       return -1;
     };
     const play=()=>{
@@ -117,6 +142,7 @@
       sourceTransition=true;
       pendingPageFollow=options.followPages===false||reason==='restore'||!current.experience?null:{track:current,reason};
       options.onTrack?.(current,{index,reason,radio:index>=Number(options.localCount??options.tracks?.length??queue.length)});
+      announce('track',{reason,radio:index>=Number(options.localCount??options.tracks?.length??queue.length)});
       setMediaSession(current);
       audio.src=current.audio;
       audio.load();
@@ -132,7 +158,18 @@
       preparedIndex=-1;
       return load(target,{autoplay:true,reason});
     };
-    const previous=()=>index>0?load(index-1,{autoplay:true,reason:'previous'}):false;
+    const previous=()=>{
+      const restartAfter=Math.max(0,Number(options.restartThreshold??5));
+      if(Number(audio.currentTime)>restartAfter){
+        audio.currentTime=0;
+        if(audio.paused)play();
+        announce('restart',{reason:'previous-restart'});
+        return true;
+      }
+      if(index>0)return load(index-1,{autoplay:true,reason:'previous'});
+      try{audio.currentTime=0}catch{}
+      return false;
+    };
     const toggle=()=>audio.paused?play():(pause(),false);
     const recover=()=>{
       if(destroyed||!wantsPlayback)return;
@@ -148,6 +185,7 @@
       setMediaSession(currentTrack());
       if('mediaSession'in navigator){try{navigator.mediaSession.playbackState='playing'}catch{}}
       options.onPlayState?.(true,currentTrack());
+      announce('play');
       window.CMDPersistentSite?.setSession?.(true);
       window.CMDPersistentSite?.refreshClearance?.();
       if(pendingPageFollow){
@@ -165,6 +203,7 @@
       }
       if('mediaSession'in navigator){try{navigator.mediaSession.playbackState='paused'}catch{}}
       options.onPlayState?.(false,currentTrack());
+      announce('pause');
       persist(true);
     });
     audio.addEventListener('ended',()=>{
@@ -182,14 +221,15 @@
       setPositionState();
       options.onReady?.(currentTrack());
     });
-    audio.addEventListener('timeupdate',()=>{persist();setPositionState();options.onTime?.(audio.currentTime,audio.duration,currentTrack())});
-    audio.addEventListener('waiting',()=>status('waiting'));
-    audio.addEventListener('stalled',()=>status('stalled'));
+    audio.addEventListener('timeupdate',()=>{persist();setPositionState();options.onTime?.(audio.currentTime,audio.duration,currentTrack());announce('time')});
+    audio.addEventListener('waiting',()=>{status('waiting');announce('status',{status:'waiting'})});
+    audio.addEventListener('stalled',()=>{status('stalled');announce('status',{status:'stalled'})});
     audio.addEventListener('error',()=>{
       sourceTransition=false;
       if(!wantsPlayback)return;
       consecutiveErrors+=1;
       status('error',audio.error);
+      announce('status',{status:'error'});
       if(consecutiveErrors>6){wantsPlayback=false;status('failed');persist(true);return;}
       next('error');
     });
@@ -215,6 +255,14 @@
       Object.entries(handlers).forEach(([action,handler])=>{try{navigator.mediaSession.setActionHandler(action,handler)}catch{}});
     }
 
+    controller={
+      play,pause,toggle,next,previous,load,
+      current:currentTrack,
+      getState:()=>({id,index,wantsPlayback,hasPlayed,current:currentTrack(),length:queue.length}),
+      destroy:()=>{destroyed=true;audio.__cmdContinuousPlayback=false;audio.__cmdContinuousPlaybackController=null;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.();if(preloadLink){preloadLink.remove?.();preloadLink=null}}
+    };
+    audio.__cmdContinuousPlaybackController=controller;
+
     const snapshot=readSnapshot();
     const wantsRestore=snapshot?.playerId===id&&snapshot.wantsPlayback&&(
       document.wasDiscarded||navigationWasReload()||new URLSearchParams(location.search).get('cmdResume')==='1'
@@ -228,18 +276,21 @@
     }else if(queue.length){
       current=queue[index];
       options.onTrack?.(current,{index,reason:'ready',radio:false});
+      announce('track',{reason:'ready',radio:false});
       const declaredSource=typeof audio.getAttribute==='function'?audio.getAttribute('src'):audio.src;
       if(!declaredSource&&current.audio){audio.src=current.audio;audio.load();}
       ensureNext();
     }
 
-    return {
-      play,pause,toggle,next,previous,load,
-      current:currentTrack,
-      getState:()=>({id,index,wantsPlayback,current:currentTrack(),length:queue.length}),
-      destroy:()=>{destroyed=true;audio.__cmdContinuousPlayback=false;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.()}
-    };
+    return controller;
   }
 
-  window.CMDContinuousPlayback={create,readSnapshot,storageKey:STORAGE_KEY};
+  window.CMDContinuousPlayback={create,readSnapshot,subscribe,getActive:()=>activeSession,storageKey:STORAGE_KEY};
+  window.CMDUniversalPlayer?.observeContinuous?.(window.CMDContinuousPlayback);
+  if(document?.createElement&&document?.head?.appendChild&&!window.CMDUniversalPlayer&&!document.querySelector?.('script[data-cmd-universal-player]')){
+    const script=document.createElement('script');
+    script.src='/universal-player.js?v=20260904-1';
+    script.dataset.cmdUniversalPlayer='';
+    document.head.appendChild(script);
+  }
 })();

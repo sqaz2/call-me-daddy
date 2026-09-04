@@ -7,6 +7,7 @@
     archiveLove.experience='/archive/i-need-love/';
   }
   const cycleEngine=window.CMDCatalogCycle;
+  const discovery=window.CMDMusicDiscovery;
   const variantsFor=song=>cycleEngine?cycleEngine.variants(song):(song?.audio?[{id:'main',label:song.kind||'Main version',audio:song.audio}]:[]);
   const playableSongs=songs.filter(song=>variantsFor(song).length);
   const totalVersions=cycleEngine?cycleEngine.count(playableSongs):playableSongs.length;
@@ -31,17 +32,27 @@
   const progress=document.getElementById('catalogProgress');
   const bar=document.getElementById('catalogProgressBar');
   const tactileMount=document.getElementById('catalogTactile');
+  const finder=document.getElementById('catalogFinder');
+  const search=document.getElementById('catalogSearch');
+  const searchClear=document.getElementById('catalogSearchClear');
+  const filterMount=document.getElementById('catalogFilters');
+  const filterSummary=document.getElementById('catalogFilterSummary');
+  const noResults=document.getElementById('catalogNoResults');
   let current=null;
   let cycle=[];
   let cycleIndex=-1;
   let cycleNumber=0;
   let lastSongId=null;
+  let catalogQuery=initialQuery.get('find')||'';
+  let catalogCategory=initialQuery.get('category')||'all';
+  let universal=null;
+  const cardById=new Map();
 
   const activeIntentInfo=()=>intentById.get(activeIntent)||intents[0]||{id:'surprise',label:'Play the site',kicker:'Controlled chaos',description:'The catalog decides what happens next.',shareText:'Press play and let Call Me Daddy decide what happens next.'};
 
   if(!window.CMDPersistentSite){
     const script=document.createElement('script');
-    script.src='/persistent-site-browser.js?v=20260902-1';
+    script.src='/persistent-site-browser.js?v=20260904-1';
     document.head.appendChild(script);
   }
 
@@ -62,7 +73,7 @@
     haptics:true
   });
 
-  count.textContent=`${playableSongs.length} songs · ${totalVersions} playable versions · intention radio`;
+  count.textContent=`${playableSongs.length} playable songs · ${totalVersions} versions`;
 
   if(!songs.length){
     grid.innerHTML='<p class="catalog-empty">No tracks have been added yet.</p>';
@@ -70,6 +81,44 @@
   }
 
   const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  const catalogSongs=discovery?discovery.filter(songs):songs;
+  const categories=discovery?.categories?.()||[{id:'all',label:'Everything',description:'The complete catalog.'}];
+  if(!categories.some(item=>item.id===catalogCategory))catalogCategory='all';
+
+  function syncFinderUrl(){
+    try{
+      const url=new URL(location.href);
+      if(catalogQuery)url.searchParams.set('find',catalogQuery);else url.searchParams.delete('find');
+      if(catalogCategory!=='all')url.searchParams.set('category',catalogCategory);else url.searchParams.delete('category');
+      history.replaceState(history.state||{},'',url);
+    }catch{}
+  }
+
+  function renderCatalogFilter(){
+    if(!discovery)return;
+    const matches=discovery.filter(songs,{query:catalogQuery,category:catalogCategory});
+    const ids=new Set(matches.map(song=>song.id));
+    cardById.forEach((card,id)=>{card.hidden=!ids.has(id)});
+    matches.forEach(song=>{const card=cardById.get(song.id);if(card)grid.appendChild(card)});
+    filterMount?.querySelectorAll('[data-catalog-category]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.catalogCategory===catalogCategory)));
+    if(search)search.value=catalogQuery;
+    if(searchClear)searchClear.hidden=!catalogQuery;
+    if(filterSummary){
+      const selected=categories.find(item=>item.id===catalogCategory);
+      filterSummary.textContent=catalogQuery?`${matches.length} ${matches.length===1?'match':'matches'} for “${catalogQuery}”`:`${matches.length} ${matches.length===1?'song':'songs'} · ${selected?.description||'Browse the catalog.'}`;
+    }
+    if(noResults)noResults.hidden=Boolean(matches.length);
+    count.textContent=`${matches.length} shown · ${playableSongs.length} playable songs · ${totalVersions} versions`;
+    syncFinderUrl();
+  }
+
+  function mountCatalogFinder(){
+    if(!finder||!filterMount||!discovery)return;
+    filterMount.innerHTML=categories.map(item=>`<button type="button" data-catalog-category="${safe(item.id)}" aria-pressed="${item.id===catalogCategory}">${safe(item.label)}</button>`).join('');
+    filterMount.addEventListener('click',event=>{const button=event.target.closest('[data-catalog-category]');if(!button)return;catalogCategory=button.dataset.catalogCategory||'all';renderCatalogFilter()});
+    search?.addEventListener('input',()=>{catalogQuery=search.value.trim();renderCatalogFilter()});
+    searchClear?.addEventListener('click',()=>{catalogQuery='';if(search){search.value='';search.focus()}renderCatalogFilter()});
+  }
   const buildCycle=()=>{
     cycleNumber+=1;
     cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
@@ -214,7 +263,7 @@
     }catch{}
   }
 
-  songs.forEach(song=>{
+  catalogSongs.forEach(song=>{
     const card=document.createElement('article');
     card.className='song-card';
     card.dataset.song=song.id;
@@ -225,12 +274,13 @@
     if(hasBackgroundVideo&&song.cover)card.classList.add('has-cover');
 
     const destination=song.experience||song.youtubeUrl||'';
+    const story=discovery?.storyState?.(song)||{id:song.experience?'ready':'coming-soon',label:song.experience?'Story ready':'Story coming soon',href:song.experience||'https://facebook.com/callmedaddy',external:!song.experience};
     const artAction=playable
       ? `<button class="song-art-hit" type="button" aria-label="Play ${safe(song.title)}"><span class="song-art-cue">▶ Tap artwork to play</span></button>`
       : destination
         ? `<a class="song-art-hit" href="${safe(destination)}" aria-label="Open ${safe(song.title)}"><span class="song-art-cue">↗ Tap artwork to open</span></a>`
         : `<span class="song-art-hit is-disabled" aria-hidden="true"><span class="song-art-cue">Audio coming soon</span></span>`;
-    const experienceLabel=song.youtubeUrl?'Song page →':'Open experience →';
+    const experienceLabel=song.youtubeUrl?'Song page →':'Open song story →';
     const backgroundVideo=hasBackgroundVideo
       ? `<video class="song-bg-video" autoplay muted loop playsinline preload="metadata"${song.cover?` poster="${safe(song.cover)}"`:''}><source src="${safe(song.video)}" type="video/mp4"></video>`
       : '';
@@ -241,12 +291,13 @@
       <img class="song-cover" src="${safe(song.cover||'')}" alt="${safe(song.title)} cover" loading="lazy">
       ${artAction}
       <div class="song-card-body">
+        <span class="song-story-state${story.id==='coming-soon'?' is-coming':''}">${safe(story.label)}</span>
         <div class="song-meta"><span>${safe(song.artist||'Call Me Daddy')}</span><span>${safe(song.year||'')}</span><span>${safe(versionMeta)}</span></div>
         <h3>${safe(song.title)}</h3>
         <p>${safe(song.description||'')}</p>
         <div class="song-actions">
           <button class="song-link song-share-action" type="button">↗ Share song</button>
-          ${song.experience&&playable?`<a class="song-link" href="${safe(song.experience)}">${experienceLabel}</a>`:''}
+          ${song.experience?`<a class="song-link" href="${safe(song.experience)}">${experienceLabel}</a>`:`<a class="song-link is-coming" href="${safe(story.href)}" target="_blank" rel="noopener">Ask me about this song ↗</a>`}
           ${song.youtubeUrl?`<a class="song-link" href="${safe(song.youtubeUrl)}" target="_blank" rel="noopener">YouTube ↗</a>`:''}
           ${song.youtubeMusicUrl?`<a class="song-link" href="${safe(song.youtubeMusicUrl)}" target="_blank" rel="noopener">YouTube Music ↗</a>`:''}
           ${song.spotifyUrl?`<a class="song-link" href="${safe(song.spotifyUrl)}" target="_blank" rel="noopener">Spotify ↗</a>`:''}
@@ -261,6 +312,7 @@
     card.querySelector('button.song-art-hit')?.addEventListener('click',()=>selectSong(song));
     card.querySelector('.song-share-action')?.addEventListener('click',()=>shareSong(song,songVariants[0]||null));
     grid.appendChild(card);
+    cardById.set(song.id,card);
     hydrateYoutubeCard(song,card);
   });
 
@@ -300,6 +352,7 @@
     updateSongLink();
     setActiveCard(lastSongId);
     updateMediaSession();
+    universal?.update({track:current,status:autoplay?'Loading…':'Ready',show:autoplay});
 
     if(autoplay){
       audio.play().catch(()=>{
@@ -346,10 +399,20 @@
     audio.currentTime=0;
   }
 
-  play.addEventListener('click',()=>{
+  function togglePlayback(){
     if(!current){nextTrack();return;}
     if(audio.paused)audio.play().catch(()=>{});else audio.pause();
-  });
+  }
+
+  function shareCurrent(){
+    if(!current)return false;
+    const song=songs.find(item=>item.id===(current.songId||current.id));
+    if(!song)return false;
+    const variant=variantsFor(song).find(item=>item.id===current.variantId||item.audio===current.audio)||variantsFor(song)[0]||null;
+    return shareSong(song,variant);
+  }
+
+  play.addEventListener('click',togglePlayback);
   prev?.addEventListener('click',previous);
   next?.addEventListener('click',nextTrack);
 
@@ -412,5 +475,13 @@
   }
 
   mountIntentionRadio();
+  mountCatalogFinder();
   buildCycle();
+  universal=window.CMDUniversalPlayer?.connect({
+    id:'music-catalog',media:audio,getTrack:()=>current,
+    getContext:track=>[activeIntentInfo().label,track?.variantCount>1?track.variantLabel:track?.project].filter(Boolean).join(' · '),
+    toggle:togglePlayback,play:()=>current?audio.play():nextTrack(),pause:()=>audio.pause(),previous,next:nextTrack,share:shareCurrent,
+    replaceElement:player
+  })||null;
+  renderCatalogFilter();
 })();

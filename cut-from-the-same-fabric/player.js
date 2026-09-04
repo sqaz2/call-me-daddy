@@ -88,6 +88,7 @@ let mediaSourceUrl='';
 let mediaBuildToken=0;
 let lastMetadataKey='';
 let radioTrack=null;
+let universal=null;
 const radio=window.CMDPlaylistRadio?.create({excludeIds:Object.values(tracks).map(track=>track.id),lastSongId:tracks.down.id});
 const renderedReady={up:false,down:false};
 
@@ -362,8 +363,7 @@ function loadLegacy(autoplay=false){
   }
 }
 
-function loadRadio(autoplay=true){
-  const track=radio?.next();
+function loadRadioTrack(track,autoplay=true){
   if(!track){
     playBtn.textContent='▶';
     nowLabel.textContent='Radio unavailable · open Music';
@@ -386,6 +386,8 @@ function loadRadio(autoplay=true){
   if(autoplay)audio.play().catch(()=>{nowLabel.textContent='Ready · tap ▶ to continue'});
 }
 
+function loadRadio(autoplay=true){loadRadioTrack(radio?.next(),autoplay)}
+
 function toggle(){
   if(!order.length){choose('up');return;}
   if(activeAudio.paused){
@@ -399,15 +401,21 @@ function step(delta){
   if(playbackMode==='radio'){
     if(delta>0)loadRadio(true);
     else if(audio.currentTime>5){audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});}
+    else{
+      const track=radio?.previous?.();
+      if(track&&track!==radioTrack)loadRadioTrack(track,true);
+      else{audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});}
+    }
     return;
   }
   if(playbackMode==='single'){
     const {segmentIndex}=segmentForTime(audio.currentTime);
     let targetIndex=segmentIndex;
-    if(delta<0&&audio.currentTime-singleSegments[segmentIndex].start>5){
-      targetIndex=segmentIndex;
+    if(delta<0){
+      if(audio.currentTime-singleSegments[segmentIndex].start<=5&&segmentIndex>0)targetIndex=segmentIndex-1;
     }else{
-      targetIndex=(segmentIndex+delta+singleSegments.length)%singleSegments.length;
+      if(segmentIndex>=singleSegments.length-1){loadRadio(true);return;}
+      targetIndex=segmentIndex+1;
     }
     audio.currentTime=singleSegments[targetIndex].start+.02;
     updateSingleUI();
@@ -416,7 +424,14 @@ function step(delta){
   }
   stopCrossfade();
   activeAudio=audio;
-  index=(index+delta+order.length)%order.length;
+  if(delta<0){
+    if(audio.currentTime>5){audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});return;}
+    if(index<=0){audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});return;}
+    index-=1;
+  }else{
+    if(index>=order.length-1){loadRadio(true);return;}
+    index+=1;
+  }
   loadLegacy(true);
 }
 
@@ -515,6 +530,19 @@ function handleEnded(el){
   }
 }
 
+function currentUniversalTrack(){
+  if(playbackMode==='radio')return radioTrack;
+  if(!order.length)return null;
+  const key=playbackMode==='single'?segmentForTime(audio.currentTime).segment?.key:order[index];
+  const track=tracks[key];
+  return track?{...track,songId:track.id,variantId:'main',audio:track.src,cover:track.artwork,experience:'/cut-from-the-same-fabric/',project:'Cut From the Same Fabric',artist:'Call Me Daddy'}:null;
+}
+
+function shareCurrent(){
+  const track=currentUniversalTrack();
+  if(track)window.CMDPlaylistRadio?.share(track);
+}
+
 function configureMediaSession(){
   if(!('mediaSession' in navigator))return;
   const handlers={
@@ -547,12 +575,7 @@ document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>c
 playBtn.addEventListener('click',toggle);
 prevBtn.addEventListener('click',()=>step(-1));
 nextBtn.addEventListener('click',()=>step(1));
-shareBtn.addEventListener('click',()=>{
-  if(playbackMode==='radio'){window.CMDPlaylistRadio?.share(radioTrack);return;}
-  const key=playbackMode==='single'?segmentForTime(audio.currentTime).segment?.key:order[index];
-  const track=tracks[key];
-  if(track)window.CMDPlaylistRadio?.share({...track,songId:track.id,variantId:'main'});
-});
+shareBtn.addEventListener('click',shareCurrent);
 document.querySelectorAll('[data-fabric-share]').forEach(button=>button.addEventListener('click',()=>{
   const track=tracks[button.dataset.fabricShare];
   if(track)window.CMDPlaylistRadio?.share({...track,songId:track.id,variantId:'main'});
@@ -620,3 +643,12 @@ timeline.addEventListener('click',e=>{
   if(!activeAudio.duration)return;
   activeAudio.currentTime=ratio*activeAudio.duration;
 });
+
+universal=window.CMDUniversalPlayer?.connect({
+  id:'same-fabric-universal',media:[audio,crossAudio],getMedia:()=>activeAudio,getTrack:currentUniversalTrack,
+  getTime:()=>Number(activeAudio.currentTime)||0,getDuration:()=>Number(activeAudio.duration)||0,
+  getContext:()=>playbackMode==='radio'?'Play the site':'Protected three-track sequence',
+  play:()=>{if(!order.length)choose('up');else activeAudio.play()},pause:()=>activeAudio.pause(),toggle,
+  previous:()=>step(-1),next:()=>step(1),seek:time=>{activeAudio.currentTime=time},share:shareCurrent,
+  replaceElement:document.querySelector('.player')
+})||null;

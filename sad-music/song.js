@@ -34,7 +34,7 @@
     queue=songs.flatMap(item=>item.versions.filter(version=>version.audio).map(version=>({id:`${item.id}:${version.id}`,songId:item.id,variantId:version.id,title:item.title,artist:'MusicSubject × Call Me Daddy',project:'When Things Got Heavy',variantLabel:version.label,audio:version.audio,experience:item.route,song:item,version})));
     if(!queue.length||!window.CMDContinuousPlayback)return;
     controller=window.CMDContinuousPlayback.create({
-      id:'heavy-song-player',audio,tracks:queue,localCount:queue.length,loopLocal:true,route:song.route,
+      id:'heavy-song-player',audio,tracks:queue,localCount:queue.length,loopLocal:true,route:song.route,replacePlayer:player,
       startIndex:Math.max(0,queue.findIndex(track=>track.songId===song.id)),
       onTrack:paint,onTime:sync,
       onPlayState:playing=>{pPlay.textContent=playing?'❚❚':'▶';if(playing)pStatus.textContent='Playing';else if(!audio.ended)pStatus.textContent='Paused'},

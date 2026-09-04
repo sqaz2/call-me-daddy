@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import worker, { parseByteRange } from '../worker/index.mjs';
 
 const media = Uint8Array.from([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
-const request = (headers = {}, method = 'GET') => new Request(
-  'https://callmedaddy.musicsubject.com/media/test/song.mp3',
+const request = (headers = {}, method = 'GET', pathname = '/media/test/song.mp3') => new Request(
+  `https://callmedaddy.musicsubject.com${pathname}`,
   { method, headers }
 );
 
@@ -38,6 +38,18 @@ test('byte-range parser rejects multiple and unsatisfiable ranges', () => {
   assert.deepEqual(parseByteRange('bytes=0-1,4-5', 10), { ok: false });
   assert.deepEqual(parseByteRange('bytes=10-12', 10), { ok: false });
   assert.deepEqual(parseByteRange('bytes=8-2', 10), { ok: false });
+});
+
+test('renamed release media keeps its old public URLs through permanent redirects', async () => {
+  let assetCalls = 0;
+  const env = { ASSETS: { async fetch() { assetCalls += 1; return new Response('unexpected'); } } };
+  const audio = await worker.fetch(request({}, 'GET', '/Twas_the_Tism_full_glitch_tweakout_final.mp3'), env);
+  const cover = await worker.fetch(request({}, 'GET', '/28475.jpeg'), env);
+  assert.equal(audio.status, 308);
+  assert.equal(audio.headers.get('location'), 'https://callmedaddy.musicsubject.com/media/songs/2026/09/twas-the-tism-mlord/audio.mp3');
+  assert.equal(cover.status, 308);
+  assert.equal(cover.headers.get('location'), 'https://callmedaddy.musicsubject.com/media/songs/2026/09/twas-the-tism-mlord/cover.jpg');
+  assert.equal(assetCalls, 0);
 });
 
 test('bundled media fallback returns an actual 206 response', async () => {

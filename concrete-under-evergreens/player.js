@@ -90,6 +90,10 @@
     if(index!==0)load(0,true);
     else if(audio.paused)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue';syncCoverState()});
   };
+  const goPrevious=()=>{
+    if(audio.currentTime>5){audio.currentTime=0;if(audio.paused)audio.play().catch(()=>{});return;}
+    if(index>0)load(index-1,true);else if(index===0){audio.currentTime=0;audio.play().catch(()=>{})}
+  };
 
   document.querySelectorAll('[data-concrete-play]').forEach(button=>button.addEventListener('click',()=>{
     if(index===0&&!audio.paused){audio.pause();return;}
@@ -97,7 +101,7 @@
   }));
   play.addEventListener('click',()=>{if(index<0){load(0,true);return}if(audio.paused)audio.play().catch(()=>{});else audio.pause()});
   next.addEventListener('click',advance);
-  previous.addEventListener('click',()=>{if(index>0)load(index-1,true);else if(index===0){audio.currentTime=0;audio.play().catch(()=>{})}});
+  previous.addEventListener('click',goPrevious);
   share.addEventListener('click',()=>window.CMDPlaylistRadio?.share(current||local));
   progress.addEventListener('click',event=>{if(!audio.duration)return;const rect=progress.getBoundingClientRect();audio.currentTime=Math.max(0,Math.min(audio.duration,((event.clientX-rect.left)/rect.width)*audio.duration))});
 
@@ -112,9 +116,15 @@
     navigator.mediaSession.setActionHandler('play',()=>audio.play());
     navigator.mediaSession.setActionHandler('pause',()=>audio.pause());
     navigator.mediaSession.setActionHandler('nexttrack',advance);
-    navigator.mediaSession.setActionHandler('previoustrack',()=>{if(index>0)load(index-1,true)});
+    navigator.mediaSession.setActionHandler('previoustrack',goPrevious);
     navigator.mediaSession.setActionHandler('seekbackward',details=>{audio.currentTime=Math.max(0,audio.currentTime-(details.seekOffset||10))});
     navigator.mediaSession.setActionHandler('seekforward',details=>{audio.currentTime=Math.min(audio.duration||Infinity,audio.currentTime+(details.seekOffset||10))});
   }catch{}}
+  window.CMDUniversalPlayer?.connect({
+    id:'concrete-universal',media:audio,getTrack:()=>current||local,
+    getContext:track=>index===0?'Lacombe civic ballad':`Play the site${track?.variantCount>1?` · ${track.variantLabel}`:''}`,
+    play:()=>index<0?load(0,true):audio.play(),pause:()=>audio.pause(),toggle:()=>{if(index<0)load(0,true);else if(audio.paused)audio.play().catch(()=>{});else audio.pause()},
+    previous:goPrevious,next:advance,share:()=>window.CMDPlaylistRadio?.share(current||local),replaceElement:player
+  });
   syncCoverState();
 })();

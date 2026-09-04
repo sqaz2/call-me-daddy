@@ -271,6 +271,14 @@
   font-size: .66rem;
 }
 
+.audio-wrap #funhousePlay {
+  float: none;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 2px;
+  font-size: .74rem;
+}
+
 .funhouse-story { padding: 94px 0 100px; }
 
 .funhouse-story h2 {

@@ -1,4 +1,8 @@
 const RANGEABLE_MEDIA = /\.(?:aac|flac|m4a|mp3|mp4|ogg|wav|webm)$/i;
+const LEGACY_MEDIA_REDIRECTS = new Map([
+  ['/Twas_the_Tism_full_glitch_tweakout_final.mp3', '/media/songs/2026/09/twas-the-tism-mlord/audio.mp3'],
+  ['/28475.jpeg', '/media/songs/2026/09/twas-the-tism-mlord/cover.jpg']
+]);
 
 const withStreamingHeaders = response => {
   const headers = new Headers(response.headers);
@@ -163,6 +167,8 @@ async function fromAssets(request, assets) {
 
 export async function handleRequest(request, env) {
   const url = new URL(request.url);
+  const legacyTarget = LEGACY_MEDIA_REDIRECTS.get(url.pathname);
+  if (legacyTarget) return Response.redirect(new URL(legacyTarget, url.origin), 308);
   const rangeable = RANGEABLE_MEDIA.test(url.pathname);
   const method = request.method.toUpperCase();
 

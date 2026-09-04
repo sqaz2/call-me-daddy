@@ -217,8 +217,8 @@ Voices in one song.</p></article>
   <script src="/data/2026-08-29-uploads.js?v=20260829-3"></script>
   <script src="/catalog-cycle.js?v=20260825-1"></script>
   <script src="/playlist-radio.js?v=20260826-1"></script>
-  <script src="/persistent-site-browser.js?v=20260902-1"></script>
-  <script src="/continuous-playback.js?v=20260902-1"></script>
+  <script src="/persistent-site-browser.js?v=20260904-1"></script><script src="/universal-player.js?v=20260904-1"></script>
+  <script src="/continuous-playback.js?v=20260904-1"></script>
   <script>
     (()=>{
       const audio=document.getElementById('songAudio');
@@ -235,13 +235,17 @@ Voices in one song.</p></article>
       const duration=document.getElementById('duration');
       const status=document.getElementById('playerStatus');
       const fmt=(value)=>{if(!Number.isFinite(value))return'0:00';const m=Math.floor(value/60);const s=Math.floor(value%60).toString().padStart(2,'0');return `${m}:${s}`};
-      const sync=()=>{const playing=!audio.paused;toggle.textContent=playing?'❚❚':'▶';artIcon.textContent=playing?'❚❚':'▶';artStatus.textContent=playing?'Playing final edit':'Tap artwork to play';status.textContent=playing?'Playing':'Paused';};
+      const openingId='twas-the-tism-mlord';
+      const activeTrack=()=>audio.__cmdContinuousPlaybackController?.current?.()||{id:openingId,title:'’Twas the Tism, M’Lord'};
+      const openingIsActive=()=>[activeTrack()?.id,activeTrack()?.songId].includes(openingId);
+      const sync=()=>{const playing=!audio.paused,track=activeTrack();toggle.textContent=playing?'❚❚':'▶';artIcon.textContent=playing&&openingIsActive()?'❚❚':'▶';artStatus.textContent=playing&&openingIsActive()?'Playing final edit':playing?`Play page song · now ${track.title}`:'Tap artwork to play';status.textContent=playing?'Playing':'Paused';};
       const reveal=()=>{player.hidden=false};
       const play=()=>{reveal();audio.play().catch(()=>{});};
-      const togglePlay=()=>{reveal();audio.paused?audio.play().catch(()=>{}):audio.pause();};
+      const playOpening=(restart=false)=>{reveal();const controller=audio.__cmdContinuousPlaybackController;if(controller&&!openingIsActive()){controller.load(0,{autoplay:true,reason:'page-song'});return}if(restart){audio.currentTime=0;play();return}play()};
+      const togglePlay=()=>{if(!openingIsActive()){playOpening();return}reveal();audio.paused?audio.play().catch(()=>{}):audio.pause();};
       [art,toggle].forEach(el=>el.addEventListener('click',togglePlay));
-      hero.addEventListener('click',play);
-      finalPlay.addEventListener('click',()=>{if(audio.ended||audio.currentTime>audio.duration-1)audio.currentTime=0;play();});
+      hero.addEventListener('click',()=>playOpening());
+      finalPlay.addEventListener('click',()=>playOpening(true));
       audio.addEventListener('play',sync);audio.addEventListener('pause',sync);audio.addEventListener('ended',sync);
       audio.addEventListener('loadedmetadata',()=>{duration.textContent=fmt(audio.duration)});
       audio.addEventListener('timeupdate',()=>{current.textContent=fmt(audio.currentTime);const pct=audio.duration?(audio.currentTime/audio.duration)*100:0;bar.style.width=`${pct}%`;progress.setAttribute('aria-valuenow',Math.round(pct));});
@@ -250,7 +254,7 @@ Voices in one song.</p></article>
       progress.addEventListener('keydown',e=>{if(!Number.isFinite(audio.duration))return;if(e.key==='ArrowRight'){audio.currentTime=Math.min(audio.duration,audio.currentTime+5);e.preventDefault()}if(e.key==='ArrowLeft'){audio.currentTime=Math.max(0,audio.currentTime-5);e.preventDefault()}});
     })();
   </script>
-  <script src="/twas-the-tism-mlord/player.js?v=20260902-1"></script>
+  <script src="/twas-the-tism-mlord/player.js?v=20260904-1"></script>
   <script src="/motion.js"></script>
 </body>
 </html>

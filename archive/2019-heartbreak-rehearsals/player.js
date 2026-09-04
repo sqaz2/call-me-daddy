@@ -48,6 +48,7 @@
     excludeIds:ids,
     lastSongId:ids.at(-1),
     route:'/archive/2019-heartbreak-rehearsals/',
+    replacePlayer:player,
     onTrack:paint,
     onTime:syncProgress,
     onReady:()=>syncProgress(),

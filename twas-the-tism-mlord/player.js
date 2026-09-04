@@ -30,6 +30,7 @@
     excludeIds: [self.id],
     lastSongId: self.id,
     route: '/twas-the-tism-mlord/',
+    replacePlayer: player,
     onTrack: (track, state = {}) => {
       if (state.reason !== 'ready' && player) player.hidden = false;
       if (label) label.textContent = (state.index || 0) === 0 ? 'Final glitch edit' : 'Play the site';

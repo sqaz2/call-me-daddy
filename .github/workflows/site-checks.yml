@@ -29,14 +29,26 @@ jobs:
           node --check playlist-radio.js
           node --check continuous-playback.js
           node --check persistent-site-browser.js
+          node --check universal-player.js
           node --check home-briefing.js
+          node --check home-discovery.js
           node --check placeholder-art.js
+          node --check music/discovery.js
           node --check music/music.js
           node --check music/now-playing-share.js
           node --check anti-generative-ai-diss/collection.js
+          node --check new-tools-trilogy.js
           node --check concrete-under-evergreens/player.js
+          node --check cut-from-the-same-fabric/player.js
           node --check funhouse-meltdown/player.js
+          node --check id-pick-you-first/player.js
+          node --check namaste-hamster/namaste.js
+          node --check old-files-new-tools/player.js
+          node --check sad-music/sad.js
+          node --check sad-music/song.js
+          node --check archive/continuous-tail.js
           node --check archive/2019-heartbreak-rehearsals/player.js
+          node --check archive/wild-ways/player.js
           node --check updates/updates.js
           node --check twas-the-tism-mlord/player.js
           node --check worker/index.mjs
@@ -58,6 +70,8 @@ jobs:
         run: node --test tests/continuous-playback.test.js
       - name: Page-follow navigation tests
         run: node --test tests/persistent-site-browser.test.js
+      - name: Discovery and universal player tests
+        run: node --test tests/discovery-workflow.test.js tests/universal-player.test.js
       - name: Public feed tests
         run: node --test tests/site-feed.test.js
       - name: Release workflow tests

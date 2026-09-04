@@ -258,6 +258,42 @@
   text-transform: uppercase;
 }
 
+.release-story-state {
+  position: absolute;
+  z-index: 3;
+  top: 20px;
+  left: 20px;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 999px;
+  background: rgba(8, 8, 8, .68);
+  backdrop-filter: blur(12px);
+  color: #e0dbd2;
+  font-size: .64rem;
+  font-weight: 850;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.release-story-state.is-coming { border-color: rgba(215,178,102,.42); color: #e3c27e; }
+
+.release-more-card {
+  grid-column: 1 / -1;
+  display: grid;
+  min-height: 190px;
+  align-content: center;
+  gap: 8px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 28px;
+  background: linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.012));
+  color: #f0ece4;
+  text-decoration: none;
+}
+.release-more-card small { color: #9b968e; font-size: .68rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.release-more-card strong { font-size: clamp(1.8rem,4vw,3.4rem); line-height: .9; letter-spacing: -.045em; }
+.release-more-card span { color: #d7b266; font-size: .76rem; font-weight: 850; }
+
 @media (max-width: 1040px) {
   .release-grid { grid-template-columns: 1fr 1fr; }
   .release-card.funhouse img { object-position: 50% 44%; }
@@ -275,4 +311,8 @@
   .release-card.heavy-collection .heavy-count b { font-size:clamp(5.3rem,24vw,8.4rem); }
   .release-card-copy { padding: 24px; }
   .release-card-copy strong { font-size: clamp(2.4rem, 10vw, 4.2rem); }
+}
+
+@media (max-width: 520px) {
+  .release-tag { top: 58px; right: auto; left: 20px; max-width: calc(100% - 40px); }
 }
