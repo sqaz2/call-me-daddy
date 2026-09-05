@@ -2,6 +2,7 @@
   if(window.CMDCatalogCycle)return;
 
   const HISTORY_STORAGE='cmd-radio-history-v1';
+  const LAST_STORAGE='cmd-radio-last-track-v1';
   const config=window.CMD_RADIO_CONFIG||{};
   const settings=config.settings||{};
   const profiles=config.profiles||{};
@@ -73,6 +74,16 @@
     const history=readHistory().filter(id=>id!==songId);
     history.unshift(songId);
     try{localStorage.setItem(HISTORY_STORAGE,JSON.stringify(history.slice(0,limit)))}catch{}
+    try{
+      const payload={
+        songId,
+        title:track?.title||'',
+        cover:track?.cover||'',
+        intent:track?.radioIntent||'',
+        at:Date.now()
+      };
+      localStorage.setItem(LAST_STORAGE,JSON.stringify(payload));
+    }catch{}
   }
 
   function timestamp(song){
@@ -83,6 +94,15 @@
     const year=Number(song?.year);
     const month=Math.min(12,Math.max(1,Number(song?.month)||1));
     return Number.isFinite(year)?Date.UTC(year,month-1,1):0;
+  }
+
+  function tasteMultiplier(songId){
+    try{
+      if(window.CMDListenerTaste?.weightMultiplier){
+        return window.CMDListenerTaste.weightMultiplier(songId);
+      }
+    }catch{}
+    return 1;
   }
 
   function weightFor(song,{intent,selected,lastSongId,history,newestTimestamp,rng}){
@@ -108,6 +128,7 @@
       const recovery=Math.min(1,historyIndex/window);
       weight*=floor+(1-floor)*recovery;
     }
+    weight*=tasteMultiplier(song.id);
     return Math.max(0.000001,weight*(0.82+rng()*0.36));
   }
 
@@ -166,6 +187,45 @@
     };
   }
 
+  function intentLabel(intent){
+    return intentList.find(item=>item.id===intent)?.label||intent;
+  }
+
+  function explainTrack(track,{intent,history,newestTimestamp,index}){
+    const why=[];
+    const fit=Math.max(0,Math.min(100,Number(profiles[track.songId||track.id]?.[intent])||50));
+    const taste=(()=>{
+      try{return window.CMDListenerTaste?.get?.(track.songId||track.id)||null}catch{return null}
+    })();
+
+    if(track.radioSequence){
+      why.push('story sequence');
+    }
+    if(fit>=78){
+      why.push(`strong ${intentLabel(intent)} fit`);
+    }else if(fit>=60){
+      why.push(`${intentLabel(intent)} lean`);
+    }
+    const ageDays=Math.max(0,(newestTimestamp-timestamp(track))/86400000);
+    if(ageDays<=45)why.push('recent drop');
+    else if(ageDays>=900)why.push('deep catalog pull');
+
+    const historyIndex=history.indexOf(track.songId||track.id);
+    if(historyIndex<0)why.push('new to you');
+    else if(historyIndex>=6)why.push('back after a while');
+
+    if(taste==='like')why.push('you liked this');
+    if(index>0&&index%5===0)why.push('variety break');
+
+    if(!why.length)why.push('controlled chaos');
+
+    const whyText=why.length===1
+      ? `Why this song: ${why[0]}.`
+      : `Why this song: ${why.slice(0,3).join(' · ')}.`;
+
+    return {why,whyText};
+  }
+
   function build(songs,options={}){
     const intent=normalizeIntent(options.intent);
     const seed=cleanSeed(options.seed)||createSeed();
@@ -194,10 +254,20 @@
       const swapIndex=ordered.findIndex((song,index)=>index>0&&song.id!==options.lastSongId);
       if(swapIndex>0)[ordered[0],ordered[swapIndex]]=[ordered[swapIndex],ordered[0]];
     }
-    return ordered.map(song=>{
+    return ordered.map((song,index)=>{
       const forcedVariantId=shared&&song.id===shared.songId?shared.variantId:'';
       const track=selectVariant(song,{seed,cycleNumber,forcedVariantId});
-      return track?{...track,radioIntent:intent,radioSeed:seed,radioCycle:cycleNumber}:null;
+      if(!track)return null;
+      const explained=explainTrack(track,{intent,history,newestTimestamp,index});
+      return {
+        ...track,
+        radioIntent:intent,
+        radioSeed:seed,
+        radioCycle:cycleNumber,
+        radioSequence:song.radioSequence||track.radioSequence||'',
+        why:explained.why,
+        whyText:explained.whyText
+      };
     }).filter(Boolean);
   }
 
@@ -206,9 +276,12 @@
     variants,
     count,
     remember,
+    readHistory,
     createSeed,
     cleanSeed,
     normalizeIntent,
+    historyKey:HISTORY_STORAGE,
+    lastTrackKey:LAST_STORAGE,
     intents:intentList.map(intent=>({...intent}))
   };
 })();
