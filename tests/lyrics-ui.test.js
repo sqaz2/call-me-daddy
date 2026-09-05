@@ -51,8 +51,8 @@ test('music page wires lyrics UI hooks and cache-busted scripts',()=>{
   assert.ok(html.includes('data-lyrics-body'));
   assert.ok(html.includes('Lyrics on Suno'));
   assert.ok(html.includes('/data/song-lyrics.js?v=20260905-lyrics-map2'));
-  assert.ok(html.includes('/music/music.js?v=20260905-player-chrome'));
-  assert.ok(html.includes('/music/music.css?v=20260905-player-chrome'));
+  assert.ok(html.includes('/music/music.js?v=20260905-player-27'));
+  assert.ok(html.includes('/music/music.css?v=20260905-player-27'));
   const lyricsIdx=html.indexOf('/data/song-lyrics.js');
   const musicIdx=html.indexOf('/music/music.js');
   assert.ok(lyricsIdx>=0&&musicIdx>lyricsIdx);

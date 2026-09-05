@@ -8,9 +8,6 @@ const root=path.resolve(__dirname,'..');
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 
 function loadMusicChromeHelpers(){
-  // Evaluate just enough of music.js by extracting CMDPlayerChrome setup is hard;
-  // instead load a tiny mirror from the exported API by running a stub DOM + music.js pieces.
-  // Prefer source-contract + pure nextMode cycle via a lightweight eval of the chrome constants.
   const js=read('music/music.js');
   const sandbox={
     window:{
@@ -35,7 +32,6 @@ function loadMusicChromeHelpers(){
     URL,URLSearchParams,Date,Math,console,
     navigator:{}
   };
-  // music.js expects many DOM nodes and early-returns if no songs — inject one playable song
   sandbox.window.CMD_SONGS=[{id:'demo',title:'Demo',audio:'/x.mp3',project:'Test',kind:'Single'}];
   sandbox.window.CMDCatalogCycle={
     variants:song=>song?.audio?[{id:'main',label:'Main',audio:song.audio}]:[],
@@ -47,7 +43,6 @@ function loadMusicChromeHelpers(){
     build:songs=>songs.map(song=>({...song,songId:song.id,variantLabel:'Main',variantCount:1,why:['test'],whyText:'Why this song: test.'})),
     remember(){}
   };
-  // Soft stubs so music.js can run without throwing
   const handler={
     get(target,prop){
       if(prop in target)return target[prop];
@@ -63,12 +58,13 @@ function loadMusicChromeHelpers(){
       if(prop==='getAttribute')return()=>null;
       if(prop==='focus')return()=>{};
       if(prop==='closest')return()=>null;
+      if(prop==='contains')return()=>false;
       if(prop==='getBoundingClientRect')return()=>({top:0,left:0,right:0,bottom:0,width:0,height:0});
       return null;
     },
     set(target,prop,value){target[prop]=value;return true}
   };
-  const node=()=>new Proxy({hidden:true,textContent:'',innerHTML:'',value:'',className:''},handler);
+  const node=()=>new Proxy({hidden:true,textContent:'',innerHTML:'',value:'',className:'',dataset:{}},handler);
   const nodes=new Map();
   sandbox.document.getElementById=id=>{
     if(!nodes.has(id))nodes.set(id,node());
@@ -78,26 +74,38 @@ function loadMusicChromeHelpers(){
   sandbox.window.addEventListener=()=>{};
   sandbox.addEventListener=()=>{};
   sandbox.window.matchMedia=q=>({matches:String(q).includes('620'),addListener(){},removeListener(){},addEventListener(){},removeEventListener(){}});
+  const tab=mode=>{
+    const n=node();
+    n.dataset={pane:mode};
+    n.classList={add(){},remove(){},toggle(){},contains:()=>false};
+    n.setAttribute=()=>{};
+    return n;
+  };
+  const tabs=node();
+  tabs.querySelectorAll=()=>[tab('lyrics'),tab('search'),tab('page')];
+  nodes.set('catalogPaneTabs',tabs);
   try{
     vm.runInNewContext(js,sandbox,{filename:'music/music.js'});
-  }catch(err){
-    // music.js may throw on missing audio APIs; chrome export happens early enough usually
-  }
+  }catch(err){}
   return sandbox.window.CMDPlayerChrome;
 }
 
-test('pane mode cycle order is lyrics → search → page → lyrics',()=>{
+test('pane modes are lyrics / search / page with direct setMode + storage key',()=>{
   const js=read('music/music.js');
   assert.ok(js.includes("PANE_MODES=['lyrics','search','page']"));
   assert.ok(js.includes('cmd-player-pane-v1'));
+  assert.ok(js.includes('selectPaneMode'));
+  assert.ok(js.includes('updatePaneTabsUi'));
+  assert.ok(!js.includes('catalogPaneCycle'));
+  assert.ok(!js.includes('cyclePaneMode'));
   const chrome=loadMusicChromeHelpers();
   assert.ok(chrome,'CMDPlayerChrome should export');
   assert.equal(Array.from(chrome.MODES).join(','),'lyrics,search,page');
+  assert.equal(typeof chrome.setMode,'function');
+  assert.equal(chrome.STORAGE_KEY,'cmd-player-pane-v1');
   assert.equal(chrome.nextMode('lyrics'),'search');
   assert.equal(chrome.nextMode('search'),'page');
   assert.equal(chrome.nextMode('page'),'lyrics');
-  assert.equal(chrome.nextMode('lyrics'),'search');
-  assert.equal(chrome.STORAGE_KEY,'cmd-player-pane-v1');
 });
 
 test('search hints capped at 3 until More hints',()=>{
@@ -108,7 +116,6 @@ test('search hints capped at 3 until More hints',()=>{
   assert.ok(js.includes('slice(0,HINT_VISIBLE_CAP)')||js.includes('slice(0, 3)')||js.includes('HINT_VISIBLE_CAP'));
   const chrome=loadMusicChromeHelpers();
   assert.equal(chrome.HINT_CAP,3);
-  // Page search no longer paints 14 chips on first mount
   assert.ok(!js.includes('hints.slice(0,14)'));
 });
 
@@ -124,18 +131,28 @@ test('music.js contains scroll minimize hooks and localStorage pane key',()=>{
   assert.ok(js.includes('scroll'));
 });
 
-test('music page wires pane cycle + player search + cache bust',()=>{
+test('music page wires pane tabs + player search + 27vh cache bust',()=>{
   const html=read('music/index.html');
-  assert.ok(html.includes('id="catalogPaneCycle"'));
+  assert.ok(html.includes('id="catalogPaneTabs"'));
+  assert.ok(html.includes('data-pane="lyrics"'));
+  assert.ok(html.includes('data-pane="search"'));
+  assert.ok(html.includes('data-pane="page"'));
+  assert.ok(!html.includes('id="catalogPaneCycle"'));
   assert.ok(html.includes('id="catalogPlayerPane"'));
   assert.ok(html.includes('id="catalogPlayerSearch"'));
   assert.ok(html.includes('id="catalogPlayerSearchInput"'));
   assert.ok(html.includes('id="catalogSearchExpand"'));
   assert.ok(html.includes('id="catalogLyricsEmpty"'));
-  assert.ok(html.includes('/music/music.js?v=20260905-player-chrome'));
-  assert.ok(html.includes('/music/music.css?v=20260905-player-chrome'));
+  assert.ok(html.includes('/music/music.js?v=20260905-player-27'));
+  assert.ok(html.includes('/music/music.css?v=20260905-player-27'));
   const css=read('music/music.css');
   assert.ok(css.includes('.catalog-player.is-minimized'));
   assert.ok(css.includes('.catalog-search-bar.is-collapsed'));
-  assert.ok(css.includes('.catalog-pane-cycle'));
+  assert.ok(css.includes('.catalog-pane-tabs'));
+  assert.ok(css.includes('.catalog-pane-tab'));
+  assert.ok(!css.includes('.catalog-pane-cycle'));
+  assert.ok(css.includes('27vh')||css.includes('max-height:min(27vh'));
+  assert.ok(!css.includes('46vh'));
+  assert.ok(css.includes('minmax(0,1fr)'));
+  assert.ok(css.includes('text-overflow:ellipsis'));
 });
