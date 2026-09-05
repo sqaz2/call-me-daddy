@@ -45,9 +45,8 @@
   const playerSearch=document.getElementById('catalogPlayerSearch');
   const playerSearchInput=document.getElementById('catalogPlayerSearchInput');
   const playerSearchHints=document.getElementById('catalogPlayerSearchHints');
-  const paneCycleBtn=document.getElementById('catalogPaneCycle');
-  const paneCycleIcon=document.getElementById('catalogPaneCycleIcon');
-  const paneCycleLabel=document.getElementById('catalogPaneCycleLabel');
+  const paneTabs=document.getElementById('catalogPaneTabs');
+  const paneTabButtons=paneTabs?Array.from(paneTabs.querySelectorAll('[data-pane]')):[];
   const searchBar=document.getElementById('catalogSearchBar');
   const searchExpand=document.getElementById('catalogSearchExpand');
   const progress=document.getElementById('catalogProgress');
@@ -166,14 +165,13 @@
     renderHintChips(searchHints,searchHintsAll,{expanded:hintsExpanded});
     renderHintChips(playerSearchHints,searchHintsAll,{expanded:hintsExpanded});
   }
-  function updatePaneCycleUi(){
-    const meta=MODE_META[paneMode]||MODE_META.page;
-    if(paneCycleIcon)paneCycleIcon.textContent=meta.icon;
-    if(paneCycleLabel)paneCycleLabel.textContent=meta.label;
-    if(paneCycleBtn){
-      paneCycleBtn.dataset.mode=paneMode;
-      paneCycleBtn.setAttribute('aria-label',`Player pane: ${meta.label}. Tap to cycle Lyrics, Search, Page`);
-    }
+  function updatePaneTabsUi(){
+    paneTabButtons.forEach(btn=>{
+      const active=btn.dataset.pane===paneMode;
+      btn.classList.toggle('is-active',active);
+      btn.setAttribute('aria-selected',active?'true':'false');
+      btn.tabIndex=active?0:-1;
+    });
     if(player){
       player.dataset.pane=paneMode;
       player.classList.toggle('pane-lyrics',paneMode==='lyrics');
@@ -184,7 +182,7 @@
   function applyPaneMode(mode,{persist=true}={}){
     paneMode=PANE_MODES.includes(mode)?mode:defaultPaneMode();
     if(persist)persistPaneMode(paneMode);
-    updatePaneCycleUi();
+    updatePaneTabsUi();
     const showPane=paneMode==='lyrics'||paneMode==='search';
     if(playerPane)playerPane.hidden=!showPane||!!player?.classList.contains('is-minimized');
     if(lyricsPanel){
@@ -210,8 +208,8 @@
     if(lyricsBody&&hasText)lyricsBody.hidden=false;
     if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded',String(hasText&&lyricsBody&&!lyricsBody.hidden));
   }
-  function cyclePaneMode(){
-    applyPaneMode(nextPaneMode(paneMode));
+  function selectPaneMode(mode){
+    applyPaneMode(mode);
     if(player?.classList.contains('is-minimized')){
       player.classList.remove('is-minimized');
       applyPaneMode(paneMode,{persist:false});
@@ -247,6 +245,7 @@
     MODES:PANE_MODES.slice(),
     HINT_CAP:HINT_VISIBLE_CAP,
     nextMode:nextPaneMode,
+    setMode:selectPaneMode,
     defaultMode:defaultPaneMode,
     modeMeta:MODE_META
   };
@@ -622,10 +621,12 @@
     lyricsToggle.setAttribute('aria-expanded',String(open));
   });
 
-  paneCycleBtn?.addEventListener('click',event=>{
+  paneTabs?.addEventListener('click',event=>{
+    const btn=event.target?.closest?.('[data-pane]');
+    if(!btn||!paneTabs.contains(btn))return;
     event.preventDefault();
     event.stopPropagation();
-    cyclePaneMode();
+    selectPaneMode(btn.dataset.pane);
   });
 
   function loadTrack(track,autoplay=true){
