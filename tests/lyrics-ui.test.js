@@ -33,6 +33,10 @@ test('song-lyrics entries expose lyrics + sunoUrl helpers',()=>{
   });
   assert.ok(withBoth>=40,'expected most songs to have on-site lyrics and Suno links');
 
+  const power=window.CMD_SONG_LYRICS['power-moves-only'];
+  assert.ok(power&&power.lyrics&&power.lyrics.trim(),'power-moves-only needs lyrics');
+  assert.equal(power.sunoUrl,'https://suno.com/song/1cf1c78c-362b-42a3-9e37-c67617f3c9d3');
+
   const pick=window.CMD_SONG_LYRICS['id-pick-you-first'];
   assert.ok(pick.lyrics.toLowerCase().includes('booger'));
   assert.ok(pick.sunoUrl.startsWith('https://suno.com/song/'));
@@ -46,7 +50,7 @@ test('music page wires lyrics UI hooks and cache-busted scripts',()=>{
   assert.ok(html.includes('id="catalogLyricsBody"'));
   assert.ok(html.includes('data-lyrics-body'));
   assert.ok(html.includes('Lyrics on Suno'));
-  assert.ok(html.includes('/data/song-lyrics.js?v=20260905-lyrics-ui'));
+  assert.ok(html.includes('/data/song-lyrics.js?v=20260905-lyrics-map2'));
   assert.ok(html.includes('/music/music.js?v=20260905-lyrics-fix'));
   assert.ok(html.includes('/music/music.css?v=20260905-lyrics-fix'));
   const lyricsIdx=html.indexOf('/data/song-lyrics.js');
