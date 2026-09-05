@@ -266,6 +266,14 @@
     }
     if(index>0&&index%5===0)why.push('variety break');
 
+    try{
+      const intensity=window.CMDContentIntensity;
+      if(intensity?.isRaw?.(songId)){
+        const guard=intensity.whyGuardCopy?.({intent})||'';
+        if(guard&&!why.includes(guard))why.push(guard);
+      }
+    }catch{}
+
     if(!why.length)why.push('controlled chaos');
 
     const whyText=why.length===1
@@ -275,12 +283,30 @@
     return {why,whyText,clusterId:cluster?.id||'',clusterLabel:cluster?.label||''};
   }
 
+  function intensityPolicy(intent,options={}){
+    return {
+      intent,
+      includeHeavy:options.includeHeavy,
+      unlockedByTaste:options.unlockedByTaste
+    };
+  }
+
+  function vibeAllowed(songId,intent,options={}){
+    try{
+      if(window.CMDContentIntensity?.isAllowed){
+        return !!window.CMDContentIntensity.isAllowed(songId,intensityPolicy(intent,options));
+      }
+    }catch{}
+    return true;
+  }
+
   function build(songs,options={}){
     const intent=normalizeIntent(options.intent);
     const seed=cleanSeed(options.seed)||createSeed();
     const cycleNumber=Math.max(1,Number(options.cycleNumber)||1);
     const excluded=new Set(options.excludeIds||[]);
-    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&variants(song).length&&!songFullyKilled(song));
+    try{window.CMDContentIntensity?.syncTasteUnlock?.()}catch{}
+    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&variants(song).length&&!songFullyKilled(song)&&vibeAllowed(song.id,intent,options));
     const rng=randomFrom(`${seed}|${intent}|${cycleNumber}`);
     const history=options.ignoreHistory?[]:readHistory();
     const newestTimestamp=Math.max(0,...playable.map(timestamp));
@@ -332,6 +358,8 @@
     createSeed,
     cleanSeed,
     normalizeIntent,
+    vibeAllowed,
+    intensityPolicy,
     historyKey:HISTORY_STORAGE,
     lastTrackKey:LAST_STORAGE,
     intents:intentList.map(intent=>({...intent}))

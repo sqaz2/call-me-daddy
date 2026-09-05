@@ -80,7 +80,8 @@
   const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
   const buildCycle=()=>{
     cycleNumber+=1;
-    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
+    const guard=window.CMDContentIntensity?.readPolicy?.({intent:activeIntent})||{};
+    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute,includeHeavy:guard.includeHeavy,unlockedByTaste:guard.unlockedByTaste}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
     cycleIndex=-1;
   };
 
@@ -151,14 +152,64 @@
       <div class="intent-now">
         <div class="intent-now-copy"><small data-radio-label></small><p data-radio-description></p><span data-radio-status aria-live="polite"></span></div>
         <div class="intent-now-actions"><button class="btn primary" type="button" data-radio-play></button><button class="btn" type="button" data-radio-share>↗ Share this route</button></div>
+      </div>
+      <div class="vibe-guard" data-vibe-guard>
+        <button type="button" class="vibe-guard-toggle" data-vibe-toggle aria-pressed="false">
+          <span data-vibe-label>Include the heavy stuff</span>
+        </button>
+        <p class="vibe-guard-note" data-vibe-note>Keeping it lighter until you ask for the heavy lane.</p>
       </div>`;
     intentMount.addEventListener('click',event=>{
       const intentButton=event.target.closest('[data-intent]');
       if(intentButton){startIntent(intentButton.dataset.intent);return;}
       if(event.target.closest('[data-radio-play]')){startIntent(activeIntent);return;}
       if(event.target.closest('[data-radio-share]'))shareStation();
+      if(event.target.closest('[data-vibe-toggle]')){toggleVibeGuard();return;}
     });
     renderIntentState();
+    renderVibeGuard();
+  }
+
+  function vibePolicy(){
+    return {intent:activeIntent};
+  }
+
+  function renderVibeGuard(){
+    if(!intentMount)return;
+    const api=window.CMDContentIntensity;
+    const toggle=intentMount.querySelector('[data-vibe-toggle]');
+    const label=intentMount.querySelector('[data-vibe-label]');
+    const note=intentMount.querySelector('[data-vibe-note]');
+    if(!toggle||!api)return;
+    const policy=api.readPolicy?.(vibePolicy())||{includeHeavy:false,unlocked:false,safeMode:true};
+    const heavy=!!policy.includeHeavy;
+    toggle.classList.toggle('is-active',heavy);
+    toggle.setAttribute('aria-pressed',String(heavy));
+    // Label is the action available from the current state.
+    if(label)label.textContent=heavy?'Keep it lighter':'Include the heavy stuff';
+    if(note){
+      note.textContent=heavy
+        ?(api.HEAVY_LANE_COPY||'You opened the heavy lane.')
+        :(api.RAW_COPY||'Keeping it lighter until you ask for the heavy lane.');
+    }
+  }
+
+  function toggleVibeGuard(){
+    const api=window.CMDContentIntensity;
+    if(!api?.toggleIncludeHeavy)return;
+    api.toggleIncludeHeavy();
+    renderVibeGuard();
+    // Rebuild the current intention route with the new gate.
+    radioSeed=cycleEngine?.createSeed?.()||Date.now().toString(36);
+    deterministicRoute=false;
+    cycle=[];
+    cycleIndex=-1;
+    cycleNumber=0;
+    syncUrl();
+    const policy=api.readPolicy?.(vibePolicy())||{};
+    renderIntentState(policy.includeHeavy?'Heavy lane open.':'Keeping it lighter.');
+    window.CMDTasteRail?.refresh?.();
+    if(current)nextTrack();
   }
 
   function startIntent(intent){
@@ -169,7 +220,9 @@
     cycleIndex=-1;
     cycleNumber=0;
     syncUrl();
+    renderVibeGuard();
     renderIntentState('New route built.');
+    window.CMDTasteRail?.refresh?.();
     nextTrack();
   }
 
@@ -319,6 +372,13 @@
     if(taste==='killed')why.push('Second skip — parked this version');
     else if(taste==='like')why.push('you liked this');
     clusterWhy.forEach(reason=>{if(reason&&!why.includes(reason))why.push(reason)});
+    try{
+      const intensity=window.CMDContentIntensity;
+      if(intensity?.isRaw?.(songId)){
+        const guard=intensity.whyGuardCopy?.(vibePolicy())||'';
+        if(guard&&!why.includes(guard))why.push(guard);
+      }
+    }catch{}
     (Array.isArray(track.why)?track.why:[]).forEach(reason=>{
       if(!reason||why.includes(reason))return;
       if(reason==='you liked this'||reason==='Second skip — parked this version')return;
@@ -380,8 +440,19 @@
     ensureCycle();
     let targetIndex=cycle.findIndex(track=>(track.songId||track.id)===song.id);
     if(targetIndex<0){
-      buildCycle();
-      targetIndex=cycle.findIndex(track=>(track.songId||track.id)===song.id);
+      // Intentional pick (search / card) still plays raw even when safe-mode gated the route.
+      const forced=cycleEngine?cycleEngine.build([song],{
+        lastSongId,
+        intent:activeIntent,
+        seed:radioSeed,
+        cycleNumber:Math.max(1,cycleNumber),
+        ignoreHistory:true,
+        includeHeavy:true
+      }):[{...song,songId:song.id}];
+      if(forced[0]){
+        cycle=[forced[0],...cycle];
+        targetIndex=0;
+      }
     }
     if(targetIndex<0)return;
     const track=cycle[targetIndex];
@@ -436,7 +507,9 @@
   likeBtn?.addEventListener('click',()=>{
     if(!lastSongId)return;
     window.CMDListenerTaste?.like?.(lastSongId,currentVariantId());
+    window.CMDContentIntensity?.noteTasteChange?.();
     syncTasteButtons();
+    renderVibeGuard();
     if(current){
       refreshTrackWhy(current);
       renderWhy(current);
