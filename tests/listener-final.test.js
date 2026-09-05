@@ -43,10 +43,13 @@ test('music page attaches swipe to cover / player-inner and loads listener scrip
   assert.ok(html.includes('catalogLike'));
   assert.ok(html.includes('catalogSearch'));
   assert.ok(html.includes('lineageRail'));
+  assert.ok(html.includes('tasteRail'));
   assert.ok(html.includes('/listener-taste.js'));
+  assert.ok(html.includes('/data/taste-clusters.js'));
   assert.ok(html.includes('/catalog-search.js'));
   assert.ok(html.includes('/data/lineages.js'));
   assert.ok(html.includes('/music/lineages.js'));
+  assert.ok(html.includes('/music/taste-rail.js'));
   const music=read('music/music.js');
   assert.ok(music.includes('playerCover')||music.includes('cover'));
   assert.ok(music.includes('catalog-player-inner'));
@@ -93,7 +96,7 @@ test('lineage song IDs resolve against the merged catalog',()=>{
 });
 
 test('catalog cycle attaches why explanations and respects taste weights',()=>{
-  const files=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','listener-taste.js','catalog-cycle.js'];
+  const files=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','data/taste-clusters.js','listener-taste.js','catalog-cycle.js'];
   const {window}=loadScripts(files);
   window.CMDListenerTaste.like('find-your-people');
   window.CMDListenerTaste.dislike('youtube-W47ebCMfrBI');
