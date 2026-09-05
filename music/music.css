@@ -90,6 +90,10 @@
   .player-cluster{display:none}
 }
 
+
+/* Player open: room for lyrics toggle above the fold */
+body.catalog-player-open.music-page{padding-bottom:168px}
+.catalog-lyrics:not([hidden]){min-height:42px;position:relative;z-index:1}
 /* On-site lyrics (catalog player + card disclosures) */
 .catalog-lyrics{
   width:min(100%,var(--shell-max,1100px));

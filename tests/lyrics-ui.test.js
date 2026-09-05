@@ -47,8 +47,8 @@ test('music page wires lyrics UI hooks and cache-busted scripts',()=>{
   assert.ok(html.includes('data-lyrics-body'));
   assert.ok(html.includes('Lyrics on Suno'));
   assert.ok(html.includes('/data/song-lyrics.js?v=20260905-lyrics-ui'));
-  assert.ok(html.includes('/music/music.js?v=20260905-lyrics-ui'));
-  assert.ok(html.includes('/music/music.css?v=20260905-lyrics-ui'));
+  assert.ok(html.includes('/music/music.js?v=20260905-lyrics-fix'));
+  assert.ok(html.includes('/music/music.css?v=20260905-lyrics-fix'));
   const lyricsIdx=html.indexOf('/data/song-lyrics.js');
   const musicIdx=html.indexOf('/music/music.js');
   assert.ok(lyricsIdx>=0&&musicIdx>lyricsIdx);
@@ -66,6 +66,19 @@ test('music.js resolves Suno from song or lyrics map and formats lyrics safely',
   assert.ok(js.includes("safe(text)"));
   // Prefer song.sunoUrl when present
   assert.ok(js.includes('if(song?.sunoUrl)return String(song.sunoUrl)'));
+});
+
+test('loadTrack calls renderPlayerLyrics so the player lyrics panel can unhide',()=>{
+  const js=read('music/music.js');
+  const start=js.indexOf('function loadTrack');
+  assert.ok(start>=0,'loadTrack missing');
+  const end=js.indexOf('function ensureCycle',start);
+  const body=js.slice(start,end>start?end:start+1200);
+  assert.ok(body.includes('renderWhy(track)'));
+  assert.ok(body.includes('renderPlayerLyrics(track)'),'loadTrack must call renderPlayerLyrics(track)');
+  const whyAt=body.indexOf('renderWhy(track)');
+  const lyricsAt=body.indexOf('renderPlayerLyrics(track)');
+  assert.ok(lyricsAt>whyAt,'renderPlayerLyrics should run after renderWhy');
 });
 
 test('lyric search still finds booger → id-pick-you-first',()=>{
