@@ -127,11 +127,12 @@ test('music.js contains scroll minimize hooks and localStorage pane key',()=>{
   assert.ok(js.includes('cmd-player-pane-v1'));
   assert.ok(js.includes('localStorage.getItem(PANE_STORAGE)')||js.includes("getItem('cmd-player-pane-v1')")||js.includes('localStorage.getItem'));
   assert.ok(js.includes('localStorage.setItem(PANE_STORAGE')||js.includes('persistPaneMode'));
-  assert.ok(js.includes('THRESH')||js.includes('threshold')||js.includes('10'));
+  assert.ok(js.includes('THRESH')||js.includes('threshold'));
+  assert.ok(js.includes('COOLDOWN_MS'));
   assert.ok(js.includes('scroll'));
 });
 
-test('music page wires pane tabs + player search + 27vh cache bust',()=>{
+test('music page wires pane tabs + player search + sheet-kbd cache bust',()=>{
   const html=read('music/index.html');
   assert.ok(html.includes('id="catalogPaneTabs"'));
   assert.ok(html.includes('data-pane="lyrics"'));
@@ -143,16 +144,90 @@ test('music page wires pane tabs + player search + 27vh cache bust',()=>{
   assert.ok(html.includes('id="catalogPlayerSearchInput"'));
   assert.ok(html.includes('id="catalogSearchExpand"'));
   assert.ok(html.includes('id="catalogLyricsEmpty"'));
-  assert.ok(html.includes('/music/music.js?v=20260905-player-27'));
-  assert.ok(html.includes('/music/music.css?v=20260905-player-27'));
+  assert.ok(html.includes('id="catalogSheetChrome"'));
+  assert.ok(html.includes('id="catalogSheetExpand"'));
+  assert.ok(html.includes('id="catalogSheetCollapse"'));
+  assert.ok(html.includes('id="catalogSheetFullLyrics"'));
+  assert.ok(html.includes('id="catalogSheetDone"'));
+  assert.ok(html.includes('Full lyrics'));
+  assert.ok(html.includes('/music/music.js?v=20260905-sheet-kbd'));
+  assert.ok(html.includes('/music/music.css?v=20260905-sheet-kbd'));
   const css=read('music/music.css');
   assert.ok(css.includes('.catalog-player.is-minimized'));
+  assert.ok(css.includes('.catalog-player.sheet-mini'));
+  assert.ok(css.includes('.catalog-player.sheet-dock'));
+  assert.ok(css.includes('.catalog-player.sheet-info'));
+  assert.ok(css.includes('.catalog-player.sheet-full'));
   assert.ok(css.includes('.catalog-search-bar.is-collapsed'));
   assert.ok(css.includes('.catalog-pane-tabs'));
   assert.ok(css.includes('.catalog-pane-tab'));
   assert.ok(!css.includes('.catalog-pane-cycle'));
   assert.ok(css.includes('27vh')||css.includes('max-height:min(27vh'));
-  assert.ok(!css.includes('46vh'));
+  assert.ok(css.includes('45vh')||css.includes('max-height:min(45vh'));
+  assert.ok(css.includes('92vh')||css.includes('max-height:min(92vh'));
   assert.ok(css.includes('minmax(0,1fr)'));
   assert.ok(css.includes('text-overflow:ellipsis'));
+});
+
+test('sheet height API: classes, Full lyrics, Page→mini, persist demotes full',()=>{
+  const js=read('music/music.js');
+  assert.ok(js.includes("SHEET_HEIGHTS=['mini','dock','info','full']"));
+  assert.ok(js.includes('cmd-player-sheet-v1'));
+  assert.ok(js.includes("classList.add('sheet-'+sheetHeight)")||js.includes("add('sheet-'"));
+  assert.ok(js.includes('jumpFullLyrics'));
+  assert.ok(js.includes('applySheetHeight'));
+  assert.ok(js.includes("applySheetHeight('full'")||js.includes('applySheetHeight("full"'));
+  // Page tab → mini
+  assert.ok(js.includes("applySheetHeight('mini'")||js.includes("mode==='page'"));
+  // Lyrics from mini bumps to dock, not full
+  assert.ok(js.includes("applySheetHeight('dock'"));
+  // Reload: full demoted to dock
+  assert.ok(js.includes("raw==='full'")||js.includes('raw==="full"'));
+  const chrome=loadMusicChromeHelpers();
+  assert.ok(chrome,'CMDPlayerChrome should export');
+  assert.equal(Array.from(chrome.SHEET_HEIGHTS).join(','),'mini,dock,info,full');
+  assert.equal(chrome.SHEET_STORAGE_KEY,'cmd-player-sheet-v1');
+  assert.equal(typeof chrome.setSheetHeight,'function');
+  assert.equal(typeof chrome.jumpFullLyrics,'function');
+  assert.equal(typeof chrome.expandSheet,'function');
+  assert.equal(typeof chrome.collapseSheet,'function');
+  assert.equal(typeof chrome.doneSheet,'function');
+  // Page clamps info/full → dock; exercise heights on Lyrics.
+  chrome.setMode('page');
+  assert.equal(chrome.getSheetHeight(),'mini');
+  chrome.setSheetHeight('info');
+  assert.equal(chrome.getSheetHeight(),'dock');
+  chrome.setMode('lyrics');
+  assert.equal(chrome.getSheetHeight(),'dock'); // mini bumped to dock, not full
+  chrome.setSheetHeight('info');
+  assert.equal(chrome.getSheetHeight(),'info');
+  chrome.jumpFullLyrics();
+  assert.equal(chrome.getSheetHeight(),'full');
+  chrome.doneSheet();
+  assert.equal(chrome.getSheetHeight(),'mini');
+  chrome.setMode('lyrics');
+  assert.notEqual(chrome.getSheetHeight(),'mini');
+  chrome.setSheetHeight('full');
+  chrome.collapseSheet();
+  assert.equal(chrome.getSheetHeight(),'info');
+  chrome.collapseSheet();
+  assert.equal(chrome.getSheetHeight(),'dock');
+  chrome.collapseSheet();
+  assert.equal(chrome.getSheetHeight(),'mini');
+});
+
+test('keyboard dock uses visualViewport + scroll hysteresis',()=>{
+  const js=read('music/music.js');
+  assert.ok(js.includes('visualViewport'));
+  assert.ok(js.includes('keyboard-open'));
+  assert.ok(js.includes('--vv-keyboard-inset'));
+  assert.ok(js.includes('mountKeyboardDock')||js.includes('requestAnimationFrame'));
+  assert.ok(js.includes('COOLDOWN_MS=300')||js.includes('COOLDOWN_MS = 300'));
+  assert.ok(js.includes('THRESH=48')||js.includes('THRESH = 48'));
+  assert.ok(js.includes('keyboardOpen'));
+  const css=read('music/music.css');
+  assert.ok(css.includes('.catalog-player.keyboard-open'));
+  assert.ok(css.includes('--vv-keyboard-inset')||css.includes('cmd-keyboard-open'));
+  const html=read('music/index.html');
+  assert.ok(html.includes('?v=20260905-sheet-kbd'));
 });

@@ -188,7 +188,93 @@ body.catalog-player-open.music-page{padding-bottom:168px}
   .catalog-lyrics-body{max-height:none;flex:1 1 auto;min-height:0;font-size:.8rem;padding:8px 10px}
 }
 
-/* Player chrome — pane tabs / minimize / 27vh mobile budget / search collapse */
+/* Player chrome — pane tabs / sheet heights / search collapse */
+.catalog-sheet-chrome{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:min(100%,var(--shell-max,1100px));
+  margin:0 auto;
+  padding:2px 12px 0;
+  flex:0 0 auto;
+  position:relative;
+  z-index:2;
+}
+.catalog-player > .catalog-sheet-chrome{
+  width:auto;
+  margin-left:10px;
+  margin-right:10px;
+}
+.catalog-sheet-handle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:48px;
+  min-height:22px;
+  padding:4px 14px;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  cursor:pointer;
+  color:#9a958e;
+}
+.catalog-sheet-handle-bar{
+  display:block;
+  width:36px;
+  height:4px;
+  border-radius:999px;
+  background:rgba(255,255,255,.28);
+}
+.catalog-sheet-handle:hover .catalog-sheet-handle-bar,
+.catalog-sheet-handle:focus-visible .catalog-sheet-handle-bar{
+  background:rgba(242,240,233,.72);
+}
+.catalog-sheet-handle:focus-visible{outline:2px solid #f2f0e9;outline-offset:2px}
+.catalog-sheet-actions{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  margin-left:auto;
+}
+.catalog-sheet-btn{
+  min-height:28px;
+  min-width:28px;
+  padding:0 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  background:rgba(18,18,18,.92);
+  color:#f2f0e9;
+  font-size:.62rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.catalog-sheet-btn:hover:not(:disabled){
+  border-color:rgba(255,255,255,.28);
+  background:rgba(40,40,40,.94);
+}
+.catalog-sheet-btn:disabled,
+.catalog-sheet-btn[aria-disabled="true"]{
+  opacity:.35;
+  cursor:default;
+}
+.catalog-sheet-btn:focus-visible{outline:2px solid #f2f0e9;outline-offset:2px}
+.catalog-sheet-full-lyrics,
+.catalog-sheet-full-lyrics-inline,
+.catalog-sheet-done{
+  background:rgba(242,240,233,.94);
+  color:#090909;
+  border-color:rgba(242,240,233,.94);
+}
+.catalog-sheet-full-lyrics-inline{
+  min-height:28px;
+  font-size:.62rem;
+}
+.catalog-lyrics-head .catalog-sheet-full-lyrics-inline[hidden]{display:none!important}
+
 .catalog-pane-tabs{
   width:min(100%,var(--shell-max,1100px));
   margin:2px auto 4px;
@@ -320,26 +406,82 @@ body.catalog-player-open.music-page{padding-bottom:168px}
   flex-shrink:0;
 }
 
-/* Minimized mini bar */
+/* Sheet heights (orthogonal to pane mode) */
+.catalog-player{
+  display:flex;
+  flex-direction:column;
+  bottom:0;
+  transition:max-height .22s ease,bottom .15s ease;
+}
+.catalog-player.keyboard-open{
+  /* Compact while soft keyboard is up — keep the search field visible */
+  max-height:min(42vh,360px)!important;
+}
+.catalog-player.keyboard-open .catalog-player-search-hints,
+.catalog-player.keyboard-open .tactile-scrubber-shell,
+.catalog-player.keyboard-open .swipe-hint,
+.catalog-player.keyboard-open .catalog-sheet-chrome .catalog-sheet-full-lyrics,
+.catalog-player.keyboard-open .catalog-sheet-chrome .catalog-sheet-done{
+  display:none!important;
+}
+.catalog-player.keyboard-open .catalog-player-pane{
+  flex:0 0 auto;
+}
+body.cmd-keyboard-open.catalog-player-open.music-page{
+  padding-bottom:calc(var(--vv-keyboard-inset,0px) + min(44vh,380px));
+}
+@media(prefers-reduced-motion:reduce){
+  .catalog-player{transition:none!important}
+}
+
+.catalog-player.sheet-mini,
+.catalog-player.is-minimized{
+  max-height:min(15vh,120px);
+}
+.catalog-player.sheet-dock{max-height:min(27vh,30vh)}
+.catalog-player.sheet-info{max-height:min(45vh,420px)}
+.catalog-player.sheet-full{max-height:min(92vh,920px)}
+
+/* Minimized / mini: compact transport only */
+.catalog-player.sheet-mini .catalog-player-pane,
 .catalog-player.is-minimized .catalog-player-pane,
+.catalog-player.sheet-mini .tactile-scrubber-shell,
 .catalog-player.is-minimized .tactile-scrubber-shell,
+.catalog-player.sheet-mini .swipe-hint,
 .catalog-player.is-minimized .swipe-hint,
+.catalog-player.sheet-mini .player-why,
 .catalog-player.is-minimized .player-why,
+.catalog-player.sheet-mini .player-cluster,
 .catalog-player.is-minimized .player-cluster,
+.catalog-player.sheet-mini .player-status,
 .catalog-player.is-minimized .player-status,
+.catalog-player.sheet-mini .catalog-taste,
 .catalog-player.is-minimized .catalog-taste,
+.catalog-player.sheet-mini .catalog-pane-tabs,
 .catalog-player.is-minimized .catalog-pane-tabs,
-.catalog-player.is-minimized .catalog-skip{display:none!important}
+.catalog-player.sheet-mini .catalog-skip,
+.catalog-player.is-minimized .catalog-skip,
+.catalog-player.sheet-mini .cmd-now-song-link,
+.catalog-player.is-minimized .cmd-now-song-link{display:none!important}
+.catalog-player.sheet-mini .catalog-sheet-actions .catalog-sheet-full-lyrics,
+.catalog-player.sheet-mini .catalog-sheet-actions .catalog-sheet-done,
+.catalog-player.is-minimized .catalog-sheet-actions .catalog-sheet-full-lyrics,
+.catalog-player.is-minimized .catalog-sheet-actions .catalog-sheet-done{display:none!important}
+.catalog-player.sheet-mini .catalog-player-inner,
 .catalog-player.is-minimized .catalog-player-inner{
   grid-template-columns:48px minmax(0,1fr) auto;
   padding:8px 12px 14px;
 }
-.catalog-player.is-minimized{padding-top:4px}
+.catalog-player.sheet-mini,
+.catalog-player.is-minimized{padding-top:2px}
+
+/* Body padding matches sheet height */
 body.catalog-player-open.music-page{padding-bottom:168px}
-body.catalog-player-open.music-page:has(#catalogPlayer.is-minimized),
-body.catalog-player-open.music-page:has(#catalogPlayer.pane-page){padding-bottom:110px}
-body.catalog-player-open.music-page:has(#catalogPlayer.pane-lyrics:not(.is-minimized)),
-body.catalog-player-open.music-page:has(#catalogPlayer.pane-search:not(.is-minimized)){padding-bottom:min(30vh,280px)}
+body.catalog-player-open.music-page:has(#catalogPlayer.sheet-mini),
+body.catalog-player-open.music-page:has(#catalogPlayer.is-minimized){padding-bottom:110px}
+body.catalog-player-open.music-page:has(#catalogPlayer.sheet-dock){padding-bottom:min(30vh,280px)}
+body.catalog-player-open.music-page:has(#catalogPlayer.sheet-info){padding-bottom:min(48vh,440px)}
+body.catalog-player-open.music-page:has(#catalogPlayer.sheet-full){padding-bottom:min(94vh,940px)}
 
 /* Page search collapse */
 .catalog-search-expand{
@@ -366,15 +508,20 @@ body.catalog-player-open.music-page:has(#catalogPlayer.pane-search:not(.is-minim
 .catalog-search-bar.is-collapsed .catalog-search-expanded{display:none}
 .catalog-search-bar.is-collapsed .catalog-search-expand{display:inline-flex}
 
-/* Mobile: hard-cap entire fixed player (~27vh, max ~30vh) */
+/* Mobile sheet layout */
 @media(max-width:620px){
   .catalog-player{
-    max-height:min(27vh,30vh);
     display:flex;
     flex-direction:column;
     padding:4px 0 max(6px,env(safe-area-inset-bottom));
     overflow:hidden;
   }
+  .catalog-player.sheet-mini,
+  .catalog-player.is-minimized{max-height:min(14vh,110px)}
+  .catalog-player.sheet-dock{max-height:min(27vh,30vh)}
+  .catalog-player.sheet-info{max-height:min(45vh,420px)}
+  .catalog-player.sheet-full{max-height:min(92vh,920px)}
+
   .catalog-player-inner{
     grid-template-columns:42px minmax(0,1fr) auto;
     gap:8px;
@@ -389,6 +536,8 @@ body.catalog-player-open.music-page:has(#catalogPlayer.pane-search:not(.is-minim
   .catalog-play{width:40px;height:40px}
   .catalog-skip{width:30px;height:30px}
   .catalog-taste{width:28px;height:28px;font-size:.72rem}
+  .catalog-sheet-chrome{margin:0 8px;padding:0 4px;gap:6px}
+  .catalog-sheet-btn{min-height:26px;padding:0 8px;font-size:.56rem}
   .catalog-pane-tabs{margin:2px 10px 2px;padding:2px;gap:2px}
   .catalog-player > .catalog-pane-tabs{margin-left:10px;margin-right:10px}
   .catalog-pane-tab{min-height:28px;font-size:.58rem;letter-spacing:.05em;padding:0 4px}
@@ -432,29 +581,76 @@ body.catalog-player-open.music-page:has(#catalogPlayer.pane-search:not(.is-minim
   }
   .catalog-player-search-hints .catalog-hint{min-height:28px;padding:0 9px;font-size:.64rem}
 
-  /* Pane open: compress chrome so control row stays one strip */
-  .catalog-player.pane-lyrics:not(.is-minimized) .tactile-scrubber-shell,
-  .catalog-player.pane-search:not(.is-minimized) .tactile-scrubber-shell,
-  .catalog-player.pane-lyrics:not(.is-minimized) .swipe-hint,
-  .catalog-player.pane-search:not(.is-minimized) .swipe-hint,
-  .catalog-player.pane-lyrics:not(.is-minimized) .player-why,
-  .catalog-player.pane-search:not(.is-minimized) .player-why,
-  .catalog-player.pane-lyrics:not(.is-minimized) .player-cluster,
-  .catalog-player.pane-search:not(.is-minimized) .player-cluster,
-  .catalog-player.pane-lyrics:not(.is-minimized) .player-status,
-  .catalog-player.pane-search:not(.is-minimized) .player-status,
-  .catalog-player.pane-lyrics:not(.is-minimized) .cmd-now-song-link,
-  .catalog-player.pane-search:not(.is-minimized) .cmd-now-song-link{display:none!important}
+  /* Dock + lyrics/search: compress chrome (why/status/link) to fit ~27vh */
+  .catalog-player.sheet-dock.pane-lyrics .tactile-scrubber-shell,
+  .catalog-player.sheet-dock.pane-search .tactile-scrubber-shell,
+  .catalog-player.sheet-dock.pane-lyrics .swipe-hint,
+  .catalog-player.sheet-dock.pane-search .swipe-hint,
+  .catalog-player.sheet-dock.pane-lyrics .player-why,
+  .catalog-player.sheet-dock.pane-search .player-why,
+  .catalog-player.sheet-dock.pane-lyrics .player-cluster,
+  .catalog-player.sheet-dock.pane-search .player-cluster,
+  .catalog-player.sheet-dock.pane-lyrics .player-status,
+  .catalog-player.sheet-dock.pane-search .player-status,
+  .catalog-player.sheet-dock.pane-lyrics .cmd-now-song-link,
+  .catalog-player.sheet-dock.pane-search .cmd-now-song-link{display:none!important}
+
+  /* Info: reveal why / cluster / status / Open song + pane */
+  .catalog-player.sheet-info .player-why,
+  .catalog-player.sheet-info .player-cluster,
+  .catalog-player.sheet-info .player-status,
+  .catalog-player.sheet-info .cmd-now-song-link{display:block!important}
+  .catalog-player.sheet-info .player-copy strong,
+  .catalog-player.sheet-info #playerTitle{
+    white-space:normal;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .catalog-player.sheet-info .tactile-scrubber-shell,
+  .catalog-player.sheet-info .swipe-hint{display:none!important}
+  .catalog-player.sheet-info.pane-lyrics .catalog-lyrics-body:not([hidden]){
+    max-height:min(18vh,160px);
+  }
+
+  /* Full: lyrics (or search) dominate remaining sheet space */
+  .catalog-player.sheet-full .tactile-scrubber-shell,
+  .catalog-player.sheet-full .swipe-hint{display:none!important}
+  .catalog-player.sheet-full .player-why,
+  .catalog-player.sheet-full .player-cluster{display:none!important}
+  .catalog-player.sheet-full .catalog-player-pane{
+    flex:1 1 auto;
+    min-height:0;
+  }
+  .catalog-player.sheet-full.pane-lyrics .catalog-lyrics,
+  .catalog-player.sheet-full.pane-lyrics .catalog-lyrics-body:not([hidden]){
+    flex:1 1 auto;
+    min-height:0;
+    max-height:none;
+  }
+  .catalog-player.sheet-full.pane-search .catalog-player-search{
+    flex:1 1 auto;
+    min-height:0;
+  }
+  .catalog-player.sheet-full.pane-search .catalog-player-search-hints{
+    max-height:none;
+    overflow:auto;
+    flex:1 1 auto;
+  }
 
   body.catalog-player-open.music-page{padding-bottom:min(32vh,300px)}
-  body.catalog-player-open.music-page:has(#catalogPlayer.is-minimized),
-  body.catalog-player-open.music-page:has(#catalogPlayer.pane-page){padding-bottom:96px}
-  body.catalog-player-open.music-page:has(#catalogPlayer.pane-lyrics:not(.is-minimized)),
-  body.catalog-player-open.music-page:has(#catalogPlayer.pane-search:not(.is-minimized)){padding-bottom:min(30vh,280px)}
+  body.catalog-player-open.music-page:has(#catalogPlayer.sheet-mini),
+  body.catalog-player-open.music-page:has(#catalogPlayer.is-minimized){padding-bottom:96px}
+  body.catalog-player-open.music-page:has(#catalogPlayer.sheet-dock){padding-bottom:min(30vh,280px)}
+  body.catalog-player-open.music-page:has(#catalogPlayer.sheet-info){padding-bottom:min(48vh,440px)}
+  body.catalog-player-open.music-page:has(#catalogPlayer.sheet-full){padding-bottom:min(94vh,940px)}
 }
 @media(max-width:390px){
   .catalog-player-inner{grid-template-columns:38px minmax(0,1fr) auto;gap:6px;padding:7px 8px 10px}
   .player-cover{width:38px;height:38px}
   .catalog-pane-tab{font-size:.54rem}
   .catalog-taste{display:none}
+  .catalog-sheet-btn{font-size:.52rem;padding:0 7px}
 }

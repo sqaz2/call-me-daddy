@@ -47,6 +47,12 @@
   const playerSearchHints=document.getElementById('catalogPlayerSearchHints');
   const paneTabs=document.getElementById('catalogPaneTabs');
   const paneTabButtons=paneTabs?Array.from(paneTabs.querySelectorAll('[data-pane]')):[];
+  const sheetHandle=document.getElementById('catalogSheetHandle');
+  const sheetExpandBtn=document.getElementById('catalogSheetExpand');
+  const sheetCollapseBtn=document.getElementById('catalogSheetCollapse');
+  const sheetFullLyricsBtn=document.getElementById('catalogSheetFullLyrics');
+  const sheetFullLyricsInline=document.getElementById('catalogSheetFullLyricsInline');
+  const sheetDoneBtn=document.getElementById('catalogSheetDone');
   const searchBar=document.getElementById('catalogSearchBar');
   const searchExpand=document.getElementById('catalogSearchExpand');
   const progress=document.getElementById('catalogProgress');
@@ -117,7 +123,10 @@
   const sunoLinkLabel=hasLyrics=>hasLyrics?'Lyrics on Suno ↗':'Suno ↗';
 
   const PANE_STORAGE='cmd-player-pane-v1';
+  const SHEET_STORAGE='cmd-player-sheet-v1';
   const PANE_MODES=['lyrics','search','page'];
+  const SHEET_HEIGHTS=['mini','dock','info','full'];
+  const SHEET_CLASSES=SHEET_HEIGHTS.map(h=>'sheet-'+h);
   const HINT_VISIBLE_CAP=3;
   const MODE_META={
     lyrics:{icon:'Aa',label:'Lyrics'},
@@ -128,7 +137,10 @@
   let hintsExpanded=false;
   let syncingSearch=false;
   let paneMode='page';
+  let sheetHeight='dock';
+  let sheetHeightBeforeMini='dock';
   let playerPointerDown=false;
+  let keyboardOpen=false;
 
   function isSmallScreen(){
     try{return window.matchMedia('(max-width:620px)').matches}catch{return false}
@@ -151,6 +163,31 @@
   function persistPaneMode(mode){
     try{localStorage.setItem(PANE_STORAGE,mode)}catch{}
   }
+  function defaultSheetHeight(){
+    return isSmallScreen()?'dock':'dock';
+  }
+  function readStoredSheetHeight(){
+    try{
+      const raw=localStorage.getItem(SHEET_STORAGE);
+      if(!SHEET_HEIGHTS.includes(raw))return null;
+      // Reloading into a near-fullscreen sheet is jarring — demote full→dock.
+      if(raw==='full')return 'dock';
+      return raw;
+    }catch{}
+    return null;
+  }
+  function persistSheetHeight(height){
+    try{
+      // Persist the usable height; full is demoted on next load via readStoredSheetHeight.
+      localStorage.setItem(SHEET_STORAGE,height);
+    }catch{}
+  }
+  function sheetStep(from,dir){
+    const i=SHEET_HEIGHTS.indexOf(from);
+    const idx=i<0?SHEET_HEIGHTS.indexOf('dock'):i;
+    const next=Math.max(0,Math.min(SHEET_HEIGHTS.length-1,idx+dir));
+    return SHEET_HEIGHTS[next];
+  }
   function renderHintChips(target,hints,{expanded=false}={}){
     if(!target)return;
     const list=hints||[];
@@ -164,6 +201,31 @@
     hintsExpanded=!!on;
     renderHintChips(searchHints,searchHintsAll,{expanded:hintsExpanded});
     renderHintChips(playerSearchHints,searchHintsAll,{expanded:hintsExpanded});
+  }
+  function updateSheetChromeUi(){
+    if(!player)return;
+    SHEET_CLASSES.forEach(cls=>player.classList.remove(cls));
+    player.classList.add('sheet-'+sheetHeight);
+    player.dataset.sheet=sheetHeight;
+    const isMini=sheetHeight==='mini';
+    player.classList.toggle('is-minimized',isMini);
+    const showFullLyrics=paneMode==='lyrics'&&sheetHeight!=='full';
+    if(sheetFullLyricsBtn)sheetFullLyricsBtn.hidden=!showFullLyrics;
+    if(sheetFullLyricsInline)sheetFullLyricsInline.hidden=!showFullLyrics;
+    const showDone=sheetHeight==='full'||sheetHeight==='info';
+    if(sheetDoneBtn)sheetDoneBtn.hidden=!showDone;
+    if(sheetExpandBtn){
+      sheetExpandBtn.disabled=sheetHeight==='full'||(paneMode==='page'&&sheetHeight==='dock');
+      sheetExpandBtn.setAttribute('aria-disabled',sheetExpandBtn.disabled?'true':'false');
+    }
+    if(sheetCollapseBtn){
+      sheetCollapseBtn.disabled=sheetHeight==='mini';
+      sheetCollapseBtn.setAttribute('aria-disabled',sheetCollapseBtn.disabled?'true':'false');
+    }
+    if(sheetHandle){
+      sheetHandle.setAttribute('aria-label',`Player height: ${sheetHeight}. Tap to expand`);
+      sheetHandle.dataset.sheet=sheetHeight;
+    }
   }
   function updatePaneTabsUi(){
     paneTabButtons.forEach(btn=>{
@@ -179,41 +241,90 @@
       player.classList.toggle('pane-page',paneMode==='page');
     }
   }
+  function applySheetHeight(height,{persist=true,fromScroll=false}={}){
+    let next=SHEET_HEIGHTS.includes(height)?height:defaultSheetHeight();
+    // Page tab content never needs full/info — keep browsing usable.
+    if(paneMode==='page'&&(next==='full'||next==='info'))next='dock';
+    if(sheetHeight!=='mini'&&next==='mini')sheetHeightBeforeMini=sheetHeight;
+    sheetHeight=next;
+    if(persist)persistSheetHeight(sheetHeight);
+    updateSheetChromeUi();
+    const showPane=(paneMode==='lyrics'||paneMode==='search')&&sheetHeight!=='mini';
+    if(playerPane)playerPane.hidden=!showPane;
+    if(showPane&&paneMode==='lyrics')refreshLyricsVisibility();
+    if(showPane&&paneMode==='search')setHintsExpanded(hintsExpanded);
+  }
   function applyPaneMode(mode,{persist=true}={}){
     paneMode=PANE_MODES.includes(mode)?mode:defaultPaneMode();
     if(persist)persistPaneMode(paneMode);
     updatePaneTabsUi();
-    const showPane=paneMode==='lyrics'||paneMode==='search';
-    if(playerPane)playerPane.hidden=!showPane||!!player?.classList.contains('is-minimized');
+    // Page → mini (site usable). Lyrics/Search bump mini→dock; never surprise-jump to full.
+    if(paneMode==='page'){
+      applySheetHeight('mini',{persist});
+    }else if(sheetHeight==='mini'){
+      applySheetHeight('dock',{persist});
+    }else{
+      applySheetHeight(sheetHeight,{persist:false});
+    }
+    const showPane=(paneMode==='lyrics'||paneMode==='search')&&sheetHeight!=='mini';
+    if(playerPane)playerPane.hidden=!showPane;
     if(lyricsPanel){
       const showLyrics=paneMode==='lyrics';
       lyricsPanel.hidden=!showLyrics;
       if(showLyrics)refreshLyricsVisibility();
     }
     if(playerSearch)playerSearch.hidden=paneMode!=='search';
-    if(paneMode==='search'){
+    if(paneMode==='search'&&showPane){
       setHintsExpanded(hintsExpanded);
-      // Prefer focusing in-player search without fighting page search when already focused
       if(playerSearchInput&&document.activeElement!==searchInput){
         try{playerSearchInput.focus({preventScroll:true})}catch{playerSearchInput.focus()}
       }
     }
+    updateSheetChromeUi();
   }
   function refreshLyricsVisibility(){
     if(!lyricsPanel||paneMode!=='lyrics')return;
     const hasText=!!(lyricsBody&&lyricsBody.innerHTML&&lyricsBody.innerHTML.trim());
-    const empty=!!(lyricsEmpty&&!lyricsEmpty.hidden);
-    // Panel stays visible in lyrics mode; body/empty already set by renderPlayerLyrics
     lyricsPanel.hidden=false;
     if(lyricsBody&&hasText)lyricsBody.hidden=false;
     if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded',String(hasText&&lyricsBody&&!lyricsBody.hidden));
   }
   function selectPaneMode(mode){
-    applyPaneMode(mode);
-    if(player?.classList.contains('is-minimized')){
-      player.classList.remove('is-minimized');
-      applyPaneMode(paneMode,{persist:false});
+    if(mode==='page'){
+      paneMode='page';
+      persistPaneMode('page');
+      updatePaneTabsUi();
+      applySheetHeight('mini');
+      if(lyricsPanel)lyricsPanel.hidden=true;
+      if(playerSearch)playerSearch.hidden=true;
+      if(playerPane)playerPane.hidden=true;
+      updateSheetChromeUi();
+      return;
     }
+    applyPaneMode(mode);
+  }
+  function expandSheet(){
+    if(paneMode==='page'&&sheetHeight==='mini'){
+      applySheetHeight('dock');
+      return;
+    }
+    if(paneMode==='lyrics'&&sheetHeight==='dock'){
+      // From dock on Lyrics, expand goes to info (see more), not surprise-full.
+      applySheetHeight('info');
+      return;
+    }
+    applySheetHeight(sheetStep(sheetHeight,1));
+  }
+  function collapseSheet(){
+    applySheetHeight(sheetStep(sheetHeight,-1));
+  }
+  function jumpFullLyrics(){
+    if(paneMode!=='lyrics')applyPaneMode('lyrics');
+    applySheetHeight('full');
+  }
+  function doneSheet(){
+    // Return to regular scrolling / browse the page.
+    applyPaneMode('page');
   }
   function setSearchQuery(query,{from=null}={}){
     if(syncingSearch)return;
@@ -242,12 +353,21 @@
 
   window.CMDPlayerChrome={
     STORAGE_KEY:PANE_STORAGE,
+    SHEET_STORAGE_KEY:SHEET_STORAGE,
     MODES:PANE_MODES.slice(),
+    SHEET_HEIGHTS:SHEET_HEIGHTS.slice(),
     HINT_CAP:HINT_VISIBLE_CAP,
     nextMode:nextPaneMode,
     setMode:selectPaneMode,
     defaultMode:defaultPaneMode,
-    modeMeta:MODE_META
+    modeMeta:MODE_META,
+    setSheetHeight:h=>applySheetHeight(h),
+    expandSheet,
+    collapseSheet,
+    jumpFullLyrics,
+    doneSheet,
+    getSheetHeight:()=>sheetHeight,
+    isKeyboardOpen:()=>keyboardOpen
   };
 
   const buildCycle=()=>{
@@ -629,6 +749,35 @@
     selectPaneMode(btn.dataset.pane);
   });
 
+  sheetExpandBtn?.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    expandSheet();
+  });
+  sheetCollapseBtn?.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    collapseSheet();
+  });
+  sheetDoneBtn?.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    doneSheet();
+  });
+  const onFullLyrics=event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    jumpFullLyrics();
+  };
+  sheetFullLyricsBtn?.addEventListener('click',onFullLyrics);
+  sheetFullLyricsInline?.addEventListener('click',onFullLyrics);
+  sheetHandle?.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    if(sheetHeight==='full'||sheetHeight==='info')collapseSheet();
+    else expandSheet();
+  });
+
   function loadTrack(track,autoplay=true){
     if(!track?.audio)return;
     current=track;
@@ -837,30 +986,53 @@
   }
   mountSearch();
 
-  // Mini player: scroll down minimizes; scroll up restores. Ignore horizontal / player taps.
+  // Mini player: scroll down → mini; scroll up restores. Hysteresis avoids twitchy toggles.
   (function mountPlayerScrollChrome(){
     if(!player)return;
     let lastY=window.scrollY||0;
-    const THRESH=10;
+    let accum=0; // signed: + down, − up
+    let dir=0; // -1|0|1 current accumulation direction
+    let cooldownUntil=0;
+    const THRESH=48; // px accumulated in one direction before toggle
+    const COOLDOWN_MS=300;
     player.addEventListener('pointerdown',()=>{playerPointerDown=true},{passive:true});
     player.addEventListener('pointerup',()=>{playerPointerDown=false},{passive:true});
     player.addEventListener('pointercancel',()=>{playerPointerDown=false},{passive:true});
     window.addEventListener('scroll',()=>{
-      if(player.hidden||playerPointerDown)return;
+      if(player.hidden||playerPointerDown||keyboardOpen)return;
+      // Don't fight an intentional full/info sheet with scroll chrome.
+      if(sheetHeight==='full'||sheetHeight==='info'){lastY=window.scrollY||0;accum=0;dir=0;return}
+      // Don't toggle while typing in search.
+      const ae=document.activeElement;
+      if(ae&&(ae===playerSearchInput||ae===searchInput)){lastY=window.scrollY||0;accum=0;dir=0;return}
+      const now=Date.now();
+      if(now<cooldownUntil){lastY=window.scrollY||0;return}
       const y=window.scrollY||0;
       const dy=y-lastY;
       lastY=y;
-      if(Math.abs(dy)<THRESH)return;
-      if(dy>0){
-        if(!player.classList.contains('is-minimized')){
-          player.classList.add('is-minimized');
-          if(playerPane)playerPane.hidden=true;
-        }
-      }else{
-        if(player.classList.contains('is-minimized')){
-          player.classList.remove('is-minimized');
-          applyPaneMode(paneMode,{persist:false});
-        }
+      if(!dy)return;
+      const stepDir=dy>0?1:-1;
+      if(dir&&stepDir!==dir){
+        // Opposite direction: ignore until we rebuild threshold the other way.
+        accum=dy;
+        dir=stepDir;
+        return;
+      }
+      dir=stepDir;
+      accum+=dy;
+      if(Math.abs(accum)<THRESH)return;
+      accum=0;
+      dir=0;
+      cooldownUntil=now+COOLDOWN_MS;
+      if(stepDir>0){
+        if(sheetHeight!=='mini')applySheetHeight('mini',{fromScroll:true});
+      }else if(sheetHeight==='mini'){
+        const restore=SHEET_HEIGHTS.includes(sheetHeightBeforeMini)&&sheetHeightBeforeMini!=='mini'
+          ?sheetHeightBeforeMini
+          :'dock';
+        applySheetHeight(restore,{fromScroll:true,persist:false});
+        // Re-apply pane visibility without Page→mini clamp undoing the restore.
+        if(paneMode!=='page')applyPaneMode(paneMode,{persist:false});
       }
     },{passive:true});
     // Ignore primarily-horizontal touch moves used for scrub / swipe-nav
@@ -880,9 +1052,82 @@
     window.addEventListener('touchend',()=>{window.setTimeout(()=>{playerPointerDown=false},50)},{passive:true});
   })();
 
-  // Restore / choose initial pane mode
+  // Soft keyboard: keep active search input above the keyboard via visualViewport.
+  (function mountKeyboardDock(){
+    const inputs=[playerSearchInput,searchInput].filter(Boolean);
+    if(!inputs.length||!player)return;
+    const vv=window.visualViewport;
+    let raf=0;
+    let listening=false;
+    const onVv=()=>{
+      if(raf)return;
+      raf=window.requestAnimationFrame(()=>{
+        raf=0;
+        if(!keyboardOpen)return;
+        const inset=vv
+          ?Math.max(0,(window.innerHeight||0)-vv.height-vv.offsetTop)
+          :0;
+        document.documentElement.style.setProperty('--vv-keyboard-inset',inset+'px');
+        player.style.bottom=inset+'px';
+        // Keep focused search visible (page search may sit under chrome).
+        const ae=document.activeElement;
+        if(ae&&inputs.includes(ae)){
+          try{ae.scrollIntoView({block:'nearest',inline:'nearest'})}catch{}
+        }
+      });
+    };
+    const start=()=>{
+      if(listening)return;
+      listening=true;
+      keyboardOpen=true;
+      player.classList.add('keyboard-open');
+      document.body.classList.add('cmd-keyboard-open');
+      if(vv){
+        vv.addEventListener('resize',onVv);
+        vv.addEventListener('scroll',onVv);
+      }else{
+        window.addEventListener('resize',onVv);
+      }
+      onVv();
+    };
+    const stop=()=>{
+      if(!listening)return;
+      listening=false;
+      keyboardOpen=false;
+      if(raf){window.cancelAnimationFrame(raf);raf=0}
+      if(vv){
+        vv.removeEventListener('resize',onVv);
+        vv.removeEventListener('scroll',onVv);
+      }else{
+        window.removeEventListener('resize',onVv);
+      }
+      player.classList.remove('keyboard-open');
+      document.body.classList.remove('cmd-keyboard-open');
+      player.style.bottom='';
+      document.documentElement.style.removeProperty('--vv-keyboard-inset');
+    };
+    inputs.forEach(el=>{
+      el.addEventListener('focus',start);
+      el.addEventListener('blur',()=>{
+        // blur→focus between related fields: defer stop
+        window.setTimeout(()=>{
+          if(!inputs.includes(document.activeElement))stop();
+        },0);
+      });
+    });
+  })();
+
+  // Restore / choose initial pane + sheet height (full demoted→dock on reload)
   paneMode=readStoredPaneMode()||defaultPaneMode();
+  sheetHeight=readStoredSheetHeight()||defaultSheetHeight();
+  if(paneMode==='page')sheetHeight='mini';
   applyPaneMode(paneMode,{persist:false});
+  // applyPaneMode may have adjusted height; re-apply stored non-page height when appropriate
+  if(paneMode!=='page'){
+    const stored=readStoredSheetHeight()||defaultSheetHeight();
+    if(stored!=='mini')applySheetHeight(stored,{persist:false});
+  }
+  updateSheetChromeUi();
 
   audio.addEventListener('play',()=>{
     play.textContent='❚❚';
