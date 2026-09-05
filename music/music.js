@@ -36,6 +36,10 @@
   const searchHints=document.getElementById('catalogSearchHints');
   const searchEmpty=document.getElementById('catalogSearchEmpty');
   const searchDatalist=document.getElementById('catalogSearchList');
+  const lyricsPanel=document.getElementById('catalogLyrics');
+  const lyricsToggle=document.getElementById('catalogLyricsToggle');
+  const lyricsBody=document.getElementById('catalogLyricsBody');
+  const lyricsSuno=document.getElementById('catalogLyricsSuno');
   const progress=document.getElementById('catalogProgress');
   const bar=document.getElementById('catalogProgressBar');
   const tactileMount=document.getElementById('catalogTactile');
@@ -78,6 +82,30 @@
   }
 
   const safe=(value='')=>String(value).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  const songIdOf=song=>song?.songId||song?.id||'';
+  const lyricEntry=id=>window.CMDSongLyrics?.get?.(id)||window.CMD_SONG_LYRICS?.[id]||null;
+  const resolveLyrics=song=>{
+    const id=songIdOf(song);
+    const fromHelper=window.CMDSongLyrics?.lyrics?.(id);
+    if(fromHelper)return fromHelper;
+    const entry=lyricEntry(id);
+    return entry&&entry.lyrics?String(entry.lyrics):'';
+  };
+  const resolveSunoUrl=song=>{
+    if(song?.sunoUrl)return String(song.sunoUrl);
+    const id=songIdOf(song);
+    const fromHelper=window.CMDSongLyrics?.sunoUrl?.(id);
+    if(fromHelper)return String(fromHelper);
+    const entry=lyricEntry(id);
+    return entry&&entry.sunoUrl?String(entry.sunoUrl):'';
+  };
+  const formatLyricsHtml=(text='')=>{
+    const escaped=safe(text).replace(/\r\n?/g,'\n');
+    return escaped
+      .replace(/\[([^\]]+)\]/g,'<span class="lyric-tag">[$1]</span>')
+      .replace(/\n/g,'<br>');
+  };
+  const sunoLinkLabel=hasLyrics=>hasLyrics?'Lyrics on Suno ↗':'Suno ↗';
   const buildCycle=()=>{
     cycleNumber+=1;
     const guard=window.CMDContentIntensity?.readPolicy?.({intent:activeIntent})||{};
@@ -296,6 +324,8 @@
       ? `<video class="song-bg-video" autoplay muted loop playsinline preload="metadata"${song.cover?` poster="${safe(song.cover)}"`:''}><source src="${safe(song.video)}" type="video/mp4"></video>`
       : '';
     const versionMeta=songVariants.length>1?`${songVariants.length} versions`:song.kind||'song';
+    const cardLyrics=resolveLyrics(song);
+    const cardSunoUrl=resolveSunoUrl(song);
 
     card.innerHTML=`
       ${backgroundVideo}
@@ -311,8 +341,9 @@
           ${song.youtubeUrl?`<a class="song-link" href="${safe(song.youtubeUrl)}" target="_blank" rel="noopener">YouTube ↗</a>`:''}
           ${song.youtubeMusicUrl?`<a class="song-link" href="${safe(song.youtubeMusicUrl)}" target="_blank" rel="noopener">YouTube Music ↗</a>`:''}
           ${song.spotifyUrl?`<a class="song-link" href="${safe(song.spotifyUrl)}" target="_blank" rel="noopener">Spotify ↗</a>`:''}
-          ${song.sunoUrl?`<a class="song-link" href="${safe(song.sunoUrl)}" target="_blank" rel="noopener">Suno ↗</a>`:''}
+          ${cardSunoUrl?`<a class="song-link" href="${safe(cardSunoUrl)}" target="_blank" rel="noopener">${safe(sunoLinkLabel(Boolean(cardLyrics)))}</a>`:''}
         </div>
+        ${cardLyrics?`<details class="song-lyrics-details"><summary>Lyrics</summary><div class="song-lyrics-text">${formatLyricsHtml(cardLyrics)}</div></details>`:''}
       </div>`;
 
     const img=card.querySelector('.song-cover');
@@ -400,6 +431,43 @@
     }
     renderClusterChip(track);
   }
+
+
+  function renderPlayerLyrics(track){
+    if(!lyricsPanel)return;
+    const text=resolveLyrics(track);
+    const suno=resolveSunoUrl(track);
+    if(!text){
+      lyricsPanel.hidden=true;
+      if(lyricsBody){lyricsBody.innerHTML='';lyricsBody.hidden=true;}
+      if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded','false');
+      if(lyricsSuno){lyricsSuno.hidden=true;lyricsSuno.removeAttribute('href');}
+      return;
+    }
+    lyricsPanel.hidden=false;
+    if(lyricsBody){
+      lyricsBody.innerHTML=formatLyricsHtml(text);
+      lyricsBody.hidden=true;
+    }
+    if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded','false');
+    if(lyricsSuno){
+      if(suno){
+        lyricsSuno.hidden=false;
+        lyricsSuno.href=suno;
+        lyricsSuno.textContent='Lyrics on Suno ↗';
+      }else{
+        lyricsSuno.hidden=true;
+        lyricsSuno.removeAttribute('href');
+      }
+    }
+  }
+
+  lyricsToggle?.addEventListener('click',()=>{
+    if(!lyricsBody||lyricsPanel?.hidden)return;
+    const open=lyricsBody.hidden;
+    lyricsBody.hidden=!open;
+    lyricsToggle.setAttribute('aria-expanded',String(open));
+  });
 
   function loadTrack(track,autoplay=true){
     if(!track?.audio)return;

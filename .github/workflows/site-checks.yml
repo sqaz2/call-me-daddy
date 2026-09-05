@@ -36,6 +36,7 @@ jobs:
           node --check data/taste-clusters.js
           node --check data/content-intensity.js
           node --check catalog-search.js
+          node --check data/song-lyrics.js
           node --check data/lineages.js
           node --check music/taste-rail.js
           node --check home-listening.js
@@ -61,6 +62,10 @@ jobs:
         run: node --test tests/taste-clusters.test.js
       - name: Vibe guard / intensity tests
         run: node --test tests/vibe-guard.test.js
+      - name: Lyric search tests
+        run: node --test tests/lyric-search.test.js
+      - name: Lyrics UI tests
+        run: node --test tests/lyrics-ui.test.js
       - name: Four-track player handoff tests
         run: node --test tests/four-track-player.test.js
       - name: Concrete Under Evergreens player tests
