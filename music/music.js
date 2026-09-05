@@ -45,6 +45,7 @@
   const playerSearch=document.getElementById('catalogPlayerSearch');
   const playerSearchInput=document.getElementById('catalogPlayerSearchInput');
   const playerSearchHints=document.getElementById('catalogPlayerSearchHints');
+  const playerSearchResults=document.getElementById('catalogPlayerSearchResults');
   const paneTabs=document.getElementById('catalogPaneTabs');
   const paneTabButtons=paneTabs?Array.from(paneTabs.querySelectorAll('[data-pane]')):[];
   const sheetHandle=document.getElementById('catalogSheetHandle');
@@ -128,6 +129,7 @@
   const SHEET_HEIGHTS=['mini','dock','info','full'];
   const SHEET_CLASSES=SHEET_HEIGHTS.map(h=>'sheet-'+h);
   const HINT_VISIBLE_CAP=3;
+  const SEARCH_RESULT_CAP=6;
   const MODE_META={
     lyrics:{icon:'Aa',label:'Lyrics'},
     search:{icon:'🔍',label:'Search'},
@@ -334,6 +336,7 @@
       if(searchInput&&from!=='page'&&searchInput.value!==value)searchInput.value=value;
       if(playerSearchInput&&from!=='player'&&playerSearchInput.value!==value)playerSearchInput.value=value;
       applySearchFilter(value);
+      renderPlayerSearchResults(value);
     }finally{
       syncingSearch=false;
     }
@@ -357,6 +360,7 @@
     MODES:PANE_MODES.slice(),
     SHEET_HEIGHTS:SHEET_HEIGHTS.slice(),
     HINT_CAP:HINT_VISIBLE_CAP,
+    SEARCH_RESULT_CAP,
     nextMode:nextPaneMode,
     setMode:selectPaneMode,
     defaultMode:defaultPaneMode,
@@ -925,6 +929,123 @@
     }
   }
 
+  function normalizeSearchText(value){
+    return window.CMDCatalogSearch?.normalize?.(value)??String(value||'').toLowerCase().replace(/\s+/g,' ').trim();
+  }
+
+  function findExactTitleSong(hint){
+    const key=normalizeSearchText(hint);
+    if(!key)return null;
+    return songs.find(song=>normalizeSearchText(song.title)===key)||null;
+  }
+
+  function openSongDestination(song){
+    const dest=song?.experience||song?.youtubeUrl;
+    if(!dest)return false;
+    try{
+      if(/^https?:\/\//i.test(dest))window.open(dest,'_blank','noopener');
+      else location.assign(dest);
+    }catch{
+      try{location.href=dest}catch{}
+    }
+    return true;
+  }
+
+  function afterSearchPlay({navigating=false}={}){
+    try{playerSearchInput?.blur()}catch{}
+    try{searchInput?.blur()}catch{}
+    if(navigating)return;
+    // Leave the typing pane so playback chrome is visible.
+    if(paneMode==='search')applyPaneMode('lyrics');
+    if(sheetHeight!=='dock')applySheetHeight('dock');
+  }
+
+  function activateSongFromSearch(song){
+    if(!song)return false;
+    const playable=variantsFor(song).length>0;
+    if(playable){
+      selectSong(song);
+      afterSearchPlay();
+      return true;
+    }
+    if(openSongDestination(song)){
+      afterSearchPlay({navigating:true});
+      return true;
+    }
+    return false;
+  }
+
+  function matchedSongsForQuery(query){
+    const q=String(query||'').trim();
+    if(!q)return [];
+    const filtered=window.CMDCatalogSearch?.filterSongs?.(songs,q);
+    if(Array.isArray(filtered))return filtered.slice(0,SEARCH_RESULT_CAP);
+    return songs.filter(song=>window.CMDCatalogSearch?.matchesSong?.(song,q)).slice(0,SEARCH_RESULT_CAP);
+  }
+
+  function renderPlayerSearchResults(query){
+    if(!playerSearchResults)return;
+    const q=String(query||'').trim();
+    if(!q){
+      playerSearchResults.hidden=true;
+      playerSearchResults.innerHTML='';
+      if(playerSearchHints)playerSearchHints.hidden=false;
+      return;
+    }
+    // Prioritize results while typing; hide hint chips once the query is meaningful.
+    if(playerSearchHints)playerSearchHints.hidden=q.length>=2;
+    const matches=matchedSongsForQuery(q);
+    if(!matches.length){
+      playerSearchResults.hidden=false;
+      playerSearchResults.innerHTML='<p class="catalog-search-results-empty">No song matches</p>';
+      return;
+    }
+    playerSearchResults.hidden=false;
+    playerSearchResults.innerHTML=matches.map(song=>{
+      const playable=variantsFor(song).length>0;
+      const meta=[song.project,song.kind].filter(Boolean).join(' · ');
+      const open=song.experience
+        ?`<a class="catalog-search-result-open" href="${safe(song.experience)}" data-open-song="${safe(song.id)}">Open →</a>`
+        :'';
+      return `<div class="catalog-search-result" data-song-id="${safe(song.id)}">
+        <button type="button" class="catalog-search-result-main" data-play-song="${safe(song.id)}" aria-label="${playable?'Play':'Open'} ${safe(song.title)}">
+          <strong>${safe(song.title)}</strong>
+          ${meta?`<span class="catalog-search-result-meta">${safe(meta)}</span>`:''}
+        </button>
+        ${open}
+      </div>`;
+    }).join('');
+  }
+
+  function onSearchResultClick(event){
+    const openLink=event.target.closest('a[data-open-song]');
+    if(openLink){
+      try{playerSearchInput?.blur()}catch{}
+      return;
+    }
+    const btn=event.target.closest('[data-play-song]');
+    if(!btn)return;
+    event.preventDefault();
+    const song=songs.find(item=>item.id===btn.dataset.playSong);
+    activateSongFromSearch(song);
+  }
+
+  function playFirstSearchMatch(query){
+    const q=String(query||'').trim();
+    if(!q)return false;
+    const matches=window.CMDCatalogSearch?.filterSongs?.(songs,q)||songs.filter(song=>window.CMDCatalogSearch?.matchesSong?.(song,q));
+    if(!matches.length)return false;
+    if(matches.length===1)return activateSongFromSearch(matches[0]);
+    const playable=matches.find(song=>variantsFor(song).length>0);
+    return activateSongFromSearch(playable||matches[0]);
+  }
+
+  function onSearchEnter(event){
+    if(event.key!=='Enter')return;
+    event.preventDefault();
+    playFirstSearchMatch(event.target?.value||'');
+  }
+
   function onHintClick(event){
     const more=event.target.closest('[data-more-hints]');
     if(more){
@@ -933,7 +1054,13 @@
     }
     const chip=event.target.closest('[data-hint]');
     if(!chip)return;
-    setSearchQuery(chip.dataset.hint||'');
+    const hint=chip.dataset.hint||'';
+    const exact=findExactTitleSong(hint);
+    if(exact){
+      // Exact title hint → play / open instead of only filtering.
+      if(activateSongFromSearch(exact))return;
+    }
+    setSearchQuery(hint);
     if(paneMode!=='search'&&searchInput){
       try{searchInput.focus({preventScroll:true})}catch{searchInput.focus()}
     }else if(playerSearchInput){
@@ -950,8 +1077,11 @@
     setHintsExpanded(false);
     searchHints?.addEventListener('click',onHintClick);
     playerSearchHints?.addEventListener('click',onHintClick);
+    playerSearchResults?.addEventListener('click',onSearchResultClick);
     searchInput?.addEventListener('input',()=>setSearchQuery(searchInput.value,{from:'page'}));
     playerSearchInput?.addEventListener('input',()=>setSearchQuery(playerSearchInput.value,{from:'player'}));
+    searchInput?.addEventListener('keydown',onSearchEnter);
+    playerSearchInput?.addEventListener('keydown',onSearchEnter);
     document.getElementById('catalogSearchClear')?.addEventListener('click',()=>{
       setSearchQuery('');
       searchInput?.focus();

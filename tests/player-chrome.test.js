@@ -116,6 +116,7 @@ test('search hints capped at 3 until More hints',()=>{
   assert.ok(js.includes('slice(0,HINT_VISIBLE_CAP)')||js.includes('slice(0, 3)')||js.includes('HINT_VISIBLE_CAP'));
   const chrome=loadMusicChromeHelpers();
   assert.equal(chrome.HINT_CAP,3);
+  assert.equal(chrome.SEARCH_RESULT_CAP,6);
   assert.ok(!js.includes('hints.slice(0,14)'));
 });
 
@@ -132,7 +133,7 @@ test('music.js contains scroll minimize hooks and localStorage pane key',()=>{
   assert.ok(js.includes('scroll'));
 });
 
-test('music page wires pane tabs + player search + sheet-kbd cache bust',()=>{
+test('music page wires pane tabs + player search + search-play cache bust',()=>{
   const html=read('music/index.html');
   assert.ok(html.includes('id="catalogPaneTabs"'));
   assert.ok(html.includes('data-pane="lyrics"'));
@@ -150,8 +151,8 @@ test('music page wires pane tabs + player search + sheet-kbd cache bust',()=>{
   assert.ok(html.includes('id="catalogSheetFullLyrics"'));
   assert.ok(html.includes('id="catalogSheetDone"'));
   assert.ok(html.includes('Full lyrics'));
-  assert.ok(html.includes('/music/music.js?v=20260905-sheet-kbd'));
-  assert.ok(html.includes('/music/music.css?v=20260905-sheet-kbd'));
+  assert.ok(html.includes('/music/music.js?v=20260905-search-play'));
+  assert.ok(html.includes('/music/music.css?v=20260905-search-play'));
   const css=read('music/music.css');
   assert.ok(css.includes('.catalog-player.is-minimized'));
   assert.ok(css.includes('.catalog-player.sheet-mini'));
@@ -229,5 +230,5 @@ test('keyboard dock uses visualViewport + scroll hysteresis',()=>{
   assert.ok(css.includes('.catalog-player.keyboard-open'));
   assert.ok(css.includes('--vv-keyboard-inset')||css.includes('cmd-keyboard-open'));
   const html=read('music/index.html');
-  assert.ok(html.includes('?v=20260905-sheet-kbd'));
+  assert.ok(html.includes('?v=20260905-search-play'));
 });
