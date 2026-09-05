@@ -31,6 +31,7 @@ jobs:
           node --check home-briefing.js
           node --check placeholder-art.js
           node --check music/music.js
+          node --check swipe-nav.js
           node --check music/now-playing-share.js
           node --check anti-generative-ai-diss/collection.js
           node --check concrete-under-evergreens/player.js
@@ -44,6 +45,8 @@ jobs:
         run: node --test tests/aug29-uploads.test.js
       - name: Artwork fallback tests
         run: node --test tests/artwork-fallback.test.js
+      - name: Swipe browse tests
+        run: node --test tests/swipe-nav.test.js
       - name: Four-track player handoff tests
         run: node --test tests/four-track-player.test.js
       - name: Concrete Under Evergreens player tests

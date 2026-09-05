@@ -78,6 +78,21 @@
   play.addEventListener('click',()=>{player.hidden=false;controller.toggle()});
   previous.addEventListener('click',()=>controller.previous());
   next.addEventListener('click',()=>controller.next('manual-next'));
+  window.CMDSwipeNav?.attach({
+    target:player,
+    onPrev:()=>controller.previous(),
+    onNext:()=>controller.next('manual-next'),
+    ignore:'button, a, #archiveProgress, .tactile-scrubber-shell'
+  });
+  const versions=document.querySelector('.wild-ways-versions');
+  if(versions){
+    window.CMDSwipeNav?.attach({
+      target:versions,
+      onPrev:()=>controller.previous(),
+      onNext:()=>controller.next('manual-next'),
+      ignore:'button, a'
+    });
+  }
   share.addEventListener('click',()=>window.CMDPlaylistRadio?.share(active));
   progress.addEventListener('click',event=>{
     if(!Number.isFinite(audio.duration)||audio.duration<=0)return;
