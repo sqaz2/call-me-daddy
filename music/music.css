@@ -187,3 +187,126 @@ body.catalog-player-open.music-page{padding-bottom:168px}
   .catalog-lyrics{padding:0 11px}
   .catalog-lyrics-body{max-height:min(36vh,280px);font-size:.86rem}
 }
+
+/* Player chrome — pane cycle / minimize / search collapse */
+.catalog-pane-cycle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  min-width:44px;
+  min-height:44px;
+  padding:0 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:#191919;
+  color:#f3f1eb;
+  cursor:pointer;
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.catalog-pane-cycle-icon{font-size:.9rem;line-height:1}
+.catalog-pane-cycle:hover{background:#262626;border-color:rgba(255,255,255,.3)}
+.catalog-pane-cycle:focus-visible{outline:2px solid #f2f0e9;outline-offset:2px}
+
+.catalog-player-pane{
+  width:min(100%,var(--shell-max,1100px));
+  margin:0 auto 6px;
+  padding:0 16px 4px;
+}
+.catalog-player.pane-page .catalog-player-pane{display:none}
+.catalog-player.pane-lyrics .catalog-player-search{display:none}
+.catalog-player.pane-search .catalog-lyrics{display:none}
+.catalog-lyrics-empty{
+  margin:10px 0 0;
+  padding:14px 16px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  color:#a89a90;
+  font-size:.88rem;
+}
+.catalog-player.pane-lyrics .catalog-lyrics-body:not([hidden]){
+  max-height:min(40vh,320px);
+}
+.catalog-player-search{
+  margin-top:4px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:rgba(10,10,10,.92);
+}
+.catalog-player-search-label{
+  display:block;
+  margin-bottom:8px;
+  color:#a89a90;
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.catalog-player-search-row{display:flex;gap:10px;align-items:center}
+.catalog-player-search-row input{
+  flex:1;min-height:44px;padding:0 14px;
+  border:1px solid rgba(255,255,255,.14);border-radius:999px;
+  background:#161414;color:#f3f1eb;font:inherit
+}
+.catalog-player-search-hints{margin-top:10px}
+.catalog-hint-more{border-style:dashed;opacity:.92}
+
+/* Minimized mini bar */
+.catalog-player.is-minimized .catalog-player-pane,
+.catalog-player.is-minimized .tactile-scrubber-shell,
+.catalog-player.is-minimized .swipe-hint,
+.catalog-player.is-minimized .player-why,
+.catalog-player.is-minimized .player-cluster,
+.catalog-player.is-minimized .player-status,
+.catalog-player.is-minimized .catalog-taste,
+.catalog-player.is-minimized .catalog-pane-cycle,
+.catalog-player.is-minimized .catalog-skip{display:none!important}
+.catalog-player.is-minimized .catalog-player-inner{
+  grid-template-columns:48px minmax(0,1fr) auto;
+  padding:8px 12px 14px;
+}
+.catalog-player.is-minimized{padding-top:4px}
+body.catalog-player-open.music-page{padding-bottom:168px}
+body.catalog-player-open.music-page:has(#catalogPlayer.is-minimized),
+body.catalog-player-open.music-page:has(#catalogPlayer.pane-page){padding-bottom:110px}
+body.catalog-player-open.music-page:has(#catalogPlayer.pane-lyrics:not(.is-minimized)),
+body.catalog-player-open.music-page:has(#catalogPlayer.pane-search:not(.is-minimized)){padding-bottom:min(46vh,420px)}
+
+/* Page search collapse */
+.catalog-search-expand{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  min-width:44px;
+  padding:0 16px;
+  border-radius:999px;
+  border:1px solid rgba(232,120,110,.35);
+  background:rgba(90,28,28,.4);
+  color:#f4e8dc;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.catalog-search-bar.is-collapsed{
+  padding:8px 12px;
+  display:flex;
+  align-items:center;
+}
+.catalog-search-bar.is-collapsed .catalog-search-expanded{display:none}
+.catalog-search-bar.is-collapsed .catalog-search-expand{display:inline-flex}
+
+@media(max-width:620px){
+  .catalog-pane-cycle{min-width:44px;padding:0 8px;font-size:.62rem}
+  .catalog-pane-cycle-label{max-width:4.5em;overflow:hidden;text-overflow:ellipsis}
+  .catalog-player-pane{padding:0 11px 2px}
+  .catalog-controls{flex-wrap:wrap;justify-content:flex-end}
+}
+@media(max-width:390px){
+  .catalog-pane-cycle-label{display:none}
+}

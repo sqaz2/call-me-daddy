@@ -40,6 +40,16 @@
   const lyricsToggle=document.getElementById('catalogLyricsToggle');
   const lyricsBody=document.getElementById('catalogLyricsBody');
   const lyricsSuno=document.getElementById('catalogLyricsSuno');
+  const lyricsEmpty=document.getElementById('catalogLyricsEmpty');
+  const playerPane=document.getElementById('catalogPlayerPane');
+  const playerSearch=document.getElementById('catalogPlayerSearch');
+  const playerSearchInput=document.getElementById('catalogPlayerSearchInput');
+  const playerSearchHints=document.getElementById('catalogPlayerSearchHints');
+  const paneCycleBtn=document.getElementById('catalogPaneCycle');
+  const paneCycleIcon=document.getElementById('catalogPaneCycleIcon');
+  const paneCycleLabel=document.getElementById('catalogPaneCycleLabel');
+  const searchBar=document.getElementById('catalogSearchBar');
+  const searchExpand=document.getElementById('catalogSearchExpand');
   const progress=document.getElementById('catalogProgress');
   const bar=document.getElementById('catalogProgressBar');
   const tactileMount=document.getElementById('catalogTactile');
@@ -106,6 +116,141 @@
       .replace(/\n/g,'<br>');
   };
   const sunoLinkLabel=hasLyrics=>hasLyrics?'Lyrics on Suno ↗':'Suno ↗';
+
+  const PANE_STORAGE='cmd-player-pane-v1';
+  const PANE_MODES=['lyrics','search','page'];
+  const HINT_VISIBLE_CAP=3;
+  const MODE_META={
+    lyrics:{icon:'Aa',label:'Lyrics'},
+    search:{icon:'🔍',label:'Search'},
+    page:{icon:'▭',label:'Page'}
+  };
+  let searchHintsAll=[];
+  let hintsExpanded=false;
+  let syncingSearch=false;
+  let paneMode='page';
+  let playerPointerDown=false;
+
+  function isSmallScreen(){
+    try{return window.matchMedia('(max-width:620px)').matches}catch{return false}
+  }
+  function nextPaneMode(mode){
+    const i=PANE_MODES.indexOf(mode);
+    return PANE_MODES[(i<0?0:i+1)%PANE_MODES.length];
+  }
+  function readStoredPaneMode(){
+    try{
+      const raw=localStorage.getItem(PANE_STORAGE);
+      if(PANE_MODES.includes(raw))return raw;
+    }catch{}
+    return null;
+  }
+  function defaultPaneMode(){
+    // Mobile: start on Page so the catalog stays visible; desktop: Lyrics.
+    return isSmallScreen()?'page':'lyrics';
+  }
+  function persistPaneMode(mode){
+    try{localStorage.setItem(PANE_STORAGE,mode)}catch{}
+  }
+  function renderHintChips(target,hints,{expanded=false}={}){
+    if(!target)return;
+    const list=hints||[];
+    const visible=expanded?list:list.slice(0,HINT_VISIBLE_CAP);
+    const moreNeeded=!expanded&&list.length>HINT_VISIBLE_CAP;
+    const chips=visible.map(hint=>`<button type="button" class="catalog-hint" data-hint="${safe(hint)}">${safe(hint)}</button>`).join('');
+    const more=moreNeeded?`<button type="button" class="catalog-hint catalog-hint-more" data-more-hints="1">More hints</button>`:'';
+    target.innerHTML=chips+more;
+  }
+  function setHintsExpanded(on){
+    hintsExpanded=!!on;
+    renderHintChips(searchHints,searchHintsAll,{expanded:hintsExpanded});
+    renderHintChips(playerSearchHints,searchHintsAll,{expanded:hintsExpanded});
+  }
+  function updatePaneCycleUi(){
+    const meta=MODE_META[paneMode]||MODE_META.page;
+    if(paneCycleIcon)paneCycleIcon.textContent=meta.icon;
+    if(paneCycleLabel)paneCycleLabel.textContent=meta.label;
+    if(paneCycleBtn){
+      paneCycleBtn.dataset.mode=paneMode;
+      paneCycleBtn.setAttribute('aria-label',`Player pane: ${meta.label}. Tap to cycle Lyrics, Search, Page`);
+    }
+    if(player){
+      player.dataset.pane=paneMode;
+      player.classList.toggle('pane-lyrics',paneMode==='lyrics');
+      player.classList.toggle('pane-search',paneMode==='search');
+      player.classList.toggle('pane-page',paneMode==='page');
+    }
+  }
+  function applyPaneMode(mode,{persist=true}={}){
+    paneMode=PANE_MODES.includes(mode)?mode:defaultPaneMode();
+    if(persist)persistPaneMode(paneMode);
+    updatePaneCycleUi();
+    const showPane=paneMode==='lyrics'||paneMode==='search';
+    if(playerPane)playerPane.hidden=!showPane||!!player?.classList.contains('is-minimized');
+    if(lyricsPanel){
+      const showLyrics=paneMode==='lyrics';
+      lyricsPanel.hidden=!showLyrics;
+      if(showLyrics)refreshLyricsVisibility();
+    }
+    if(playerSearch)playerSearch.hidden=paneMode!=='search';
+    if(paneMode==='search'){
+      setHintsExpanded(hintsExpanded);
+      // Prefer focusing in-player search without fighting page search when already focused
+      if(playerSearchInput&&document.activeElement!==searchInput){
+        try{playerSearchInput.focus({preventScroll:true})}catch{playerSearchInput.focus()}
+      }
+    }
+  }
+  function refreshLyricsVisibility(){
+    if(!lyricsPanel||paneMode!=='lyrics')return;
+    const hasText=!!(lyricsBody&&lyricsBody.innerHTML&&lyricsBody.innerHTML.trim());
+    const empty=!!(lyricsEmpty&&!lyricsEmpty.hidden);
+    // Panel stays visible in lyrics mode; body/empty already set by renderPlayerLyrics
+    lyricsPanel.hidden=false;
+    if(lyricsBody&&hasText)lyricsBody.hidden=false;
+    if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded',String(hasText&&lyricsBody&&!lyricsBody.hidden));
+  }
+  function cyclePaneMode(){
+    applyPaneMode(nextPaneMode(paneMode));
+    if(player?.classList.contains('is-minimized')){
+      player.classList.remove('is-minimized');
+      applyPaneMode(paneMode,{persist:false});
+    }
+  }
+  function setSearchQuery(query,{from=null}={}){
+    if(syncingSearch)return;
+    syncingSearch=true;
+    try{
+      const value=String(query||'');
+      if(searchInput&&from!=='page'&&searchInput.value!==value)searchInput.value=value;
+      if(playerSearchInput&&from!=='player'&&playerSearchInput.value!==value)playerSearchInput.value=value;
+      applySearchFilter(value);
+    }finally{
+      syncingSearch=false;
+    }
+  }
+  function setSearchBarCollapsed(collapsed){
+    if(!searchBar)return;
+    searchBar.classList.toggle('is-collapsed',!!collapsed);
+    if(searchExpand){
+      searchExpand.hidden=!collapsed;
+      searchExpand.setAttribute('aria-expanded',String(!collapsed));
+    }
+  }
+  function expandSearchBar(){
+    setSearchBarCollapsed(false);
+    try{searchInput?.focus({preventScroll:true})}catch{searchInput?.focus()}
+  }
+
+  window.CMDPlayerChrome={
+    STORAGE_KEY:PANE_STORAGE,
+    MODES:PANE_MODES.slice(),
+    HINT_CAP:HINT_VISIBLE_CAP,
+    nextMode:nextPaneMode,
+    defaultMode:defaultPaneMode,
+    modeMeta:MODE_META
+  };
+
   const buildCycle=()=>{
     cycleNumber+=1;
     const guard=window.CMDContentIntensity?.readPolicy?.({intent:activeIntent})||{};
@@ -437,36 +582,50 @@
     if(!lyricsPanel)return;
     const text=resolveLyrics(track);
     const suno=resolveSunoUrl(track);
-    if(!text){
-      lyricsPanel.hidden=true;
-      if(lyricsBody){lyricsBody.innerHTML='';lyricsBody.hidden=true;}
-      if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded','false');
-      if(lyricsSuno){lyricsSuno.hidden=true;lyricsSuno.removeAttribute('href');}
-      return;
-    }
-    lyricsPanel.hidden=false;
-    if(lyricsBody){
-      lyricsBody.innerHTML=formatLyricsHtml(text);
-      lyricsBody.hidden=true;
-    }
-    if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded','false');
     if(lyricsSuno){
       if(suno){
         lyricsSuno.hidden=false;
         lyricsSuno.href=suno;
-        lyricsSuno.textContent='Lyrics on Suno ↗';
+        lyricsSuno.textContent=sunoLinkLabel(!!text);
       }else{
         lyricsSuno.hidden=true;
         lyricsSuno.removeAttribute('href');
       }
     }
+    if(!text){
+      if(lyricsBody){lyricsBody.innerHTML='';lyricsBody.hidden=true;}
+      if(lyricsEmpty)lyricsEmpty.hidden=false;
+      if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded','false');
+      // In Lyrics mode keep the panel visible with empty state; otherwise hide.
+      lyricsPanel.hidden=paneMode!=='lyrics';
+      return;
+    }
+    if(lyricsEmpty)lyricsEmpty.hidden=true;
+    if(lyricsBody){
+      lyricsBody.innerHTML=formatLyricsHtml(text);
+      // Lyrics mode shows body prominently; otherwise keep collapsed until toggled.
+      lyricsBody.hidden=paneMode!=='lyrics';
+    }
+    if(lyricsToggle)lyricsToggle.setAttribute('aria-expanded',String(paneMode==='lyrics'));
+    lyricsPanel.hidden=paneMode!=='lyrics';
   }
 
   lyricsToggle?.addEventListener('click',()=>{
-    if(!lyricsBody||lyricsPanel?.hidden)return;
+    if(!lyricsBody)return;
+    if(paneMode!=='lyrics'){
+      applyPaneMode('lyrics');
+      return;
+    }
     const open=lyricsBody.hidden;
     lyricsBody.hidden=!open;
+    if(lyricsEmpty&&!lyricsEmpty.hidden){/* empty state stays */}
     lyricsToggle.setAttribute('aria-expanded',String(open));
+  });
+
+  paneCycleBtn?.addEventListener('click',event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    cyclePaneMode();
   });
 
   function loadTrack(track,autoplay=true){
@@ -488,6 +647,7 @@
     bar.style.width='0%';
     player.hidden=false;
     document.body.classList.add('catalog-player-open');
+    applyPaneMode(paneMode,{persist:false});
     updateSongLink();
     setActiveCard(lastSongId);
     syncTasteButtons();
@@ -615,31 +775,113 @@
     }
   }
 
+  function onHintClick(event){
+    const more=event.target.closest('[data-more-hints]');
+    if(more){
+      setHintsExpanded(true);
+      return;
+    }
+    const chip=event.target.closest('[data-hint]');
+    if(!chip)return;
+    setSearchQuery(chip.dataset.hint||'');
+    if(paneMode!=='search'&&searchInput){
+      try{searchInput.focus({preventScroll:true})}catch{searchInput.focus()}
+    }else if(playerSearchInput){
+      try{playerSearchInput.focus({preventScroll:true})}catch{playerSearchInput.focus()}
+    }
+  }
+
   function mountSearch(){
-    if(!searchInput)return;
-    const hints=window.CMDCatalogSearch?.buildHints?.(songs,intents)||[];
+    if(!searchInput&&!playerSearchInput)return;
+    searchHintsAll=window.CMDCatalogSearch?.buildHints?.(songs,intents)||[];
     if(searchDatalist){
-      searchDatalist.innerHTML=hints.map(hint=>`<option value="${safe(hint)}"></option>`).join('');
+      searchDatalist.innerHTML=searchHintsAll.map(hint=>`<option value="${safe(hint)}"></option>`).join('');
     }
-    if(searchHints){
-      const chips=hints.slice(0,14);
-      searchHints.innerHTML=chips.map(hint=>`<button type="button" class="catalog-hint" data-hint="${safe(hint)}">${safe(hint)}</button>`).join('');
-      searchHints.addEventListener('click',event=>{
-        const chip=event.target.closest('[data-hint]');
-        if(!chip)return;
-        searchInput.value=chip.dataset.hint||'';
-        applySearchFilter(searchInput.value);
-        searchInput.focus();
-      });
-    }
-    searchInput.addEventListener('input',()=>applySearchFilter(searchInput.value));
+    setHintsExpanded(false);
+    searchHints?.addEventListener('click',onHintClick);
+    playerSearchHints?.addEventListener('click',onHintClick);
+    searchInput?.addEventListener('input',()=>setSearchQuery(searchInput.value,{from:'page'}));
+    playerSearchInput?.addEventListener('input',()=>setSearchQuery(playerSearchInput.value,{from:'player'}));
     document.getElementById('catalogSearchClear')?.addEventListener('click',()=>{
-      searchInput.value='';
-      applySearchFilter('');
-      searchInput.focus();
+      setSearchQuery('');
+      searchInput?.focus();
     });
+    document.getElementById('catalogPlayerSearchClear')?.addEventListener('click',()=>{
+      setSearchQuery('');
+      playerSearchInput?.focus();
+    });
+    searchExpand?.addEventListener('click',()=>expandSearchBar());
+
+    // Collapse page search after scrolling past it
+    if(searchBar&&'IntersectionObserver' in window){
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.target!==searchBar)return;
+          // Once the bar leaves the top of the viewport, collapse to a slim chip
+          if(!entry.isIntersecting&&entry.boundingClientRect.top<0){
+            setSearchBarCollapsed(true);
+          }
+        });
+      },{root:null,threshold:0,rootMargin:'-8px 0px 0px 0px'});
+      io.observe(searchBar);
+    }else if(searchBar){
+      let lastY=window.scrollY||0;
+      window.addEventListener('scroll',()=>{
+        const y=window.scrollY||0;
+        const rect=searchBar.getBoundingClientRect();
+        if(y>lastY+4&&rect.bottom<12)setSearchBarCollapsed(true);
+        lastY=y;
+      },{passive:true});
+    }
   }
   mountSearch();
+
+  // Mini player: scroll down minimizes; scroll up restores. Ignore horizontal / player taps.
+  (function mountPlayerScrollChrome(){
+    if(!player)return;
+    let lastY=window.scrollY||0;
+    const THRESH=10;
+    player.addEventListener('pointerdown',()=>{playerPointerDown=true},{passive:true});
+    player.addEventListener('pointerup',()=>{playerPointerDown=false},{passive:true});
+    player.addEventListener('pointercancel',()=>{playerPointerDown=false},{passive:true});
+    window.addEventListener('scroll',()=>{
+      if(player.hidden||playerPointerDown)return;
+      const y=window.scrollY||0;
+      const dy=y-lastY;
+      lastY=y;
+      if(Math.abs(dy)<THRESH)return;
+      if(dy>0){
+        if(!player.classList.contains('is-minimized')){
+          player.classList.add('is-minimized');
+          if(playerPane)playerPane.hidden=true;
+        }
+      }else{
+        if(player.classList.contains('is-minimized')){
+          player.classList.remove('is-minimized');
+          applyPaneMode(paneMode,{persist:false});
+        }
+      }
+    },{passive:true});
+    // Ignore primarily-horizontal touch moves used for scrub / swipe-nav
+    let touchStartX=0,touchStartY=0;
+    window.addEventListener('touchstart',e=>{
+      const t=e.changedTouches?.[0];
+      if(!t)return;
+      touchStartX=t.clientX;touchStartY=t.clientY;
+    },{passive:true});
+    window.addEventListener('touchmove',e=>{
+      const t=e.changedTouches?.[0];
+      if(!t)return;
+      const dx=Math.abs(t.clientX-touchStartX);
+      const dy=Math.abs(t.clientY-touchStartY);
+      if(dx>dy&&dx>8)playerPointerDown=true; // treat as horizontal gesture briefly
+    },{passive:true});
+    window.addEventListener('touchend',()=>{window.setTimeout(()=>{playerPointerDown=false},50)},{passive:true});
+  })();
+
+  // Restore / choose initial pane mode
+  paneMode=readStoredPaneMode()||defaultPaneMode();
+  applyPaneMode(paneMode,{persist:false});
 
   audio.addEventListener('play',()=>{
     play.textContent='❚❚';
