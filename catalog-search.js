@@ -23,6 +23,9 @@
       song.variants.forEach(v=>{parts.push(v?.id,v?.label)});
     }
     if(Array.isArray(song.aliases))parts.push(...song.aliases);
+    const lyricEntry=window.CMD_SONG_LYRICS?.[song.id];
+    if(lyricEntry?.search)parts.push(lyricEntry.search);
+    if(lyricEntry?.snippet)parts.push(lyricEntry.snippet);
     return normalize(parts.filter(Boolean).join(' '));
   }
 
@@ -68,6 +71,20 @@
       push(song.project);
     });
     tokenizeCatalog(songs).slice(0,60).forEach(push);
+    let lyricHintCount=0;
+    const LYRIC_HINT_CAP=18;
+    (songs||[]).forEach(song=>{
+      if(lyricHintCount>=LYRIC_HINT_CAP)return;
+      const snippet=window.CMD_SONG_LYRICS?.[song.id]?.snippet;
+      if(!snippet)return;
+      const text=String(snippet).replace(/\s+/g,' ').trim();
+      if(text.length<12||text.length>72)return;
+      // Skip generic section labels / title-only echoes
+      if(/^(verse|chorus|bridge|intro|tags|title)\b/i.test(text))return;
+      const before=hints.length;
+      push(text);
+      if(hints.length>before)lyricHintCount+=1;
+    });
     return hints.slice(0,120);
   }
 

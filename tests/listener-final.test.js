@@ -47,6 +47,7 @@ test('music page attaches swipe to cover / player-inner and loads listener scrip
   assert.ok(html.includes('/listener-taste.js'));
   assert.ok(html.includes('/data/taste-clusters.js'));
   assert.ok(html.includes('/catalog-search.js'));
+  assert.ok(html.includes('/data/song-lyrics.js'));
   assert.ok(html.includes('/data/lineages.js'));
   assert.ok(html.includes('/music/lineages.js'));
   assert.ok(html.includes('/music/taste-rail.js'));
