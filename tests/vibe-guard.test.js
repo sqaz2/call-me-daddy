@@ -189,7 +189,7 @@ test('music page loads vibe-guard script and toggle copy',()=>{
   const html=read('music/index.html');
   assert.match(html,/content-intensity\.js\?v=20260905-vibe-guard/);
   assert.match(html,/catalog-cycle\.js\?v=20260905-vibe-guard/);
-  assert.match(html,/music\.js\?v=20260905-lyrics-ui/);
+  assert.match(html,/music\.js\?v=20260905-lyrics-fix/);
   const music=read('music/music.js');
   assert.match(music,/Include the heavy stuff/);
   assert.match(music,/Keep it lighter/);

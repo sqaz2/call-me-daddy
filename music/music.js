@@ -481,6 +481,7 @@
     status.textContent=autoplay?statusText('Loading'):statusText('Ready');
     refreshTrackWhy(track);
     renderWhy(track);
+    renderPlayerLyrics(track);
     cover.src=track.cover||'';
     cover.alt=`${track.title} cover`;
     cover.onerror=()=>{cover.removeAttribute('src');cover.alt='';};
