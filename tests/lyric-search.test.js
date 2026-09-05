@@ -16,8 +16,8 @@ function loadScripts(files){
 
 test('music page loads song lyrics before catalog search',()=>{
   const html=read('music/index.html');
-  assert.ok(html.includes('/data/song-lyrics.js?v=20260905-lyrics-ui'));
-  assert.ok(html.includes('/catalog-search.js?v=20260905-lyrics-ui'));
+  assert.ok(html.includes('/data/song-lyrics.js?v=20260905-lyrics-map2'));
+  assert.ok(html.includes('/catalog-search.js?v=20260905-lyrics-map2'));
   const lyricsIdx=html.indexOf('/data/song-lyrics.js');
   const searchIdx=html.indexOf('/catalog-search.js');
   assert.ok(lyricsIdx>=0&&searchIdx>lyricsIdx,'lyrics script must precede catalog-search');
