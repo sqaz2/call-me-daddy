@@ -96,13 +96,32 @@
     return Number.isFinite(year)?Date.UTC(year,month-1,1):0;
   }
 
-  function tasteMultiplier(songId){
+  function tasteMultiplier(songId,variantId){
     try{
       if(window.CMDListenerTaste?.weightMultiplier){
-        return window.CMDListenerTaste.weightMultiplier(songId);
+        return window.CMDListenerTaste.weightMultiplier(songId,variantId);
       }
     }catch{}
     return 1;
+  }
+
+  function variantIsKilled(songId,variantId){
+    try{
+      if(window.CMDListenerTaste?.isKilled){
+        return !!window.CMDListenerTaste.isKilled(songId,variantId);
+      }
+    }catch{}
+    return false;
+  }
+
+  function livingVariants(song){
+    return variants(song).filter(variant=>!variantIsKilled(song.id,variant.id||''));
+  }
+
+  function songFullyKilled(song){
+    const list=variants(song);
+    if(!list.length)return true;
+    return livingVariants(song).length===0;
   }
 
   function weightFor(song,{intent,selected,lastSongId,history,newestTimestamp,rng}){
@@ -168,12 +187,21 @@
   }
 
   function selectVariant(song,{seed,cycleNumber,forcedVariantId=''}){
-    const list=variants(song);
+    const all=variants(song);
+    const list=livingVariants(song);
     if(!list.length)return null;
     let index=(hash(`${seed}|${song.id}`)+Math.max(0,cycleNumber-1))%list.length;
     if(forcedVariantId){
-      const forcedIndex=list.findIndex(variant=>String(variant.id||'')===forcedVariantId);
-      if(forcedIndex>=0)index=forcedIndex;
+      const forcedLiving=list.findIndex(variant=>String(variant.id||'')===forcedVariantId);
+      if(forcedLiving>=0){
+        index=forcedLiving;
+      }else{
+        // Forced variant killed — fall through to a living version when possible.
+        const forcedAll=all.findIndex(variant=>String(variant.id||'')===forcedVariantId);
+        if(forcedAll>=0&&!variantIsKilled(song.id,all[forcedAll].id||'')){
+          /* unreachable when living filter works */
+        }
+      }
     }
     const variant=list[index];
     return {
@@ -182,7 +210,7 @@
       cover:variant.cover||song.cover||'',
       variantId:variant.id||String(index),
       variantLabel:variant.label||song.kind||'Version',
-      variantCount:list.length,
+      variantCount:all.length,
       songId:song.id
     };
   }
@@ -194,10 +222,11 @@
   function explainTrack(track,{intent,history,newestTimestamp,index}){
     const why=[];
     const songId=track.songId||track.id;
+    const variantId=track.variantId||'';
     const fit=Math.max(0,Math.min(100,Number(profiles[songId]?.[intent])||50));
     const tasteApi=window.CMDListenerTaste||null;
     const taste=(()=>{
-      try{return tasteApi?.get?.(songId)||null}catch{return null}
+      try{return tasteApi?.get?.(songId,variantId)||null}catch{return null}
     })();
     const cluster=(()=>{
       try{return window.CMDTasteClusters?.clusterFor?.(songId)||null}catch{return null}
@@ -205,7 +234,7 @@
     const clusterWhy=(()=>{
       try{
         if(window.CMDTasteClusters?.explainClusterWhy){
-          return window.CMDTasteClusters.explainClusterWhy(songId,tasteApi,intent)||[];
+          return window.CMDTasteClusters.explainClusterWhy(songId,tasteApi,intent,variantId)||[];
         }
       }catch{}
       return [];
@@ -227,11 +256,12 @@
     if(historyIndex<0)why.push('new to you');
     else if(historyIndex>=6)why.push('back after a while');
 
-    if(taste==='like')why.push('you liked this');
+    if(taste==='killed')why.push('Second skip — parked this version');
+    else if(taste==='like')why.push('you liked this');
     clusterWhy.forEach(reason=>{
       if(reason&&!why.includes(reason))why.push(reason);
     });
-    if(cluster&&!clusterWhy.length&&taste!=='dislike'){
+    if(cluster&&!clusterWhy.length&&taste!=='dislike'&&taste!=='killed'){
       /* surface lane when taste has not spoken yet */
     }
     if(index>0&&index%5===0)why.push('variety break');
@@ -250,7 +280,7 @@
     const seed=cleanSeed(options.seed)||createSeed();
     const cycleNumber=Math.max(1,Number(options.cycleNumber)||1);
     const excluded=new Set(options.excludeIds||[]);
-    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&variants(song).length);
+    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&variants(song).length&&!songFullyKilled(song));
     const rng=randomFrom(`${seed}|${intent}|${cycleNumber}`);
     const history=options.ignoreHistory?[]:readHistory();
     const newestTimestamp=Math.max(0,...playable.map(timestamp));
@@ -295,6 +325,7 @@
   window.CMDCatalogCycle={
     build,
     variants,
+    livingVariants,
     count,
     remember,
     readHistory,

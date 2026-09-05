@@ -289,12 +289,16 @@
     if(href)songLink.href=href;
   }
 
+  function currentVariantId(){
+    return current?.variantId||'';
+  }
+
   function syncTasteButtons(){
-    const taste=window.CMDListenerTaste?.get?.(lastSongId)||null;
+    const taste=window.CMDListenerTaste?.get?.(lastSongId,currentVariantId())||null;
     likeBtn?.classList.toggle('is-active',taste==='like');
-    dislikeBtn?.classList.toggle('is-active',taste==='dislike');
+    dislikeBtn?.classList.toggle('is-active',taste==='dislike'||taste==='killed');
     if(likeBtn)likeBtn.setAttribute('aria-pressed',String(taste==='like'));
-    if(dislikeBtn)dislikeBtn.setAttribute('aria-pressed',String(taste==='dislike'));
+    if(dislikeBtn)dislikeBtn.setAttribute('aria-pressed',String(taste==='dislike'||taste==='killed'));
   }
 
   function renderClusterChip(track){
@@ -307,15 +311,17 @@
   function refreshTrackWhy(track){
     if(!track)return track;
     const songId=track.songId||track.id;
+    const variantId=track.variantId||'';
     const cluster=window.CMDTasteClusters?.clusterFor?.(songId)||null;
-    const clusterWhy=window.CMDTasteClusters?.explainClusterWhy?.(songId,window.CMDListenerTaste,activeIntent)||[];
+    const clusterWhy=window.CMDTasteClusters?.explainClusterWhy?.(songId,window.CMDListenerTaste,activeIntent,variantId)||[];
     const why=[];
-    const taste=window.CMDListenerTaste?.get?.(songId)||null;
-    if(taste==='like')why.push('you liked this');
+    const taste=window.CMDListenerTaste?.get?.(songId,variantId)||null;
+    if(taste==='killed')why.push('Second skip — parked this version');
+    else if(taste==='like')why.push('you liked this');
     clusterWhy.forEach(reason=>{if(reason&&!why.includes(reason))why.push(reason)});
     (Array.isArray(track.why)?track.why:[]).forEach(reason=>{
       if(!reason||why.includes(reason))return;
-      if(reason==='you liked this')return;
+      if(reason==='you liked this'||reason==='Second skip — parked this version')return;
       why.push(reason);
     });
     if(!why.length)why.push('controlled chaos');
@@ -429,7 +435,7 @@
 
   likeBtn?.addEventListener('click',()=>{
     if(!lastSongId)return;
-    window.CMDListenerTaste?.like?.(lastSongId);
+    window.CMDListenerTaste?.like?.(lastSongId,currentVariantId());
     syncTasteButtons();
     if(current){
       refreshTrackWhy(current);
@@ -439,8 +445,11 @@
   });
   dislikeBtn?.addEventListener('click',()=>{
     if(!lastSongId)return;
-    window.CMDListenerTaste?.dislike?.(lastSongId);
+    const result=window.CMDListenerTaste?.dislike?.(lastSongId,currentVariantId());
     syncTasteButtons();
+    if(result==='killed'&&status){
+      status.textContent=statusText('Parked this version');
+    }
     window.CMDTasteRail?.refresh?.();
     nextTrack();
   });
