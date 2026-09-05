@@ -15,6 +15,8 @@ jobs:
           node-version: 22
       - name: JavaScript syntax
         run: |
+          node --check scripts/sync-releases.mjs
+          node --check scripts/audit-media.mjs
           node --check data/songs.js
           node --check data/briefing.js
           node --check data/radio-intents.js
@@ -27,6 +29,7 @@ jobs:
           node --check catalog-cycle.js
           node --check playlist-radio.js
           node --check continuous-playback.js
+          node --check universal-player.js
           node --check persistent-site-browser.js
           node --check home-briefing.js
           node --check placeholder-art.js
@@ -47,7 +50,12 @@ jobs:
           node --check funhouse-meltdown/player.js
           node --check archive/2019-heartbreak-rehearsals/player.js
           node --check updates/updates.js
+          node --check twas-the-tism-mlord/player.js
           node --check worker/index.mjs
+      - name: Release manifest synchronization
+        run: node scripts/sync-releases.mjs --check
+      - name: Media size safety
+        run: node --test tests/media-audit.test.mjs
       - name: Radio engine tests
         run: node --test tests/radio-cycle.test.js
       - name: August 29 upload tests
@@ -74,7 +82,11 @@ jobs:
         run: node --test tests/playlist-continuity.test.js
       - name: Background playback recovery tests
         run: node --test tests/continuous-playback.test.js
+      - name: Universal player tests
+        run: node --test tests/universal-player.test.js
       - name: Public feed tests
         run: node --test tests/site-feed.test.js
+      - name: Release workflow tests
+        run: node --test tests/release-workflow.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs

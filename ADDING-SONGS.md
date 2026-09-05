@@ -1,6 +1,10 @@
 # Adding songs to Call Me Daddy
 
-The main catalog lives at `/music/` and is generated from `/data/songs.js`.
+## Current workflow
+
+For every release dated September 2, 2026 or later, use [RELEASE-WORKFLOW.md](RELEASE-WORKFLOW.md). Create one record in `content/releases/` and run `node scripts/sync-releases.mjs`; do not hand-edit the generated blocks in `data/songs.js`, `data/briefing.js`, `data/radio-intents.js` or `sitemap.xml`.
+
+The instructions below document the older catalog entries and special collections that predate the manifest workflow.
 
 ## Keep special projects separate
 

@@ -2,7 +2,30 @@ window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
   updated: "2026-09-02T07:05:00-06:00",
   entries: [
-    {id:"release-twas-the-tism-mlord",published:"2026-09-02T07:05:00-06:00",type:"New release · final edit",title:"’Twas the Tism, M’Lord",summary:"The medieval meme song is live in its shorter final form: multiple Suno cuts narrowed into dark R&B and dubstep, then the weak stretches were cut out and the ending was rebuilt with micro-stutters and a full glitch-out.",href:"/twas-the-tism-mlord/",sharePath:"/twas-the-tism-mlord/",cta:"Open the song page",featured:true,featuredOrder:0.5,cover:"/media/songs/2026/09/twas-the-tism-mlord/cover.jpg",cardLines:["’TWAS THE TISM","M’LORD"],cardTag:"Medieval meme · dark R&B / dubstep",cardSummary:"The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",badge:"New today"},
+    // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-twas-the-tism-mlord",
+      "published": "2026-09-02T07:05:00-06:00",
+      "type": "New release · final edit",
+      "songId": "twas-the-tism-mlord",
+      "title": "’Twas the Tism, M’Lord",
+      "summary": "The medieval meme song is live in its shorter final form: multiple Suno cuts narrowed into dark R&B and dubstep, then the weak stretches were cut out and the ending was rebuilt with micro-stutters and a full glitch-out.",
+      "href": "/twas-the-tism-mlord/",
+      "sharePath": "/updates/release-twas-the-tism-mlord/",
+      "cta": "Open the song page",
+      "featured": true,
+      "cover": "/media/songs/2026/09/twas-the-tism-mlord/cover.jpg",
+      "cardLines": [
+        "’TWAS THE TISM",
+        "M’LORD"
+      ],
+      "cardTag": "Medieval meme · dark R&B / dubstep",
+      "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
+      "badge": "Final release",
+      "intent": "laugh",
+      "featuredOrder": 0.5
+    },
+    // RELEASE-MANIFEST:UPDATES:END
     {id:"release-where-the-teeth-are-kept",published:"2026-08-25T07:06:00-06:00",type:"New release",songId:"where-the-teeth-are-kept",featured:true,featuredOrder:1,cardLines:["WHERE THE TEETH","ARE KEPT"],cardTag:"Google Gemini · adult fairytale",cardSummary:"A seductive adult reimagining of Little Red Riding Hood, with the danger left in the woods instead of sanding it down.",badge:"Made with Gemini"},
     {id:"release-one-million-dollars",published:"2026-08-25T07:05:00-06:00",type:"Satire",songId:"one-million-dollars",featured:true,featuredOrder:2,cardLines:["ONE MILLION","DOLLARS"],cardTag:"Dr. Evil energy · dubstep satire",cardSummary:"Villain math, inflation-proof confidence and one extremely dramatic amount of money.",badge:"Satirical dubstep"},
     {id:"release-where-the-bad-girls-at",published:"2026-08-25T07:04:00-06:00",type:"Two-version release",songId:"where-the-bad-girls-at",featured:true,featuredOrder:3,cardLines:["WHERE THE BAD","GIRLS AT?"],cardTag:"Female chant ↔ male vocal",cardSummary:"Concrete Heels aims the chant at the early-20s club lane; the male-vocal version turns the same song into something that lands differently.",badge:"2 perspectives"},

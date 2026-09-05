@@ -11,7 +11,7 @@
   const reveal=()=>{dock.hidden=false;document.body.classList.add('pick-player-open');window.CMDPersistentSite?.refreshClearance?.()};
   const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;if(copyLabel)copyLabel.textContent=activeIndex===0?'MusicSubject · remastered':'Play the site';if(copyTitle)copyTitle.textContent=track.title;songLink.hidden=!(activeIndex>0&&track.experience);if(!songLink.hidden)songLink.href=track.experience;status.textContent=state.reason==='ready'?'Ready':'Loading next…';if(state.reason==='restore')reveal()};
   const controller=window.CMDContinuousPlayback.create({
-    id:'pick-endless-player',audio,tracks:[self],localCount:1,excludeIds:[self.id],lastSongId:self.id,route:'/id-pick-you-first/',
+    id:'pick-endless-player',audio,tracks:[self],localCount:1,excludeIds:[self.id],lastSongId:self.id,route:'/id-pick-you-first/',replacePlayer:dock,
     onTrack:paint,
     onTime:(time,total)=>{if(total)bar.style.width=`${Math.min(100,time/total*100)}%`},
     onPlayState:playing=>{if(playing)reveal();play.textContent=playing?'❚❚':'▶';play.setAttribute('aria-label',playing?'Pause':'Play');status.textContent=playing?'Playing':(!audio.ended?'Paused':status.textContent);setTriggerState(playing)},

@@ -101,7 +101,7 @@ test('catalog search matches titles projects and intent-like tokens',()=>{
 });
 
 test('lineage song IDs resolve against the merged catalog',()=>{
-  const files=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','data/2026-08-29-uploads.js','data/2026-09-02-uploads.js','data/lineages.js'];
+  const files=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','data/2026-08-29-uploads.js','data/lineages.js'];
   const {window}=loadScripts(files);
   assert.ok(Array.isArray(window.CMD_LINEAGES));
   assert.ok(window.CMD_LINEAGES.length>=5);

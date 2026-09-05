@@ -19,6 +19,7 @@
     excludeIds:[chosen.id,earlier.id],
     lastSongId:earlier.id,
     route:'/power-pulse-uprising/',
+    replacePlayer:player,
     onTrack:paint,
     onTime:sync,
     onReady:()=>sync(),

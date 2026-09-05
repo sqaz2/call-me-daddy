@@ -258,6 +258,28 @@
   text-transform: uppercase;
 }
 
+.release-story-state {
+  position: absolute;
+  z-index: 3;
+  top: 20px;
+  left: 20px;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 999px;
+  background: rgba(8, 8, 8, .68);
+  backdrop-filter: blur(12px);
+  color: #e0dbd2;
+  font-size: .64rem;
+  font-weight: 850;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.release-story-state.is-coming {
+  border-color: rgba(215, 178, 102, .42);
+  color: #e3c27e;
+}
+
 @media (max-width: 1040px) {
   .release-grid { grid-template-columns: 1fr 1fr; }
   .release-card.funhouse img { object-position: 50% 44%; }
