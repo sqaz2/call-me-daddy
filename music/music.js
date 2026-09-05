@@ -353,6 +353,21 @@
   prev?.addEventListener('click',previous);
   next?.addEventListener('click',nextTrack);
 
+  window.CMDSwipeNav?.attach({
+    target:player,
+    onPrev:previous,
+    onNext:nextTrack,
+    ignore:'.tactile-scrubber-shell, .tactile-scrubber, [data-no-swipe], button, a, #catalogProgress'
+  });
+  if(grid){
+    window.CMDSwipeNav?.attach({
+      target:grid,
+      onPrev:previous,
+      onNext:()=>{ if(current) nextTrack(); else nextTrack(); },
+      ignore:'button, a, input'
+    });
+  }
+
   audio.addEventListener('play',()=>{
     play.textContent='❚❚';
     play.setAttribute('aria-label','Pause');
