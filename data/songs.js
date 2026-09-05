@@ -25,7 +25,7 @@ window.CMD_SONGS = [
     project: 'I’d Pick You First',
     description: 'A ridiculous “would you still love me if…” relationship test becomes a gross punchline and, somehow, an actually sincere love song.',
     audio: '/media/songs/2026/08/id-pick-you-first/audio.mp3',
-    cover: '',
+    cover: '/media/songs/2026/08/id-pick-you-first/cover.jpg',
     video: '/media/songs/2026/08/id-pick-you-first/background.mp4',
     catalogVideo: true,
     experience: '/id-pick-you-first/',

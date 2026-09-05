@@ -11,8 +11,8 @@
       description:'A medieval meme turned into dark cinematic R&B and dubstep, then tightened with micro-stutters before the shorter final edit glitches itself apart.',
       lineage:'Meme seed → multiple Suno cuts → chosen dark R&B/dubstep direction → shortened final arrangement → surgical micro-stutter edits → continuous glitch-out final.',
       aliases:['Twas the Tism M’Lord'],
-      audio:'/Twas_the_Tism_full_glitch_tweakout_final.mp3',
-      cover:'/28475.jpeg',
+      audio:'/media/songs/2026/09/twas-the-tism-mlord/audio.mp3',
+      cover:'/media/songs/2026/09/twas-the-tism-mlord/cover.jpg',
       experience:'/twas-the-tism-mlord/',
       shareUrl:'/twas-the-tism-mlord/',
       kind:'dark R&B / dubstep · final glitch edit',
@@ -20,7 +20,7 @@
         {
           id:'final-glitch-edit',
           label:'Final Glitch Edit',
-          audio:'/Twas_the_Tism_full_glitch_tweakout_final.mp3'
+          audio:'/media/songs/2026/09/twas-the-tism-mlord/audio.mp3'
         }
       ]
     }
@@ -49,7 +49,7 @@
       cta:'Open the song page',
       featured:true,
       featuredOrder:.5,
-      cover:'/28475.jpeg',
+      cover:'/media/songs/2026/09/twas-the-tism-mlord/cover.jpg',
       cardLines:['’TWAS THE TISM','M’LORD'],
       cardTag:'Medieval meme · dark R&B / dubstep',
       cardSummary:'The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.',
@@ -84,7 +84,7 @@
 
       const audio=document.getElementById('songAudio');
       if(!audio||!window.CMDContinuousPlayback)return;
-      const self={id:'twas-the-tism-mlord',songId:'twas-the-tism-mlord',title:'’Twas the Tism, M’Lord',artist:'MusicSubject × Call Me Daddy',project:'’Twas the Tism, M’Lord',audio:'/Twas_the_Tism_full_glitch_tweakout_final.mp3',cover:'/28475.jpeg',experience:'/twas-the-tism-mlord/'};
+      const self={id:'twas-the-tism-mlord',songId:'twas-the-tism-mlord',title:'’Twas the Tism, M’Lord',artist:'MusicSubject × Call Me Daddy',project:'’Twas the Tism, M’Lord',audio:'/media/songs/2026/09/twas-the-tism-mlord/audio.mp3',cover:'/media/songs/2026/09/twas-the-tism-mlord/cover.jpg',experience:'/twas-the-tism-mlord/'};
       const player=document.getElementById('tismPlayer');
       const mini=player?.querySelector('.tism-mini');
       const copy=player?.querySelector('.tism-player-copy');
