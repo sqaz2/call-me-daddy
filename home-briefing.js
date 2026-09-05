@@ -201,10 +201,14 @@
 
     const featured = entries
       .filter(entry => entry.featured)
-      .sort((a, b) => (Number(a.featuredOrder) || 999) - (Number(b.featuredOrder) || 999));
+      .sort((a, b) => {
+        const byDate = dateScore(b.published) - dateScore(a.published);
+        return byDate || (Number(a.featuredOrder) || 999) - (Number(b.featuredOrder) || 999);
+      });
     const releaseGrid = document.querySelector('.release-grid');
     if (releaseGrid && featured.length) {
-      releaseGrid.innerHTML = featured.map(entry => {
+      const homepageFeatured = featured.slice(0, 8);
+      releaseGrid.innerHTML = homepageFeatured.map(entry => {
         const song = entry.song;
         const className = escapeHtml(entry.cardClass || '');
         const titleLines = Array.isArray(entry.cardLines) && entry.cardLines.length ? entry.cardLines : [entry.title];
@@ -218,10 +222,13 @@
               ? `<img src="${escapeHtml(cover)}" alt="${escapeHtml(entry.title)}" loading="lazy" decoding="async" onerror="this.style.display='none'">`
               : '';
         const meta = [prettyDate(entry.published), song?.artist || entry.type].filter(Boolean).join(' · ');
+        const storyReady = Boolean(song?.experience);
+        const storyStatus = song ? (storyReady ? 'Story ready' : 'Story coming soon') : 'Site update';
         return `
-          <a class="release-card ${className}" href="${escapeHtml(entry.href)}" aria-label="Open ${escapeHtml(entry.title)}">
+          <a class="release-card ${className}" href="${escapeHtml(entry.href)}" aria-label="${storyReady ? 'Open' : 'Play'} ${escapeHtml(entry.title)}${song && !storyReady ? '; story coming soon' : ''}">
             ${media}
             <span class="release-card-shade"></span>
+            <span class="release-story-state${song && !storyReady ? ' is-coming' : ''}">${escapeHtml(storyStatus)}</span>
             <span class="release-tag">${escapeHtml(entry.cardTag || entry.type)}</span>
             <span class="release-card-copy">
               <small>${escapeHtml(meta)}</small>

@@ -18,6 +18,7 @@
     excludeIds:[self.id],
     lastSongId:self.id,
     route:'/i-wont-let-the-wifi-go/',
+    replacePlayer:player,
     onTrack:paint,
     onTime:sync,
     onReady:()=>sync(),

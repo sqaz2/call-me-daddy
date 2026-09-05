@@ -15,7 +15,6 @@ const catalogFiles=[
   'data/2026-08-26-uploads.js',
   'data/2026-08-27-uploads.js',
   'data/2026-08-29-uploads.js',
-  'data/2026-09-02-uploads.js',
   'data/taste-clusters.js',
   'listener-taste.js',
   'catalog-cycle.js'

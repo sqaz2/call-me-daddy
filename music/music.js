@@ -1294,6 +1294,11 @@
   });
   audio.addEventListener('timeupdate',()=>{
     if(audio.duration)bar.style.width=`${(audio.currentTime/audio.duration)*100}%`;
+    const remaining=Number.isFinite(audio.duration)?audio.duration-audio.currentTime:Infinity;
+    if(current&&!audio.paused&&remaining>0&&remaining<=5){
+      const upcoming=cycle[cycleIndex+1];
+      status.textContent=`Up next in ${Math.max(1,Math.ceil(remaining))} · ${upcoming?.title||'a new route'}`;
+    }
     if('mediaSession' in navigator&&audio.duration&&Number.isFinite(audio.duration)){
       try{navigator.mediaSession.setPositionState({duration:audio.duration,playbackRate:audio.playbackRate,position:Math.min(audio.currentTime,audio.duration)})}catch{}
     }

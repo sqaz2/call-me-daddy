@@ -232,3 +232,10 @@ test('keyboard dock uses visualViewport + scroll hysteresis',()=>{
   const html=read('music/index.html');
   assert.ok(html.includes('?v=20260905-search-play'));
 });
+
+test('player previews the next song for five seconds without delaying handoff',()=>{
+  const js=read('music/music.js');
+  assert.ok(js.includes('remaining<=5'));
+  assert.ok(js.includes('Up next in'));
+  assert.ok(js.includes("audio.addEventListener('ended',()=>{bar.style.width='100%';nextTrack();})"));
+});

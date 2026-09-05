@@ -40,6 +40,7 @@
     controller=window.CMDContinuousPlayback.create({
       id:'heavy-collection-player',
       audio,
+      replacePlayer:player,
       tracks:queue,
       localCount:queue.length,
       loopLocal:true,

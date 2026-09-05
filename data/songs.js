@@ -1,4 +1,32 @@
 window.CMD_SONGS = [
+  // RELEASE-MANIFEST:SONGS:START
+  {
+    "id": "twas-the-tism-mlord",
+    "title": "’Twas the Tism, M’Lord",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-02",
+    "project": "’Twas the Tism, M’Lord",
+    "description": "A medieval meme turned into dark cinematic R&B and dubstep, then tightened with micro-stutters before the shorter final edit glitches itself apart.",
+    "lineage": "Meme seed → multiple Suno cuts → chosen dark R&B/dubstep direction → shortened final arrangement → surgical micro-stutter edits → continuous glitch-out final.",
+    "aliases": [
+      "Twas the Tism M’Lord"
+    ],
+    "audio": "/media/songs/2026/09/twas-the-tism-mlord/audio.mp3",
+    "cover": "/media/songs/2026/09/twas-the-tism-mlord/cover.jpg",
+    "experience": "/twas-the-tism-mlord/",
+    "shareUrl": "/twas-the-tism-mlord/",
+    "kind": "dark R&B / dubstep · final glitch edit",
+    "variants": [
+      {
+        "id": "final-glitch-edit",
+        "label": "Final Glitch Edit",
+        "audio": "/media/songs/2026/09/twas-the-tism-mlord/audio.mp3"
+      }
+    ]
+  },
+  // RELEASE-MANIFEST:SONGS:END
   {
     id: 'armando',
     title: 'Armando — Earlier Mix',

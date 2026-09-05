@@ -42,6 +42,7 @@
   const controller=window.CMDContinuousPlayback.create({
     id:'heartbreak-rehearsals-endless-player',
     audio,
+    replacePlayer:player,
     tracks,
     localCount:tracks.length,
     intent:'old-files',

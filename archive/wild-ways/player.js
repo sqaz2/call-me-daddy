@@ -44,6 +44,7 @@
   const controller=window.CMDContinuousPlayback.create({
     id:'wild-ways-endless-player',
     audio,
+    replacePlayer:player,
     tracks,
     localCount:tracks.length,
     intent:'old-files',

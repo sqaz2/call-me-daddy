@@ -82,6 +82,25 @@ test('a background pause recovers when the document resumes',async()=>{
   assert.equal(controller.getState().wantsPlayback,true);
 });
 
+test('the prepared song is announced during the five-second Up Next window',()=>{
+  const env=environment();
+  const audio=new FakeAudio('/first.mp3');
+  const events=[];
+  env.window.CMDContinuousPlayback.subscribe(event=>events.push(event));
+  env.window.CMDContinuousPlayback.create({
+    id:'release-player',
+    audio,
+    tracks:[{id:'first',title:'First',audio:'/first.mp3'}],
+    radio:{next(){return {id:'second',title:'Second',audio:'/second.mp3'}}}
+  });
+  audio.currentTime=176;
+  audio.emit('timeupdate');
+  const event=events.at(-1);
+  assert.equal(event.type,'time');
+  assert.equal(event.state.nextTrack.title,'Second');
+  assert.equal(event.state.secondsRemaining,4);
+});
+
 test('a deliberate visible pause stays paused',()=>{
   const env=environment();
   const audio=new FakeAudio('/first.mp3');
