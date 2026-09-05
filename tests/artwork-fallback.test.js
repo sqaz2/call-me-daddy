@@ -22,10 +22,12 @@ test('fallback artwork fills only missing song covers',()=>{
   assert.equal(sandbox.window.CMD_BRIEFING.entries[1].cover,'/media/real-cover.jpg');
 });
 
-test('site entry points use the shared fallback preview',()=>{
+test('site entry points use a real share preview and load artwork fallback',()=>{
+  const placeholder='https://callmedaddy.musicsubject.com/media/site/image-coming-soon.jpg';
   ['index.html','music/index.html','updates/index.html'].forEach(file=>{
     const html=read(file);
-    assert.ok(html.includes('https://callmedaddy.musicsubject.com/media/site/image-coming-soon.jpg'),`${file} should use the site fallback preview`);
+    assert.ok(html.includes('property="og:image"'),`${file} should declare og:image`);
+    assert.equal(html.includes(`content="${placeholder}"`),false,`${file} should not use the placeholder as OG/Twitter preview`);
     assert.ok(html.includes('/data/artwork-fallback.js?v=20260829-1'),`${file} should load the artwork fallback before rendering`);
   });
 });
