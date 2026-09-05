@@ -64,7 +64,23 @@ test('listener taste persists likes and dislikes',()=>{
   assert.equal(window.CMDListenerTaste.weightMultiplier('armando'),1.85);
   assert.equal(window.CMDListenerTaste.dislike('armando'),'dislike');
   assert.equal(window.CMDListenerTaste.weightMultiplier('armando'),0.08);
-  assert.ok(storage.get('cmd-listener-taste-v1').includes('armando'));
+  assert.ok(storage.get('cmd-listener-taste-v2').includes('armando'));
+  assert.equal(window.CMDListenerTaste.dislike('armando'),'killed');
+  assert.equal(window.CMDListenerTaste.isKilled('armando'),true);
+  assert.ok(window.CMDListenerTaste.weightMultiplier('armando')<=0.0000011);
+});
+
+test('variant dislike keys stay isolated and exploration tapers',()=>{
+  const {window}=loadScripts(['data/taste-clusters.js','listener-taste.js']);
+  const taste=window.CMDListenerTaste;
+  assert.equal(taste.tasteKey('wild-ways','edm-remix'),'wild-ways::edm-remix');
+  assert.equal(taste.tasteKey('wild-ways','main'),'wild-ways');
+  assert.equal(taste.dislike('wild-ways','ai-voice-version'),'dislike');
+  assert.equal(taste.get('wild-ways','edm-remix'),null);
+  assert.equal(taste.get('wild-ways','ai-voice-version'),'dislike');
+  assert.ok(taste.explorationFactor()>0.8);
+  for(let i=0;i<12;i+=1)taste.like('song-signal-'+i);
+  assert.ok(taste.explorationFactor()<=0.25);
 });
 
 test('catalog search matches titles projects and intent-like tokens',()=>{

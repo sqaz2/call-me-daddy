@@ -142,7 +142,103 @@ test('music page wires taste cluster assets',()=>{
   assert.ok(html.includes('/music/taste-rail.js'));
   assert.ok(html.includes('id="tasteRail"'));
   assert.ok(html.includes('id="playerCluster"'));
-  assert.ok(html.includes('20260905-clusters'));
+  assert.ok(html.includes('20260905-taste-refine')||html.includes('20260905-clusters'));
   assert.ok(fs.existsSync(path.join(root,'music/taste-rail.js')));
   assert.ok(fs.existsSync(path.join(root,'data/taste-clusters.js')));
+});
+
+test('first dislike soft; second dislike kills that version only',()=>{
+  const {window}=loadScripts(['data/taste-clusters.js','listener-taste.js']);
+  const taste=window.CMDListenerTaste;
+  const clusters=window.CMDTasteClusters;
+
+  assert.equal(taste.dislike('will-to-live','2026'),'dislike');
+  assert.equal(taste.get('will-to-live','2026'),'dislike');
+  assert.equal(taste.isKilled('will-to-live','2026'),false);
+  const soft=clusters.applyTasteToWeight({songId:'will-to-live',variantId:'2026',baseWeight:1,taste});
+  assert.ok(soft<0.1,'first dislike soft-crushes own weight, got '+soft);
+  assert.ok(soft>0.001,'first dislike is not hard-kill');
+
+  assert.equal(taste.dislike('will-to-live','2026'),'killed');
+  assert.equal(taste.get('will-to-live','2026'),'killed');
+  assert.equal(taste.isKilled('will-to-live','2026'),true);
+  const killed=clusters.applyTasteToWeight({songId:'will-to-live',variantId:'2026',baseWeight:1,taste});
+  assert.ok(killed<=0.0000011,'killed weight near zero, got '+killed);
+
+  // Sibling version of same song stays playable / not killed
+  assert.equal(taste.isKilled('will-to-live','too-many-things'),false);
+  const sibling=clusters.applyTasteToWeight({songId:'will-to-live',variantId:'too-many-things',baseWeight:1,taste,explorationFactor:1});
+  assert.ok(sibling>0.05,'sibling variant must not inherit kill, got '+sibling);
+});
+
+test('dislike wild-ways variant A does not kill variant B weights',()=>{
+  const {window}=loadScripts(['data/taste-clusters.js','listener-taste.js']);
+  const taste=window.CMDListenerTaste;
+  const clusters=window.CMDTasteClusters;
+
+  taste.dislike('wild-ways','ai-voice-version');
+  taste.dislike('wild-ways','ai-voice-version'); // kill A
+  assert.equal(taste.isKilled('wild-ways','ai-voice-version'),true);
+  assert.equal(taste.isKilled('wild-ways','edm-remix'),false);
+  const b=clusters.applyTasteToWeight({songId:'wild-ways',variantId:'edm-remix',baseWeight:1,taste,explorationFactor:1});
+  assert.ok(b>0.05,'variant B must remain weighted, got '+b);
+  const a=clusters.applyTasteToWeight({songId:'wild-ways',variantId:'ai-voice-version',baseWeight:1,taste});
+  assert.ok(a<=0.0000011,'variant A killed');
+});
+
+test('explorationFactor high makes melancholy peer crush stronger than after many signals',()=>{
+  const {window}=loadScripts(['data/taste-clusters.js','listener-taste.js']);
+  const taste=window.CMDListenerTaste;
+  const clusters=window.CMDTasteClusters;
+
+  taste.dislike('will-to-live','2026');
+  const early=clusters.applyTasteToWeight({
+    songId:'locked-in-these-walls',baseWeight:1,taste,explorationFactor:1
+  });
+  const late=clusters.applyTasteToWeight({
+    songId:'locked-in-these-walls',baseWeight:1,taste,explorationFactor:0.2
+  });
+  assert.ok(early<0.2,'early exploration should crush hard, got '+early);
+  assert.ok(late>early,'later exploration should ease crush, early='+early+' late='+late);
+  assert.ok(late>0.5,'late crush should be mild, got '+late);
+  assert.ok(taste.explorationFactor()>=0.2);
+  assert.ok(taste.explorationFactor()<=1);
+});
+
+test('catalog cycle skips killed variants and parks why copy',()=>{
+  const {window}=loadScripts(catalogFiles);
+  const taste=window.CMDListenerTaste;
+  taste.dislike('will-to-live','2026');
+  taste.dislike('will-to-live','2026');
+  const cycle=window.CMDCatalogCycle.build(window.CMD_SONGS,{
+    intent:'heavy',seed:'kill-variant',cycleNumber:1,ignoreHistory:true
+  });
+  const tracks=cycle.filter(track=>track.songId==='will-to-live');
+  tracks.forEach(track=>{
+    assert.notEqual(track.variantId,'2026','killed 2026 must be skipped');
+  });
+});
+
+
+test('storage migrates v1 song map into v2 records',()=>{
+  const storage=new Map();
+  storage.set('cmd-listener-taste-v1',JSON.stringify({armando:'like','will-to-live':'dislike'}));
+  const window={};
+  const context=vm.createContext({
+    window,
+    localStorage:{
+      getItem:key=>storage.has(key)?storage.get(key):null,
+      setItem:(key,value)=>storage.set(key,String(value)),
+      removeItem:key=>storage.delete(key)
+    },
+    console
+  });
+  vm.runInContext(read('listener-taste.js'),context,{filename:'listener-taste.js'});
+  assert.equal(window.CMDListenerTaste.get('armando'),'like');
+  assert.equal(window.CMDListenerTaste.get('will-to-live'),'dislike');
+  assert.ok(storage.get('cmd-listener-taste-v2'));
+  const parsed=JSON.parse(storage.get('cmd-listener-taste-v2'));
+  assert.equal(parsed.armando.status,'like');
+  assert.equal(parsed['will-to-live'].status,'dislike');
+  assert.equal(parsed['will-to-live'].dislikes,1);
 });

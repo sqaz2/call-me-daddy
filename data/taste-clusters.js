@@ -111,19 +111,98 @@
     return clustersFor(songId)[0]||null;
   }
 
-  function readTasteValue(taste,songId){
+  function normalizeStatus(value){
+    if(value==='like'||value==='dislike'||value==='killed')return value;
+    if(value&&typeof value==='object'&&!Array.isArray(value)){
+      const status=value.status;
+      return status==='like'||status==='dislike'||status==='killed'?status:null;
+    }
+    return null;
+  }
+
+  function readTasteValue(taste,songId,variantId){
     if(!songId)return null;
     try{
       if(taste&&typeof taste.get==='function'){
-        const value=taste.get(songId);
-        return value==='like'||value==='dislike'?value:null;
+        if(arguments.length>=3||variantId!==undefined){
+          return normalizeStatus(taste.get(songId,variantId));
+        }
+        return normalizeStatus(taste.get(songId));
       }
     }catch{}
     if(taste&&typeof taste==='object'&&!Array.isArray(taste)){
-      const value=taste[songId];
-      return value==='like'||value==='dislike'?value:null;
+      if(variantId){
+        const key=songId+'::'+variantId;
+        const keyed=normalizeStatus(taste[key]);
+        if(keyed)return keyed;
+      }
+      return normalizeStatus(taste[songId]);
     }
     return null;
+  }
+
+  /** Song-level signal for cluster bleed: any version liked/disliked/killed counts. */
+  function readSongSignal(taste,songId){
+    if(!songId)return null;
+    try{
+      if(taste&&typeof taste.songLevelSignal==='function'){
+        return normalizeStatus(taste.songLevelSignal(songId));
+      }
+    }catch{}
+    try{
+      if(taste&&typeof taste.readMap==='function'){
+        const map=taste.readMap()||{};
+        let liked=false,disliked=false,killed=false;
+        const consider=value=>{
+          const status=normalizeStatus(value);
+          if(status==='like')liked=true;
+          if(status==='dislike')disliked=true;
+          if(status==='killed')killed=true;
+        };
+        consider(map[songId]);
+        const prefix=songId+'::';
+        Object.keys(map).forEach(key=>{if(key.startsWith(prefix))consider(map[key])});
+        if(killed)return 'killed';
+        if(disliked)return 'dislike';
+        if(liked)return 'like';
+        return null;
+      }
+    }catch{}
+    return readTasteValue(taste,songId);
+  }
+
+  function isKilledKey(taste,songId,variantId){
+    try{
+      if(taste&&typeof taste.isKilled==='function'){
+        return !!taste.isKilled(songId,variantId);
+      }
+    }catch{}
+    return readTasteValue(taste,songId,variantId)==='killed';
+  }
+
+  function resolveExplorationFactor(taste,explorationFactor){
+    const raw=Number(explorationFactor);
+    if(Number.isFinite(raw))return Math.max(0.2,Math.min(1,raw));
+    try{
+      if(taste&&typeof taste.explorationFactor==='function'){
+        const value=Number(taste.explorationFactor());
+        if(Number.isFinite(value))return Math.max(0.2,Math.min(1,value));
+      }
+    }catch{}
+    try{
+      if(window.CMDListenerTaste?.explorationFactor){
+        const value=Number(window.CMDListenerTaste.explorationFactor());
+        if(Number.isFinite(value))return Math.max(0.2,Math.min(1,value));
+      }
+    }catch{}
+    return 1;
+  }
+
+  function scaleBleed(multiplier,explorationFactor){
+    const factor=Math.max(0.2,Math.min(1,Number(explorationFactor)||1));
+    const base=Math.max(0.000001,Number(multiplier)||1);
+    // Early (factor≈1): full cluster crush. Later (≈0.2): ease toward 1.
+    return 1-(1-base)*factor;
   }
 
   function tasteMap(taste){
@@ -139,14 +218,21 @@
 
   /**
    * Apply per-song + cluster bleed/boost to a base radio weight.
-   * Dislike: full → strong cluster crush; none → song only; light → mild cluster penalty.
-   * Like: boosts cluster peers even for comedy (downvote isolation only).
+   * Killed keys → near-zero. Dislike bleed scales by explorationFactor (strong early, weak later).
+   * Peer signals are song-level (any version counts) but never mark sibling variants killed.
+   * Comedy bleed none unchanged.
    */
-  function applyTasteToWeight({songId,baseWeight=1,taste}={}){
+  function applyTasteToWeight({songId,variantId,baseWeight=1,taste,explorationFactor}={}){
     let weight=Math.max(0,Number(baseWeight)||0)||1;
-    const own=readTasteValue(taste,songId);
+    const factor=resolveExplorationFactor(taste,explorationFactor);
+    if(isKilledKey(taste,songId,variantId))return 0.000001;
+
+    const own=readTasteValue(taste,songId,variantId);
+    const ownSong=readSongSignal(taste,songId);
     if(own==='like')weight*=1.85;
     else if(own==='dislike')weight*=0.08;
+    // Peer bleed uses song-level signals (ownSong). Own crush stays key-specific so
+    // disliking variant A never hard-crushes sibling B or the whole song card.
 
     const clusters=clustersFor(songId);
     clusters.forEach(cluster=>{
@@ -154,17 +240,19 @@
       let likedPeer=false;
       let dislikedPeer=false;
       peers.forEach(id=>{
-        const value=readTasteValue(taste,id);
+        const value=readSongSignal(taste,id);
         if(value==='like')likedPeer=true;
-        if(value==='dislike')dislikedPeer=true;
+        if(value==='dislike'||value==='killed')dislikedPeer=true;
       });
 
-      if(dislikedPeer&&own!=='dislike'){
-        if(cluster.bleed==='full')weight*=0.12;
-        else if(cluster.bleed==='light')weight*=0.55;
+      const ownIsDown=own==='dislike'||own==='killed';
+      if(dislikedPeer&&!ownIsDown){
+        if(cluster.bleed==='full')weight*=scaleBleed(0.12,factor);
+        else if(cluster.bleed==='light')weight*=scaleBleed(0.55,factor);
+        // comedy / bleed none: no cluster crush
       }
 
-      if(likedPeer&&own!=='dislike'){
+      if(likedPeer&&!ownIsDown){
         if(cluster.bleed==='full')weight*=1.4;
         else if(cluster.bleed==='light')weight*=1.22;
         else weight*=1.15;
@@ -179,34 +267,45 @@
     let likes=0;
     let dislikes=0;
     ids.forEach(id=>{
-      const value=readTasteValue(taste,id);
+      const value=readSongSignal(taste,id);
       if(value==='like')likes+=1;
-      if(value==='dislike')dislikes+=1;
+      if(value==='dislike'||value==='killed')dislikes+=1;
     });
     return {likes,dislikes};
   }
 
-  function explainClusterWhy(songId,taste,intent){
+  function explainClusterWhy(songId,taste,intent,variantId){
     const reasons=[];
     const clusters=clustersFor(songId);
     if(!clusters.length)return reasons;
     const primary=clusters[0];
-    const own=readTasteValue(taste,songId);
+    const own=readTasteValue(taste,songId,variantId);
+    const ownSong=readSongSignal(taste,songId);
+    const factor=resolveExplorationFactor(taste);
+    const ownDown=own==='dislike'||own==='killed'||ownSong==='dislike'||ownSong==='killed';
+
+    if(own==='killed'){
+      reasons.push('Second skip — parked this version');
+    }
 
     for(const cluster of clusters){
       const {likes,dislikes}=clusterDislikeState(cluster,taste);
-      if(likes>0&&own!=='dislike'){
+      if(likes>0&&!ownDown){
         reasons.push(`Because you liked ${cluster.label}`);
         break;
       }
     }
 
-    if(own!=='dislike'){
+    if(!ownDown){
       for(const cluster of clusters){
         const {dislikes}=clusterDislikeState(cluster,taste);
         if(!dislikes)continue;
         if(cluster.bleed==='full'){
-          reasons.push(`In ${cluster.label} — you skipped this lane`);
+          if(factor>=0.75){
+            reasons.push(`Early taste: easing ${cluster.label}`);
+          }else{
+            reasons.push(`In ${cluster.label} — you skipped this lane`);
+          }
           break;
         }
         if(cluster.bleed==='none'){
@@ -216,7 +315,7 @@
       }
     }
 
-    if(!reasons.length&&primary&&own==='like'){
+    if(!reasons.length&&primary&&(own==='like'||ownSong==='like')){
       reasons.push(`Because you liked ${primary.label}`);
     }
 
@@ -231,9 +330,9 @@
     const clusters=clustersFor(songId);
     if(!clusters.length)return 0;
     let score=0;
-    const own=readTasteValue(taste,songId);
+    const own=readSongSignal(taste,songId);
     if(own==='like')score+=8;
-    if(own==='dislike')score-=20;
+    if(own==='dislike'||own==='killed')score-=20;
 
     clusters.forEach(cluster=>{
       const {likes,dislikes}=clusterDislikeState(cluster,taste);
@@ -246,12 +345,12 @@
   }
 
   function isSoftHidden(songId,taste){
-    const own=readTasteValue(taste,songId);
+    const own=readSongSignal(taste,songId);
     if(own==='like')return false;
-    if(own==='dislike')return true;
+    if(own==='dislike'||own==='killed')return true;
     return clustersFor(songId).some(cluster=>{
       if(cluster.bleed!=='full')return false;
-      return (cluster.songIds||[]).some(id=>id!==songId&&readTasteValue(taste,id)==='dislike');
+      return (cluster.songIds||[]).some(id=>id!==songId&&(readSongSignal(taste,id)==='dislike'||readSongSignal(taste,id)==='killed'));
     });
   }
 
@@ -281,6 +380,8 @@
     isSoftHidden,
     rankMostLikely,
     uncoveredSongIds,
-    tasteMap
+    tasteMap,
+    readSongSignal,
+    scaleBleed
   };
 })();
