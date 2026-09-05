@@ -20,7 +20,13 @@
       return;
     }
 
-    const ranked=clusters.rankMostLikely(songs,taste,12);
+    const intensity=window.CMDContentIntensity;
+    const ranked=(clusters.rankMostLikely(songs,taste,24)||[]).filter(song=>{
+      try{
+        if(intensity?.shouldSoftHideRaw?.(song.id,{intent:'surprise'}))return false;
+      }catch{}
+      return true;
+    }).slice(0,12);
     if(!ranked.length){
       mount.hidden=true;
       mount.innerHTML='';
@@ -31,7 +37,7 @@
     mount.innerHTML=`
       <div class="taste-rail-head">
         <div><div class="kicker">From your likes · this browser only</div><h2>MOST LIKELY FOR YOU.</h2></div>
-        <p>Ranked by cluster affinity — lanes you liked rise; full-bleed lanes you skipped soft-hide here (search still finds them).</p>
+        <p>Ranked by cluster affinity — lanes you liked rise; full-bleed lanes you skipped soft-hide here. The heaviest stuff stays out of this rail until you ask (search still finds everything).</p>
       </div>
       <div class="taste-rail-track" tabindex="0" aria-label="Most likely songs for you">
         ${ranked.map(song=>{

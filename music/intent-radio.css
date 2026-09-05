@@ -36,3 +36,50 @@
 @media(prefers-reduced-motion:reduce){
   .intent-choice{transition:none}
 }
+
+/* Vibe guard — keep the heavy lane opt-in */
+.vibe-guard{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:10px;
+  padding:14px 18px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  background:rgba(18,16,14,.88);
+}
+.vibe-guard-toggle{
+  flex:0 0 auto;
+  min-height:42px;
+  padding:0 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:#171513;
+  color:#f2efe8;
+  font:inherit;
+  font-weight:780;
+  font-size:.86rem;
+  cursor:pointer;
+  transition:background .18s ease,border-color .18s ease,color .18s ease;
+}
+.vibe-guard-toggle:hover,
+.vibe-guard-toggle:focus-visible{
+  border-color:rgba(255,255,255,.32);
+  outline:none;
+}
+.vibe-guard-toggle.is-active{
+  background:#e8e3d9;
+  border-color:#e8e3d9;
+  color:#090909;
+}
+.vibe-guard-note{
+  margin:0;
+  color:#9a948c;
+  font-size:.78rem;
+  line-height:1.4;
+}
+@media(max-width:620px){
+  .vibe-guard{flex-direction:column;align-items:stretch}
+  .vibe-guard-toggle{width:100%}
+}

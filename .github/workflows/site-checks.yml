@@ -34,6 +34,7 @@ jobs:
           node --check swipe-nav.js
           node --check listener-taste.js
           node --check data/taste-clusters.js
+          node --check data/content-intensity.js
           node --check catalog-search.js
           node --check data/lineages.js
           node --check music/taste-rail.js
@@ -58,6 +59,8 @@ jobs:
         run: node --test tests/listener-final.test.js
       - name: Taste cluster tests
         run: node --test tests/taste-clusters.test.js
+      - name: Vibe guard / intensity tests
+        run: node --test tests/vibe-guard.test.js
       - name: Four-track player handoff tests
         run: node --test tests/four-track-player.test.js
       - name: Concrete Under Evergreens player tests
