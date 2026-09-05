@@ -89,3 +89,97 @@
 @media(max-width:390px){
   .player-cluster{display:none}
 }
+
+/* On-site lyrics (catalog player + card disclosures) */
+.catalog-lyrics{
+  width:min(100%,var(--shell-max,1100px));
+  margin:0 auto 8px;
+  padding:0 16px;
+}
+.catalog-lyrics-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.catalog-lyrics-toggle{
+  min-height:34px;
+  padding:0 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(18,18,18,.92);
+  color:#f2f0e9;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.catalog-lyrics-toggle[aria-expanded="true"]{
+  border-color:rgba(255,255,255,.32);
+  background:rgba(242,240,233,.94);
+  color:#090909;
+}
+.catalog-lyrics-suno{
+  color:#c9c4bb;
+  font-size:.78rem;
+  font-weight:720;
+  text-decoration:none;
+}
+.catalog-lyrics-suno:hover{color:#f2f0e9;text-decoration:underline}
+.catalog-lyrics-body{
+  margin-top:10px;
+  max-height:min(42vh,360px);
+  overflow:auto;
+  padding:14px 16px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:rgba(10,10,10,.92);
+  color:#d8d4cc;
+  font-size:.92rem;
+  line-height:1.55;
+  -webkit-overflow-scrolling:touch;
+}
+.lyric-tag{
+  display:inline-block;
+  margin:.35em 0 .1em;
+  color:#8e8a84;
+  font-size:.72rem;
+  font-weight:780;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.song-lyrics-details{
+  margin-top:14px;
+  pointer-events:auto;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  background:rgba(8,8,8,.55);
+  backdrop-filter:blur(8px);
+}
+.song-lyrics-details>summary{
+  list-style:none;
+  cursor:pointer;
+  padding:10px 14px;
+  color:#f2f0e9;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.song-lyrics-details>summary::-webkit-details-marker{display:none}
+.song-lyrics-details[open]>summary{
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.song-lyrics-text{
+  max-height:220px;
+  overflow:auto;
+  padding:12px 14px 16px;
+  color:#d2cec6;
+  font-size:.86rem;
+  line-height:1.5;
+}
+@media(max-width:620px){
+  .catalog-lyrics{padding:0 11px}
+  .catalog-lyrics-body{max-height:min(36vh,280px);font-size:.86rem}
+}
