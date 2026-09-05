@@ -27,7 +27,14 @@
   const title=document.getElementById('playerTitle');
   const label=document.getElementById('playerLabel');
   const status=document.getElementById('playerStatus');
+  const whyLine=document.getElementById('playerWhy');
   const cover=document.getElementById('playerCover');
+  const likeBtn=document.getElementById('catalogLike');
+  const dislikeBtn=document.getElementById('catalogDislike');
+  const searchInput=document.getElementById('catalogSearch');
+  const searchHints=document.getElementById('catalogSearchHints');
+  const searchEmpty=document.getElementById('catalogSearchEmpty');
+  const searchDatalist=document.getElementById('catalogSearchList');
   const progress=document.getElementById('catalogProgress');
   const bar=document.getElementById('catalogProgressBar');
   const tactileMount=document.getElementById('catalogTactile');
@@ -281,6 +288,21 @@
     if(href)songLink.href=href;
   }
 
+  function syncTasteButtons(){
+    const taste=window.CMDListenerTaste?.get?.(lastSongId)||null;
+    likeBtn?.classList.toggle('is-active',taste==='like');
+    dislikeBtn?.classList.toggle('is-active',taste==='dislike');
+    if(likeBtn)likeBtn.setAttribute('aria-pressed',String(taste==='like'));
+    if(dislikeBtn)dislikeBtn.setAttribute('aria-pressed',String(taste==='dislike'));
+  }
+
+  function renderWhy(track){
+    if(!whyLine)return;
+    const text=track?.whyText||(Array.isArray(track?.why)&&track.why.length?`Why this song: ${track.why.slice(0,3).join(' · ')}.`:'');
+    whyLine.textContent=text||'';
+    whyLine.hidden=!text;
+  }
+
   function loadTrack(track,autoplay=true){
     if(!track?.audio)return;
     current=track;
@@ -291,6 +313,7 @@
     if(track.variantCount>1)parts.push(track.variantLabel);
     label.textContent=parts.filter(Boolean).join(' · ');
     status.textContent=autoplay?statusText('Loading'):statusText('Ready');
+    renderWhy(track);
     cover.src=track.cover||'';
     cover.alt=`${track.title} cover`;
     cover.onerror=()=>{cover.removeAttribute('src');cover.alt='';};
@@ -299,6 +322,7 @@
     document.body.classList.add('catalog-player-open');
     updateSongLink();
     setActiveCard(lastSongId);
+    syncTasteButtons();
     updateMediaSession();
 
     if(autoplay){
@@ -353,20 +377,84 @@
   prev?.addEventListener('click',previous);
   next?.addEventListener('click',nextTrack);
 
-  window.CMDSwipeNav?.attach({
-    target:player,
-    onPrev:previous,
-    onNext:nextTrack,
-    ignore:'.tactile-scrubber-shell, .tactile-scrubber, [data-no-swipe], button, a, #catalogProgress'
-  });
+  const swipeIgnore='.tactile-scrubber-shell, .tactile-scrubber, [data-no-swipe], button, a, input, textarea, select, #catalogProgress, .catalog-progress';
+  const swipeTargets=[cover,player?.querySelector('.catalog-player-inner'),player?.querySelector('.player-copy')].filter(Boolean);
+  if(window.CMDSwipeNav?.attachMany){
+    window.CMDSwipeNav.attachMany(swipeTargets,{onPrev:previous,onNext:nextTrack,threshold:40,ignore:swipeIgnore});
+  }else{
+    swipeTargets.forEach(target=>window.CMDSwipeNav?.attach({target,onPrev:previous,onNext:nextTrack,threshold:40,ignore:swipeIgnore}));
+  }
   if(grid){
     window.CMDSwipeNav?.attach({
       target:grid,
       onPrev:previous,
-      onNext:()=>{ if(current) nextTrack(); else nextTrack(); },
-      ignore:'button, a, input'
+      onNext:nextTrack,
+      threshold:40,
+      ignore:'button, a, input, textarea, select'
     });
   }
+
+  likeBtn?.addEventListener('click',()=>{
+    if(!lastSongId)return;
+    window.CMDListenerTaste?.like?.(lastSongId);
+    syncTasteButtons();
+    if(current){
+      current.why=['you liked this',...(Array.isArray(current.why)?current.why.filter(x=>x!=='you liked this'):[])];
+      current.whyText=`Why this song: ${current.why.slice(0,3).join(' · ')}.`;
+      renderWhy(current);
+    }
+  });
+  dislikeBtn?.addEventListener('click',()=>{
+    if(!lastSongId)return;
+    window.CMDListenerTaste?.dislike?.(lastSongId);
+    syncTasteButtons();
+    nextTrack();
+  });
+
+  function applySearchFilter(query){
+    const matcher=window.CMDCatalogSearch?.matchesSong;
+    let visible=0;
+    document.querySelectorAll('.song-card').forEach(card=>{
+      const song=songs.find(item=>item.id===card.dataset.song);
+      const ok=matcher?matcher(song,query):true;
+      card.hidden=!ok;
+      if(ok)visible+=1;
+    });
+    if(searchEmpty){
+      searchEmpty.hidden=visible>0;
+    }
+    if(count&&!query){
+      count.textContent=`${playableSongs.length} songs · ${totalVersions} playable versions · intention radio`;
+    }else if(count){
+      count.textContent=`${visible} match${visible===1?'':'es'} · ${query.trim()||'search'}`;
+    }
+  }
+
+  function mountSearch(){
+    if(!searchInput)return;
+    const hints=window.CMDCatalogSearch?.buildHints?.(songs,intents)||[];
+    if(searchDatalist){
+      searchDatalist.innerHTML=hints.map(hint=>`<option value="${safe(hint)}"></option>`).join('');
+    }
+    if(searchHints){
+      const chips=hints.slice(0,14);
+      searchHints.innerHTML=chips.map(hint=>`<button type="button" class="catalog-hint" data-hint="${safe(hint)}">${safe(hint)}</button>`).join('');
+      searchHints.addEventListener('click',event=>{
+        const chip=event.target.closest('[data-hint]');
+        if(!chip)return;
+        searchInput.value=chip.dataset.hint||'';
+        applySearchFilter(searchInput.value);
+        searchInput.focus();
+      });
+    }
+    searchInput.addEventListener('input',()=>applySearchFilter(searchInput.value));
+    document.getElementById('catalogSearchClear')?.addEventListener('click',()=>{
+      searchInput.value='';
+      applySearchFilter('');
+      searchInput.focus();
+    });
+  }
+  mountSearch();
 
   audio.addEventListener('play',()=>{
     play.textContent='❚❚';
@@ -428,4 +516,15 @@
 
   mountIntentionRadio();
   buildCycle();
+
+  window.CMDMusicCatalog={
+    selectSong,
+    playSongId(id){
+      const song=songs.find(item=>item.id===id);
+      if(song)selectSong(song);
+    },
+    getCurrent:()=>current,
+    next:nextTrack,
+    previous
+  };
 })();

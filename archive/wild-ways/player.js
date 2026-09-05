@@ -78,18 +78,32 @@
   play.addEventListener('click',()=>{player.hidden=false;controller.toggle()});
   previous.addEventListener('click',()=>controller.previous());
   next.addEventListener('click',()=>controller.next('manual-next'));
-  window.CMDSwipeNav?.attach({
-    target:player,
-    onPrev:()=>controller.previous(),
-    onNext:()=>controller.next('manual-next'),
-    ignore:'button, a, #archiveProgress, .tactile-scrubber-shell'
-  });
+  const swipeIgnore='button, a, #archiveProgress, .archive-progress, .tactile-scrubber-shell, .tactile-scrubber, [data-no-swipe]';
+  const copy=player.querySelector('.archive-player-copy');
+  const swipeTargets=[copy,player].filter(Boolean);
+  if(window.CMDSwipeNav?.attachMany){
+    window.CMDSwipeNav.attachMany(swipeTargets,{
+      onPrev:()=>controller.previous(),
+      onNext:()=>controller.next('manual-next'),
+      threshold:40,
+      ignore:swipeIgnore
+    });
+  }else{
+    swipeTargets.forEach(target=>window.CMDSwipeNav?.attach({
+      target,
+      onPrev:()=>controller.previous(),
+      onNext:()=>controller.next('manual-next'),
+      threshold:40,
+      ignore:swipeIgnore
+    }));
+  }
   const versions=document.querySelector('.wild-ways-versions');
   if(versions){
     window.CMDSwipeNav?.attach({
       target:versions,
       onPrev:()=>controller.previous(),
       onNext:()=>controller.next('manual-next'),
+      threshold:40,
       ignore:'button, a'
     });
   }
