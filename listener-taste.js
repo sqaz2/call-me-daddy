@@ -43,8 +43,18 @@
   function dislike(songId){return toggle(songId,'dislike')}
   function clear(songId){return set(songId,null)}
 
-  /** Multiplier for weighted radio scoring. */
+  /**
+   * Multiplier for weighted radio scoring.
+   * Uses taste clusters when available: full-bleed dislike crushes the lane;
+   * comedy (bleed none) isolates downvote to that song; likes boost the cluster.
+   */
   function weightMultiplier(songId){
+    const tasteApi={get,readMap};
+    try{
+      if(window.CMDTasteClusters?.applyTasteToWeight){
+        return window.CMDTasteClusters.applyTasteToWeight({songId,baseWeight:1,taste:tasteApi});
+      }
+    }catch{}
     const value=get(songId);
     if(value==='like')return 1.85;
     if(value==='dislike')return 0.08;
@@ -52,11 +62,13 @@
   }
 
   function likes(){
-    return Object.keys(readMap()).filter(id=>readMap()[id]==='like');
+    const map=readMap();
+    return Object.keys(map).filter(id=>map[id]==='like');
   }
 
   function dislikes(){
-    return Object.keys(readMap()).filter(id=>readMap()[id]==='dislike');
+    const map=readMap();
+    return Object.keys(map).filter(id=>map[id]==='dislike');
   }
 
   window.CMDListenerTaste={

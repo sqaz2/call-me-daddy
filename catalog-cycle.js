@@ -193,9 +193,22 @@
 
   function explainTrack(track,{intent,history,newestTimestamp,index}){
     const why=[];
-    const fit=Math.max(0,Math.min(100,Number(profiles[track.songId||track.id]?.[intent])||50));
+    const songId=track.songId||track.id;
+    const fit=Math.max(0,Math.min(100,Number(profiles[songId]?.[intent])||50));
+    const tasteApi=window.CMDListenerTaste||null;
     const taste=(()=>{
-      try{return window.CMDListenerTaste?.get?.(track.songId||track.id)||null}catch{return null}
+      try{return tasteApi?.get?.(songId)||null}catch{return null}
+    })();
+    const cluster=(()=>{
+      try{return window.CMDTasteClusters?.clusterFor?.(songId)||null}catch{return null}
+    })();
+    const clusterWhy=(()=>{
+      try{
+        if(window.CMDTasteClusters?.explainClusterWhy){
+          return window.CMDTasteClusters.explainClusterWhy(songId,tasteApi,intent)||[];
+        }
+      }catch{}
+      return [];
     })();
 
     if(track.radioSequence){
@@ -210,11 +223,17 @@
     if(ageDays<=45)why.push('recent drop');
     else if(ageDays>=900)why.push('deep catalog pull');
 
-    const historyIndex=history.indexOf(track.songId||track.id);
+    const historyIndex=history.indexOf(songId);
     if(historyIndex<0)why.push('new to you');
     else if(historyIndex>=6)why.push('back after a while');
 
     if(taste==='like')why.push('you liked this');
+    clusterWhy.forEach(reason=>{
+      if(reason&&!why.includes(reason))why.push(reason);
+    });
+    if(cluster&&!clusterWhy.length&&taste!=='dislike'){
+      /* surface lane when taste has not spoken yet */
+    }
     if(index>0&&index%5===0)why.push('variety break');
 
     if(!why.length)why.push('controlled chaos');
@@ -223,7 +242,7 @@
       ? `Why this song: ${why[0]}.`
       : `Why this song: ${why.slice(0,3).join(' · ')}.`;
 
-    return {why,whyText};
+    return {why,whyText,clusterId:cluster?.id||'',clusterLabel:cluster?.label||''};
   }
 
   function build(songs,options={}){
@@ -266,7 +285,9 @@
         radioCycle:cycleNumber,
         radioSequence:song.radioSequence||track.radioSequence||'',
         why:explained.why,
-        whyText:explained.whyText
+        whyText:explained.whyText,
+        clusterId:explained.clusterId||'',
+        clusterLabel:explained.clusterLabel||''
       };
     }).filter(Boolean);
   }

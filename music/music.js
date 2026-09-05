@@ -28,6 +28,7 @@
   const label=document.getElementById('playerLabel');
   const status=document.getElementById('playerStatus');
   const whyLine=document.getElementById('playerWhy');
+  const clusterChip=document.getElementById('playerCluster');
   const cover=document.getElementById('playerCover');
   const likeBtn=document.getElementById('catalogLike');
   const dislikeBtn=document.getElementById('catalogDislike');
@@ -296,11 +297,42 @@
     if(dislikeBtn)dislikeBtn.setAttribute('aria-pressed',String(taste==='dislike'));
   }
 
+  function renderClusterChip(track){
+    if(!clusterChip)return;
+    const label=track?.clusterLabel||window.CMDTasteClusters?.clusterFor?.(track?.songId||track?.id)?.label||'';
+    clusterChip.textContent=label||'';
+    clusterChip.hidden=!label;
+  }
+
+  function refreshTrackWhy(track){
+    if(!track)return track;
+    const songId=track.songId||track.id;
+    const cluster=window.CMDTasteClusters?.clusterFor?.(songId)||null;
+    const clusterWhy=window.CMDTasteClusters?.explainClusterWhy?.(songId,window.CMDListenerTaste,activeIntent)||[];
+    const why=[];
+    const taste=window.CMDListenerTaste?.get?.(songId)||null;
+    if(taste==='like')why.push('you liked this');
+    clusterWhy.forEach(reason=>{if(reason&&!why.includes(reason))why.push(reason)});
+    (Array.isArray(track.why)?track.why:[]).forEach(reason=>{
+      if(!reason||why.includes(reason))return;
+      if(reason==='you liked this')return;
+      why.push(reason);
+    });
+    if(!why.length)why.push('controlled chaos');
+    track.why=why;
+    track.whyText=why.length===1?`Why this song: ${why[0]}.`:`Why this song: ${why.slice(0,3).join(' · ')}.`;
+    track.clusterId=cluster?.id||track.clusterId||'';
+    track.clusterLabel=cluster?.label||track.clusterLabel||'';
+    return track;
+  }
+
   function renderWhy(track){
-    if(!whyLine)return;
-    const text=track?.whyText||(Array.isArray(track?.why)&&track.why.length?`Why this song: ${track.why.slice(0,3).join(' · ')}.`:'');
-    whyLine.textContent=text||'';
-    whyLine.hidden=!text;
+    if(whyLine){
+      const text=track?.whyText||(Array.isArray(track?.why)&&track.why.length?`Why this song: ${track.why.slice(0,3).join(' · ')}.`:'');
+      whyLine.textContent=text||'';
+      whyLine.hidden=!text;
+    }
+    renderClusterChip(track);
   }
 
   function loadTrack(track,autoplay=true){
@@ -313,6 +345,7 @@
     if(track.variantCount>1)parts.push(track.variantLabel);
     label.textContent=parts.filter(Boolean).join(' · ');
     status.textContent=autoplay?statusText('Loading'):statusText('Ready');
+    refreshTrackWhy(track);
     renderWhy(track);
     cover.src=track.cover||'';
     cover.alt=`${track.title} cover`;
@@ -399,15 +432,16 @@
     window.CMDListenerTaste?.like?.(lastSongId);
     syncTasteButtons();
     if(current){
-      current.why=['you liked this',...(Array.isArray(current.why)?current.why.filter(x=>x!=='you liked this'):[])];
-      current.whyText=`Why this song: ${current.why.slice(0,3).join(' · ')}.`;
+      refreshTrackWhy(current);
       renderWhy(current);
     }
+    window.CMDTasteRail?.refresh?.();
   });
   dislikeBtn?.addEventListener('click',()=>{
     if(!lastSongId)return;
     window.CMDListenerTaste?.dislike?.(lastSongId);
     syncTasteButtons();
+    window.CMDTasteRail?.refresh?.();
     nextTrack();
   });
 

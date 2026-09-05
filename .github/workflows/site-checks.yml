@@ -33,8 +33,10 @@ jobs:
           node --check music/music.js
           node --check swipe-nav.js
           node --check listener-taste.js
+          node --check data/taste-clusters.js
           node --check catalog-search.js
           node --check data/lineages.js
+          node --check music/taste-rail.js
           node --check home-listening.js
           node --check music/lineages.js
           node --check music/now-playing-share.js
@@ -54,6 +56,8 @@ jobs:
         run: node --test tests/swipe-nav.test.js
       - name: Listener final tests
         run: node --test tests/listener-final.test.js
+      - name: Taste cluster tests
+        run: node --test tests/taste-clusters.test.js
       - name: Four-track player handoff tests
         run: node --test tests/four-track-player.test.js
       - name: Concrete Under Evergreens player tests
