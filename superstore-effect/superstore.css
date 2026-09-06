@@ -96,3 +96,6 @@ body.ss-player-open{padding-bottom:116px}
 .ss-thin-clip{border:1px solid var(--ss-line);border-radius:18px;overflow:hidden;background:#000;max-height:160px}
 .ss-thin-video{display:block;width:100%;height:160px;object-fit:cover;object-position:center 20%}
 .ss-cover-play[hidden]{display:none!important}
+
+.ss-suno-link{margin:18px 0 0;font-size:.92rem}
+.ss-suno-link a{color:#8eb7ff;font-weight:700}
