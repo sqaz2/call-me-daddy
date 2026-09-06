@@ -186,3 +186,40 @@ test('navigation called inside the owner frame is delegated without changing its
   vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../persistent-site-browser.js'),'utf8'),child.context);
   const before=child.location.href;child.window.CMDPersistentSite.open('/next-song/');assert.equal(child.location.href,before);assert.deepEqual(top.navigations,['/next-song/']);
 });
+
+test('Concrete page Play delegates to the live shared session instead of claiming a second audio',()=>{
+  const env=environment();
+  const live=new Media('/media/songs/2026/08/concrete-under-evergreens/audio.mp3');
+  live.paused=false;
+  env.api.connect({id:'owner',media:live,track:{id:'concrete-under-evergreens',songId:'concrete-under-evergreens',title:'Concrete Under Evergreens',audio:live.src,cover:'/c.png',experience:'/concrete-under-evergreens/'}});
+  live.emit('play');
+  const ids={};for(const id of ['concretePlayer','concreteAudio','concretePlayerStatus','concretePlayerCover','concretePlayerTitle','concretePlayerLabel','concretePlay','concretePrev','concreteNext','concretePlayerShare','concreteProgress','concreteProgressBar'])ids[id]=id==='concreteAudio'?new Media():new Element();
+  env.document.getElementById=id=>ids[id];
+  const button=new Element('button');const coverPlay=new Element('span');coverPlay.className='concrete-cover-play';
+  env.document.querySelector=s=>s==='.concrete-cover-play'?coverPlay:s==='.concrete-cover-button'?button:null;
+  env.document.querySelectorAll=s=>s==='[data-concrete-play]'?[button]:[];
+  let creates=0;env.window.CMDContinuousPlayback={create:()=>{creates++;throw Error('must not create while shared owns this song')}};
+  env.location.href='https://example.test/concrete-under-evergreens/';env.location.pathname='/concrete-under-evergreens/';
+  env.window.setInterval=(fn)=>1;env.window.addEventListener=()=>{};env.context.setInterval=env.window.setInterval;env.context.clearInterval=()=>{};env.window.clearInterval=()=>{};env.context.addEventListener=()=>{};
+  vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../concrete-under-evergreens/player.js'),'utf8'),env.context);
+  assert.equal(creates,0);assert.equal(coverPlay.hidden,true);
+  button.emit('click');
+  assert.equal(creates,0);assert.equal(live.paused,true);assert.equal(ids.concreteAudio.paused,true);assert.equal(ids.concreteAudio.plays,0);
+});
+test('Superstore attaches to a live shared session without creating a competing controller',()=>{
+  const env=environment();
+  const live=new Media('/media/songs/2026/09/superstore-effect/audio.mp3');
+  live.paused=false;
+  env.api.connect({id:'owner',media:live,track:{id:'superstore-effect',songId:'superstore-effect',title:'the superstore effect',audio:live.src,cover:'/s.jpg',experience:'/superstore-effect/'}});
+  live.emit('play');
+  const ids={};for(const id of ['ssPlayer','ssAudio','ssPlayerStatus','ssPlayerCover','ssPlayerTitle','ssPlayerLabel','ssPlay','ssPrev','ssNext','ssPlayerShare','ssProgress','ssProgressBar'])ids[id]=id==='ssAudio'?new Media():new Element();
+  env.document.getElementById=id=>ids[id];const button=new Element('button');const coverPlay=new Element('span');
+  env.document.querySelector=s=>s==='.ss-cover-play'?coverPlay:s==='.ss-cover-button'?button:null;
+  env.document.querySelectorAll=s=>s==='[data-ss-play]'?[button]:[];
+  let creates=0;env.window.CMDContinuousPlayback={create:()=>{creates++;throw Error('must not create while shared owns this song')}};
+  env.location.href='https://example.test/superstore-effect/';env.location.pathname='/superstore-effect/';
+  env.window.setInterval=(fn)=>1;env.window.addEventListener=()=>{};env.context.setInterval=env.window.setInterval;env.context.clearInterval=()=>{};env.window.clearInterval=()=>{};env.context.addEventListener=()=>{};
+  vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../superstore-effect/player.js'),'utf8'),env.context);
+  assert.equal(creates,0);assert.equal(coverPlay.hidden,true);
+  button.emit('click');assert.equal(creates,0);assert.equal(live.paused,true);assert.equal(ids.ssAudio.plays,0);
+});
