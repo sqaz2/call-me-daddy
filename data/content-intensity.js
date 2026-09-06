@@ -54,7 +54,7 @@
     'youtube-W47ebCMfrBI':'light',
     'namaste-hamster':'light',
     'concrete-under-evergreens':'light',
-    'eighty-shopping-carts':'light',
+    'superstore-effect':'light',
     'anti-generative-ai-diss':'light',
     'one-million-dollars':'light',
     'where-the-bad-girls-at':'light',
