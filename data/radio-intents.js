@@ -123,6 +123,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "superstore-effect": {
+    "surprise": 98,
+    "laugh": 100,
+    "think": 72,
+    "level-up": 48,
+    "heavy": 24,
+    "old-files": 6
+  },
   "twas-the-tism-mlord": {
     "surprise": 100,
     "laugh": 94,
