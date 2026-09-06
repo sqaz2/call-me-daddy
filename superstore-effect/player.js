@@ -35,9 +35,11 @@
   let index=-1;
   let current=null;
 
+  let coverStarted=false;
   const syncCoverState=()=>{
     const localPlaying=index===0&&!audio.paused&&!audio.ended;
-    if(coverPlay)coverPlay.hidden=localPlaying;
+    if(localPlaying)coverStarted=true;
+    if(coverPlay)coverPlay.hidden=coverStarted||localPlaying;
     if(coverButton?.setAttribute)coverButton.setAttribute('aria-label',localPlaying?'Pause the superstore effect':'Play the superstore effect');
   };
   const media=track=>{
