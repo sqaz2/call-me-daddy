@@ -1,38 +1,32 @@
 (()=>{
-  if(document.createElement&&document.head?.appendChild){
-    const compactStyle=document.createElement('link');
-    compactStyle.rel='stylesheet';
-    compactStyle.href='/';
-    document.head.appendChild(compactStyle);
-  }
+    const playCoverSrc='/media/songs/2026/09/superstore-effect/cover.jpg';
+  const pageCover=document.querySelector('.ss-cover-button img');
+  if(pageCover){pageCover.src=playCoverSrc;pageCover.alt='the superstore effect — MusicSubject & Call Me Daddy';}
+  const heroVideo=document.querySelector('.ss-hero-video');
+  if(heroVideo)heroVideo.poster=playCoverSrc;
 
-  const playCoverSrc='/media/songs/2026/09/eighty-shopping-carts/cover.jpg';
-  const pageCover=document.querySelector('.carts-cover-button img');
-  if(pageCover){pageCover.src=playCoverSrc;pageCover.alt='Empty shopping cart corrals in a night parking lot';}
-  const heroVideo=document.querySelector('.carts-hero-bg');
-  
-  const player=document.getElementById('cartsPlayer');
-  const audio=document.getElementById('cartsAudio');
-  const cover=document.getElementById('cartsPlayerCover');
-  const label=document.getElementById('cartsPlayerLabel');
-  const title=document.getElementById('cartsPlayerTitle');
-  const status=document.getElementById('cartsPlayerStatus');
-  const play=document.getElementById('cartsPlay');
-  const previous=document.getElementById('cartsPrev');
-  const next=document.getElementById('cartsNext');
-  const share=document.getElementById('cartsPlayerShare');
-  const progress=document.getElementById('cartsProgress');
-  const bar=document.getElementById('cartsProgressBar');
-  const coverButton=document.querySelector('.carts-cover-button');
-  const coverPlay=document.querySelector('.carts-cover-play');
+  const player=document.getElementById('ssPlayer');
+  const audio=document.getElementById('ssAudio');
+  const cover=document.getElementById('ssPlayerCover');
+  const label=document.getElementById('ssPlayerLabel');
+  const title=document.getElementById('ssPlayerTitle');
+  const status=document.getElementById('ssPlayerStatus');
+  const play=document.getElementById('ssPlay');
+  const previous=document.getElementById('ssPrev');
+  const next=document.getElementById('ssNext');
+  const share=document.getElementById('ssPlayerShare');
+  const progress=document.getElementById('ssProgress');
+  const bar=document.getElementById('ssProgressBar');
+  const coverButton=document.querySelector('.ss-cover-button');
+  const coverPlay=document.querySelector('.ss-cover-play');
   if(!player||!audio)return;
 
   const fallback={
-    id:'eighty-shopping-carts',songId:'eighty-shopping-carts',variantId:'main',variantCount:1,
-    title:'Eighty Shopping Carts',artist:'Call Me Daddy',project:'Red Deer Civic Emergency',
-    audio:'/media/songs/2026/09/eighty-shopping-carts/audio.mp3',
+    id:'superstore-effect',songId:'superstore-effect',variantId:'main',variantCount:1,
+    title:'the superstore effect',artist:'Call Me Daddy',project:'Red Deer Civic Emergency',
+    audio:'/media/songs/2026/09/superstore-effect/audio.mp3',
     cover:playCoverSrc,
-    experience:'/eighty-shopping-carts/',radioIntent:'laugh'
+    experience:'/superstore-effect/',radioIntent:'laugh'
   };
   const catalogSong=(window.CMD_SONGS||[]).find(song=>song.id===fallback.id);
   const local={...fallback,...catalogSong,songId:fallback.id,variantId:'main',variantCount:1,cover:playCoverSrc,radioIntent:'laugh'};
@@ -44,7 +38,7 @@
   const syncCoverState=()=>{
     const localPlaying=index===0&&!audio.paused&&!audio.ended;
     if(coverPlay)coverPlay.hidden=localPlaying;
-    if(coverButton?.setAttribute)coverButton.setAttribute('aria-label',localPlaying?'Pause Eighty Shopping Carts':'Play Eighty Shopping Carts');
+    if(coverButton?.setAttribute)coverButton.setAttribute('aria-label',localPlaying?'Pause the superstore effect':'Play the superstore effect');
   };
   const media=track=>{
     if(!track||!('mediaSession' in navigator)||typeof MediaMetadata==='undefined')return;
@@ -69,7 +63,7 @@
     audio.src=track.audio;
     audio.load();
     player.hidden=false;
-    document.body.classList.add('carts-player-open');
+    document.body.classList.add('ss-player-open');
     window.CMDPersistentSite?.refreshClearance?.();
     if(autoplay)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue';syncCoverState()});
   };
