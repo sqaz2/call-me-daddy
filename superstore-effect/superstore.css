@@ -11,15 +11,17 @@ body.ss-page{background:var(--ss-bg);color:var(--ss-ink);overflow-x:clip}
 body.ss-player-open{padding-bottom:116px}
 .ss-topbar{background:rgba(5,12,22,.88);border-color:rgba(243,246,251,.08)}
 .ss-hero{position:relative;min-height:calc(100svh - 68px);display:flex;align-items:center;overflow:hidden;padding:68px 0 74px;background:#050c16}
-.ss-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:saturate(.85) contrast(1.05) brightness(.72);opacity:.7;pointer-events:none}
+.ss-hero-static:after{content:"";position:absolute;inset:0;z-index:0;background:url("/media/songs/2026/09/superstore-effect/cover.jpg") center 30%/cover no-repeat;filter:saturate(.85) contrast(1.05) brightness(.72);opacity:.35;pointer-events:none}
 .ss-hero:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(5,12,22,.96) 0%,rgba(5,12,22,.72) 48%,rgba(5,12,22,.28) 100%),linear-gradient(180deg,transparent 45%,#050c16 100%)}
-.ss-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .75fr;gap:clamp(28px,6vw,80px);align-items:center}
+.ss-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:clamp(28px,6vw,80px);align-items:center;max-width:760px}
 .ss-back{display:inline-flex;margin-bottom:28px;color:var(--ss-soft);font-size:.88rem}
 .ss-eyebrow,.ss-kicker{text-transform:uppercase;letter-spacing:.18em;font-weight:800;font-size:.7rem;color:#8eb7ff}
 .ss-hero h1{margin:16px 0 18px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(3.4rem,9.5vw,7.6rem);font-weight:500;line-height:.8;letter-spacing:-.07em;text-transform:lowercase}
 .ss-hero h1 span{display:block;color:transparent;-webkit-text-stroke:1px rgba(142,183,255,.65);font-style:italic;font-size:.78em}
 .ss-lede{max-width:640px;margin:0;color:#d5deea;font-size:clamp(1.05rem,2vw,1.28rem);line-height:1.6}
-.ss-play-hint{margin:14px 0 0;color:var(--ss-soft);font-size:.88rem}
+.ss-play-hint{margin:18px 0 0}
+.ss-play-cta{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 18px;border:1px solid var(--ss-line);border-radius:999px;background:rgba(243,246,251,.94);color:#07111c;font-weight:800;font-size:.92rem;cursor:pointer}
+.ss-play-cta:hover{background:#fff}
 .ss-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .ss-tags span{border:1px solid var(--ss-line);border-radius:999px;padding:8px 11px;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#e8eef8;background:rgba(0,0,0,.35)}
 .ss-cover-card{margin:0;padding:12px;border:1px solid var(--ss-line);background:rgba(8,18,32,.7);box-shadow:0 34px 100px rgba(0,0,0,.5);transform:rotate(-1.1deg)}
