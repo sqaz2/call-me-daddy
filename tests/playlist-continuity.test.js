@@ -32,7 +32,7 @@ test('every finite collection player hands its last local song into endless radi
     'cut-from-the-same-fabric/player.js':['CMDPlaylistRadio?.create',"playbackMode==='radio'",'loadRadio(true)'],
     'old-files-new-tools/player.js':['CMDPlaylistRadio?.create','nextTrack','loadRadio()'],
     'archive/continuous-tail.js':['CMDPlaylistRadio?.create',"audio.addEventListener('ended'",'loadRadio()'],
-    'concrete-under-evergreens/player.js':['CMDPlaylistRadio?.create','ensureNext','radio?.next()'],
+    'concrete-under-evergreens/player.js':['CMDContinuousPlayback.create','tracks:[local]','localCount:1'],
     'archive/wild-ways/player.js':['CMDContinuousPlayback.create','localCount:tracks.length','excludeIds:[song.id]']
   };
   for(const [file,markers] of Object.entries(players)){
@@ -120,8 +120,9 @@ test('already-endless players remain cyclic',()=>{
   assert.ok(read('sad-music/song.js').includes('loopLocal:true'));
   assert.ok(read('new-tools-trilogy.js').includes('if(radioMode){nextRadioTrack();return}'));
   const concrete=read('concrete-under-evergreens/player.js');
-  assert.ok(concrete.includes("audio.addEventListener('ended'"));
-  assert.ok(concrete.includes('advance()'));
+  assert.ok(concrete.includes('CMDContinuousPlayback.create'));
+  assert.ok(concrete.includes('tracks:[local]'));
+  assert.ok(concrete.includes('localCount:1'));
 });
 
 test('background-sensitive players use immediate transitions without a silent media file',()=>{
