@@ -1,0 +1,23 @@
+name: Playback synchronization
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  playback-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check playback scripts
+        run: |
+          node --check universal-player.js
+          node --check persistent-site-browser.js
+          node --check superstore-effect/player.js
+          node --check now-playing/player.js
+      - name: Verify source, dock, navigation and iframe ownership
+        run: node --test tests/playback-sync.test.js
