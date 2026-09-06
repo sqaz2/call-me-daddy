@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080a10">
+  <meta name="robots" content="noindex,follow">
+  <title>Now playing — MusicSubject × Call Me Daddy</title>
+  <link rel="stylesheet" href="/share.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#080a10;color:#f4f0e8;font:17px/1.6 system-ui,sans-serif;padding:24px 20px 180px}header,main{max-width:680px;margin:auto}nav{display:flex;gap:24px;margin:12px 0 36px}a{color:#e1c785}h1{font-size:clamp(30px,7vw,52px);line-height:1.12;margin:20px 0 8px}p{color:#b9bbc4}.art{display:block;width:min(100%,360px);padding:0;border:1px solid #343740;border-radius:18px;overflow:hidden;background:#151820;cursor:pointer}.art img{display:block;width:100%;max-height:52vh;object-fit:contain}.play{min-height:48px;padding:10px 28px;border:0;border-radius:30px;background:#f4f0e8;color:#080a10;font:700 17px system-ui;cursor:pointer}.story{margin-top:32px;padding-top:20px;border-top:1px solid #343740}small{letter-spacing:.08em}button:focus-visible,a:focus-visible{outline:2px solid #e1c785;outline-offset:5px}
+  </style>
+</head>
+<body>
+  <header><small>MUSICSUBJECT × CALL ME DADDY</small><nav aria-label="Site navigation"><a href="/">Home</a><a href="/music/">Music</a></nav></header>
+  <main>
+    <small>NOW PLAYING</small>
+    <h1 id="npTitle">Loading song…</h1>
+    <p id="npArtist"></p>
+    <button class="art" id="npArt" type="button" aria-label="Play or pause this song" hidden><img id="npCover" alt=""></button>
+    <p><button class="play" id="npPlay" type="button" hidden>Play / pause</button></p>
+    <p id="npStatus" role="status"></p>
+    <section class="story"><h2>About this song</h2><p id="npStory">The full song page is not available yet. The music is still here.</p><a href="https://facebook.com/callmedaddy" target="_blank" rel="noopener">Ask me about this song ↗</a></section>
+    <div data-share data-share-label="Share this song"></div>
+    <audio id="npAudio" preload="none"></audio>
+  </main>
+  <script src="/data/songs.js"></script>
+  <script src="/data/archive-catalog.js"></script>
+  <script src="/data/radio-intents.js"></script>
+  <script src="/data/2026-08-25-uploads.js"></script>
+  <script src="/data/2026-08-26-uploads.js"></script>
+  <script src="/data/2026-08-27-uploads.js"></script>
+  <script src="/data/2026-08-29-uploads.js"></script>
+  <script src="/catalog-cycle.js"></script>
+  <script src="/playlist-radio.js"></script>
+  <script src="/persistent-site-browser.js?v=20260906-2"></script>
+  <script src="/continuous-playback.js"></script>
+  <script src="/universal-player.js?v=20260906-2"></script>
+  <script src="/now-playing/player.js?v=20260906-2"></script>
+  <script src="/share.js"></script>
+</body>
+</html>
