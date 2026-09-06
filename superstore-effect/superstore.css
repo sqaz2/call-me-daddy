@@ -11,9 +11,9 @@ body.ss-page{background:var(--ss-bg);color:var(--ss-ink);overflow-x:clip}
 body.ss-player-open{padding-bottom:116px}
 .ss-topbar{background:rgba(5,12,22,.88);border-color:rgba(243,246,251,.08)}
 .ss-hero{position:relative;min-height:calc(100svh - 68px);display:flex;align-items:center;overflow:hidden;padding:68px 0 74px;background:#050c16}
-.ss-hero-static:after{content:"";position:absolute;inset:0;z-index:0;background:url("/media/songs/2026/09/superstore-effect/cover.jpg") center 30%/cover no-repeat;filter:saturate(.85) contrast(1.05) brightness(.72);opacity:.35;pointer-events:none}
+
 .ss-hero:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(5,12,22,.96) 0%,rgba(5,12,22,.72) 48%,rgba(5,12,22,.28) 100%),linear-gradient(180deg,transparent 45%,#050c16 100%)}
-.ss-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:clamp(28px,6vw,80px);align-items:center;max-width:760px}
+.ss-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,420px);gap:clamp(28px,6vw,80px);align-items:start}
 .ss-back{display:inline-flex;margin-bottom:28px;color:var(--ss-soft);font-size:.88rem}
 .ss-eyebrow,.ss-kicker{text-transform:uppercase;letter-spacing:.18em;font-weight:800;font-size:.7rem;color:#8eb7ff}
 .ss-hero h1{margin:16px 0 18px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(3.4rem,9.5vw,7.6rem);font-weight:500;line-height:.8;letter-spacing:-.07em;text-transform:lowercase}
@@ -88,4 +88,11 @@ body.ss-player-open{padding-bottom:116px}
   .ss-tally article:last-child{border-bottom:0}
   .ss-lyric-sheet{columns:1}
   .ss-cover-card{max-width:420px;margin-top:8px;transform:none}
+  .ss-hero-media{max-width:420px}
 }
+
+.ss-hero-media{display:grid;gap:14px}
+.ss-cover-button img{aspect-ratio:960/2142;object-position:center top}
+.ss-thin-clip{border:1px solid var(--ss-line);border-radius:18px;overflow:hidden;background:#000;max-height:160px}
+.ss-thin-video{display:block;width:100%;height:160px;object-fit:cover;object-position:center 20%}
+.ss-cover-play[hidden]{display:none!important}

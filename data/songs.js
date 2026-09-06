@@ -18,7 +18,6 @@ window.CMD_SONGS = [
     ],
     "audio": "/media/songs/2026/09/superstore-effect/audio.mp3",
     "cover": "/media/songs/2026/09/superstore-effect/cover.jpg",
-    "backgroundVideo": "/media/songs/2026/09/superstore-effect/background-loop.mp4",
     "experience": "/superstore-effect/",
     "shareUrl": "/superstore-effect/",
     "sourceUrl": "https://www.facebook.com/share/p/1DYME1imxQ/",
