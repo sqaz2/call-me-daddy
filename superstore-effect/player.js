@@ -84,7 +84,7 @@
     else if(audio.paused)audio.play().catch(()=>{status.textContent='Ready · tap ▶ to continue';syncCoverState()});
   };
 
-  document.querySelectorAll('[data-concrete-play]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('[data-ss-play]').forEach(button=>button.addEventListener('click',()=>{
     if(index===0&&!audio.paused){audio.pause();return;}
     start();
   }));
@@ -99,7 +99,7 @@
   audio.addEventListener('ended',()=>{syncCoverState();advance()});
   audio.addEventListener('timeupdate',()=>{if(audio.duration)bar.style.width=`${audio.currentTime/audio.duration*100}%`});
   audio.addEventListener('error',()=>{if(!audio.src)return;status.textContent='Skipping unavailable track…';syncCoverState();window.setTimeout(advance,500)});
-  document.querySelector('.concrete-lyrics details')?.addEventListener('toggle',event=>{const marker=event.currentTarget.querySelector('summary b');if(marker)marker.textContent=event.currentTarget.open?'−':'+'});
+  document.querySelector('.ss-lyrics details')?.addEventListener('toggle',event=>{const marker=event.currentTarget.querySelector('summary b');if(marker)marker.textContent=event.currentTarget.open?'−':'+'});
 
   if('mediaSession' in navigator){try{
     navigator.mediaSession.setActionHandler('play',()=>audio.play());
