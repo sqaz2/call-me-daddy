@@ -1,8 +1,30 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-06T06:30:00-06:00",
+  updated: "2026-09-07T12:00:00-06:00",
   entries: [
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-satans-loan",
+      "published": "2026-09-07T12:00:00-06:00",
+      "type": "New release · highlight",
+      "songId": "satans-loan",
+      "title": "Satan's Loan",
+      "summary": "Satan's loan — nothing leaves the way it came. Full audio, full music video, lyrics sheet.",
+      "href": "/satans-loan/",
+      "sharePath": "/updates/release-satans-loan/",
+      "cta": "Open the song page",
+      "featured": true,
+      "cover": "/media/songs/2026/09/satans-loan/cover.jpg",
+      "cardLines": [
+        "SATAN'S",
+        "LOAN"
+      ],
+      "cardTag": "Highlight · music video",
+      "cardSummary": "Borrowed blood, borrowed bones — MusicSubject & Call Me Daddy.",
+      "badge": "New today",
+      "intent": "think",
+      "featuredOrder": 0.25
+    },
     {
       "id": "release-superstore-effect",
       "published": "2026-09-06T06:30:00-06:00",
@@ -23,7 +45,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.3333333333333333
+      "featuredOrder": 0.5
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -45,7 +67,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.6666666666666666
+      "featuredOrder": 0.75
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-where-the-teeth-are-kept",published:"2026-08-25T07:06:00-06:00",type:"New release",songId:"where-the-teeth-are-kept",featured:true,featuredOrder:1,cardLines:["WHERE THE TEETH","ARE KEPT"],cardTag:"Google Gemini · adult fairytale",cardSummary:"A seductive adult reimagining of Little Red Riding Hood, with the danger left in the woods instead of sanding it down.",badge:"Made with Gemini"},

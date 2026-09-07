@@ -1,6 +1,33 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "satans-loan",
+    "title": "Satan's Loan",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-07",
+    "project": "Satan's Loan",
+    "description": "Borrowed blood, borrowed bones, borrowed dirt beneath the miles — a highlight release from MusicSubject & Call Me Daddy.",
+    "aliases": [
+      "Satans Loan",
+      "Satan Loan"
+    ],
+    "audio": "/media/songs/2026/09/satans-loan/audio.mp3",
+    "cover": "/media/songs/2026/09/satans-loan/cover.jpg",
+    "experience": "/satans-loan/",
+    "shareUrl": "/satans-loan/",
+    "kind": "Highlight release · full music video",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Main version",
+        "audio": "/media/songs/2026/09/satans-loan/audio.mp3"
+      }
+    ],
+    "sunoUrl": "https://suno.com/song/de757840-78d3-43f6-9fda-635a089acc3a"
+  },
+  {
     "id": "superstore-effect",
     "title": "the superstore effect",
     "artist": "MusicSubject × Call Me Daddy",

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "satans-loan",
+    "title": "Satan's Loan",
+    "artist": "MusicSubject \u00d7 Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-07",
+    "project": "Satan's Loan",
+    "description": "Borrowed blood, borrowed bones, borrowed dirt beneath the miles \u2014 a highlight release from MusicSubject & Call Me Daddy.",
+    "aliases": [
+      "Satans Loan",
+      "Satan Loan"
+    ],
+    "audio": "/media/songs/2026/09/satans-loan/audio.mp3",
+    "cover": "/media/songs/2026/09/satans-loan/cover.jpg",
+    "experience": "/satans-loan/",
+    "shareUrl": "/satans-loan/",
+    "kind": "Highlight release \u00b7 full music video",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Main version",
+        "audio": "/media/songs/2026/09/satans-loan/audio.mp3"
+      }
+    ],
+    "sunoUrl": "https://suno.com/song/de757840-78d3-43f6-9fda-635a089acc3a"
+  },
+  "radio": {
+    "surprise": 62,
+    "laugh": 12,
+    "think": 96,
+    "level-up": 54,
+    "heavy": 78,
+    "old-files": 18
+  },
+  "update": {
+    "id": "release-satans-loan",
+    "published": "2026-09-07T12:00:00-06:00",
+    "type": "New release \u00b7 highlight",
+    "songId": "satans-loan",
+    "title": "Satan's Loan",
+    "summary": "Satan's loan \u2014 nothing leaves the way it came. Full audio, full music video, lyrics sheet.",
+    "href": "/satans-loan/",
+    "sharePath": "/updates/release-satans-loan/",
+    "cta": "Open the song page",
+    "featured": true,
+    "cover": "/media/songs/2026/09/satans-loan/cover.jpg",
+    "cardLines": [
+      "SATAN'S",
+      "LOAN"
+    ],
+    "cardTag": "Highlight \u00b7 music video",
+    "cardSummary": "Borrowed blood, borrowed bones \u2014 MusicSubject & Call Me Daddy.",
+    "badge": "New today",
+    "intent": "think"
+  }
+}
