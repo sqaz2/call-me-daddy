@@ -9,7 +9,7 @@ window.CMD_BRIEFING = {
       "type": "New release · highlight",
       "songId": "satans-loan",
       "title": "Satan's Loan",
-      "summary": "Satan's loan — nothing leaves the way it came. Full audio, full music video, lyrics sheet.",
+      "summary": "Borrowed time. Flower through concrete. Full audio (~2:13 MV soundtrack), full music video, lyrics sheet — satans.loan apply now.",
       "href": "/satans-loan/",
       "sharePath": "/updates/release-satans-loan/",
       "cta": "Open the song page",
@@ -19,8 +19,8 @@ window.CMD_BRIEFING = {
         "SATAN'S",
         "LOAN"
       ],
-      "cardTag": "Highlight · music video",
-      "cardSummary": "Borrowed blood, borrowed bones — MusicSubject & Call Me Daddy.",
+      "cardTag": "Highlight · ~68 BPM · music video",
+      "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
       "featuredOrder": 0.25

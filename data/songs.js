@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 9,
     "date": "2026-09-07",
     "project": "Satan's Loan",
-    "description": "Borrowed blood, borrowed bones, borrowed dirt beneath the miles — a highlight release from MusicSubject & Call Me Daddy.",
+    "description": "Borrowed time and a flower through concrete — Satan's loan, nothing leaves the way it came. Cinematic halftime dubstep / infernal 80s blues-electro direction (~68 BPM feel); Canva MV soundtrack ~2:13. MusicSubject & Call Me Daddy.",
     "aliases": [
       "Satans Loan",
       "Satan Loan"
@@ -17,7 +17,7 @@ window.CMD_SONGS = [
     "cover": "/media/songs/2026/09/satans-loan/cover.jpg",
     "experience": "/satans-loan/",
     "shareUrl": "/satans-loan/",
-    "kind": "Highlight release · full music video",
+    "kind": "Highlight release · ~68 BPM cinematic halftime dubstep · full music video",
     "variants": [
       {
         "id": "main",
