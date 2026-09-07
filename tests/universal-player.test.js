@@ -21,7 +21,7 @@ class FakeElement extends FakeTarget{
     this.attributes=new Map();
     this.className='';
     this.hidden=false;
-    this.style={};
+    this.style={setProperty(name,value){this[name]=String(value)}};
     this.dataset={};
     this.textContent='';
     this.classList={
@@ -34,7 +34,9 @@ class FakeElement extends FakeTarget{
   appendChild(child){child.parentNode=this;this.children.push(child);return child}
   setAttribute(name,value){this.attributes.set(name,String(value))}
   getAttribute(name){return this.attributes.get(name)||null}
-  getBoundingClientRect(){return {left:0,width:100,top:0,bottom:5,height:5}}
+  getBoundingClientRect(){return {left:0,width:100,top:0,bottom:32,height:32}}
+  setPointerCapture(){}
+  releasePointerCapture(){}
   querySelector(selector){return this.querySelectorAll(selector)[0]||null}
   querySelectorAll(selector){
     const parts=selector.trim().split(/\s+/);
@@ -52,7 +54,7 @@ class FakeElement extends FakeTarget{
     const art=node('button','cmd-universal-art');art.append(node('img',''),node('span',''));
     const copy=node('div','cmd-universal-copy');copy.append(node('small','cmd-universal-context'),node('button','cmd-universal-title'),node('span','cmd-universal-detail'),node('a','cmd-universal-story'));
     const controls=node('div','cmd-universal-controls');controls.append(node('button','cmd-universal-prev'),node('button','cmd-universal-toggle'),node('button','cmd-universal-next'),node('button','cmd-universal-share'));
-    const progress=node('div','cmd-universal-progress');progress.append(node('span',''));
+    const progress=node('div','cmd-universal-progress');progress.append(node('span',''),node('i','cmd-universal-thumb'));
     const times=node('div','cmd-universal-times');times.append(node('span','cmd-universal-current'),node('span',''),node('span','cmd-universal-duration'));
     shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));
     this.appendChild(shell);
@@ -126,6 +128,13 @@ test('one universal transport controls a legacy player and marks a missing story
   root.querySelector('.cmd-universal-progress').emit('keydown',{key:'ArrowRight',preventDefault(){}});
   assert.equal(media.currentTime,65);
 
+  root.querySelector('.cmd-universal-progress').emit('pointerdown',{clientX:25,button:0,pointerId:1,preventDefault(){}});
+  assert.equal(media.currentTime,30);
+  root.querySelector('.cmd-universal-progress').emit('pointermove',{clientX:75,pointerId:1,preventDefault(){}});
+  assert.equal(media.currentTime,90);
+  root.querySelector('.cmd-universal-progress').emit('pointerup',{pointerId:1,preventDefault(){}});
+
+
   root.querySelector('.cmd-universal-title').emit('click');
   assert.equal(env.opened[0].url,'https://facebook.com/callmedaddy');
 });
@@ -153,4 +162,17 @@ test('continuous pages replace their local transport instead of showing two play
     'archive/2019-heartbreak-rehearsals/player.js','twas-the-tism-mlord/player.js'
   ];
   files.forEach(file=>assert.ok(fs.readFileSync(path.join(root,file),'utf8').includes('replacePlayer'),`${file} must replace its old transport`));
+});
+
+test('universal mini-player exposes a fat scrubber with a visible thumb',()=>{
+  const source=fs.readFileSync(path.resolve(__dirname,'../universal-player.js'),'utf8');
+  assert.match(source,/cmd-universal-thumb/);
+  assert.match(source,/height:32px/);
+  assert.match(source,/pointerdown/);
+  assert.match(source,/touch-action:none/);
+  for(const file of ['satans-loan/satans-loan.css','superstore-effect/superstore.css']){
+    const css=fs.readFileSync(path.resolve(__dirname,'../'+file),'utf8');
+    assert.match(css,/ss-progress-thumb/);
+    assert.match(css,/height:32px/);
+  }
 });

@@ -295,7 +295,7 @@
   window.CMDUniversalPlayer?.observeContinuous?.(window.CMDContinuousPlayback);
   if(document?.createElement&&document?.head?.appendChild&&!window.CMDUniversalPlayer&&!document.querySelector?.('script[data-cmd-universal-player]')){
     const script=document.createElement('script');
-    script.src='/universal-player.js?v=20260904-1';
+    script.src='/universal-player.js?v=20260907-scrub';
     script.dataset.cmdUniversalPlayer='';
     document.head.appendChild(script);
   }
