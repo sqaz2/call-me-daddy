@@ -18,7 +18,9 @@ class Element extends Target{
   remove(){if(this.parentNode)this.parentNode.children=this.parentNode.children.filter(e=>e!==this)}
   setAttribute(k,v){this.attributes.set(k,String(v))}
   getAttribute(k){return this.attributes.get(k)||null}
-  getBoundingClientRect(){return {left:0,width:100,top:0,bottom:5,height:5}}
+  getBoundingClientRect(){return {left:0,width:100,top:0,bottom:32,height:32}}
+  setPointerCapture(){}
+  releasePointerCapture(){}
   querySelector(s){return this.querySelectorAll(s)[0]||null}
   querySelectorAll(selector){
     const parts=selector.trim().split(/\s+/),desc=e=>e.children.flatMap(c=>[c,...desc(c)]);
@@ -32,7 +34,7 @@ class Element extends Target{
     if(!value.includes('cmd-universal-shell'))return;
     const shell=node('div','cmd-universal-shell'),art=node('button','cmd-universal-art'),copy=node('div','cmd-universal-copy'),controls=node('div','cmd-universal-controls'),progress=node('div','cmd-universal-progress'),times=node('div','cmd-universal-times');
     art.append(node('img',''),node('span',''));copy.append(node('small','cmd-universal-context'),node('button','cmd-universal-title'),node('span','cmd-universal-detail'),node('a','cmd-universal-story'));
-    controls.append(...['prev','toggle','next','share'].map(n=>node('button',`cmd-universal-${n}`)));progress.append(node('span',''));times.append(node('span','cmd-universal-current'),node('span','cmd-universal-duration'));shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));this.append(shell);
+    controls.append(...['prev','toggle','next','share'].map(n=>node('button',`cmd-universal-${n}`)));progress.append(node('span',''),node('i','cmd-universal-thumb'));times.append(node('span','cmd-universal-current'),node('span','cmd-universal-duration'));shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));this.append(shell);
   }
 }
 class Media extends Target{

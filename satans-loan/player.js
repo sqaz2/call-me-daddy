@@ -64,7 +64,7 @@
         if(status)status.textContent='Loading…';syncCover();
       },
       onPlayState:playing=>{const button=byId('ssPlay');if(button)button.textContent=playing?'❚❚':'▶';if(status)status.textContent=playing?'Playing':'Paused';syncCover()},
-      onTime:(time,duration)=>{const bar=byId('ssProgressBar');if(bar)bar.style.width=`${duration>0?time/duration*100:0}%`},
+      onTime:(time,duration)=>{const ratio=duration>0?time/duration*100:0;const bar=byId('ssProgressBar'),thumb=byId('ssProgressThumb'),track=byId('ssProgress');if(bar)bar.style.width=`${ratio}%`;if(thumb)thumb.style.left=`${ratio}%`;if(track){track.style.setProperty?.('--progress',`${ratio}%`);track.setAttribute('aria-valuenow',String(Math.round(ratio)))}},
       onStatus:kind=>{if(status)status.textContent=kind==='failed'?'Playback stopped. Tap play to retry.':kind==='error'?'Skipping unavailable track…':'Buffering…'},
       onNeedsTap:()=>{if(status)status.textContent='Ready · tap ▶ to continue';syncCover()}
     });
@@ -98,12 +98,22 @@
     const track=shouldDelegateToShared()?liveTrack():(controller?.current?.()||current);
     window.CMDPlaylistRadio?.share(track);
   });
-  byId('ssProgress')?.addEventListener('click',event=>{
+  const progressEl=byId('ssProgress');
+  let scrubbing=false;
+  const seekProgress=event=>{
     const media=shouldDelegateToShared()?liveMedia():audio;
     if(!media||!Number.isFinite(media.duration)||media.duration<=0)return;
-    const rect=event.currentTarget.getBoundingClientRect();
-    if(rect.width>0)media.currentTime=Math.max(0,Math.min(media.duration,(event.clientX-rect.left)/rect.width*media.duration));
+    const target=event.currentTarget||progressEl;const rect=target.getBoundingClientRect();const x=event.clientX;
+    if(rect.width>0&&typeof x==='number')media.currentTime=Math.max(0,Math.min(media.duration,(x-rect.left)/rect.width*media.duration));
+  };
+  progressEl?.addEventListener('pointerdown',event=>{
+    if(event.button!=null&&event.button!==0)return;scrubbing=true;progressEl.classList.add('is-scrubbing');
+    try{progressEl.setPointerCapture(event.pointerId)}catch{}seekProgress(event);event.preventDefault();
   });
+  progressEl?.addEventListener('pointermove',event=>{if(!scrubbing)return;seekProgress(event);event.preventDefault()});
+  const endScrub=event=>{if(!scrubbing)return;scrubbing=false;progressEl.classList.remove('is-scrubbing');try{if(event&&event.pointerId!=null)progressEl.releasePointerCapture(event.pointerId)}catch{}};
+  progressEl?.addEventListener('pointerup',endScrub);progressEl?.addEventListener('pointercancel',endScrub);
+  progressEl?.addEventListener('click',event=>{if(scrubbing)return;seekProgress(event)});
   document.querySelector('.ss-lyrics details')?.addEventListener('toggle',event=>{const marker=event.currentTarget.querySelector('summary b');if(marker)marker.textContent=event.currentTarget.open?'−':'+'});
 
   if(liveOwnsThisSong()){
@@ -121,8 +131,8 @@
       if(!liveOwnsThisSong())return;
       afterSharedControl();
       const media=liveMedia();
-      const bar=byId('ssProgressBar');
-      if(bar&&media&&Number.isFinite(media.duration)&&media.duration>0)bar.style.width=`${media.currentTime/media.duration*100}%`;
+      const bar=byId('ssProgressBar'),thumb=byId('ssProgressThumb'),track=byId('ssProgress');
+      if(media&&Number.isFinite(media.duration)&&media.duration>0){const ratio=media.currentTime/media.duration*100;if(bar)bar.style.width=`${ratio}%`;if(thumb)thumb.style.left=`${ratio}%`;track?.style?.setProperty?.('--progress',`${ratio}%`)}
     },400);
     window.addEventListener('pagehide',()=>clearInterval(syncTimer));
   }
