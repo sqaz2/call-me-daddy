@@ -42,6 +42,7 @@
     'hard-earned-light':'deep',
     'friction-the-what':'deep',
     'broke-my-mug-not-my-song':'deep',
+    'satans-loan':'deep',
 
     // --- light (comedy / satire / fun / forward motion) ---
     'armando':'light',

@@ -123,6 +123,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "satans-loan": {
+    "surprise": 62,
+    "laugh": 12,
+    "think": 96,
+    "level-up": 54,
+    "heavy": 78,
+    "old-files": 18
+  },
   "superstore-effect": {
     "surprise": 98,
     "laugh": 100,
