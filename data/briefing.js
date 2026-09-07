@@ -9,7 +9,7 @@ window.CMD_BRIEFING = {
       "type": "New release · highlight",
       "songId": "satans-loan",
       "title": "Satan's Loan",
-      "summary": "Borrowed time. Flower through concrete. Full audio (~2:13 MV soundtrack), full music video, lyrics sheet — satans.loan apply now.",
+      "summary": "From a 2012 poem to borrowed time and a flower through concrete. Full audio (~2:13 MV soundtrack), full music video, lyrics sheet — satans.loan apply now.",
       "href": "/satans-loan/",
       "sharePath": "/updates/release-satans-loan/",
       "cta": "Open the song page",

@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 9,
     "date": "2026-09-07",
     "project": "Satan's Loan",
-    "description": "Borrowed time and a flower through concrete — Satan's loan, nothing leaves the way it came. Cinematic halftime dubstep / infernal 80s blues-electro direction (~68 BPM feel); Canva MV soundtrack ~2:13. MusicSubject & Call Me Daddy.",
+    "description": "Rooted in a September 3, 2012 poem — borrowed time and a flower through concrete. Satan's loan, nothing leaves the way it came. Cinematic halftime dubstep / infernal 80s blues-electro direction (~68 BPM feel); Canva MV soundtrack ~2:13. MusicSubject & Call Me Daddy.",
     "aliases": [
       "Satans Loan",
       "Satan Loan"

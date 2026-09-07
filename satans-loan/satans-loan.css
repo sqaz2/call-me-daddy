@@ -130,3 +130,12 @@ body.ss-page{--ss-blue:#8b1e1e;--ss-blue2:#5a1010}
 .ss-apply-title{margin:12px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:500;letter-spacing:-.03em;line-height:1.05;color:var(--ss-ink)}
 .ss-apply-btn{display:inline-flex;align-items:center;min-height:52px;margin-top:22px;padding:0 22px;border:1px solid rgba(232,180,160,.45);border-radius:999px;background:linear-gradient(90deg,#8b1e1e,#5a1010);color:#fff7f2;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .ss-apply-btn:hover{border-color:#e8b4a0;background:linear-gradient(90deg,#a32626,#6e1414)}
+
+
+/* Origin poem sheet — 2012 root, not a template card */
+.ss-origin{padding:clamp(56px,9vw,100px) 0}
+.ss-poem-sheet{max-width:720px;margin:0 auto;padding:clamp(28px,5vw,48px) clamp(22px,4vw,40px);border-left:2px solid rgba(232,180,160,.35);background:transparent}
+.ss-origin-title{margin:12px 0 18px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:500;letter-spacing:-.04em;line-height:1;color:var(--ss-ink)}
+.ss-origin-lede{margin:0 0 28px;color:#c9d5e6;font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.65;max-width:640px}
+.ss-poem{margin:0;padding:0;border:0;background:transparent;white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.05rem,2.1vw,1.28rem);font-style:italic;line-height:1.85;color:#ece8df;letter-spacing:.01em}
+.ss-origin-note{margin:28px 0 0;color:#8f9eb3;font-size:.88rem;line-height:1.5;max-width:560px}
