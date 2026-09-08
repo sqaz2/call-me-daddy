@@ -1,0 +1,74 @@
+name: Verify table-two audio-only correction
+on:
+  push:
+    branches: [codex/table-two-audio-swap]
+    paths: ['.github/workflows/table-two-audio-swap.yml']
+permissions:
+  contents: write
+jobs:
+  correction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/table-two-audio-swap
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply the already-reviewed audio-only patch
+        run: |
+          python - <<'PY'
+          import subprocess, textwrap
+          # This is the immutable, reviewed patch from the previous commit on this isolated branch.
+          # Reuse it without changing any audio, image, link, copy, or player requirements.
+          workflow = subprocess.check_output(['git','show','ed87f29f3f90aa182d80cc04ed1acdfe0e70acba:.github/workflows/table-two-audio-swap.yml'], text=True)
+          script = textwrap.dedent(workflow.split("          python - <<'PY'\n",1)[1].split('\n          PY',1)[0])
+          assert script.count('test_path.write_text(text)') == 1
+          script = script.replace('test_path.write_text(text)', "test_path.write_text(text.rstrip()+'\\n')")
+          exec(compile(script, '<reviewed-audio-correction>', 'exec'))
+          PY
+      - name: Synchronize and test all release and shared-player contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/table-for-two-qa
+          node scripts/sync-releases.mjs
+          node scripts/sync-releases.mjs --check
+          node --check tests/table-for-two.test.js
+          node --check scripts/check-table-for-two-browser.mjs
+          node --test tests/playback-sync.test.js
+          node --test tests/*.test.js tests/*.test.mjs | tee /tmp/table-for-two-qa/node-tests.txt
+          git diff --check
+          git diff > /tmp/table-for-two-qa/correction.patch
+      - name: Prepare real browser tests
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Exercise both swapped recordings through the production media Worker
+        run: |
+          node scripts/serve-release-test.mjs > /tmp/table-for-two-qa/http.log 2>&1 &
+          sleep 2
+          node scripts/check-table-for-two-browser.mjs
+      - name: Commit only tested correction and remove temporary workflow
+        run: |
+          python - <<'PY'
+          import subprocess
+          allowed = {'content/releases/2026-09-07-set-a-table-for-two.json', 'set-a-table-for-two/sources.json', 'set-a-table-for-two/index.html', 'tests/table-for-two.test.js', 'scripts/check-table-for-two-browser.mjs', 'index.html', 'music/index.html', 'updates/index.html', 'now-playing/index.html', 'data/songs.js'}
+          changed = set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          assert changed <= allowed, 'Unexpected changes: '+str(changed-allowed)
+          assert not any(name.startswith('media/') for name in changed)
+          subprocess.run(['git','add',*sorted(changed)],check=True)
+          PY
+          git rm .github/workflows/table-two-audio-swap.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Swap two release recordings; preserve artwork, Suno links and presentation'
+          git push origin HEAD:codex/table-two-audio-swap
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: table-two-audio-swap-qa
+          path: /tmp/table-for-two-qa/
+          retention-days: 7
