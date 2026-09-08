@@ -29,6 +29,16 @@ jobs:
               pathlib.Path('/tmp/table-release.patch').write_bytes(data)
               subprocess.run(['git','apply','--unidiff-zero','--check','/tmp/table-release.patch'],check=True)
               subprocess.run(['git','apply','--unidiff-zero','/tmp/table-release.patch'],check=True)
+          p = pathlib.Path('data/taste-clusters.js')
+          content = p.read_text()
+          if "'set-a-table-for-two'" not in content:
+              assert "'superstore-effect','namaste-hamster'" in content
+              p.write_text(content.replace("'superstore-effect','namaste-hamster'", "'superstore-effect','set-a-table-for-two','namaste-hamster'"))
+          p = pathlib.Path('music/index.html')
+          content = p.read_text()
+          import re
+          content = re.sub(r'(/data/taste-clusters\.js\?[^"<>]*)(")', lambda m: m[1] + ('&amp;release=20260907-table-two' if 'release=' not in m[1] else '') + m[2], content)
+          p.write_text(content)
           PY
       - name: Synchronize complete release
         run: |
@@ -41,7 +51,7 @@ jobs:
         run: node --test tests/*.test.js tests/*.test.mjs
       - name: Commit tested source and generated catalog together
         run: |
-          git add content/releases/2026-09-07-set-a-table-for-two.json set-a-table-for-two/index.html set-a-table-for-two/release.css set-a-table-for-two/player.js set-a-table-for-two/lyrics.txt set-a-table-for-two/sources.json tests/table-for-two.test.js scripts/check-table-for-two-browser.mjs scripts/sync-releases.mjs RELEASE-WORKFLOW.md data/content-intensity.js index.html music/index.html updates/index.html data/songs.js data/song-lyrics.js data/briefing.js data/radio-intents.js sitemap.xml updates/release-set-a-table-for-two/index.html
+          git add content/releases/2026-09-07-set-a-table-for-two.json set-a-table-for-two/index.html set-a-table-for-two/release.css set-a-table-for-two/player.js set-a-table-for-two/lyrics.txt set-a-table-for-two/sources.json tests/table-for-two.test.js scripts/check-table-for-two-browser.mjs scripts/sync-releases.mjs RELEASE-WORKFLOW.md data/content-intensity.js data/taste-clusters.js index.html music/index.html updates/index.html data/songs.js data/song-lyrics.js data/briefing.js data/radio-intents.js sitemap.xml updates/release-set-a-table-for-two/index.html
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
