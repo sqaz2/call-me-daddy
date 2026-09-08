@@ -69,12 +69,11 @@ try{
 
   // Persistent browsing case: the original song keeps playing in the host while a
   // different full-page iframe is in front of it. This is the screenshot's UX model.
-  const ownerBefore=await page.evaluate(()=>window.CMDUniversalPlayer.getMedia());
-  await page.evaluate(()=>window.CMDPersistentSite.open('/superstore-effect/'));
+  await page.evaluate(()=>{window.__clearanceOwner=window.CMDUniversalPlayer.getMedia();window.CMDPersistentSite.open('/superstore-effect/')});
   await page.waitForTimeout(900);
   const storyFrame=await visibleFrame('.ss-cover-button');
   assert.notEqual(storyFrame,page.mainFrame());
-  assert.equal(await page.evaluate(owner=>window.CMDUniversalPlayer.getMedia()===owner,ownerBefore),true);
+  assert.equal(await page.evaluate(()=>window.CMDUniversalPlayer.getMedia()===window.__clearanceOwner),true);
   await assertBottomReachable(storyFrame,'Visible persistent-page footer clears player and music-continues pill');
   const reserve=await storyFrame.evaluate(()=>({padding:parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0,variable:getComputedStyle(document.documentElement).getPropertyValue('--cmd-persistent-clearance')}));
   assert.ok(reserve.padding>150);check('Persistent view receives host obstruction reserve',reserve);
