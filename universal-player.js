@@ -8,7 +8,7 @@
   const mediaOwners=new WeakMap();
   const coreHandles=new WeakMap();
   const routeCache=new Map();
-  let active=null,root=null,nodes=null,stopCoreObserver=null;
+  let active=null,root=null,nodes=null,stopCoreObserver=null,clearanceObserver=null,clearanceRaf=0,baseRootPadding=null;
   let followKey='',followGeneration=0,lastMediaKey='';
 
   const absolute=value=>{if(!value)return'';try{return new URL(value,location.href).href}catch{return String(value)}};
@@ -89,12 +89,35 @@
     return true;
   }
 
+  const measuredClearance=()=>{
+    if(!root||root.hidden)return 0;
+    const rect=root.getBoundingClientRect(),vh=window.innerHeight||document.documentElement.clientHeight||0;
+    return Math.ceil(Math.max(0,vh-rect.top)+8);
+  };
+  function applyClearance(){
+    clearanceRaf=0;if(!document.documentElement)return;
+    const value=measuredClearance(),html=document.documentElement;
+    if(value>0){
+      if(baseRootPadding===null){html.classList?.remove?.('cmd-universal-clearance');baseRootPadding=typeof window.getComputedStyle==='function'?(parseFloat(window.getComputedStyle(html).paddingBottom)||0):0}
+      html.style?.setProperty?.('--cmd-universal-clearance',`${baseRootPadding+value}px`);html.classList?.add?.('cmd-universal-clearance');
+    }else{html.classList?.remove?.('cmd-universal-clearance');html.style?.removeProperty?.('--cmd-universal-clearance');baseRootPadding=null}
+    try{window.CMDPersistentSite?.setPlayerClearance?.(value)}catch{}
+    try{window.dispatchEvent(new CustomEvent('cmd:universal-clearance',{detail:{pixels:value}}))}catch{}
+  }
+  function scheduleClearance(){if(clearanceRaf)return;const raf=window.requestAnimationFrame;if(typeof raf==='function')clearanceRaf=raf.call(window,applyClearance);else applyClearance()}
+  function watchClearance(){
+    if(clearanceObserver||!root)return;
+    if(typeof ResizeObserver==='function'){clearanceObserver=new ResizeObserver(scheduleClearance);clearanceObserver.observe(root)}
+    window.addEventListener?.('resize',scheduleClearance,{passive:true});
+    try{window.visualViewport?.addEventListener?.('resize',scheduleClearance,{passive:true});window.visualViewport?.addEventListener?.('scroll',scheduleClearance,{passive:true})}catch{}
+  }
+
   function injectStyles(){
     if(document.getElementById('cmd-universal-player-style'))return;
     const style=document.createElement('style');style.id='cmd-universal-player-style';
     style.textContent=`
       .cmd-universal-replaced{display:none!important}
-      body.cmd-universal-open{padding-bottom:calc(148px + env(safe-area-inset-bottom))!important}
+      html.cmd-universal-clearance{padding-bottom:var(--cmd-universal-clearance,0px)!important}
       .cmd-universal-player{position:fixed;z-index:2147483500;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));width:min(980px,calc(100% - 24px));margin:auto;color:#f4f0e8;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
       .cmd-universal-player[hidden]{display:none!important}
       .cmd-universal-shell{position:relative;display:grid;grid-template-columns:58px minmax(0,1fr) auto;grid-template-rows:auto 32px;align-items:center;gap:10px 14px;padding:12px 14px 14px;border:1px solid rgba(255,255,255,.17);border-radius:24px;background:rgba(8,8,9,.96);box-shadow:0 22px 74px rgba(0,0,0,.58);backdrop-filter:blur(22px);overflow:hidden}
@@ -102,7 +125,7 @@
       .cmd-universal-art img{display:block;width:100%;height:100%;object-fit:cover}
       .cmd-universal-art span{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.38);font-size:1rem;text-shadow:0 2px 8px #000;opacity:.92}
       .cmd-universal-copy{min-width:0;align-self:center}.cmd-universal-copy small,.cmd-universal-copy span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmd-universal-context{color:#c7a968;font-size:.64rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.cmd-universal-title{display:block;width:100%;margin:3px 0 2px;padding:0;overflow:hidden;border:0;background:transparent;color:#f5f1ea;font:900 1.03rem/1.15 system-ui,sans-serif;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.cmd-universal-detail{color:#aaa59d;font-size:.7rem}.cmd-universal-story{display:inline-flex!important;width:max-content;max-width:100%;margin-top:4px;color:#d7d1c7!important;font-size:.68rem!important;font-weight:850;text-decoration:none}.cmd-universal-story.is-coming{color:#d7b266!important}.cmd-universal-controls{display:flex;align-items:center;gap:6px}.cmd-universal-controls button{display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:#191919;color:#f5f1ea;font:900 .95rem/1 system-ui,sans-serif;cursor:pointer}.cmd-universal-controls .cmd-universal-toggle{width:50px;height:50px;background:#f2efe8;color:#080808;font-size:1.02rem}.cmd-universal-controls button:disabled{cursor:not-allowed;opacity:.34}.cmd-universal-controls button:focus-visible,.cmd-universal-art:focus-visible,.cmd-universal-title:focus-visible,.cmd-universal-progress:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-universal-progress{--progress:0%;position:relative;grid-column:1/-1;height:32px;margin:0;border:0;border-radius:0;background:transparent;cursor:pointer;overflow:visible;touch-action:none;-webkit-user-select:none;user-select:none}.cmd-universal-progress::before{content:"";position:absolute;left:0;right:0;top:50%;height:10px;transform:translateY(-50%);border-radius:999px;background:#2b2927;pointer-events:none}.cmd-universal-progress span{position:absolute;left:0;top:50%;width:0;height:10px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,#d7b266,#f4f0e8);pointer-events:none}.cmd-universal-thumb{position:absolute;top:50%;left:var(--progress);width:18px;height:18px;border:2px solid #f4f0e8;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8e8,#d7b266 58%,#9a7428);box-shadow:0 1px 6px rgba(0,0,0,.55),0 0 0 3px rgba(215,178,102,.22);transform:translate(-50%,-50%);pointer-events:none}.cmd-universal-progress.is-scrubbing .cmd-universal-thumb{width:22px;height:22px;box-shadow:0 2px 10px rgba(0,0,0,.6),0 0 0 4px rgba(215,178,102,.32)}.cmd-universal-times{position:absolute;right:14px;bottom:5px;display:flex;gap:7px;color:#77736d;font-size:.58rem;pointer-events:none}.cmd-universal-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-      @media(max-width:680px){body.cmd-universal-open{padding-bottom:calc(172px + env(safe-area-inset-bottom))!important}.cmd-universal-player{right:8px;bottom:max(8px,env(safe-area-inset-bottom));left:8px;width:calc(100% - 16px)}.cmd-universal-shell{grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto 32px;padding:10px 11px 12px;border-radius:21px;gap:8px 10px}.cmd-universal-art{width:48px;height:48px;border-radius:11px}.cmd-universal-controls{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.cmd-universal-controls button,.cmd-universal-controls .cmd-universal-toggle{width:100%;height:38px;border-radius:999px}.cmd-universal-title{font-size:.96rem}.cmd-universal-detail{font-size:.66rem}.cmd-universal-story{font-size:.64rem!important}.cmd-universal-times{display:none}}
+      @media(max-width:680px){.cmd-universal-player{right:8px;bottom:max(8px,env(safe-area-inset-bottom));left:8px;width:calc(100% - 16px)}.cmd-universal-shell{grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto 32px;padding:10px 11px 12px;border-radius:21px;gap:8px 10px}.cmd-universal-art{width:48px;height:48px;border-radius:11px}.cmd-universal-controls{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.cmd-universal-controls button,.cmd-universal-controls .cmd-universal-toggle{width:100%;height:38px;border-radius:999px}.cmd-universal-title{font-size:.96rem}.cmd-universal-detail{font-size:.66rem}.cmd-universal-story{font-size:.64rem!important}.cmd-universal-times{display:none}}
       @media(prefers-reduced-motion:reduce){.cmd-universal-player *{scroll-behavior:auto!important}}
     `;
     document.head.appendChild(style);
@@ -116,7 +139,7 @@
       <div class="cmd-universal-controls" role="group" aria-label="Playback controls"><button class="cmd-universal-prev" type="button" aria-label="Previous song">↶</button><button class="cmd-universal-toggle" type="button" aria-label="Play">▶</button><button class="cmd-universal-next" type="button" aria-label="Next song">↷</button><button class="cmd-universal-share" type="button" aria-label="Share current song">↗</button></div>
       <div class="cmd-universal-progress" role="slider" tabindex="0" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span><i class="cmd-universal-thumb" aria-hidden="true"></i></div>
       <div class="cmd-universal-times"><span class="cmd-universal-current">0:00</span><span>/</span><span class="cmd-universal-duration">0:00</span></div><span class="cmd-universal-live" aria-live="polite"></span></div>`;
-    document.body.appendChild(root);
+    document.body.appendChild(root);watchClearance();scheduleClearance();
     const q=s=>root.querySelector(s);
     nodes={art:q('.cmd-universal-art'),image:q('img'),icon:q('.cmd-universal-art span'),context:q('.cmd-universal-context'),title:q('.cmd-universal-title'),detail:q('.cmd-universal-detail'),story:q('.cmd-universal-story'),previous:q('.cmd-universal-prev'),toggle:q('.cmd-universal-toggle'),next:q('.cmd-universal-next'),share:q('.cmd-universal-share'),progress:q('.cmd-universal-progress'),bar:q('.cmd-universal-progress span'),thumb:q('.cmd-universal-thumb'),current:q('.cmd-universal-current'),duration:q('.cmd-universal-duration'),live:q('.cmd-universal-live')};
     nodes.art.addEventListener('click',()=>active?.toggle?.());nodes.toggle.addEventListener('click',()=>active?.toggle?.());
@@ -141,8 +164,8 @@
     if(!active||!mount())return;
     // One visible dock in the top document controls the actual owner frame.
     const parent=parentPlayer();
-    if(parent?.adopt?.(active,window)){root.hidden=true;return}
-    if(parent&&!active.playing()){root.hidden=true;return}
+    if(parent?.adopt?.(active,window)){root.hidden=true;scheduleClearance();return}
+    if(parent&&!active.playing()){root.hidden=true;scheduleClearance();return}
     const media=active.media(),track=active.track(),playing=active.playing(),duration=active.duration(),time=active.time();
     const ratio=Number.isFinite(duration)&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
     if(nodes.image.src!==absolute(track.cover||FALLBACK_COVER))nodes.image.src=track.cover||FALLBACK_COVER;
@@ -170,7 +193,7 @@
     // Idle setup/time events from another player must not steal the dock.
     if(passive&&active&&active!==adapter&&!adapter.playing())return;
     active=adapter;if(!parentPlayer())configureMediaSession(adapter);
-    if(show&&mount()){root.hidden=false;document.body.classList.add('cmd-universal-open');window.CMDPersistentSite?.refreshClearance?.()}
+    if(show&&mount()){root.hidden=false;document.body.classList.add('cmd-universal-open');scheduleClearance();window.CMDPersistentSite?.refreshClearance?.()}
     render(message);
   }
   function connect(options={}){
@@ -200,7 +223,7 @@
     const handle={id,activate:()=>{if(!disposed)activate(adapter,{show:true})},
       update:(update={})=>{if(disposed)return;if(update.track!==undefined)trackOverride=update.track;if(update.status!==undefined)statusOverride=String(update.status||'');if(update.playing!==undefined)playingOverride=update.playing===null?null:Boolean(update.playing);activate(adapter,{show:update.show!==false,message:update.message||'',passive:true})},
       refresh:()=>!disposed&&active===adapter&&render(),
-      destroy:()=>{disposed=true;if(active===adapter){if(root)root.hidden=true;document.body.classList.remove('cmd-universal-open');active=null}adapters.delete(id);listed.forEach(media=>{events.forEach(type=>media.removeEventListener?.(type,onMediaEvent));if(mediaOwners.get(media)===adapter)mediaOwners.delete(media)})}};
+      destroy:()=>{disposed=true;if(active===adapter){if(root)root.hidden=true;document.body.classList.remove('cmd-universal-open');active=null;scheduleClearance()}adapters.delete(id);listed.forEach(media=>{events.forEach(type=>media.removeEventListener?.(type,onMediaEvent));if(mediaOwners.get(media)===adapter)mediaOwners.delete(media)})}};
     adapter.handle=handle;adapters.set(id,adapter);if(options.activate)activate(adapter,{show:Boolean(options.show)});return handle;
   }
   function connectCore(event){
@@ -223,7 +246,7 @@
       activate(adapter,{show:true,passive:true});return true;
     }catch{return false}
   }
-  window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,getActive:()=>active?.handle||null,getTrack:()=>active?.track()||null,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(['play','pause','toggle','next','previous','seek','share'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
+  window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,getClearance:measuredClearance,getActive:()=>active?.handle||null,getTrack:()=>active?.track()||null,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(['play','pause','toggle','next','previous','seek','share'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
   observeContinuous(window.CMDContinuousPlayback);
   document.addEventListener('play',event=>{const media=event.target;if(!media||mediaOwners.has(media)||media.muted||media.__cmdContinuousPlaybackController)return;connect({id:`native:${media.id||adapters.size+1}`,media,track:catalogTrackFor(media),activate:true,show:true})},true);
   const queued=Array.isArray(window.CMDUniversalPlayerQueue)?window.CMDUniversalPlayerQueue.splice(0):[];queued.forEach(callback=>{try{callback(window.CMDUniversalPlayer)}catch{}});

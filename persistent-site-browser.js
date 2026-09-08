@@ -4,7 +4,7 @@
     const visit=document.createElement('script');visit.src='/visit-history.js?v=20260908-latest-1';
     document.head.appendChild(visit);
   }
-  const VERSION='20260906-2';
+  const VERSION='20260908-3';
   const CLAIM='cmd:claim-playback';
   const PAUSE='cmd:pause-playback';
   const REFRESH='cmd:refresh-clearance';
@@ -37,7 +37,8 @@
   if(window.CMDPersistentSite?.version===VERSION)return;
   const originUrl=location.href;
   const initialReferrer=(()=>{try{const u=new URL(document.referrer);return u.origin===location.origin?u.href:''}catch{return''}})();
-  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null,resumePrompt=null;
+  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null,resumePrompt=null,playerClearance=0;
+  const documentClearances=new WeakMap();
   let backGuardArmed=false;
   const frames=new Set();
   const PLAYBACK_KEY='cmd:playback-session:v1';
@@ -97,10 +98,29 @@
     playerSelectors.forEach(selector=>doc.querySelectorAll(selector).forEach(el=>{if(seen.has(el))return;seen.add(el);const cs=view.getComputedStyle(el),r=el.getBoundingClientRect();if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0)return;if(r.width<40||r.height<24||r.bottom<vh-36||r.top>=vh)return;clearance=Math.max(clearance,Math.max(0,vh-r.top)+10)}));
     return clearance;
   };
+  const setDocumentClearance=(doc,value)=>{
+    if(!doc?.documentElement)return;const html=doc.documentElement,pixels=Math.max(0,Math.ceil(Number(value)||0));
+    let state=documentClearances.get(doc);
+    if(!state){
+      html.classList?.remove?.('cmd-persistent-clearance');
+      state={base:parseFloat(doc.defaultView?.getComputedStyle?.(html)?.paddingBottom)||0};documentClearances.set(doc,state);
+      let style=doc.getElementById('cmd-persistent-clearance-style');
+      if(!style){style=doc.createElement('style');style.id='cmd-persistent-clearance-style';style.textContent='html.cmd-persistent-clearance{padding-bottom:var(--cmd-persistent-clearance,0px)!important}';doc.head?.appendChild(style)}
+    }
+    if(pixels){html.style?.setProperty?.('--cmd-persistent-clearance',`${state.base+pixels}px`);html.classList?.add?.('cmd-persistent-clearance')}
+    else{html.classList?.remove?.('cmd-persistent-clearance');html.style.removeProperty('--cmd-persistent-clearance');documentClearances.delete(doc)}
+  };
+  const updateViewClearance=base=>{
+    [...frames].forEach(frame=>{try{if(frame!==viewFrame)setDocumentClearance(frame.contentDocument,0)}catch{}});
+    if(!viewFrame)return;let value=Math.max(0,Number(base)||0);
+    const pill=overlay?.querySelector('.cmd-site-session-pill:not([hidden])');
+    if(pill){const r=pill.getBoundingClientRect(),vh=window.innerHeight||0;if(r.height>0)value=Math.max(value,vh-r.top+10)}
+    try{setDocumentClearance(viewFrame.contentDocument,value)}catch{}
+  };
   const updatePillClearance=()=>{
     clearanceRaf=0;if(!overlay?.classList.contains('is-open'))return;const pill=overlay.querySelector('.cmd-site-session-pill');if(!pill)return;let clearance=0;
-    try{clearance=Math.max(visibleBottomClearance(document,window),visibleBottomClearance(viewFrame?.contentDocument,viewFrame?.contentWindow))}catch{}
-    const cap=Math.max(0,(window.innerHeight||0)-100);pill.style.setProperty('--cmd-player-clearance',`${Math.min(clearance,cap)}px`);updatePillState();
+    try{clearance=Math.max(playerClearance,visibleBottomClearance(document,window),visibleBottomClearance(viewFrame?.contentDocument,viewFrame?.contentWindow))}catch{clearance=Math.max(clearance,playerClearance)}
+    const cap=Math.max(0,(window.innerHeight||0)-100);clearance=Math.min(clearance,cap);pill.style.setProperty('--cmd-player-clearance',`${clearance}px`);updatePillState();updateViewClearance(clearance);
   };
   function scheduleClearance(){if(clearanceRaf)return;clearanceRaf=requestAnimationFrame(updatePillClearance)}
   const watchFrameLayout=()=>{
@@ -117,7 +137,7 @@
   };
   const makeFrame=url=>{
     ensureOverlay();const frame=document.createElement('iframe');frame.className='cmd-site-frame';frame.title='Call Me Daddy site';frame.style.zIndex=String(1+frames.size);overlay.insertBefore(frame,overlay.querySelector('.cmd-site-session-pill'));frames.add(frame);viewFrame=frame;
-    frame.addEventListener('load',()=>{bindFrame(frame);watchFrameLayout();updatePillState();try{if(frame===viewFrame)document.title=frame.contentDocument.title}catch{}window.CMDUniversalPlayer?.refresh?.()});
+    frame.addEventListener('load',()=>{bindFrame(frame);watchFrameLayout();updatePillState();scheduleClearance();try{if(frame===viewFrame)document.title=frame.contentDocument.title}catch{}window.CMDUniversalPlayer?.refresh?.()});
     frame.src=url.href;cleanupFrames();return frame;
   };
   const ensureOverlay=()=>{
@@ -166,7 +186,7 @@
     version:VERSION,open:url=>{const u=sameOriginUrl(url);if(u)openView(u)},
     setSession:value=>{session=Boolean(value);if(value)claimOwner(window);updatePillState()},
     claimPlayback:source=>{if(source&&source!==window&&!frameForWindow(source))return;const owner=source||window;if(ownerWindow!==owner||!session)claimOwner(owner)},
-    refreshClearance:scheduleClearance,
+    setPlayerClearance:value=>{playerClearance=Math.max(0,Number(value)||0);scheduleClearance()},refreshClearance:scheduleClearance,
     followTrack:track=>window.CMDUniversalPlayer?.followTrack?.(track),cancelFollow:()=>window.CMDUniversalPlayer?.cancelFollow?.(),
     makeSongLink(container,track,{show=false}={}){if(!container)return null;let link=container.querySelector('.cmd-now-song-link');if(!link){link=document.createElement('a');link.className='cmd-now-song-link';link.textContent='Open this song →';container.appendChild(link)}const href=track?.experience||'';link.hidden=!(show&&href);if(href)link.href=href;return link}
   };
