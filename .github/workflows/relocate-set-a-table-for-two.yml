@@ -1,0 +1,79 @@
+name: Relocate Set A Table For Two assets
+
+on:
+  push:
+    branches:
+      - move/set-a-table-for-two-assets-20260908
+    paths:
+      - .github/workflows/relocate-set-a-table-for-two.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: relocate-set-a-table-for-two-assets
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: github.repository == 'sqaz2/call-me-daddy'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: move/set-a-table-for-two-assets-20260908
+          fetch-depth: 1
+          sparse-checkout: /media/songs/2026/09/set-a-table-for-two/
+          sparse-checkout-cone-mode: false
+      - name: Copy four original uploads and verify exact Git blob hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          from urllib.parse import quote
+          from urllib.request import Request, urlopen
+
+          source = 'https://raw.githubusercontent.com/sqaz2/Generative-download/af607cad3a70d1beb3380f3854c242b29e6b01cd/'
+          destination = Path('media/songs/2026/09/set-a-table-for-two')
+          assets = [
+              ('Set A Table For Two.mp3', 3530827, '3af4fe5cc9dcaa479256f9feef3a9a3b5a760161'),
+              ('fuck everybody but you.mp3', 3578321, '71b885914cdf35a5f09b014a188ef01a239bdba4'),
+              ('Screenshot_20260907-194633.png', 541394, '24e0b953b9c2488fc1136c6c81ca0b28ca101d71'),
+              ('grok_image_1788830947264.jpg', 556362, 'b641bcee5fde710bf9f121fcfd14acec36f4e54b'),
+          ]
+          verified = []
+          for name, size, expected in assets:
+              request = Request(source + quote(name, safe=''), headers={'User-Agent': 'MusicSubject-asset-transfer'})
+              with urlopen(request, timeout=60) as response:
+                  data = response.read(size + 1)
+              actual = hashlib.sha1(b'blob ' + str(len(data)).encode('ascii') + b'\0' + data).hexdigest()
+              if len(data) != size or actual != expected:
+                  raise RuntimeError(f'Source verification failed: {name}')
+              target = destination / name
+              if target.exists() and target.read_bytes() != data:
+                  raise RuntimeError(f'Refusing to replace a different existing file: {target}')
+              verified.append((target, data))
+              print(f'VERIFIED {name}: {size} bytes, Git blob {actual}')
+          destination.mkdir(parents=True, exist_ok=True)
+          for target, data in verified:
+              if not target.exists():
+                  with target.open('xb') as handle:
+                      handle.write(data)
+          PY
+      - name: Commit only the verified song uploads to this transfer branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- media/songs/2026/09/set-a-table-for-two/
+          if git diff --cached --quiet; then
+            echo 'All four verified assets already exist; no changes needed.'
+            exit 0
+          fi
+          git diff --cached --stat
+          git commit -m 'Import both song cuts and artwork unchanged from Generative-download'
+          git push origin HEAD:refs/heads/move/set-a-table-for-two-assets-20260908
