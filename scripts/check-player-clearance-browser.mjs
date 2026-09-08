@@ -67,16 +67,14 @@ try{
   await assertBottomReachable(page,'Direct song-page footer scrolls completely above the player');
   await page.screenshot({path:path.join(out,'direct-bottom-mobile.png'),fullPage:false});
 
-  // Persistent browsing case: audio remains in one frame while a different frame is visible.
+  // Persistent browsing case: the original song keeps playing in the host while a
+  // different full-page iframe is in front of it. This is the screenshot's UX model.
+  const ownerBefore=await page.evaluate(()=>window.CMDUniversalPlayer.getMedia());
   await page.evaluate(()=>window.CMDPersistentSite.open('/superstore-effect/'));
-  await page.waitForTimeout(800);
-  const superFrame=await visibleFrame('.ss-cover-button');
-  await superFrame.locator('.ss-cover-button').tap();
-  await page.waitForFunction(()=>window.CMDUniversalPlayer?.getTrack()?.songId==='superstore-effect'&&!window.CMDUniversalPlayer.getMedia().paused,null,{timeout:20000});
-  await page.evaluate(()=>window.CMDPersistentSite.open('/set-a-table-for-two/'));
   await page.waitForTimeout(900);
-  const storyFrame=await visibleFrame('#releasePlay');
+  const storyFrame=await visibleFrame('.ss-cover-button');
   assert.notEqual(storyFrame,page.mainFrame());
+  assert.equal(await page.evaluate(owner=>window.CMDUniversalPlayer.getMedia()===owner,ownerBefore),true);
   await assertBottomReachable(storyFrame,'Visible persistent-page footer clears player and music-continues pill');
   const reserve=await storyFrame.evaluate(()=>({padding:parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0,variable:getComputedStyle(document.documentElement).getPropertyValue('--cmd-persistent-clearance')}));
   assert.ok(reserve.padding>150);check('Persistent view receives host obstruction reserve',reserve);
@@ -91,8 +89,8 @@ try{
   // Navigating again must not accumulate padding each time.
   const before=await storyFrame.evaluate(()=>parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0);
   await page.evaluate(()=>window.CMDPersistentSite.open('/updates/'));await page.waitForTimeout(500);
-  await page.evaluate(()=>window.CMDPersistentSite.open('/set-a-table-for-two/'));await page.waitForTimeout(700);
-  const returned=await visibleFrame('#releasePlay');
+  await page.evaluate(()=>window.CMDPersistentSite.open('/superstore-effect/'));await page.waitForTimeout(700);
+  const returned=await visibleFrame('.ss-cover-button');
   const after=await returned.evaluate(()=>parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0);
   assert.ok(after<before+80,`clearance must not compound across navigation (${before} → ${after})`);
   await assertBottomReachable(returned,'Repeated navigation still leaves the page end reachable');
