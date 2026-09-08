@@ -18,7 +18,9 @@ async function waitPlaying(songId){
   await page.waitForFunction(id=>{const p=window.CMDUniversalPlayer,m=p?.getMedia(),t=p?.getTrack();return t?.songId===id&&m&&!m.paused&&m.currentTime>.1},songId,{timeout:20000});
 }
 async function visibleFrame(selector){
-  for(const frame of [...page.frames()].reverse()){
+  const main=page.mainFrame();
+  const frames=[...page.frames()].sort((a,b)=>Number(a===main)-Number(b===main));
+  for(const frame of frames){
     const el=frame.locator(selector).first();
     if(await el.count()&&await el.isVisible())return frame;
   }
