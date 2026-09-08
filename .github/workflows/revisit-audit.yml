@@ -1,0 +1,32 @@
+name: Revisit playback audit
+on:
+  push:
+    branches: [codex/revisited-release-playback]
+    paths: ['.github/workflows/revisit-audit.yml']
+permissions:
+  contents: read
+jobs:
+  inputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Package source and the two affected releases for browser reproduction
+        run: |
+          python - <<'PY'
+          import pathlib, zipfile, subprocess
+          paths=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          with zipfile.ZipFile('/tmp/revisit-inputs.zip','w',zipfile.ZIP_DEFLATED) as archive:
+              for name in paths:
+                  p=pathlib.Path(name)
+                  if p.suffix.lower() in {'.js','.mjs','.cjs','.html','.css','.json','.jsonc','.xml','.md','.txt','.yml','.yaml','.toml','.svg'} or any(part in name for part in ['media/songs/2026/09/set-a-table-for-two/','media/songs/2026/09/superstore-effect/']):
+                      archive.write(p,name)
+              archive.writestr('repository-files.txt','\n'.join(paths))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: revisit-playback-inputs
+          path: /tmp/revisit-inputs.zip
+          retention-days: 2
