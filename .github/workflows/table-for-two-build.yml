@@ -19,7 +19,7 @@ jobs:
       - name: Apply verified source patch
         run: |
           python - <<'PY'
-          import pathlib, base64, lzma, hashlib, subprocess
+          import pathlib, base64, lzma, hashlib, subprocess, re
           if pathlib.Path('set-a-table-for-two/index.html').exists():
               print('Release sources already present; preserving later fixes.')
           else:
@@ -35,15 +35,19 @@ jobs:
               assert "'superstore-effect','namaste-hamster'" in content
               p.write_text(content.replace("'superstore-effect','namaste-hamster'", "'superstore-effect','set-a-table-for-two','namaste-hamster'"))
           p = pathlib.Path('music/index.html')
-          content = p.read_text()
-          import re
-          content = re.sub(r'(/data/taste-clusters\.js\?[^"<>]*)(")', lambda m: m[1] + ('&amp;release=20260907-table-two' if 'release=' not in m[1] else '') + m[2], content)
+          content = re.sub(r'(/data/taste-clusters\.js\?[^"<>]*)(")', lambda m: m[1] + ('&amp;release=20260907-table-two' if 'release=' not in m[1] else '') + m[2], p.read_text())
+          p.write_text(content)
+          p = pathlib.Path('scripts/check-table-for-two-browser.mjs')
+          content = p.read_text().replace('serve repo at :8765.', 'run node scripts/serve-release-test.mjs at :8765.')
+          content = content.replace("await page.waitForTimeout(250);\n  assert.ok((await state()).time>=40);", "await page.waitForFunction(()=>{const m=window.CMDUniversalPlayer.getMedia();return !m.seeking&&m.currentTime>=39.5&&m.currentTime<45},null,{timeout:5000});\n  check('Real media seek reaches 40 seconds',await state());")
+          content = content.replace("report.failure=String(error.stack||error);await", "report.failure=String(error.stack||error);report.failureState=await state().catch(()=>null);await")
           p.write_text(content)
           PY
       - name: Synchronize complete release
         run: |
           node --check set-a-table-for-two/player.js
           node --check scripts/check-table-for-two-browser.mjs
+          node --check scripts/serve-release-test.mjs
           node scripts/sync-releases.mjs
           node scripts/sync-releases.mjs --check
           git diff --check
@@ -65,7 +69,7 @@ jobs:
       - name: Exercise real decoding, controls and persistent navigation
         run: |
           mkdir -p /tmp/table-for-two-qa
-          python -m http.server 8765 > /tmp/table-for-two-qa/http.log 2>&1 &
+          node scripts/serve-release-test.mjs > /tmp/table-for-two-qa/http.log 2>&1 &
           sleep 2
           node scripts/check-table-for-two-browser.mjs
       - uses: actions/upload-artifact@v4
