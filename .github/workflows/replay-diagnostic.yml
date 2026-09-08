@@ -6,29 +6,29 @@ on:
 permissions:
   contents: read
 jobs:
-  snapshot:
+  browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Bundle source and relevant original media for offline debugging
-        run: |
-          mkdir -p /tmp/replay-inputs
-          python - <<'PY'
-          import pathlib, zipfile, subprocess
-          root=pathlib.Path('.')
-          names=subprocess.check_output(['git','ls-files'],text=True).splitlines()
-          with zipfile.ZipFile('/tmp/replay-inputs/source.zip','w',zipfile.ZIP_DEFLATED) as archive:
-              for name in names:
-                  p=root/name
-                  if p.suffix.lower() in {'.js','.mjs','.html','.css','.json','.jsonc','.xml','.md','.txt','.yml','.yaml','.svg'} or name.startswith('media/songs/2026/09/set-a-table-for-two/'):
-                      archive.write(p,name)
-          pathlib.Path('/tmp/replay-inputs/paths.txt').write_text('\n'.join(names))
-          PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/setup-node@v4
         with:
-          name: replay-debug-inputs
-          path: /tmp/replay-inputs/
+          node-version: 22
+      - name: Prepare touch-enabled Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Reproduce returning to previously played cuts
+        run: |
+          mkdir -p /tmp/replay-qa
+          node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/diagnose-replay.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-browser-diagnostics
+          path: /tmp/replay-qa/
           retention-days: 3
