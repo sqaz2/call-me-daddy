@@ -1,0 +1,133 @@
+name: Dynamic player clearance
+on:
+  push:
+    branches: [codex/dynamic-player-clearance]
+    paths: ['.github/workflows/dynamic-player-clearance.yml']
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/dynamic-player-clearance
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Replace fixed magic-number padding with measured viewport obstruction
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('universal-player.js');s=p.read_text()
+          s=s.replace("  let active=null,root=null,nodes=null,stopCoreObserver=null;\n", "  let active=null,root=null,nodes=null,stopCoreObserver=null,clearanceObserver=null,clearanceRaf=0,baseRootPadding=null;\n")
+          old="""      body.cmd-universal-open{padding-bottom:calc(148px + env(safe-area-inset-bottom))!important}\n"""
+          assert old in s
+          s=s.replace(old,"""      html.cmd-universal-clearance{padding-bottom:var(--cmd-universal-clearance,0px)!important}\n""")
+          old="""      @media(max-width:680px){body.cmd-universal-open{padding-bottom:calc(172px + env(safe-area-inset-bottom))!important}.cmd-universal-player{right:8px;bottom:max(8px,env(safe-area-inset-bottom));left:8px;width:calc(100% - 16px)}"""
+          assert old in s
+          s=s.replace(old,"""      @media(max-width:680px){.cmd-universal-player{right:8px;bottom:max(8px,env(safe-area-inset-bottom));left:8px;width:calc(100% - 16px)}""")
+          marker="""  function injectStyles(){\n"""
+          assert marker in s
+          clearance="""  const measuredClearance=()=>{\n    if(!root||root.hidden)return 0;\n    const rect=root.getBoundingClientRect(),vh=window.innerHeight||document.documentElement.clientHeight||0;\n    return Math.ceil(Math.max(0,vh-rect.top)+8);\n  };\n  function applyClearance(){\n    clearanceRaf=0;if(!document.documentElement)return;\n    const value=measuredClearance(),html=document.documentElement;\n    if(value>0){\n      if(baseRootPadding===null){html.classList.remove('cmd-universal-clearance');baseRootPadding=parseFloat(getComputedStyle(html).paddingBottom)||0}\n      html.style.setProperty('--cmd-universal-clearance',`${baseRootPadding+value}px`);html.classList.add('cmd-universal-clearance');\n    }else{html.classList.remove('cmd-universal-clearance');html.style.removeProperty('--cmd-universal-clearance');baseRootPadding=null}\n    try{window.CMDPersistentSite?.setPlayerClearance?.(value)}catch{}\n    try{window.dispatchEvent(new CustomEvent('cmd:universal-clearance',{detail:{pixels:value}}))}catch{}\n  }\n  function scheduleClearance(){if(clearanceRaf)return;clearanceRaf=requestAnimationFrame(applyClearance)}\n  function watchClearance(){\n    if(clearanceObserver||!root)return;\n    if(typeof ResizeObserver==='function'){clearanceObserver=new ResizeObserver(scheduleClearance);clearanceObserver.observe(root)}\n    addEventListener('resize',scheduleClearance,{passive:true});\n    try{visualViewport?.addEventListener?.('resize',scheduleClearance,{passive:true});visualViewport?.addEventListener?.('scroll',scheduleClearance,{passive:true})}catch{}\n  }\n\n"""
+          s=s.replace(marker,clearance+marker)
+          old="""    document.body.appendChild(root);\n    const q=s=>root.querySelector(s);\n"""
+          assert old in s
+          s=s.replace(old,"""    document.body.appendChild(root);watchClearance();scheduleClearance();\n    const q=s=>root.querySelector(s);\n""")
+          old="""    if(parent?.adopt?.(active,window)){root.hidden=true;return}\n    if(parent&&!active.playing()){root.hidden=true;return}\n"""
+          assert old in s
+          s=s.replace(old,"""    if(parent?.adopt?.(active,window)){root.hidden=true;scheduleClearance();return}\n    if(parent&&!active.playing()){root.hidden=true;scheduleClearance();return}\n""")
+          old="""    if(show&&mount()){root.hidden=false;document.body.classList.add('cmd-universal-open');window.CMDPersistentSite?.refreshClearance?.()}\n    render(message);\n"""
+          assert old in s
+          s=s.replace(old,"""    if(show&&mount()){root.hidden=false;document.body.classList.add('cmd-universal-open');scheduleClearance();window.CMDPersistentSite?.refreshClearance?.()}\n    render(message);\n""")
+          old="""      destroy:()=>{disposed=true;if(active===adapter){if(root)root.hidden=true;document.body.classList.remove('cmd-universal-open');active=null}adapters.delete(id);"""
+          assert old in s
+          s=s.replace(old,"""      destroy:()=>{disposed=true;if(active===adapter){if(root)root.hidden=true;document.body.classList.remove('cmd-universal-open');active=null;scheduleClearance()}adapters.delete(id);""")
+          old="""window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,getActive:()=>active?.handle||null,getTrack:()=>active?.track()||null,getMedia:()=>active?.media()||null,control:"""
+          assert old in s
+          s=s.replace(old,"""window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,getClearance:measuredClearance,getActive:()=>active?.handle||null,getTrack:()=>active?.track()||null,getMedia:()=>active?.media()||null,control:""")
+          p.write_text(s)
+
+          p=Path('persistent-site-browser.js');s=p.read_text()
+          s=s.replace("  const VERSION='20260906-2';", "  const VERSION='20260908-3';")
+          old="""  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null,resumePrompt=null;\n"""
+          assert old in s
+          s=s.replace(old,"""  let overlay=null,viewFrame=null,ownerWindow=window,session=false,internalNav=false,clearanceRaf=0,clearanceObserver=null,resumePrompt=null,playerClearance=0;\n  const documentClearances=new WeakMap();\n""")
+          marker="""  const updatePillClearance=()=>{\n"""
+          assert marker in s
+          helper="""  const setDocumentClearance=(doc,value)=>{\n    if(!doc?.documentElement)return;const html=doc.documentElement,pixels=Math.max(0,Math.ceil(Number(value)||0));\n    let state=documentClearances.get(doc);\n    if(!state){\n      html.classList.remove('cmd-persistent-clearance');\n      state={base:parseFloat(doc.defaultView?.getComputedStyle?.(html)?.paddingBottom)||0};documentClearances.set(doc,state);\n      let style=doc.getElementById('cmd-persistent-clearance-style');\n      if(!style){style=doc.createElement('style');style.id='cmd-persistent-clearance-style';style.textContent='html.cmd-persistent-clearance{padding-bottom:var(--cmd-persistent-clearance,0px)!important}';doc.head?.appendChild(style)}\n    }\n    if(pixels){html.style.setProperty('--cmd-persistent-clearance',`${state.base+pixels}px`);html.classList.add('cmd-persistent-clearance')}\n    else{html.classList.remove('cmd-persistent-clearance');html.style.removeProperty('--cmd-persistent-clearance');documentClearances.delete(doc)}\n  };\n  const updateViewClearance=base=>{\n    [...frames].forEach(frame=>{try{if(frame!==viewFrame)setDocumentClearance(frame.contentDocument,0)}catch{}});\n    if(!viewFrame)return;let value=Math.max(0,Number(base)||0);\n    const pill=overlay?.querySelector('.cmd-site-session-pill:not([hidden])');\n    if(pill){const r=pill.getBoundingClientRect(),vh=window.innerHeight||0;if(r.height>0)value=Math.max(value,vh-r.top+10)}\n    try{setDocumentClearance(viewFrame.contentDocument,value)}catch{}\n  };\n"""
+          s=s.replace(marker,helper+marker)
+          old="""    try{clearance=Math.max(visibleBottomClearance(document,window),visibleBottomClearance(viewFrame?.contentDocument,viewFrame?.contentWindow))}catch{}\n    const cap=Math.max(0,(window.innerHeight||0)-100);pill.style.setProperty('--cmd-player-clearance',`${Math.min(clearance,cap)}px`);updatePillState();\n"""
+          assert old in s
+          s=s.replace(old,"""    try{clearance=Math.max(playerClearance,visibleBottomClearance(document,window),visibleBottomClearance(viewFrame?.contentDocument,viewFrame?.contentWindow))}catch{clearance=Math.max(clearance,playerClearance)}\n    const cap=Math.max(0,(window.innerHeight||0)-100);clearance=Math.min(clearance,cap);pill.style.setProperty('--cmd-player-clearance',`${clearance}px`);updatePillState();updateViewClearance(clearance);\n""")
+          old="""      version:VERSION,setSession:value=>{if(value)claimPlayback()},claimPlayback,refreshClearance:refresh,\n"""
+          # This is child-frame API and must remain unchanged; host API is defined near the end.\n          assert old in s
+          # Locate host API by its final refreshClearance property.
+          host="""refreshClearance:scheduleClearance"""
+          assert host in s
+          s=s.replace(host,"""setPlayerClearance:value=>{playerClearance=Math.max(0,Number(value)||0);scheduleClearance()},refreshClearance:scheduleClearance""",1)
+          # A newly loaded visible frame needs reserve immediately, even before another player event.
+          old="""    frame.addEventListener('load',()=>{bindFrame(frame);watchFrameLayout();updatePillState();try{if(frame===viewFrame)document.title=frame.contentDocument.title}catch{}window.CMDUniversalPlayer?.refresh?.()});\n"""
+          assert old in s
+          s=s.replace(old,"""    frame.addEventListener('load',()=>{bindFrame(frame);watchFrameLayout();updatePillState();scheduleClearance();try{if(frame===viewFrame)document.title=frame.contentDocument.title}catch{}window.CMDUniversalPlayer?.refresh?.()});\n""")
+          p.write_text(s)
+
+          # Cache-bust both shared scripts wherever a page already references them. This is a delivery change only.
+          for p in Path('.').rglob('*.html'):
+            if '.git' in p.parts: continue
+            text=p.read_text()
+            changed=re.sub(r'/universal-player\.js(?:\?[^\"\'<>]*)?', '/universal-player.js?v=20260908-clearance', text)
+            changed=re.sub(r'/persistent-site-browser\.js(?:\?[^\"\'<>]*)?', '/persistent-site-browser.js?v=20260908-clearance', changed)
+            if changed!=text:p.write_text(changed)
+          PY
+      - name: Static and full regression checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/player-clearance-qa
+          node --check universal-player.js
+          node --check persistent-site-browser.js
+          node --check scripts/check-player-clearance-browser.mjs
+          node scripts/sync-releases.mjs --check
+          node --test tests/playback-sync.test.js
+          node --test tests/*.test.js tests/*.test.mjs | tee /tmp/player-clearance-qa/node-tests.txt
+          git diff --check
+      - name: Real mobile browser test against production range-aware media Worker
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+          node scripts/serve-release-test.mjs >/tmp/player-clearance-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-table-for-two-browser.mjs
+          node scripts/check-replay-return-browser.mjs
+          node scripts/check-player-clearance-browser.mjs
+      - name: Keep the clearance regression in normal site CI and commit tested repair
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/site-checks.yml');s=p.read_text()
+          needle='          node --check scripts/check-replay-return-browser.mjs\n';assert needle in s
+          s=s.replace(needle,needle+'          node --check scripts/check-player-clearance-browser.mjs\n')
+          needle='          node scripts/check-replay-return-browser.mjs\n';assert needle in s
+          s=s.replace(needle,needle+'          node scripts/check-player-clearance-browser.mjs\n')
+          p.write_text(s)
+          PY
+          git add -A
+          git reset .github/workflows/dynamic-player-clearance.yml
+          git rm .github/workflows/dynamic-player-clearance.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Reserve measured scroll space for fixed playback UI across persistent pages'
+          git push origin HEAD:codex/dynamic-player-clearance
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dynamic-player-clearance-proof
+          path: |
+            /tmp/player-clearance-qa/
+            /tmp/table-for-two-qa/
+            /tmp/replay-qa/
+          retention-days: 7
