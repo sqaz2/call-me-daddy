@@ -53,6 +53,7 @@ jobs:
           node --check twas-the-tism-mlord/player.js
           node --check set-a-table-for-two/player.js
           node --check scripts/check-table-for-two-browser.mjs
+          node --check scripts/check-replay-return-browser.mjs
           node --check worker/index.mjs
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
@@ -94,3 +95,35 @@ jobs:
         run: node --test tests/release-workflow.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs
+
+  playback-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare touch-browser playback tests
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Real playback, full-cycle revisits and owner reload recovery
+        run: |
+          mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
+          node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-table-for-two-browser.mjs
+          node scripts/check-replay-return-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playback-browser-regressions
+          path: |
+            /tmp/replay-qa/
+            /tmp/table-for-two-qa/
+          retention-days: 7
