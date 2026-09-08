@@ -1,4 +1,4 @@
-/** Real Chromium release smoke test. npm install --no-save playwright; serve repo at :8765. */
+/** Real Chromium release smoke test. npm install --no-save playwright; run node scripts/serve-release-test.mjs at :8765. */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -61,8 +61,8 @@ try{
   check('Variant selection synchronizes real source, artwork and exact-cut share',playing);
   assert.equal(await visibleDocks(),1);
   await page.evaluate(()=>{window.__qaOwner=window.CMDUniversalPlayer.getMedia();window.CMDUniversalPlayer.control('seek',40)});
-  await page.waitForTimeout(250);
-  assert.ok((await state()).time>=40);
+  await page.waitForFunction(()=>{const m=window.CMDUniversalPlayer.getMedia();return !m.seeking&&m.currentTime>=39.5&&m.currentTime<45},null,{timeout:5000});
+  check('Real media seek reaches 40 seconds',await state());
   frame=await releaseFrame();
   await frame.locator('#releasePlay').click();
   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
@@ -106,5 +106,5 @@ try{
   assert.deepEqual(report.errors,[]);
   check('No uncaught browser JavaScript errors');
   report.success=true;
-}catch(error){report.success=false;report.failure=String(error.stack||error);await page.screenshot({path:path.join(out,'failure.png'),fullPage:true}).catch(()=>{});throw error}
+}catch(error){report.success=false;report.failure=String(error.stack||error);report.failureState=await state().catch(()=>null);await page.screenshot({path:path.join(out,'failure.png'),fullPage:true}).catch(()=>{});throw error}
 finally{fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));await browser.close()}
