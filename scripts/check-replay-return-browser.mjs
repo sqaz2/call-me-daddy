@@ -31,10 +31,14 @@ try{
   await page.evaluate(()=>{const m=window.CMDUniversalPlayer.getMedia();m.currentTime=m.duration-.4});
   await waitForCut('voice-clone');
   await page.evaluate(()=>{const m=window.CMDUniversalPlayer.getMedia();m.currentTime=m.duration-.4});
-  await page.waitForFunction(()=>window.CMDUniversalPlayer.getTrack()?.songId!=='set-a-table-for-two',null,{timeout:12000});
-  check('Both original cuts naturally end before the replay scenario');
-  await navigate('/superstore-effect/');
+  // A track announcement precedes decoding and automatic page following. Wait for
+  // that handoff to finish before performing the listener's next navigation.
+  await page.waitForFunction(()=>{const p=window.CMDUniversalPlayer,m=p.getMedia(),t=p.getTrack();return t?.songId!=='set-a-table-for-two'&&m&&!m.paused&&m.currentTime>.1},null,{timeout:12000});
+  await page.waitForFunction(()=>{const t=window.CMDUniversalPlayer.getTrack();return t?.experience?location.pathname===new URL(t.experience,location.href).pathname:location.pathname==='/now-playing/'},null,{timeout:12000});
+  check('Both original cuts naturally end and the site radio follows its next page');
   await page.evaluate(()=>window.CMDUniversalPlayer.control('pause'));
+  await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
+  await navigate('/superstore-effect/');
   await tap('.ss-cover-button');await page.waitForTimeout(700);
   await openReleaseFromUpdates();await tap('#releasePlay');await waitForCut('main');
   check('Superstore → Updates → previously heard wedding cut plays on one tap');
