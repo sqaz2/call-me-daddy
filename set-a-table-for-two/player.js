@@ -22,10 +22,20 @@
     try{if(window.top!==window.self&&window.top.location.origin===location.origin)return window.top.CMDUniversalPlayer||window.CMDUniversalPlayer}catch{}
     return window.CMDUniversalPlayer;
   };
-  // The actual source owns the identity, including when an earlier page owns the audio.
+  // A retained adapter can outlive its iframe's document after a reload. Its old
+  // audio still has a src/paused property, but cannot deliver live playback events.
+  const usableMedia=media=>{
+    if(!media||media.isConnected===false)return false;
+    try{
+      const doc=media.ownerDocument;
+      return !doc||Boolean(doc.defaultView&&doc.defaultView.document===doc);
+    }catch{return false}
+  };
+  // The actual, live source owns identity, not metadata left by an unloaded page.
   const live=()=>{
-    const owner=shared(),media=owner?.getMedia?.(),track=owner?.getTrack?.();
-    const source=media?.getAttribute?.('src')||media?.src||media?.currentSrc||track?.audio;
+    const owner=shared(),candidate=owner?.getMedia?.(),track=owner?.getTrack?.();
+    const media=usableMedia(candidate)?candidate:null;
+    const source=media?.getAttribute?.('src')||media?.src||media?.currentSrc||'';
     return {owner,media,track,index:indexFor(source),playing:Boolean(media&&!media.paused&&!media.ended)};
   };
   const requested=new URLSearchParams(location.search).get('version');

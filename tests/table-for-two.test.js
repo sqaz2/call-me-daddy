@@ -136,3 +136,27 @@ test('corrected provenance still maps both untouched recordings and artwork fing
     assert.equal(crypto.createHash('sha256').update(data).digest('hex'),item.sha256);
   }
 });
+
+test('revisiting a cut replaces an unloaded owner instead of toggling its orphaned audio',()=>{
+  const media=new Element();media.src=main.audio;media.currentTime=36;
+  const oldDocument={};const ownerWindow={document:{}};oldDocument.defaultView=ownerWindow;media.ownerDocument=oldDocument;media.isConnected=true;
+  const e=environment({external:{media,track:{...song,...main}}});
+  e.ids.releasePlay.click();
+  assert.equal(e.calls.creates,1,'a reloaded iframe cannot keep owning this recording');
+  assert.equal(e.media().src,main.audio);assert.equal(e.media().paused,false);
+  assert.equal(media.plays,0,'never send play to the old document');
+  assert.equal(e.ids.releaseCover.src,main.cover);assert.equal(e.ids.releaseSuno.href,main.sunoUrl);
+});
+test('an audio node removed from its page is not a valid same-cut replay target',()=>{
+  const media=new Element();media.src=clone.audio;media.isConnected=false;
+  const e=environment({query:'?version=voice-clone',external:{media,track:{...song,...clone}}});
+  e.ids.releasePlay.click();
+  assert.equal(e.calls.creates,1);assert.equal(e.media().src,clone.audio);assert.equal(e.media().paused,false);assert.equal(media.plays,0);
+});
+test('a healthy retained owner still resumes at its position without recreating the queue',()=>{
+  const media=new Element();media.src=main.audio;media.currentTime=51;media.isConnected=true;
+  const doc={};doc.defaultView={document:doc};media.ownerDocument=doc;
+  const e=environment({external:{media,track:{...song,...main}}});
+  e.ids.releasePlay.click();
+  assert.equal(e.calls.creates,0);assert.equal(e.media(),media);assert.equal(media.currentTime,51);assert.equal(media.paused,false);
+});
