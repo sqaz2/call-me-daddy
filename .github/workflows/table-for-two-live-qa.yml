@@ -1,0 +1,70 @@
+name: Table for two production verification
+on:
+  push:
+    branches: [codex/set-a-table-for-two]
+    paths: ['.github/workflows/table-for-two-live-qa.yml']
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: b3be5f8c46f3a3dc4ae5afe5e095d5b29d554389
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare browser
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Verify deployment and all four original media fingerprints
+        run: |
+          mkdir -p /tmp/table-for-two-qa
+          python - <<'PY'
+          import pathlib, urllib.request, urllib.parse, json, hashlib, time
+          base = 'https://callmedaddy.musicsubject.com'
+          url = base + '/set-a-table-for-two/'
+          report = {'url':url, 'commit':'b3be5f8c46f3a3dc4ae5afe5e095d5b29d554389', 'media':[]}
+          for attempt in range(30):
+              try:
+                  with urllib.request.urlopen(url, timeout=20) as response:
+                      text=response.read().decode()
+                      if response.status == 200 and 'id="releaseTitle"' in text and 'My own voice. Allegedly.' in text:
+                          report['pageStatus']=response.status
+                          break
+              except Exception as exc: print('Waiting for deployed route:',str(exc))
+              time.sleep(10)
+          else: raise RuntimeError('Merged release page did not become available within deployment wait')
+          sources=json.loads(pathlib.Path('set-a-table-for-two/sources.json').read_text())
+          for entry in sources['recordings']+sources['artwork']:
+              media_url=base+urllib.parse.quote(entry['file'],safe='/')
+              with urllib.request.urlopen(media_url,timeout=45) as response:
+                  data=response.read()
+                  digest=hashlib.sha256(data).hexdigest()
+                  assert response.status==200 and len(data)==entry['bytes'] and digest==entry['sha256'],entry['file']
+              verified={'file':entry['file'],'bytes':len(data),'sha256':digest,'matchedOriginal':True}
+              if entry['file'].endswith('.mp3'):
+                  req=urllib.request.Request(media_url,headers={'Range':'bytes=0-1023'})
+                  with urllib.request.urlopen(req,timeout=30) as response:
+                      assert response.status==206 and len(response.read())==1024, 'Byte-range streaming failed'
+                      verified['rangeStatus']=response.status
+                      verified['contentRange']=response.headers.get('content-range')
+              report['media'].append(verified)
+          report['success']=True
+          pathlib.Path('/tmp/table-for-two-qa/production-http.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Browser-test actual production playback
+        env:
+          SITE_BASE: https://callmedaddy.musicsubject.com
+        run: node scripts/check-table-for-two-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: table-for-two-production-qa
+          path: /tmp/table-for-two-qa/
+          retention-days: 7
