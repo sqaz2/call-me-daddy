@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "set-a-table-for-two",
+    "title": "Fuck Everybody But You",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-07",
+    "project": "One song. Two cuts.",
+    "description": "Angry romance and extreme wedding humour. One song, two cuts: the wedding-table version and my first attempt at cloning my own voice. Same lyrics. Very different guests.",
+    "aliases": [
+      "Set A Table For Two",
+      "Fuck Everybody, But I Love You",
+      "Wedding cut",
+      "First voice clone"
+    ],
+    "audio": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
+    "cover": "/media/songs/2026/09/set-a-table-for-two/grok_image_1788830947264.jpg",
+    "experience": "/set-a-table-for-two/",
+    "shareUrl": "/set-a-table-for-two/",
+    "kind": "Explicit comedy · angry romance · two versions",
+    "explicit": true,
+    "variants": [
+      {
+        "id": "main",
+        "label": "Wedding cut",
+        "audio": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
+        "cover": "/media/songs/2026/09/set-a-table-for-two/grok_image_1788830947264.jpg",
+        "duration": 143.88,
+        "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b",
+        "sunoTitle": "fuck everybody but you"
+      },
+      {
+        "id": "voice-clone",
+        "label": "Voice-clone cut",
+        "audio": "/media/songs/2026/09/set-a-table-for-two/Set A Table For Two.mp3",
+        "cover": "/media/songs/2026/09/set-a-table-for-two/Screenshot_20260907-194633.png",
+        "duration": 144.12,
+        "sunoUrl": "https://suno.com/song/de2f1819-86af-48c8-8f2b-32e7cb559f9f",
+        "sunoTitle": "Set A Table For Two"
+      }
+    ],
+    "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b"
+  },
+  "lyrics": {
+    "text": "[Opening]\n[Intro — spoken] I said, “Fuck everybody.” You said, “At once?” …That’s when I bought the ring.\n[Verse 1] Fuck this town and its fake-ass smiles, I’d walk through hell for you—complain for miles. Brought you roses from a funeral van, He’s dead. I’m driving. Understand?\nYour dad said, “Over my dead body.” That’s a venue and a theme for the party. Your momma said, “You could do better than him.” I said, “We both could. Let the wedding begin.”\n[Chorus] Fuck everybody, but I love you. Fuck this world—set a table for two. Got a mouth like hell high in high water watch the truth come through: I hate everything. Everyone. Not you.\n[Verse 2] Sold Nan’s urn for our honeymoon flight, Pringles tube now—she’s travelling light. “Take me somewhere warm,” she said before— Cremation, then the beach. What you crying for?\nThe wedding elvis at last vegas said, “Any objections?” Everybody stood. You said, “That’s everybody we expected would.” Stole our own cake, took the cash, left town, You’re laughing in your dress with the windows down.\n[Bridge — quieter] Then you fall asleep with your head on my chest, And I stop being angry long enough to rest. No punchline there. Don’t make it weird. Just stay like that. I’m glad you’re here.\n[Final chorus] Fuck everybody, but I love you. Burnt the dinner—book a table for two. Still got that mouth, still telling the truth: I hate everything. Everyone. Not you.\n[Outro — spoken] Don’t eat those Pringles. That’s your grandmother.",
+    "snippet": "Fuck everybody, but I love you.",
+    "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b",
+    "clipIds": [
+      "8d3d14bd-65fb-4b04-95ae-fc46ef1a039b",
+      "de2f1819-86af-48c8-8f2b-32e7cb559f9f"
+    ],
+    "source": "Identical USLT lyrics embedded in both original Suno MP3 uploads; wording and punctuation preserved."
+  },
+  "radio": {
+    "surprise": 90,
+    "laugh": 100,
+    "think": 22,
+    "level-up": 18,
+    "heavy": 25,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-set-a-table-for-two",
+    "published": "2026-09-07T20:55:00-06:00",
+    "type": "New release · two cuts",
+    "songId": "set-a-table-for-two",
+    "title": "Fuck Everybody But You / Set A Table For Two",
+    "summary": "One love song, two cuts: the wedding version and my first voice clone. First dance, funeral roses and extremely questionable wedding etiquette.",
+    "href": "/set-a-table-for-two/",
+    "sharePath": "/updates/release-set-a-table-for-two/",
+    "cta": "Pick your wedding guest",
+    "featured": true,
+    "cover": "/media/songs/2026/09/set-a-table-for-two/grok_image_1788830947264.jpg",
+    "cardLines": [
+      "FUCK EVERYBODY",
+      "BUT YOU."
+    ],
+    "cardTag": "One song · two cuts · explicit",
+    "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
+    "badge": "New release",
+    "intent": "laugh"
+  }
+}
