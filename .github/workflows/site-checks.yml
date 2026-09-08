@@ -51,6 +51,8 @@ jobs:
           node --check archive/2019-heartbreak-rehearsals/player.js
           node --check updates/updates.js
           node --check twas-the-tism-mlord/player.js
+          node --check set-a-table-for-two/player.js
+          node --check scripts/check-table-for-two-browser.mjs
           node --check worker/index.mjs
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
@@ -78,6 +80,8 @@ jobs:
         run: node --test tests/four-track-player.test.js
       - name: Concrete Under Evergreens player tests
         run: node --test tests/concrete-player.test.js
+      - name: Two-cut release and shared playback tests
+        run: node --test tests/table-for-two.test.js
       - name: Playlist continuity tests
         run: node --test tests/playlist-continuity.test.js
       - name: Background playback recovery tests

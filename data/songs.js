@@ -1,6 +1,49 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "set-a-table-for-two",
+    "title": "Fuck Everybody But You",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-07",
+    "project": "One song. Two cuts.",
+    "description": "Angry romance and extreme wedding humour. One song, two cuts: the wedding-table version and my first attempt at cloning my own voice. Same lyrics. Very different guests.",
+    "aliases": [
+      "Set A Table For Two",
+      "Fuck Everybody, But I Love You",
+      "Wedding cut",
+      "First voice clone"
+    ],
+    "audio": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
+    "cover": "/media/songs/2026/09/set-a-table-for-two/grok_image_1788830947264.jpg",
+    "experience": "/set-a-table-for-two/",
+    "shareUrl": "/set-a-table-for-two/",
+    "kind": "Explicit comedy · angry romance · two versions",
+    "explicit": true,
+    "variants": [
+      {
+        "id": "main",
+        "label": "Wedding cut",
+        "audio": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
+        "cover": "/media/songs/2026/09/set-a-table-for-two/grok_image_1788830947264.jpg",
+        "duration": 143.88,
+        "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b",
+        "sunoTitle": "fuck everybody but you"
+      },
+      {
+        "id": "voice-clone",
+        "label": "Voice-clone cut",
+        "audio": "/media/songs/2026/09/set-a-table-for-two/Set A Table For Two.mp3",
+        "cover": "/media/songs/2026/09/set-a-table-for-two/Screenshot_20260907-194633.png",
+        "duration": 144.12,
+        "sunoUrl": "https://suno.com/song/de2f1819-86af-48c8-8f2b-32e7cb559f9f",
+        "sunoTitle": "Set A Table For Two"
+      }
+    ],
+    "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b"
+  },
+  {
     "id": "satans-loan",
     "title": "Satan's Loan",
     "artist": "MusicSubject × Call Me Daddy",

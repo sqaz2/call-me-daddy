@@ -123,6 +123,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "set-a-table-for-two": {
+    "surprise": 90,
+    "laugh": 100,
+    "think": 22,
+    "level-up": 18,
+    "heavy": 25,
+    "old-files": 0
+  },
   "satans-loan": {
     "surprise": 62,
     "laugh": 12,

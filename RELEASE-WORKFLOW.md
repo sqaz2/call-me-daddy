@@ -24,3 +24,7 @@ Remove `song.experience`. Set both `song.shareUrl` and `update.href` to an exact
 - Never invent a story, platform link or listener claim to fill a blank field.
 - Commit the manifest and every generated file together. CI rejects drift.
 
+
+## Exact lyrics (optional)
+
+A release may include a top-level `lyrics` object with `text`, `snippet`, `sunoUrl`, and `clipIds`. Copy the released source verbatim, not an earlier draft. The sync command adds those words to the generated region in `data/song-lyrics.js`, so Music's lyric panel and lyric search see the same release. Legacy lyric entries outside that region remain untouched. Variant artwork is validated alongside its audio.

@@ -1,8 +1,30 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-07T12:00:00-06:00",
+  updated: "2026-09-07T20:55:00-06:00",
   entries: [
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-set-a-table-for-two",
+      "published": "2026-09-07T20:55:00-06:00",
+      "type": "New release · two cuts",
+      "songId": "set-a-table-for-two",
+      "title": "Fuck Everybody But You / Set A Table For Two",
+      "summary": "One love song, two cuts: the wedding version and my first voice clone. First dance, funeral roses and extremely questionable wedding etiquette.",
+      "href": "/set-a-table-for-two/",
+      "sharePath": "/updates/release-set-a-table-for-two/",
+      "cta": "Pick your wedding guest",
+      "featured": true,
+      "cover": "/media/songs/2026/09/set-a-table-for-two/grok_image_1788830947264.jpg",
+      "cardLines": [
+        "FUCK EVERYBODY",
+        "BUT YOU."
+      ],
+      "cardTag": "One song · two cuts · explicit",
+      "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
+      "badge": "New release",
+      "intent": "laugh",
+      "featuredOrder": 0.2
+    },
     {
       "id": "release-satans-loan",
       "published": "2026-09-07T12:00:00-06:00",
@@ -23,7 +45,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.25
+      "featuredOrder": 0.4
     },
     {
       "id": "release-superstore-effect",
@@ -45,7 +67,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.5
+      "featuredOrder": 0.6
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -67,7 +89,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.75
+      "featuredOrder": 0.8
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-where-the-teeth-are-kept",published:"2026-08-25T07:06:00-06:00",type:"New release",songId:"where-the-teeth-are-kept",featured:true,featuredOrder:1,cardLines:["WHERE THE TEETH","ARE KEPT"],cardTag:"Google Gemini · adult fairytale",cardSummary:"A seductive adult reimagining of Little Red Riding Hood, with the danger left in the woods instead of sanding it down.",badge:"Made with Gemini"},

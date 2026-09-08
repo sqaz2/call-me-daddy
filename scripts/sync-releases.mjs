@@ -9,6 +9,7 @@ const problems = [];
 
 const markers = {
   songs: ['  // RELEASE-MANIFEST:SONGS:START', '  // RELEASE-MANIFEST:SONGS:END'],
+  lyrics: ['    // RELEASE-MANIFEST:LYRICS:START', '    // RELEASE-MANIFEST:LYRICS:END'],
   updates: ['    // RELEASE-MANIFEST:UPDATES:START', '    // RELEASE-MANIFEST:UPDATES:END'],
   radio: ['/* RELEASE-MANIFEST:RADIO:START */', '/* RELEASE-MANIFEST:RADIO:END */'],
   sitemap: ['<!-- RELEASE-MANIFEST:SITEMAP:START -->', '<!-- RELEASE-MANIFEST:SITEMAP:END -->']
@@ -93,7 +94,14 @@ function validateManifest(manifest, relative) {
   if (!song.audio && !song.youtubeUrl) report(`${relative} needs song.audio or song.youtubeUrl`);
   requireLocalAsset(song.audio, `${relative} song.audio`);
   requireLocalAsset(song.cover, `${relative} song.cover`);
-  for (const variant of song.variants || []) requireLocalAsset(variant?.audio, `${relative} variant ${variant?.id || '(missing id)'}`);
+  for (const variant of song.variants || []) {
+    requireLocalAsset(variant?.audio, `${relative} variant ${variant?.id || '(missing id)'}`);
+    requireLocalAsset(variant?.cover, `${relative} variant ${variant?.id || '(missing id)'} cover`);
+  }
+  if (manifest.lyrics !== undefined) {
+    if (!String(manifest.lyrics?.text || '').trim()) report(`${relative} lyrics.text must contain the exact released words`);
+    if (!/^https:\/\/suno\.com\/(song|s)\//.test(manifest.lyrics?.sunoUrl || '')) report(`${relative} lyrics.sunoUrl needs a Suno source`);
+  }
   requireLocalPage(song.experience, `${relative} song.experience`);
   requireLocalPage(song.shareUrl, `${relative} song.shareUrl`);
 
@@ -148,6 +156,9 @@ if (problems.length) {
 }
 
 const songsOriginal = read('data/songs.js');
+const lyricsOriginal = read('data/song-lyrics.js');
+// Bootstrap a generated region without changing any legacy lyrics.
+const lyricsBase = lyricsOriginal.includes(markers.lyrics[0]) ? lyricsOriginal : lyricsOriginal.replace('  const L={\n', `  const L={\n${markers.lyrics[0]}\n${markers.lyrics[1]}\n`);
 const briefingOriginal = read('data/briefing.js');
 const radioOriginal = read('data/radio-intents.js');
 const sitemapOriginal = read('sitemap.xml');
@@ -162,6 +173,12 @@ const updates = releases.map((release, index) => {
 });
 
 const songsBody = releases.map(release => `${indentedJson(release.song)},`).join('\n');
+const lyricsBody = releases.filter(release => release.lyrics).map(release => {
+  const entry = release.lyrics;
+  const value = { search: entry.text.replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim(), snippet: entry.snippet || '', lyrics: entry.text, sunoUrl: entry.sunoUrl, clipIds: entry.clipIds || [] };
+  return `    ${JSON.stringify(release.song.id)}: ${JSON.stringify(value)},`;
+}).join('\n');
+const lyricsExpected = replaceBlock(lyricsBase, markers.lyrics, lyricsBody);
 const updatesBody = updates.map(update => `${indentedJson(update, 4)},`).join('\n');
 const profiles = Object.fromEntries(releases.map(release => [release.song.id, release.radio]));
 const radioBody = `Object.assign(window.CMD_RADIO_CONFIG.profiles, ${JSON.stringify(profiles, null, 2)});`;
@@ -265,6 +282,7 @@ function renderUpdatePage(release, update) {
 
 const planned = [
   ['data/songs.js', songsExpected],
+  ['data/song-lyrics.js', lyricsExpected],
   ['data/briefing.js', briefingExpected],
   ['data/radio-intents.js', radioExpected],
   ['sitemap.xml', sitemapExpected]
