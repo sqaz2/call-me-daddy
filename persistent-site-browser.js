@@ -1,4 +1,9 @@
 (()=>{
+  // Lightweight visit memory also covers direct arrivals on song pages.
+  if(!window.CMDVisitHistory&&document.createElement&&document.head?.appendChild){
+    const visit=document.createElement('script');visit.src='/visit-history.js?v=20260908-latest-1';
+    document.head.appendChild(visit);
+  }
   const VERSION='20260906-2';
   const CLAIM='cmd:claim-playback';
   const PAUSE='cmd:pause-playback';
