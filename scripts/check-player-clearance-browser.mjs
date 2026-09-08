@@ -18,12 +18,17 @@ async function waitPlaying(songId){
   await page.waitForFunction(id=>{const p=window.CMDUniversalPlayer,m=p?.getMedia(),t=p?.getTrack();return t?.songId===id&&m&&!m.paused&&m.currentTime>.1},songId,{timeout:20000});
 }
 async function visibleFrame(selector){
-  const main=page.mainFrame();
-  const frames=[...page.frames()].sort((a,b)=>Number(a===main)-Number(b===main));
-  for(const frame of frames){
-    const el=frame.locator(selector).first();
-    if(await el.count()&&await el.isVisible())return frame;
+  const main=page.mainFrame(),candidates=[];
+  for(const frame of page.frames()){
+    if(frame===main||!await frame.locator(selector).count())continue;
+    try{
+      const handle=await frame.frameElement();
+      const layer=await handle.evaluate(el=>({open:Boolean(el.closest('.cmd-site-view.is-open')),z:Number(el.style.zIndex)||0}));
+      if(layer.open)candidates.push({frame,z:layer.z});
+    }catch{}
   }
+  if(candidates.length)return candidates.sort((a,b)=>b.z-a.z)[0].frame;
+  if(await main.locator(selector).count())return main;
   throw Error(`No visible ${selector}`);
 }
 async function topObstruction(){
