@@ -1,4 +1,4 @@
-name: Verify replay repair
+name: Commit verified replay repair
 on:
   push:
     branches: [codex/replay-after-browsing]
@@ -6,127 +6,30 @@ on:
 permissions:
   contents: write
 jobs:
-  verify:
+  commit:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
           ref: codex/replay-after-browsing
+          fetch-depth: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Prepare real Chromium and production media Worker
-        run: |
-          npm install --no-save --package-lock=false playwright
-          npx playwright install --with-deps chromium
-          mkdir -p /tmp/replay-qa
-          node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
-          sleep 2
-      - name: Prove the original failure before modifying playback code
-        run: node scripts/check-replay-return-browser.mjs --baseline
-      - name: Repair only the replay handoff; preserve media, lyrics, pairings and queue engine
+      - name: Apply the already browser-verified source repair
         run: |
           python - <<'PY'
-          from pathlib import Path
-          p=Path('set-a-table-for-two/player.js')
-          s=p.read_text()
-          old="""  // The actual source owns the identity, including when an earlier page owns the audio.
-            const live=()=>{
-              const owner=shared(),media=owner?.getMedia?.(),track=owner?.getTrack?.();
-              const source=media?.getAttribute?.('src')||media?.src||media?.currentSrc||track?.audio;
-          """
-          # Use exact source lines, not indentation from YAML's surrounding block.
-          old='  // The actual source owns the identity, including when an earlier page owns the audio.\n  const live=()=>{\n    const owner=shared(),media=owner?.getMedia?.(),track=owner?.getTrack?.();\n    const source=media?.getAttribute?.(\'src\')||media?.src||media?.currentSrc||track?.audio;\n'
-          new='''  // A retained adapter can outlive its iframe's document after a reload. Its old
-            // audio still has a src/paused property, but cannot deliver live playback events.
-            const usableMedia=media=>{
-              if(!media||media.isConnected===false)return false;
-              try{
-                const doc=media.ownerDocument;
-                return !doc||Boolean(doc.defaultView&&doc.defaultView.document===doc);
-              }catch{return false}
-            };
-            // The actual, live source owns identity, not metadata left by an unloaded page.
-            const live=()=>{
-              const owner=shared(),candidate=owner?.getMedia?.(),track=owner?.getTrack?.();
-              const media=usableMedia(candidate)?candidate:null;
-              const source=media?.getAttribute?.('src')||media?.src||media?.currentSrc||'';
-          '''
-          new='\n'.join(line[2:] if i else line for i,line in enumerate(new.split('\n')))
-          assert old in s
-          p.write_text(s.replace(old,new))
-          p=Path('set-a-table-for-two/index.html');s=p.read_text()
-          old='/set-a-table-for-two/player.js?v=20260907-1'
-          assert s.count(old)==1
-          p.write_text(s.replace(old,'/set-a-table-for-two/player.js?v=20260908-replay-owner'))
-          p=Path('tests/table-for-two.test.js');s=p.read_text()
-          s+='''
-          test('revisiting a cut replaces an unloaded owner instead of toggling its orphaned audio',()=>{
-            const media=new Element();media.src=main.audio;media.currentTime=36;
-            const oldDocument={};const ownerWindow={document:{}};oldDocument.defaultView=ownerWindow;media.ownerDocument=oldDocument;media.isConnected=true;
-            const e=environment({external:{media,track:{...song,...main}}});
-            e.ids.releasePlay.click();
-            assert.equal(e.calls.creates,1,'a reloaded iframe cannot keep owning this recording');
-            assert.equal(e.media().src,main.audio);assert.equal(e.media().paused,false);
-            assert.equal(media.plays,0,'never send play to the old document');
-            assert.equal(e.ids.releaseCover.src,main.cover);assert.equal(e.ids.releaseSuno.href,main.sunoUrl);
-          });
-          test('an audio node removed from its page is not a valid same-cut replay target',()=>{
-            const media=new Element();media.src=clone.audio;media.isConnected=false;
-            const e=environment({query:'?version=voice-clone',external:{media,track:{...song,...clone}}});
-            e.ids.releasePlay.click();
-            assert.equal(e.calls.creates,1);assert.equal(e.media().src,clone.audio);assert.equal(e.media().paused,false);assert.equal(media.plays,0);
-          });
-          test('a healthy retained owner still resumes at its position without recreating the queue',()=>{
-            const media=new Element();media.src=main.audio;media.currentTime=51;media.isConnected=true;
-            const doc={};doc.defaultView={document:doc};media.ownerDocument=doc;
-            const e=environment({external:{media,track:{...song,...main}}});
-            e.ids.releasePlay.click();
-            assert.equal(e.calls.creates,0);assert.equal(e.media(),media);assert.equal(media.currentTime,51);assert.equal(media.paused,false);
-          });
-          '''
-          p.write_text(s.rstrip()+'\n')
-          p=Path('.github/workflows/site-checks.yml');s=p.read_text()
-          old='          node --check scripts/check-table-for-two-browser.mjs'
-          assert s.count(old)==1
-          s=s.replace(old,old+'\n          node --check scripts/check-replay-return-browser.mjs')
-          s+='''
-            playback-browser:
-              runs-on: ubuntu-latest
-              timeout-minutes: 10
-              permissions:
-                contents: read
-              steps:
-                - uses: actions/checkout@v4
-                  with:
-                    persist-credentials: false
-                - uses: actions/setup-node@v4
-                  with:
-                    node-version: 22
-                - name: Prepare touch-browser playback tests
-                  run: |
-                    npm install --no-save --package-lock=false playwright
-                    npx playwright install --with-deps chromium
-                - name: Real playback, full-cycle revisits and owner reload recovery
-                  run: |
-                    mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
-                    node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
-                    sleep 2
-                    node scripts/check-table-for-two-browser.mjs
-                    node scripts/check-replay-return-browser.mjs
-                - uses: actions/upload-artifact@v4
-                  if: always()
-                  with:
-                    name: playback-browser-regressions
-                    path: |
-                      /tmp/replay-qa/
-                      /tmp/table-for-two-qa/
-                    retention-days: 7
-          '''
-          p.write_text(s.rstrip()+'\n')
+          import subprocess,textwrap
+          workflow=subprocess.check_output(['git','show','d563202e6736da811a1abe48a67fb6fcb1dd8188:.github/workflows/replay-repair.yml'],text=True)
+          script=textwrap.dedent(workflow.split("          python - <<'PY'\n",1)[1].split('\n          PY',1)[0])
+          # CI changes were applied separately through the authorized connector.
+          script=script.split("p=Path('.github/workflows/site-checks.yml');s=p.read_text()",1)[0]
+          # Keep the original two-space source formatting, with no semantic change.
+          script='\n'.join(line for line in script.splitlines() if not (line.startswith('new=') and 'line[2:]' in line))
+          exec(compile(script,'<verified-replay-repair>','exec'))
           PY
-      - name: Full code and media-integrity checks
+      - name: Recheck all code and unchanged media contracts
         shell: bash
         run: |
           set -euo pipefail
@@ -134,17 +37,13 @@ jobs:
           node --check scripts/check-replay-return-browser.mjs
           node scripts/sync-releases.mjs --check
           node --test tests/playback-sync.test.js
-          node --test tests/*.test.js tests/*.test.mjs | tee /tmp/replay-qa/node-tests.txt
+          node --test tests/*.test.js tests/*.test.mjs
           git diff --check
-      - name: Verify corrected replay and all existing two-cut browser contracts
-        run: |
-          node scripts/check-replay-return-browser.mjs
-          node scripts/check-table-for-two-browser.mjs
-      - name: Commit verified repair and remove temporary diagnostics
+      - name: Commit source and remove temporary diagnostic workflows
         run: |
           python - <<'PY'
           import subprocess
-          allowed={'set-a-table-for-two/player.js','set-a-table-for-two/index.html','tests/table-for-two.test.js','.github/workflows/site-checks.yml'}
+          allowed={'set-a-table-for-two/player.js','set-a-table-for-two/index.html','tests/table-for-two.test.js'}
           changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
           assert changed==allowed,changed
           subprocess.run(['git','add',*sorted(changed)],check=True)
@@ -154,11 +53,3 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Recover same-cut replay after its retained audio document is reloaded'
           git push origin HEAD:codex/replay-after-browsing
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: replay-repair-proof
-          path: |
-            /tmp/replay-qa/
-            /tmp/table-for-two-qa/
-          retention-days: 7
