@@ -1,0 +1,66 @@
+name: Dynamic player clearance v6
+on:
+  push:
+    branches: [codex/dynamic-player-clearance]
+    paths: ['.github/workflows/dynamic-player-clearance-v6.yml']
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/dynamic-player-clearance
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply the reviewed measured-clearance patch with complete DOM guards
+        run: |
+          python - <<'PY'
+          import pathlib,textwrap
+          source=pathlib.Path('.github/workflows/dynamic-player-clearance-v5.yml').read_text()
+          script=textwrap.dedent(source.split("          python - <<'PY'\n",1)[1].split('\n          PY',1)[0])
+          # v5 already carries the DOM-guarded transformations; execute its transformation body.
+          exec(compile(script,'<dynamic-clearance-v6>','exec'))
+          PY
+      - name: Full static and playback regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/player-clearance-qa
+          node --check universal-player.js
+          node --check persistent-site-browser.js
+          node --check scripts/check-player-clearance-browser.mjs
+          node scripts/sync-releases.mjs --check
+          node --test tests/playback-sync.test.js
+          node --test tests/*.test.js tests/*.test.mjs | tee /tmp/player-clearance-qa/node-tests.txt
+          git diff --check
+      - name: Real mobile geometry and playback regressions
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+          node scripts/serve-release-test.mjs >/tmp/player-clearance-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-table-for-two-browser.mjs
+          node scripts/check-replay-return-browser.mjs
+          node scripts/check-player-clearance-browser.mjs
+      - name: Commit tested product files only
+        run: |
+          git add universal-player.js persistent-site-browser.js scripts/check-player-clearance-browser.mjs
+          HTML_CHANGED=$(git diff --name-only -- '*.html' || true)
+          if [ -n "$HTML_CHANGED" ]; then git add $HTML_CHANGED; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Measure fixed-player obstruction and keep page endings scrollable'
+          git push origin HEAD:codex/dynamic-player-clearance
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dynamic-player-clearance-proof-v6
+          path: |
+            /tmp/player-clearance-qa/
+            /tmp/table-for-two-qa/
+            /tmp/replay-qa/
+          retention-days: 7
