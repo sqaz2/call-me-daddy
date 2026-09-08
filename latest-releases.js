@@ -1,7 +1,10 @@
 (() => {
   'use strict';
   if (window.CMDLatestReleases) return;
-  const releaseType = /^(new release|new version|archive rework|archive find|interactive release)(?:\b|$)/i;
+  const releaseType = /^(new (release|version|catalog entry)|latest version|two-version release|archive (rework|find)|earlier (file|version) found|old file|satire|interactive release)(?:\b|$)/i;
+  const nonMusicType = /^(site update|sharing|listening path)(?:\b|$)/i;
+  const isRelease = entry => !nonMusicType.test(entry.type || '') &&
+    (entry.featured === true || releaseType.test(entry.type || ''));
   const localAudio = value => typeof value === 'string' && /^\/(?!\/)/.test(value);
   const score = value => {
     const text = String(value || '');
@@ -28,7 +31,7 @@
     const byId = new Map(songs.filter(Boolean).map(song => [song.id, song]));
     const usedAudio = new Set(), usedVersions = new Set(), releaseIds = new Set(), newIds = new Set();
     const tracks = [];
-    const ordered = entries.filter(entry => entry?.songId && releaseType.test(entry.type || '') &&
+    const ordered = entries.filter(entry => entry?.songId && isRelease(entry) &&
       Number.isFinite(score(entry.published)) && available(entry.published, now, timezone))
       .slice().sort((a, b) => score(b.published) - score(a.published) || String(a.id).localeCompare(String(b.id)));
     for (const entry of ordered) {
