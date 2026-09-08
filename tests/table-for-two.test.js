@@ -45,11 +45,13 @@ test('one release contains both titles, both versions and the explicit flag',()=
   assert.equal(song.variants.length,2);assert.equal(song.explicit,true);assert.equal(song.experience,'/set-a-table-for-two/');
   assert.equal(manifest.update.featured,true);assert.equal(manifest.update.songId,song.id);
 });
-test('artist-directed size and artwork pairing is not guessed from filenames',()=>{
-  assert.ok(main.audio.endsWith('/fuck everybody but you.mp3'));assert.ok(main.cover.endsWith('/grok_image_1788830947264.jpg'));
-  assert.ok(clone.audio.endsWith('/Set A Table For Two.mp3'));assert.ok(clone.cover.endsWith('/Screenshot_20260907-194633.png'));
-  const bigger=fs.statSync(path.join(root,main.audio)).size,smaller=fs.statSync(path.join(root,clone.audio)).size;
-  assert.ok(bigger>smaller);assert.equal(main.duration,143.88);assert.equal(clone.duration,144.12);
+test('artist correction swaps recordings while keeping artwork and Suno links in place',()=>{
+  assert.ok(main.audio.endsWith('/Set A Table For Two.mp3'));assert.ok(main.cover.endsWith('/grok_image_1788830947264.jpg'));
+  assert.ok(clone.audio.endsWith('/fuck everybody but you.mp3'));assert.ok(clone.cover.endsWith('/Screenshot_20260907-194633.png'));
+  assert.ok(fs.statSync(path.join(root,main.audio)).size<fs.statSync(path.join(root,clone.audio)).size);
+  assert.equal(main.duration,144.12);assert.equal(clone.duration,143.88);assert.equal(song.audio,main.audio);
+  assert.equal(main.sunoUrl,'https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b');
+  assert.equal(clone.sunoUrl,'https://suno.com/song/de2f1819-86af-48c8-8f2b-32e7cb559f9f');
 });
 test('both original audio files retain their recorded SHA-256 fingerprints',()=>{
   const source=JSON.parse(read('set-a-table-for-two/sources.json'));
@@ -95,4 +97,42 @@ test('on-page, raw, manifest and catalog lyric text stay exact; both titles and 
   const window={};const context=vm.createContext({window});for(const file of ['data/songs.js','data/song-lyrics.js','catalog-search.js'])vm.runInContext(read(file),context);
   assert.equal(window.CMDSongLyrics.lyrics(song.id),raw);
   for(const q of ['Set A Table For Two','Fuck Everybody But You','Pringles','wedding elvis at last vegas'])assert.ok(window.CMDCatalogSearch.matchesSong(song,q),q);
+});
+
+test('both corrected cuts keep their existing image and Suno button during playback',()=>{
+  const e=environment();
+  for(const [index,variant] of song.variants.entries()){
+    e.buttons[index].click();
+    assert.equal(e.media().src,variant.audio);
+    assert.equal(e.ids.releaseCover.src,variant.cover);
+    assert.equal(e.ids.releaseSuno.href,variant.sunoUrl);
+    assert.equal(e.track().variantId,variant.id);
+  }
+});
+test('generated catalog, no-JavaScript links and structured audio metadata use corrected sources',()=>{
+  const window={};vm.runInNewContext(read('data/songs.js'),{window});
+  const catalog=window.CMD_SONGS.find(item=>item.id===song.id);
+  assert.equal(catalog.audio,main.audio);
+  const html=read('set-a-table-for-two/index.html');
+  const schema=JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+  song.variants.forEach((variant,index)=>{
+    assert.equal(catalog.variants[index].audio,variant.audio);
+    assert.equal(catalog.variants[index].cover,variant.cover);
+    assert.equal(catalog.variants[index].sunoUrl,variant.sunoUrl);
+    assert.equal(decodeURI(new URL(schema.track[index].audio.contentUrl).pathname),variant.audio);
+    assert.ok(html.includes(`href="${encodeURI(variant.audio)}">Play ${variant.label.toLowerCase()}</a>`));
+  });
+});
+test('corrected provenance still maps both untouched recordings and artwork fingerprints',()=>{
+  const sources=JSON.parse(read('set-a-table-for-two/sources.json'));
+  for(const [index,recording] of sources.recordings.entries()){
+    assert.equal(recording.file,song.variants[index].audio);
+    assert.equal(recording.durationSeconds,song.variants[index].duration);
+    assert.equal(recording.sunoUrl,song.variants[index].sunoUrl);
+  }
+  for(const item of sources.artwork){
+    const data=fs.readFileSync(path.join(root,item.file));
+    assert.equal(data.length,item.bytes);
+    assert.equal(crypto.createHash('sha256').update(data).digest('hex'),item.sha256);
+  }
 });

@@ -2,22 +2,22 @@
   "recordings": [
     {
       "version": "main",
-      "file": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
-      "bytes": 3578321,
-      "sha256": "fae19b7deb1f56282ec3909f6272602f9772ea9c678c3e98faff8b0b703e7e8d",
-      "durationSeconds": 143.88,
-      "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b"
-    },
-    {
-      "version": "voice-clone",
       "file": "/media/songs/2026/09/set-a-table-for-two/Set A Table For Two.mp3",
       "bytes": 3530827,
       "sha256": "7fca16aa341a5506bd0750c04f5776ab1437a636ebce338f686e668eb7675555",
       "durationSeconds": 144.12,
+      "sunoUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b"
+    },
+    {
+      "version": "voice-clone",
+      "file": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
+      "bytes": 3578321,
+      "sha256": "fae19b7deb1f56282ec3909f6272602f9772ea9c678c3e98faff8b0b703e7e8d",
+      "durationSeconds": 143.88,
       "sunoUrl": "https://suno.com/song/de2f1819-86af-48c8-8f2b-32e7cb559f9f"
     }
   ],
-  "artworkPairing": "Larger MP3 + supplied full portrait; smaller MP3 + supplied close-up screenshot, as directed by the artist. Original files unchanged.",
+  "artworkPairing": "Artist correction: keep the full portrait and its existing Suno link in the main/wedding position, keep the close-up and its existing Suno link in the voice-clone position, and swap only the local recordings. Main now uses Set A Table For Two.mp3; voice-clone uses fuck everybody but you.mp3. Original files unchanged.",
   "lyricsSource": "Identical USLT lyrics embedded in both original Suno MP3 uploads; wording and punctuation preserved.",
   "lyricsSha256": "92afe01f24cb844403e01077e892cacf0a08e27b38ff43877aac7259672b002b",
   "voiceNote": "First attempt cloning the artist’s own voice; Tyson/Cartman comparison is the artist’s description, not a claimed impersonation.",
