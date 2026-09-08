@@ -1,0 +1,45 @@
+name: Latest radio checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  latest-radio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Full regression suite and release consistency
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/latest-radio-qa
+          node --check visit-history.js
+          node --check latest-releases.js
+          node --check updates/latest-player.js
+          node --check scripts/check-latest-radio-browser.mjs
+          node scripts/sync-releases.mjs --check
+          node --test tests/playback-sync.test.js
+          node --test tests/*.test.js tests/*.test.mjs | tee /tmp/latest-radio-qa/node-tests.txt
+      - name: Prepare touch-enabled Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Test real newest-first playback through the production media Worker
+        run: |
+          node scripts/serve-release-test.mjs >/tmp/latest-radio-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-latest-radio-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: latest-radio-browser-proof
+          path: /tmp/latest-radio-qa/
+          retention-days: 7
