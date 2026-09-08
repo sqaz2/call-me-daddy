@@ -11,6 +11,8 @@ const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 const since = Date.parse('2026-09-06T20:00:00Z');
 await context.addInitScript(({ since }) => {
+  // This is an as-of release fixture. Media decoding and browser timers stay real.
+  Date.now = () => Date.parse('2026-09-08T08:00:00Z');
   if (!localStorage.getItem('qa:latest-seeded')) {
     localStorage.setItem('cmd:site-visit:v1', JSON.stringify({ version: 1, startedAt: since - 1000, lastSeen: since, previousAt: null }));
     localStorage.setItem('qa:latest-seeded', '1');
@@ -107,10 +109,13 @@ try {
   check('Restarting latest-first hands over cleanly with one active audio and one dock');
   for (const mode of ['first', 'caught-up', 'storage-blocked']) {
     const c = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-    if (mode === 'caught-up') await c.addInitScript(() => {
-      const now = Date.now(); localStorage.setItem('cmd:site-visit:v1', JSON.stringify({ version: 1, startedAt: now, lastSeen: now, previousAt: now - 1000 }));
-    });
-    if (mode === 'storage-blocked') await c.addInitScript(() => { Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } }); });
+    await c.addInitScript(mode => {
+      Date.now = () => Date.parse('2026-09-08T08:00:00Z');
+      if (mode === 'caught-up') {
+        const now = Date.now(); localStorage.setItem('cmd:site-visit:v1', JSON.stringify({ version: 1, startedAt: now, lastSeen: now, previousAt: now - 1000 }));
+      }
+      if (mode === 'storage-blocked') Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } });
+    }, mode);
     const p = await c.newPage(); p.on('pageerror', e => report.errors.push(String(e)));
     await p.goto(base + '/updates/', { waitUntil: 'networkidle' });
     assert.equal(await p.locator('#latestRadioPlay').isEnabled(), true);
