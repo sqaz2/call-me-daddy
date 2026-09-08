@@ -1,0 +1,43 @@
+name: Verify newest-radio public deployment
+on:
+  push:
+    branches: [codex/what-changed-newest-radio]
+    paths: ['.github/workflows/verify-latest-production.yml']
+permissions:
+  contents: read
+jobs:
+  public-read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 63d24a1e7cb7e973dc6a2f1900446b5002283754
+          persist-credentials: false
+      - name: Read exact deployed feature markers and original source fingerprints
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.error,pathlib,hashlib,json
+          base='https://callmedaddy.musicsubject.com'
+          report={'commit':'63d24a1e7cb7e973dc6a2f1900446b5002283754','requests':[]}
+          for route, source, marker in [('/updates/','updates/index.html','id="latestRadioPlay"'),('/latest-releases.js','latest-releases.js','CMDLatestReleases'),('/visit-history.js','visit-history.js','cmd:site-visit:v1'),('/set-a-table-for-two/player.js','set-a-table-for-two/player.js','usableMedia')]:
+              record={'route':route}
+              try:
+                  request=urllib.request.Request(base+route+'?deployment=63d24a1e',headers={'Cache-Control':'no-cache','User-Agent':'MusicSubject-Deployment-Check/1.0'})
+                  with urllib.request.urlopen(request,timeout=20) as response:
+                      data=response.read()
+                      record.update(status=response.status,featureMarker=marker.encode() in data,exactSource=hashlib.sha256(data).digest()==hashlib.sha256(pathlib.Path(source).read_bytes()).digest(),cache=response.headers.get('cf-cache-status'))
+              except urllib.error.HTTPError as e: record.update(status=e.code,error=str(e))
+              except Exception as e: record.update(error=str(e))
+              report['requests'].append(record)
+          report['verified']=all(item.get('status')==200 and item.get('featureMarker') and item.get('exactSource') for item in report['requests'])
+          print(json.dumps(report,indent=2))
+          pathlib.Path('/tmp/latest-production.json').write_text(json.dumps(report,indent=2))
+          if not report['verified']: raise SystemExit('Public responses did not independently verify the deployed feature; see report, do not equate this with a visitor playback test.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: newest-radio-public-deployment
+          path: /tmp/latest-production.json
+          retention-days: 7
