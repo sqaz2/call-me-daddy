@@ -4,12 +4,14 @@ on:
     paths:
       - 'from-sample-to-song/**'
       - 'media/projects/2026/09/from-sample-to-song/**'
+      - 'scripts/check-from-sample-to-song-live.mjs'
       - '.github/workflows/from-sample-to-song.yml'
   push:
     branches: [main]
     paths:
       - 'from-sample-to-song/**'
       - 'media/projects/2026/09/from-sample-to-song/**'
+      - 'scripts/check-from-sample-to-song-live.mjs'
       - '.github/workflows/from-sample-to-song.yml'
 permissions:
   contents: read
@@ -26,4 +28,19 @@ jobs:
       - name: Diary syntax and player contract
         run: |
           node --check from-sample-to-song/page.js
+          node --check scripts/check-from-sample-to-song-live.mjs
           node --test from-sample-to-song/page.test.cjs
+  production-smoke:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: diary
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Wait for the public diary and discovery links to deploy
+        run: node scripts/check-from-sample-to-song-live.mjs
