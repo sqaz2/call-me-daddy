@@ -2,11 +2,12 @@
 // The seed MP3 is explicitly pending and is not falsely asserted to exist here.
 const origin = 'https://callmedaddy.musicsubject.com';
 const checks = [
-  ['/from-sample-to-song/', ['I built the DAW.', 'https://suno.com/s/2G3yJwoXUfne8E5o', 'https://suno.com/s/GpMCfytHcBf7CAu4', 'Original seed playback becomes available here once its upload is complete.']],
+  ['/from-sample-to-song/', ['I built the DAW.', 'https://suno.com/s/2G3yJwoXUfne8E5o', 'https://suno.com/s/GpMCfytHcBf7CAu4', 'Original seed playback becomes available here once its upload is complete.', 'id="watch-process"', 'https://www.facebook.com/share/v/1FN8ky6Tvr/', 'id="facebook-sampling"', 'The sampling video is in the comments']],
   ['/data/briefing.js', ['project-from-sample-to-song', '/from-sample-to-song/']],
   ['/updates/project-from-sample-to-song/', ['property="og:title"', 'href="/from-sample-to-song/"']],
   ['/sitemap.xml', ['https://callmedaddy.musicsubject.com/from-sample-to-song/', 'https://callmedaddy.musicsubject.com/updates/project-from-sample-to-song/']],
-  ['/from-sample-to-song/page.js', ['CMDContinuousPlayback.create', 'checkSource()']],
+  ['/from-sample-to-song/page.js', ['CMDContinuousPlayback.create', 'checkSource()', '[data-process-video]']],
+  ['/from-sample-to-song/project.json', ['https://www.facebook.com/share/v/1FN8ky6Tvr/', '"location": "comments"']],
   ['/from-sample-to-song/style.css', ['.gd-diary', 'padding-bottom']]
 ];
 let succeeded = false;
@@ -23,8 +24,8 @@ for (let attempt = 1; attempt <= 24; attempt++) {
         throw new Error('Public diary still has draft noindex');
       }
     }));
-    console.log('Production diary live checks passed: page, both supplied Suno hrefs, feed, update preview, sitemap, JS and CSS.');
-    console.log('Seed MP3 upload remains pending; external Suno playback and physical-phone playback were not exercised.');
+    console.log('Production diary live checks passed: page, both supplied Suno hrefs, Facebook beat video and sampling-comments guidance, feed, update preview, sitemap, JS, CSS and project metadata.');
+    console.log('Seed MP3 upload remains pending; external video/audio playback, Facebook comment contents and physical-phone playback were not exercised.');
     succeeded = true;
     break;
   } catch (error) {

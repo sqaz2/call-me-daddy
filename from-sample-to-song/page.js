@@ -80,7 +80,7 @@
     else controller.load(0, {autoplay:true, reason:'seed-artwork'});
   });
   retry.addEventListener('click', checkSource);
-  document.querySelectorAll('[data-suno]').forEach(link => link.addEventListener('click', () => {
+  document.querySelectorAll('[data-suno], [data-process-video]').forEach(link => link.addEventListener('click', () => {
     const live = owner()?.getMedia?.();
     if (live && !live.paused) live.pause();
     if (!audio.paused) audio.pause();
