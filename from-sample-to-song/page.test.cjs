@@ -19,7 +19,10 @@ function harness({available = true, sharedSeed = false, player = true} = {}) {
   }
   const sharedMedia = {paused:false, ended:false, pause(){this.paused=true;}};
   const subscribers = [];
-  const document = {getElementById:node, createElementNS:()=>node('rect'), querySelectorAll:()=>[node('suno-1'),node('suno-2')]};
+  const document = {getElementById:node, createElementNS:()=>node('rect'), querySelectorAll:selector=>{
+    assert.equal(selector,'[data-suno], [data-process-video]');
+    return ['suno-1','suno-2','facebook-beat','facebook-sampling'].map(node);
+  }};
   const location = {href:'https://callmedaddy.musicsubject.com/from-sample-to-song/', origin:'https://callmedaddy.musicsubject.com'};
   const window = {location, addEventListener(){}, CMDUniversalPlayer: {
     getTrack:()=>sharedSeed ? {audio:record.source.audio} : null,
@@ -98,4 +101,43 @@ test('pending source upload is disclosed without blocking the two listening link
   assert.ok(['pending','uploaded'].includes(record.source.uploadStatus));
   if(record.source.uploadStatus === 'pending') assert.match(html,/Original seed playback becomes available here once its upload is complete/);
   assert.equal((html.match(/data-suno href=/g)||[]).length,2);
+});
+
+test('both process links use the exact Facebook post supplied by the artist',()=>{
+  assert.equal(record.processVideo.url,'https://www.facebook.com/share/v/1FN8ky6Tvr/');
+  for(const id of ['facebook-beat','facebook-sampling']) {
+    const link=html.match(new RegExp(`<a id="${id}"[^>]*>`))?.[0];
+    assert.ok(link); assert.ok(link.includes(`href="${record.processVideo.url}"`));
+    assert.match(link,/data-process-video=/); assert.match(link,/target="_blank"/);
+    assert.match(link,/rel="noopener noreferrer"/);
+  }
+});
+test('sampling points to comments without inventing a direct comment URL',()=>{
+  assert.equal(record.processVideo.sampling.location,'comments');
+  assert.equal(record.processVideo.sampling.directUrl,null);
+  assert.match(html,/The sampling video is in the comments on that Facebook post/);
+  assert.match(html,/Opens the same Facebook post, not a direct link to an individual comment/);
+  assert.match(html,/aria-describedby="sampling-location"/);
+});
+test('process links stay available without JavaScript or a Facebook embed',()=>{
+  assert.match(html,/href="#watch-process"/);
+  assert.match(html,/id="watch-process"[^>]*aria-labelledby="watch-process-title"/);
+  assert.match(html,/id="watch-process-title"/);
+  assert.doesNotMatch(html,/<iframe|connect\.facebook\.net|plugins\/video/i);
+});
+for(const id of ['facebook-beat','facebook-sampling']) {
+  test(`opening ${id} pauses site audio without creating another player`,async()=>{
+    const h=harness({sharedSeed:true});await h.ready();
+    h.node('seed-audio').paused=false;
+    h.node(id).events.click();
+    assert.equal(h.sharedMedia.paused,true);assert.equal(h.node('seed-audio').paused,true);
+    assert.equal(h.counts().creates,0);
+  });
+}
+test('Facebook comments remain reachable when the seed audio is unavailable',async()=>{
+  const h=harness({available:false,sharedSeed:true,player:false});await h.ready();
+  assert.equal(h.node('seed-play').disabled,true);
+  assert.equal(typeof h.node('facebook-sampling').events.click,'function');
+  h.node('facebook-sampling').events.click();assert.equal(h.sharedMedia.paused,true);
+  assert.equal(h.counts().creates,0);
 });
