@@ -1,0 +1,20 @@
+{
+  "songId": "everybody-else-less",
+  "artistSuppliedShareUrl": "https://suno.com/s/jOr9CSygvDsRHMC9",
+  "canonicalSunoUrl": "https://suno.com/song/d14e0607-2c6a-4350-bc0c-4faf0eef30d6",
+  "clipId": "d14e0607-2c6a-4350-bc0c-4faf0eef30d6",
+  "sourceRetrieved": "2026-09-09",
+  "sourceCreatedAt": "2026-05-16T00:26:06.190Z",
+  "archiveMonth": "2026-08",
+  "dateNote": "August is the artist-supplied collection month, not an asserted creation date. Public Suno and embedded MP3 metadata date the source recording to May 16. The upload note only tentatively suggested August 23.",
+  "uploadedPath": "Everybody Else Less.mp3",
+  "existingAudio": "/media/collections/sad-music/2026/everybody-else-less/main.mp3",
+  "audioBytes": 4662508,
+  "audioGitBlob": "76542f2a955aaa28b84bb3d88bf96721b370b979",
+  "audioSha256": "263eec8d050caf6865c6ed550e020864e4a9541b6ad413e8ebca758e43769e45",
+  "existingCover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+  "coverBytes": 82540,
+  "coverGitBlob": "ef8fd0efe1aa5f401bf608c3fbe97d365d744fe0",
+  "lyricsSha256": "a3f0bad4fc3756ad3462cdd63d4cbd5b6ee039cab689c5bef4e07cf03958e0e0",
+  "sourceVerification": "The artist-uploaded MP3 is byte-identical to the existing collection recording. Public Suno lyrics match the MP3 USLT words and punctuation (only empty-line spacing differs), and match the existing site lyric entry. The existing hosted recording and cover URLs are preserved."
+}

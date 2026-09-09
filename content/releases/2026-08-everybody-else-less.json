@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "everybody-else-less",
+    "title": "Everybody Else Less",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 8,
+    "date": "2026-08",
+    "project": "When Things Got Heavy",
+    "description": "A fictional narrator feels like shit and takes it out on everybody else. A song about self-dislike, social-media spite, and the hurt underneath it.",
+    "audio": "/media/collections/sad-music/2026/everybody-else-less/main.mp3",
+    "cover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+    "experience": "/sad-music/everybody-else-less/",
+    "shareUrl": "/sad-music/everybody-else-less/",
+    "kind": "song",
+    "sunoUrl": "https://suno.com/s/jOr9CSygvDsRHMC9",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Main Version",
+        "audio": "/media/collections/sad-music/2026/everybody-else-less/main.mp3",
+        "cover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+        "duration": 197.952,
+        "sunoUrl": "https://suno.com/s/jOr9CSygvDsRHMC9"
+      }
+    ]
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nEverybody’s bleeding from a pocket guillotine\nEverybody’s tethered to a glowing little screen\nScrollin’ through the comments, every word’s a guillotine\nI laughed it off in public, then I sunk between\n\nOpened up the timeline, felt it bite at my knees\nEvery joke is armor over rotting self-belief\nI don’t like the mirror but I like you even lesser\nIf I’m the broken record, you’re the scratched-up, skipping lecture\n\n[Pre-Chorus]\nI’m not mad we got feelings\nSpinnin’ round in a spiral\nI’m mad I hate what I’m seein’\nBut I hate you more than my reflection tonight\n\n[Chorus]\nEverybody’s got a wound\nEverybody’s got a lie\nEverybody’s got a story\nBut I’m sick of yours and mine\n\nEverybody shuts their eyes\nEverybody hides their sneers\nYou don’t like me? I don’t like me\nBut I like you even less, my dear\n\n[Verse 2]\nTiny storms in small towns\nThrowin’ shade down Main Street\nAll sweet and sugar-coated\nWhile they root for you to bleed\n\nEverybody shuts their eyes\nEverybody crowns their fears\nBut there’s a petty little joy\nWhen I mute your plastic cheer\n\n[Bridge]\nEverybody’s bleeding from a pocket guillotine\nEverybody’s tethered to a glowing little screen\nOpened up the timeline, felt it bite at my knees\nEvery snarky little comment is a choir off the key\n\nI’m not mad we got feelings\nI’m mad they circle like flies\nIf I’m a mess in the making\nYou’re the stain I won’t disguise\n\n[Chorus]\nEverybody’s got a wound\nEverybody’s got a lie\nEverybody’s got a story\nBut I’m sick of yours and mine\n\nEverybody shuts their eyes\nEverybody hides their sneers\nYou don’t like me? I don’t like me\nBut I like you even less, my dear\nEverybody shuts their eyes\nEverybody crowns their fears\nYou don’t like me? I don’t like me\nBut I like you even less this year",
+    "snippet": "Everybody’s bleeding from a pocket guillotine",
+    "sunoUrl": "https://suno.com/song/d14e0607-2c6a-4350-bc0c-4faf0eef30d6",
+    "clipIds": ["d14e0607-2c6a-4350-bc0c-4faf0eef30d6"],
+    "source": "Exact public Suno prompt from the supplied share link, including stanza breaks. Words and punctuation also match the original MP3 USLT tag; only empty-line spacing differs."
+  },
+  "radio": {"surprise": 64, "laugh": 58, "think": 82, "level-up": 50, "heavy": 82, "old-files": 44},
+  "update": {
+    "id": "release-everybody-else-less",
+    "published": "2026-09-09T12:17:18Z",
+    "type": "From the August collection",
+    "songId": "everybody-else-less",
+    "title": "Everybody Else Less",
+    "summary": "An August collection track gets a full story and lyric page. The fictional narrator feels hurt and takes it out on everybody else. Hear the original recording and read the exact lyrics.",
+    "href": "/sad-music/everybody-else-less/",
+    "sharePath": "/updates/release-everybody-else-less/",
+    "cta": "Listen and read the lyrics",
+    "featured": true,
+    "cover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+    "cardLines": ["EVERYBODY", "ELSE LESS"],
+    "cardTag": "Hurt turned outward · August collection",
+    "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
+    "badge": "New song page",
+    "intent": "think"
+  }
+}

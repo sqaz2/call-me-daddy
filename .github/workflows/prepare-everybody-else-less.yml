@@ -2,52 +2,43 @@ name: Prepare Everybody Else Less
 on:
   push:
     branches: [content/everybody-else-less]
-    paths: [.github/workflows/prepare-everybody-else-less.yml]
+    paths:
+      - '.github/workflows/prepare-everybody-else-less.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
-  source:
+  prepare:
+    if: github.ref == 'refs/heads/content/everybody-else-less'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          persist-credentials: false
-      - name: Collect source text and original recording for isolated release work
-        shell: bash
+          node-version: 22
+      - name: Migrate just this legacy identity and regenerate its release records
         run: |
-          mkdir -p /tmp/everybody-source/repository /tmp/everybody-source/source
-          python3 - <<'PY'
-          import pathlib, shutil, subprocess, json, urllib.request, urllib.error
-          out=pathlib.Path('/tmp/everybody-source')
-          listing=subprocess.check_output(['git','ls-tree','-r','--long','HEAD'],text=True)
-          (out/'source/tree.txt').write_text(listing)
-          for row in listing.splitlines():
-              meta,name=row.split('\t',1)
-              src=pathlib.Path(name)
-              if src.is_file() and (src.suffix.lower() in ['.md','.txt','.html','.css','.js','.mjs','.cjs','.json','.jsonc','.yml','.yaml','.svg','.toml'] or name=='Everybody Else Less.mp3'):
-                  dest=out/'repository'/name
-                  dest.parent.mkdir(parents=True,exist_ok=True)
-                  shutil.copyfile(src,dest)
-          url='https://suno.com/s/jOr9CSygvDsRHMC9'
-          report={'requestedUrl':url}
-          try:
-              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
-              with urllib.request.urlopen(req,timeout=45) as res:
-                  report.update(status=res.status,finalUrl=res.url,contentType=res.headers.get('Content-Type'))
-                  data=res.read(5000000)
-                  (out/'source/suno.html').write_bytes(data)
-                  report['bytes']=len(data)
-          except Exception as e:
-              report['error']=str(e)
-          (out/'source/retrieval.json').write_text(json.dumps(report,indent=2))
-          print(json.dumps(report,indent=2))
-          PY
-          ffprobe -v quiet -show_format -show_streams -print_format json 'Everybody Else Less.mp3' > /tmp/everybody-source/source/audio-probe.json || true
+          node scripts/migrate-everybody-else-less.mjs
+          node scripts/sync-releases.mjs --check
+          node --test tests/everybody-else-less.test.mjs tests/playback-sync.test.js
+          git diff --check
+      - name: Commit generated records to the isolated branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/songs.js data/song-lyrics.js data/briefing.js data/radio-intents.js sitemap.xml updates/release-everybody-else-less/index.html
+          git diff --cached --quiet || git commit -m 'Synchronize Everybody Else Less without duplicating its legacy identity'
+          git push origin HEAD:refs/heads/content/everybody-else-less
+          git rev-parse HEAD
+      - name: Collect reviewed generated files and original artwork
+        run: |
+          mkdir -p /tmp/everybody-prepared
+          cp --parents data/songs.js data/song-lyrics.js data/briefing.js data/radio-intents.js sitemap.xml updates/release-everybody-else-less/index.html media/collections/sad-music/2026/everybody-else-less/cover.jpg /tmp/everybody-prepared/
+          git log -2 --format=fuller > /tmp/everybody-prepared/commits.txt
+          git diff HEAD~1 HEAD > /tmp/everybody-prepared/generated.diff
       - uses: actions/upload-artifact@v4
         with:
-          name: everybody-release-source
-          path: /tmp/everybody-source
-          include-hidden-files: true
+          name: everybody-prepared
+          path: /tmp/everybody-prepared
           retention-days: 3
           if-no-files-found: error
