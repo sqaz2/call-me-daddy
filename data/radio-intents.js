@@ -85,7 +85,6 @@ window.CMD_RADIO_CONFIG = {
     'couple-friends-couple-calls':   {surprise: 58, laugh: 24,  think: 78, 'level-up': 46, heavy: 78, 'old-files': 56},
     'i-need-love':                   {surprise: 76, laugh: 42,  think: 82, 'level-up': 64, heavy: 80, 'old-files': 100},
     'numbness-as-a-trap':            {surprise: 56, laugh: 6,   think: 86, 'level-up': 48, heavy: 100,'old-files': 48},
-    'everybody-else-less':           {surprise: 64, laugh: 58,  think: 82, 'level-up': 50, heavy: 82, 'old-files': 44},
     'never-come-back-down':          {surprise: 54, laugh: 6,   think: 78, 'level-up': 42, heavy: 98, 'old-files': 46},
     'will-to-live':                  {surprise: 72, laugh: 12,  think: 84, 'level-up': 100,heavy: 92, 'old-files': 52},
     '2010-wows':                     {surprise: 76, laugh: 44,  think: 90, 'level-up': 84, heavy: 70, 'old-files': 100}
@@ -123,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "everybody-else-less": {
+    "surprise": 64,
+    "laugh": 58,
+    "think": 82,
+    "level-up": 50,
+    "heavy": 82,
+    "old-files": 44
+  },
   "set-a-table-for-two": {
     "surprise": 90,
     "laugh": 100,

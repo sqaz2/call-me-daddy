@@ -1,6 +1,32 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "everybody-else-less",
+    "title": "Everybody Else Less",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 8,
+    "date": "2026-08",
+    "project": "When Things Got Heavy",
+    "description": "A fictional narrator feels like shit and takes it out on everybody else. A song about self-dislike, social-media spite, and the hurt underneath it.",
+    "audio": "/media/collections/sad-music/2026/everybody-else-less/main.mp3",
+    "cover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+    "experience": "/sad-music/everybody-else-less/",
+    "shareUrl": "/sad-music/everybody-else-less/",
+    "kind": "song",
+    "sunoUrl": "https://suno.com/s/jOr9CSygvDsRHMC9",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Main Version",
+        "audio": "/media/collections/sad-music/2026/everybody-else-less/main.mp3",
+        "cover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+        "duration": 197.952,
+        "sunoUrl": "https://suno.com/s/jOr9CSygvDsRHMC9"
+      }
+    ]
+  },
+  {
     "id": "set-a-table-for-two",
     "title": "Fuck Everybody But You",
     "artist": "MusicSubject × Call Me Daddy",
@@ -393,12 +419,6 @@ window.CMD_SONGS = [
       {id:'may-2026-remix',label:'May 2026 Remix',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3'},
       {id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo',audio:'/media/collections/sad-music/2026/numbness-as-a-trap/lofi-warehouse.mp3'}
     ]
-  },
-  {
-    id:'everybody-else-less', title:'Everybody Else Less', artist:'MusicSubject × Call Me Daddy', year:2026,
-    project:'When Things Got Heavy', description:'Social-media haters from a fictional narrator’s perspective—not mine.',
-    audio:'/media/collections/sad-music/2026/everybody-else-less/main.mp3', cover:'/media/collections/sad-music/2026/everybody-else-less/cover.jpg', experience:'/sad-music/everybody-else-less/', kind:'song',
-    variants:[{id:'main',label:'Main Version',audio:'/media/collections/sad-music/2026/everybody-else-less/main.mp3'}]
   },
   {
     id:'never-come-back-down', title:'Never Come Back Down', artist:'MusicSubject × Call Me Daddy', year:2026,
