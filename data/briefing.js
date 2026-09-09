@@ -2,6 +2,7 @@ window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
   updated: "2026-09-07T20:55:00-06:00",
   entries: [
+    {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
     {
       "id": "release-set-a-table-for-two",

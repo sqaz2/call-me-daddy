@@ -1,35 +1,36 @@
-# From sample to song — draft project page
+# From sample to song — living production diary
 
-**Status: draft branch only. Do not treat this as a live release.**
+MusicSubject × Call Me Daddy, `/from-sample-to-song/`.
 
-This is a living MusicSubject × Call Me Daddy production diary, not a final song title or an additional finished-song catalog entry. Planned route: `/from-sample-to-song/`.
+Publication was requested on September 9, 2026. This page is an unfinished project, not a finished-song release. It preserves the user's account: Satan’s.loan → their Generative.download drum machine → a recognizable beat added with Grok after earlier Suno rejection → the two supplied Suno results. No final title, release date, output BPM, lyrics, or preferred version is invented.
 
-## Facts preserved
+## Original seed upload is still pending
 
-The user's September 9, 2026 account: they built the DAW at generative.download, sampled their last song Satan's.loan in its drum machine, used Grok to add a recognizable beat after Suno rejected the earlier audio, and obtained the two Suno results linked on the page. Do not state that we know Suno's technical rejection reason. Do not invent titles, lyrics, BPM or durations for the two outputs.
+The public story and both external Suno links work independently. The seed waveform comes from the real attached MP3, but playback stays disabled until the original file is reachable as audio. No substitute recording or corrupt text placeholder has been uploaded.
 
-The attached seed is `suno_62bpm_4bar.mp3`. Its label supplies 62 BPM/four bars; ffprobe reports 15.56898 seconds, stereo MP3 at 44.1 kHz. The waveform is measured from this file. It is not an isolated untouched sample from Satan's.loan or either full Suno result. `project.json` records its expected size and SHA-256.
+Add `suno_62bpm_4bar.mp3` to `media/projects/2026/09/from-sample-to-song/`, then change `source.uploadStatus` in `project.json` to `uploaded`.
 
-## Blocking before publication
+- Size: 374326 bytes
+- SHA-256: `c1c8fae9853fa79d8d03cfaf515fd746833d4661f6e688592ce600df4cb0985d`
+- Measured duration: 15.56898 seconds; stereo MP3, 44.1 kHz
+- 62 BPM and four bars are labels from the supplied filename, not measurements of either Suno output.
 
-1. Add the original attached MP3 at `media/projects/2026/09/from-sample-to-song/suno_62bpm_4bar.mp3`. It is present in the accompanying ChatGPT ZIP/local preview, **not yet uploaded to this branch**. The required size is 374326 bytes and SHA-256 is `c1c8fae9853fa79d8d03cfaf515fd746833d4661f6e688592ce600df4cb0985d`. Never upload the filename, a pointer, base64 text masquerading as audio, or a replacement recording.
-2. Run `node --test from-sample-to-song/page.test.cjs` after adding the MP3, plus `node --test tests/playback-sync.test.js` and the existing Site Checks. The MP3 provenance test intentionally fails while that asset is missing.
-3. Test the real production shared player: first waveform tap; returning while the seed already plays; next/previous, radio continuation, page following, source error, opening Suno, sharing, and phone/iframe ownership. The local preview is not proof of these integrations.
-4. Add a project/experiment entry to the public briefing/homepage and sitemap using the existing project/update workflow, without hand-editing generated release blocks. Do not count a 15-second seed as a new finished song or make it the newest full-song radio release.
-5. Once approved for publication, remove `noindex` and the corresponding draft-only test assertion. Merge/deploy through the usual site workflow, then verify the actual domain.
+The original is preserved in the ChatGPT attachment and ZIP. The exact-file test is explicitly skipped only while the source is declared pending and is absent; it checks the complete original hash whenever the file exists. Once marked uploaded, any later missing file fails the test.
 
-The two Suno shortlinks could not be fetched from this research environment. They are kept as explicit external listening links; no audio URL, song title or final-version preference was guessed. Replace them with integrated variants only after obtaining the user's actual full recordings or verifiable media sources.
+## Player and publishing contract
 
-## Playback and editing
+Use CMDContinuousPlayback and the universal dock, not a separate ended/next queue. The first waveform tap creates and starts its controller in the same gesture. Page load does not seize playback; revisiting a seed already playing delegates to the existing owner. The two full versions are external Suno links, not invented local catalog entries. Do not make this short seed the newest finished-song radio release.
 
-The production page uses `CMDContinuousPlayback` and the existing universal dock. Controller creation is lazy and playback occurs within the first gesture. A returning listener delegates to the same-origin top-level owner when that seed is already playing. There is no independent ended/next queue or autoplay on page load. Missing audio produces a clear unavailable state rather than an enabled broken player.
+The production diary is announced through an ordinary public-feed experiment entry, outside release-manifest generated regions. The project route and its static update preview belong in the sitemap.
 
-The local preview embeds the unchanged MP3 and uses a clearly labelled native-audio adapter. Do not copy that preview adapter into the website. Its global fetch adapter exists only to make the self-contained preview independent of a server.
+## Checks
 
-For the next update, add the new dated entry above the September 9 entry in `index.html#updates`; keep the seed and first links intact. Update `project.json` when additional version/source facts are known. Use the normal `content/releases/` manifest and sync process once a genuine playable release is ready. Preserve the user's wording and do not invent milestones.
+Run `node --test from-sample-to-song/page.test.cjs`, `node --test tests/playback-sync.test.js`, and Site checks. The focused tests use a shared-player contract stub, not the full production engine. Browser/phone playback and actual deployed status must be stated separately from code/CI status.
 
-## Validation actually completed
+The offline preview in the ChatGPT ZIP contains native-audio demo code: do not deploy that standalone adapter. Only this production page uses the shared site player.
 
-Twelve focused Node checks passed locally with the original MP3 present. The tests use a shared-player contract stub, not the complete production engine. Eleven offline Chromium checks passed for the standalone preview, including 320/390/688/1280px layouts, the two exact links, native decoding/advancing the attached MP3, play/pause, one audio element and footer clearance above its preview dock. Browser file navigation was blocked; preview content was loaded directly into Chromium for those checks. Full repository Site Checks, production universal-player integration and a physical phone were not tested.
+## Future entries
 
-No files in either Generative.download/Generative-download repository or the unpublished DAW package were changed by this page work.
+Add a dated entry above the September 9 entry in `index.html#updates`. Keep the seed and both original links. Update `project.json` with verified new recordings or version facts. Use the existing release-manifest workflow when a genuine playable release is ready.
+
+No Generative.download repository or unpublished DAW package is changed by this diary.

@@ -1,0 +1,29 @@
+name: Production diary checks
+on:
+  pull_request:
+    paths:
+      - 'from-sample-to-song/**'
+      - 'media/projects/2026/09/from-sample-to-song/**'
+      - '.github/workflows/from-sample-to-song.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'from-sample-to-song/**'
+      - 'media/projects/2026/09/from-sample-to-song/**'
+      - '.github/workflows/from-sample-to-song.yml'
+permissions:
+  contents: read
+jobs:
+  diary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Diary syntax and player contract
+        run: |
+          node --check from-sample-to-song/page.js
+          node --test from-sample-to-song/page.test.cjs

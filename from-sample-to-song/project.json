@@ -11,17 +11,12 @@
     "channels": 2,
     "bpmFromFilename": 62,
     "barsFromFilename": 4,
-    "audio": "/media/projects/2026/09/from-sample-to-song/suno_62bpm_4bar.mp3"
+    "audio": "/media/projects/2026/09/from-sample-to-song/suno_62bpm_4bar.mp3",
+    "uploadStatus": "pending"
   },
   "versions": [
-    {
-      "label": "Version 1",
-      "url": "https://suno.com/s/2G3yJwoXUfne8E5o"
-    },
-    {
-      "label": "Version 2",
-      "url": "https://suno.com/s/GpMCfytHcBf7CAu4"
-    }
+    { "label": "Version 1", "url": "https://suno.com/s/2G3yJwoXUfne8E5o" },
+    { "label": "Version 2", "url": "https://suno.com/s/GpMCfytHcBf7CAu4" }
   ],
   "waveform": [77,40,26,43,40,31,76,42,19,50,30,27,80,38,30,41,35,34,74,42,26,44,7,31,76,44,34,32,42,58,76,33,34,44,30,37,72,45,12,50,41,63,72,38,32,44,9,4]
 }

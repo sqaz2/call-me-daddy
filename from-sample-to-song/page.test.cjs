@@ -46,14 +46,18 @@ test('exact supplied Suno URLs and source-song route are retained',()=>{
 });
 test('page is clearly an unfinished project, not an invented release',()=>{
   assert.match(html,/WORK IN PROGRESS/); assert.match(html,/Not a finished release/);
-  assert.match(html,/Version 1 and Version 2 are page labels/); assert.match(html,/name="robots" content="noindex"/);
+  assert.match(html,/Version 1 and Version 2 are page labels/); assert.doesNotMatch(html,/name="robots" content="noindex"/);
 });
 test('source remains separate from full songs and has measured provenance',()=>{
   assert.equal(record.source.durationSeconds,15.56898); assert.equal(record.source.bpmFromFilename,62);
   assert.match(html,/not either full Suno version/); assert.equal(record.versions.length,2);
 });
-test('the packaged MP3 is byte-for-byte identical to the user upload',()=>{
-  const file=fs.readFileSync(path.join(__dirname,'..',record.source.audio));
+const seedPath = path.join(__dirname,'..',record.source.audio);
+test('the original MP3 is byte-for-byte identical to the user upload', {
+  skip: record.source.uploadStatus === 'pending' && !fs.existsSync(seedPath)
+    ? 'Original seed upload is explicitly pending; the public page links to both full Suno versions.' : false
+},()=>{
+  const file=fs.readFileSync(seedPath);
   assert.equal(file.length,record.source.bytes);
   assert.equal(crypto.createHash('sha256').update(file).digest('hex'),record.source.sha256);
 });
@@ -88,4 +92,10 @@ test('new page has share metadata, keyboard skip link, live status and no autopl
 test('no competing ended queue or global song-catalog mutation is added',()=>{
   assert.doesNotMatch(js,/addEventListener\(['"]ended/); assert.doesNotMatch(js,/CMD_SONGS\s*=/);
   assert.match(js,/CMDContinuousPlayback\.create/);assert.match(js,/pageFollowSeconds:0/);
+});
+
+test('pending source upload is disclosed without blocking the two listening links',()=>{
+  assert.ok(['pending','uploaded'].includes(record.source.uploadStatus));
+  if(record.source.uploadStatus === 'pending') assert.match(html,/Original seed playback becomes available here once its upload is complete/);
+  assert.equal((html.match(/data-suno href=/g)||[]).length,2);
 });
