@@ -1,9 +1,31 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-07T20:55:00-06:00",
+  updated: "2026-09-09T12:17:18Z",
   entries: [
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-everybody-else-less",
+      "published": "2026-09-09T12:17:18Z",
+      "type": "From the August collection",
+      "songId": "everybody-else-less",
+      "title": "Everybody Else Less",
+      "summary": "An August collection track gets a full story and lyric page. The fictional narrator feels hurt and takes it out on everybody else. Hear the original recording and read the exact lyrics.",
+      "href": "/sad-music/everybody-else-less/",
+      "sharePath": "/updates/release-everybody-else-less/",
+      "cta": "Listen and read the lyrics",
+      "featured": true,
+      "cover": "/media/collections/sad-music/2026/everybody-else-less/cover.jpg",
+      "cardLines": [
+        "EVERYBODY",
+        "ELSE LESS"
+      ],
+      "cardTag": "Hurt turned outward · August collection",
+      "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
+      "badge": "New song page",
+      "intent": "think",
+      "featuredOrder": 0.16666666666666666
+    },
     {
       "id": "release-set-a-table-for-two",
       "published": "2026-09-07T20:55:00-06:00",
@@ -24,7 +46,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.2
+      "featuredOrder": 0.3333333333333333
     },
     {
       "id": "release-satans-loan",
@@ -46,7 +68,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.4
+      "featuredOrder": 0.5
     },
     {
       "id": "release-superstore-effect",
@@ -68,7 +90,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.6
+      "featuredOrder": 0.6666666666666666
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -90,7 +112,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.8
+      "featuredOrder": 0.8333333333333334
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-where-the-teeth-are-kept",published:"2026-08-25T07:06:00-06:00",type:"New release",songId:"where-the-teeth-are-kept",featured:true,featuredOrder:1,cardLines:["WHERE THE TEETH","ARE KEPT"],cardTag:"Google Gemini · adult fairytale",cardSummary:"A seductive adult reimagining of Little Red Riding Hood, with the danger left in the woods instead of sanding it down.",badge:"Made with Gemini"},

@@ -1,0 +1,64 @@
+name: Everybody Else Less release checks
+on:
+  pull_request:
+    paths:
+      - 'sad-music/everybody-else-less/**'
+      - 'content/releases/2026-08-everybody-else-less.json'
+      - 'content/sources/everybody-else-less.json'
+      - 'tests/everybody-else-less.test.mjs'
+      - 'scripts/check-everybody-else-less-*.mjs'
+      - '.github/workflows/everybody-else-less.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'sad-music/everybody-else-less/**'
+      - 'content/releases/2026-08-everybody-else-less.json'
+      - 'content/sources/everybody-else-less.json'
+      - 'tests/everybody-else-less.test.mjs'
+      - 'scripts/check-everybody-else-less-*.mjs'
+      - '.github/workflows/everybody-else-less.yml'
+permissions:
+  contents: read
+jobs:
+  song:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          node --check sad-music/everybody-else-less/player.js
+          node scripts/sync-releases.mjs --check
+          node --test tests/everybody-else-less.test.mjs tests/playback-sync.test.js
+      - run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - run: |
+          node scripts/serve-release-test.mjs >/tmp/everybody-server.log 2>&1 &
+          sleep 2
+          node scripts/check-everybody-else-less-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: everybody-page-browser
+          path: |
+            /tmp/everybody-qa/
+            /tmp/everybody-server.log
+          retention-days: 5
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: song
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-everybody-else-less-live.mjs
