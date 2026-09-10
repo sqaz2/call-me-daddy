@@ -12,7 +12,16 @@
   },
   "artwork": {
     "originalFilename": "file_0000000080a88230bbed03da08dd06e6.png",
-    "path": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
-    "sha256": "f9c048330b823928c808840891065b61acacd70956df6e26a9ee38d62c084c6b"
+    "path": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+    "sha256": "6f76ebf025a838dbf8fc468d69939a7f8bd47874272b60eae4c1c01207f70aa6",
+    "originalSha256": "f9c048330b823928c808840891065b61acacd70956df6e26a9ee38d62c084c6b",
+    "edit": {
+      "method": "Gaussian blur",
+      "radiusPixels": 24,
+      "scope": "Entire image, including subject and background",
+      "authorizedByArtist": true
+    },
+    "legacyPath": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
+    "legacySha256": "5af103171fc3ef413a1660deda55653e5ea041d30bd5eb6bdc3c5ad467b3dd8f"
   }
 }
