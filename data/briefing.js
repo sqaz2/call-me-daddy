@@ -10,18 +10,18 @@ window.CMD_BRIEFING = {
       "type": "New remix",
       "songId": "canadian-crop-dusting",
       "title": "Canadian Crop Dusting",
-      "summary": "Try not to blush. A grocery-aisle joke turned into a whole song. Hear Canadian Crop Dusting, read the lyrics, and follow its beat back to the DAW I built.",
+      "summary": "Canadian Crop Dusting: a grocery-aisle joke turned into dubstep. Hear the song, read the lyrics, and follow its beat back to the DAW I built.",
       "href": "/canadian-crop-dusting/",
       "sharePath": "/updates/release-canadian-crop-dusting/",
       "cta": "Play Canadian Crop Dusting",
       "featured": true,
-      "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+      "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-replacement.png",
       "cardLines": [
         "CANADIAN",
         "CROP DUSTING"
       ],
       "cardTag": "Try not to blush · dubstep remix",
-      "cardSummary": "Most people would’ve just liked your post. I made a whole damn song.",
+      "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
       "badge": "New remix",
       "intent": "laugh",
       "featuredOrder": 0.14285714285714285
