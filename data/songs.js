@@ -406,10 +406,13 @@ window.CMD_SONGS = [
     ]
   },
   {
-    id:'stomp-clamp', title:'Stomp Clamp', artist:'MusicSubject × Call Me Daddy', year:2026,
-    project:'When Things Got Heavy', description:'Cheer while I’m building—not only after the win becomes obvious.',
-    audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3', cover:'/media/collections/sad-music/2026/stomp-clamp/cover.jpg', experience:'/sad-music/stomp-clamp/', kind:'song',
-    variants:[{id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo Mix',audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3'}]
+    id:'stomp-clamp', title:'I Need That Sound', artist:'MusicSubject × Call Me Daddy', year:2026,
+    aliases:['Stomp Clamp'], project:'Still Building', description:'Stomp Clamp rebuilt in Suno V6: a survival song written from inside the climb, before the ending is known.',
+    audio:'/media/collections/sad-music/2026/stomp-clamp/suno-v6-remix.mp3', cover:'/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg', experience:'/still-building/?song=stomp-clamp&version=suno-v6-remix', kind:'2 versions',
+    variants:[
+      {id:'suno-v6-remix',label:'I Need That Sound · Suno V6 Remix',audio:'/media/collections/sad-music/2026/stomp-clamp/suno-v6-remix.mp3',cover:'/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg',duration:223.104,sunoUrl:'https://suno.com/s/jw2B4cDJ7FtCdsis'},
+      {id:'lofi-warehouse-echo',label:'Stomp Clamp · Lo-fi Warehouse Echo Mix',audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3',cover:'/media/collections/sad-music/2026/stomp-clamp/cover.jpg'}
+    ]
   },
   {
     id:'broke-my-mug-not-my-song', title:'Broke My Mug Not My Song', artist:'MusicSubject × Call Me Daddy', year:2026,

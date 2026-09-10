@@ -29,12 +29,15 @@ window.CMD_SAD_MUSIC = [
     ]
   },
   {
-    id:'stomp-clamp',title:'Stomp Clamp',era:'2026',group:'2026 · pressure',
+    id:'stomp-clamp',title:'I Need That Sound',era:'2026',group:'2026 · pressure',
     summary:'Cheer while I’m building—not only after the win becomes obvious.',
-    story:'Support often arrives after success, when it is safest and least useful. This one is about wanting people in the room during the climb.',
+    story:'Originally called Stomp Clamp. Support often arrives after success, when it is safest and least useful. This one is about wanting people in the room during the climb.',
     route:'/sad-music/stomp-clamp/',accent:'stomp',
-    sunoUrls:['https://suno.com/s/ZXiYRzpj7tNu9NMw'],
-    versions:[{id:'lofi-warehouse-echo',label:'Lo-fi Warehouse Echo Mix',audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3'}]
+    sunoUrls:['https://suno.com/s/jw2B4cDJ7FtCdsis','https://suno.com/s/ZXiYRzpj7tNu9NMw'],
+    versions:[
+      {id:'suno-v6-remix',label:'I Need That Sound · Suno V6 Remix',audio:'/media/collections/sad-music/2026/stomp-clamp/suno-v6-remix.mp3',expectedPath:'/media/collections/sad-music/2026/stomp-clamp/suno-v6-remix.mp3',sunoUrl:'https://suno.com/s/jw2B4cDJ7FtCdsis'},
+      {id:'lofi-warehouse-echo',label:'Stomp Clamp · Lo-fi Warehouse Echo Mix',audio:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3',expectedPath:'/media/collections/sad-music/2026/stomp-clamp/lofi-warehouse.mp3',sunoUrl:'https://suno.com/s/ZXiYRzpj7tNu9NMw'}
+    ]
   },
   {
     id:'broke-my-mug-not-my-song',title:'Broke My Mug Not My Song',era:'2026',group:'2026 · loss',
