@@ -22,6 +22,9 @@ test('Still Building ships two real V6 recordings under existing song identities
 
 test('Still Building page starts both recordings and stays on the shared player',()=>{
   const html=read('still-building/index.html'),script=read('still-building/player.js');
+  assert.match(html,/data\/2026-08-25-uploads\.js/);
+  assert.match(html,/survival-mode-background\.mp4/);
+  assert.match(html,/survival-mode-v6\.jpg/);
   assert.match(html,/data-play="stomp-clamp"/);
   assert.match(html,/data-play="survival-mode"/);
   assert.match(html,/id="buildingAudio"/);
