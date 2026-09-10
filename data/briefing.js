@@ -15,7 +15,7 @@ window.CMD_BRIEFING = {
       "sharePath": "/updates/release-canadian-crop-dusting/",
       "cta": "Play Canadian Crop Dusting",
       "featured": true,
-      "cover": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
+      "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
       "cardLines": [
         "CANADIAN",
         "CROP DUSTING"

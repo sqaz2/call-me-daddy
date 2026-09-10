@@ -10,7 +10,7 @@ const proof=JSON.parse(read('content/sources/canadian-crop-dusting.json'));
 const html=read('canadian-crop-dusting/index.html'),js=read('canadian-crop-dusting/player.js');
 const bytes=p=>fs.readFileSync(new URL('../'+p.replace(/^\//,''),import.meta.url));
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
-test('uploaded recording and portrait remain byte-for-byte intact',()=>{
+test('recording stays intact and the approved artwork matches its fingerprint',()=>{
  assert.equal(hash(bytes(release.song.audio)),proof.audio.sha256);
  assert.equal(hash(bytes(release.song.cover)),proof.artwork.sha256);
  assert.equal(release.song.variants[0].duration,214.824);
