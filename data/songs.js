@@ -10,7 +10,7 @@ window.CMD_SONGS = [
     "project": "From sample to song",
     "description": "Try not to blush. A grocery-aisle comment thread becomes Canadian Crop Dusting: a cheeky dubstep remix from the From sample to song experiment.",
     "audio": "/media/songs/2026/09/canadian-crop-dusting/audio.mp3",
-    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-replacement.png",
     "experience": "/canadian-crop-dusting/",
     "shareUrl": "/canadian-crop-dusting/",
     "kind": "song",
@@ -20,7 +20,7 @@ window.CMD_SONGS = [
         "id": "main",
         "label": "Canadian Crop Dusting",
         "audio": "/media/songs/2026/09/canadian-crop-dusting/audio.mp3",
-        "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+        "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-replacement.png",
         "duration": 214.824,
         "sunoUrl": "https://suno.com/s/GVJR8mtvBcNEiWDu"
       }

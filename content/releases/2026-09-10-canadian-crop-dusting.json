@@ -10,7 +10,7 @@
     "project": "From sample to song",
     "description": "Try not to blush. A grocery-aisle comment thread becomes Canadian Crop Dusting: a cheeky dubstep remix from the From sample to song experiment.",
     "audio": "/media/songs/2026/09/canadian-crop-dusting/audio.mp3",
-    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-replacement.png",
     "experience": "/canadian-crop-dusting/",
     "shareUrl": "/canadian-crop-dusting/",
     "kind": "song",
@@ -20,7 +20,7 @@
         "id": "main",
         "label": "Canadian Crop Dusting",
         "audio": "/media/songs/2026/09/canadian-crop-dusting/audio.mp3",
-        "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+        "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-replacement.png",
         "duration": 214.824,
         "sunoUrl": "https://suno.com/s/GVJR8mtvBcNEiWDu"
       }
@@ -50,18 +50,18 @@
     "type": "New remix",
     "songId": "canadian-crop-dusting",
     "title": "Canadian Crop Dusting",
-    "summary": "Try not to blush. A grocery-aisle joke turned into a whole song. Hear Canadian Crop Dusting, read the lyrics, and follow its beat back to the DAW I built.",
+    "summary": "Canadian Crop Dusting: a grocery-aisle joke turned into dubstep. Hear the song, read the lyrics, and follow its beat back to the DAW I built.",
     "href": "/canadian-crop-dusting/",
     "sharePath": "/updates/release-canadian-crop-dusting/",
     "cta": "Play Canadian Crop Dusting",
     "featured": true,
-    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-blurred.jpg",
+    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover-replacement.png",
     "cardLines": [
       "CANADIAN",
       "CROP DUSTING"
     ],
     "cardTag": "Try not to blush · dubstep remix",
-    "cardSummary": "Most people would’ve just liked your post. I made a whole damn song.",
+    "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
     "badge": "New remix",
     "intent": "laugh"
   }
