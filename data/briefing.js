@@ -1,9 +1,31 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-09T12:17:18Z",
+  updated: "2026-09-10T01:40:00Z",
   entries: [
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-canadian-crop-dusting",
+      "published": "2026-09-10T01:40:00Z",
+      "type": "New remix",
+      "songId": "canadian-crop-dusting",
+      "title": "Canadian Crop Dusting",
+      "summary": "Try not to blush. A grocery-aisle joke turned into a whole song. Hear Canadian Crop Dusting, read the lyrics, and follow its beat back to the DAW I built.",
+      "href": "/canadian-crop-dusting/",
+      "sharePath": "/updates/release-canadian-crop-dusting/",
+      "cta": "Play Canadian Crop Dusting",
+      "featured": true,
+      "cover": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
+      "cardLines": [
+        "CANADIAN",
+        "CROP DUSTING"
+      ],
+      "cardTag": "Try not to blush · dubstep remix",
+      "cardSummary": "Most people would’ve just liked your post. I made a whole damn song.",
+      "badge": "New remix",
+      "intent": "laugh",
+      "featuredOrder": 0.14285714285714285
+    },
     {
       "id": "release-everybody-else-less",
       "published": "2026-09-09T12:17:18Z",
@@ -24,7 +46,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
       "badge": "New song page",
       "intent": "think",
-      "featuredOrder": 0.16666666666666666
+      "featuredOrder": 0.2857142857142857
     },
     {
       "id": "release-set-a-table-for-two",
@@ -46,7 +68,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.3333333333333333
+      "featuredOrder": 0.42857142857142855
     },
     {
       "id": "release-satans-loan",
@@ -68,7 +90,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.5
+      "featuredOrder": 0.5714285714285714
     },
     {
       "id": "release-superstore-effect",
@@ -90,7 +112,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.6666666666666666
+      "featuredOrder": 0.7142857142857143
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -112,7 +134,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.8333333333333334
+      "featuredOrder": 0.8571428571428571
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-where-the-teeth-are-kept",published:"2026-08-25T07:06:00-06:00",type:"New release",songId:"where-the-teeth-are-kept",featured:true,featuredOrder:1,cardLines:["WHERE THE TEETH","ARE KEPT"],cardTag:"Google Gemini · adult fairytale",cardSummary:"A seductive adult reimagining of Little Red Riding Hood, with the danger left in the woods instead of sanding it down.",badge:"Made with Gemini"},

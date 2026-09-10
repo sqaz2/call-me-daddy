@@ -56,6 +56,7 @@
     'namaste-hamster':'light',
     'concrete-under-evergreens':'light',
     'superstore-effect':'light',
+    'canadian-crop-dusting':'light',
     'set-a-table-for-two':'light',
     'anti-generative-ai-diss':'light',
     'one-million-dollars':'light',
