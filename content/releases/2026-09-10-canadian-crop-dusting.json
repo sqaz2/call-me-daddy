@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "canadian-crop-dusting",
+    "title": "Canadian Crop Dusting",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-10",
+    "project": "From sample to song",
+    "description": "Try not to blush. A grocery-aisle comment thread becomes Canadian Crop Dusting: a cheeky dubstep remix from the From sample to song experiment.",
+    "audio": "/media/songs/2026/09/canadian-crop-dusting/audio.mp3",
+    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
+    "experience": "/canadian-crop-dusting/",
+    "shareUrl": "/canadian-crop-dusting/",
+    "kind": "song",
+    "sunoUrl": "https://suno.com/s/GVJR8mtvBcNEiWDu",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Canadian Crop Dusting",
+        "audio": "/media/songs/2026/09/canadian-crop-dusting/audio.mp3",
+        "cover": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
+        "duration": 214.824,
+        "sunoUrl": "https://suno.com/s/GVJR8mtvBcNEiWDu"
+      }
+    ],
+    "explicit": true
+  },
+  "lyrics": {
+    "text": "[Intro]\nSomebody ripped a big one\nSame grocery aisle as me\nShifted—\nand carried on...\n\n[Part 3]\nThank you, yellow top.\n\n[Verse 1]\nWalkin’ through the grocery store\nMinding my own\nThen the atmosphere changed\n\n[Part 5]\nThey just shifted something\nThey kept walking\nNo remorse\nNo discussion\n\n[Part 6]\nSomebody yelled—\n“Don’t lie, just admit it was you.”\n\n[Pre-Drop]\nI don’t fart she said\n\n[Drop]\nGOOD OL’ CANADIAN CROP DUSTING\nPFFFT—\nDo you guys smell popcorn?\n\n[Part 10]\nCANADIAN CROP DUSTING\nAisle seven turned into a danger zone\n\n[Part 11]\nYellow top\nDon’t stop\nDrop one\nThen shop like the Isles alone\n\n[Part 12]\nGOOD OL’ CANADIAN—\nCROP. DUSTING.\n\n[Verse 2]\n“Changed tops before the picture, eh?”\nThe investigation gets deeper\nOne guy says it smelled like\nBananas and latex through the freezer\n\n[Part 15]\nMeanwhile yellow top is gone\nThree aisles over\nBuying flour\n\n[Build]\nWho dealt it?\nWho smelled it?\nWho felt it, queen for a day type of power\n\n[Part 17]\nShe says—\n\n[Part 18]\nI. DON’T. FART.\n\n[Drop]\nGOOD OL’ CANADIAN CROP DUSTING\nRip—shift—carry on\n\n[Part 20]\nCANADIAN CROP DUSTING\nBy the time you smell it\nThe suspect’s gone\n\n[Part 21]\nNo confession\nNo discussion\nJust plausible deniability\nand gastrointestinal percussion like a Russian spy dropping bombs on enemy territory\n\n[Part 23]\nyellow top. You smelt it you dealt it. You said the rhyme you did the crime. You denied it you supplied it. You farted (you're retarded)",
+    "snippet": "GOOD OL’ CANADIAN CROP DUSTING",
+    "sunoUrl": "https://suno.com/song/a02a94bb-9e94-4b86-9e29-cf3e13d485e7",
+    "clipIds": [
+      "a02a94bb-9e94-4b86-9e29-cf3e13d485e7"
+    ],
+    "source": "Exact public Suno prompt from the artist-supplied share link. Words, section labels, punctuation and stanza breaks preserved."
+  },
+  "radio": {
+    "surprise": 88,
+    "laugh": 98,
+    "think": 18,
+    "level-up": 25,
+    "heavy": 85,
+    "old-files": 8
+  },
+  "update": {
+    "id": "release-canadian-crop-dusting",
+    "published": "2026-09-10T01:40:00Z",
+    "type": "New remix",
+    "songId": "canadian-crop-dusting",
+    "title": "Canadian Crop Dusting",
+    "summary": "Try not to blush. A grocery-aisle joke turned into a whole song. Hear Canadian Crop Dusting, read the lyrics, and follow its beat back to the DAW I built.",
+    "href": "/canadian-crop-dusting/",
+    "sharePath": "/updates/release-canadian-crop-dusting/",
+    "cta": "Play Canadian Crop Dusting",
+    "featured": true,
+    "cover": "/media/songs/2026/09/canadian-crop-dusting/cover.png",
+    "cardLines": [
+      "CANADIAN",
+      "CROP DUSTING"
+    ],
+    "cardTag": "Try not to blush · dubstep remix",
+    "cardSummary": "Most people would’ve just liked your post. I made a whole damn song.",
+    "badge": "New remix",
+    "intent": "laugh"
+  }
+}

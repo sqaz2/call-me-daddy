@@ -55,6 +55,7 @@ jobs:
           node --check scripts/check-table-for-two-browser.mjs
           node --check scripts/check-replay-return-browser.mjs
           node --check worker/index.mjs
+          node --check canadian-crop-dusting/player.js
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
       - name: Media size safety
@@ -93,6 +94,8 @@ jobs:
         run: node --test tests/site-feed.test.js
       - name: Release workflow tests
         run: node --test tests/release-workflow.test.mjs
+      - name: Canadian Crop Dusting release integration
+        run: node --test tests/canadian-crop-dusting.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs
 

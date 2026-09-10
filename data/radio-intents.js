@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "canadian-crop-dusting": {
+    "surprise": 88,
+    "laugh": 98,
+    "think": 18,
+    "level-up": 25,
+    "heavy": 85,
+    "old-files": 8
+  },
   "everybody-else-less": {
     "surprise": 64,
     "laugh": 58,
