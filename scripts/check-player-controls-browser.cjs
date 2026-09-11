@@ -67,7 +67,7 @@ const {chromium}=require('playwright');
   assert.equal(await page.locator('.cmd-universal-player:visible').count(),1);
   assert.equal(await page.evaluate(()=>[document,...[...document.querySelectorAll('iframe')].map(f=>f.contentDocument)].filter(Boolean).flatMap(d=>[...d.querySelectorAll('audio')]).filter(a=>!a.paused&&!a.ended).length),1);
 
-  // Exact likes persist on another load, and footer links clear the expanded dock.
+  // Exact likes persist on another load, and the footer clears the expanded dock.
   await page.goto(base+'/',{waitUntil:'load'});
   await page.locator('#liked-songs .home-song-open').waitFor();
   assert.equal(await page.locator('#liked-songs .home-song-open').getAttribute('href'),selected);
@@ -81,9 +81,9 @@ const {chromium}=require('playwright');
   const browsed=page.frames().find(f=>f.parentFrame()&&new URL(f.url()).pathname==='/');
   await browsed.waitForFunction(()=>parseFloat(getComputedStyle(document.body).paddingBottom)>250);
   await browsed.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
-  const panel=await dock.boundingBox(),footer=await browsed.locator('footer a').last().boundingBox();
+  const panel=await dock.boundingBox(),footer=await browsed.locator('footer').boundingBox();
   assert.ok(panel.y>=0&&panel.y+panel.height<=720,'Expanded dock stays inside a narrow viewport');
-  assert.ok(footer.y+footer.height<=panel.y,'Footer links remain above the expanded player');
+  assert.ok(footer.y+footer.height<=panel.y,'The footer remains above the expanded player');
   assert.equal(await browsed.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   fs.mkdirSync('/tmp/replay-qa',{recursive:true});
   await page.screenshot({path:'/tmp/replay-qa/player-swipe-likes-mobile.png'});
