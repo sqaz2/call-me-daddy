@@ -1,7 +1,7 @@
 (()=>{
   if(window.CMDUniversalPlayer)return;
 
-  const VERSION='1.2.0';
+  const VERSION='1.2.1';
   const CONTACT_URL='https://facebook.com/callmedaddy';
   const FALLBACK_COVER=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const adapters=new Map();
@@ -39,12 +39,18 @@
   };
   const normalizeTrack=(track,media)=>{
     const source=mediaSource(media);
+    const catalog=source?catalogTrackFor(media):null;
+    const reportedId=track?.songId||String(track?.id||'').split(':')[0];
     // A legacy adapter may still supply its first track after changing audio.src.
     // Never pair that old identity/artwork/story with a different recording.
-    const stale=Boolean(source&&track?.audio&&absolute(track.audio)!==source);
-    const resolved=stale?(catalogTrackFor(media)||{audio:source,title:'Uncatalogued recording'}):(track||catalogTrackFor(media)||{});
+    const stale=Boolean(source&&track?.audio&&absolute(track.audio)!==source)
+      ||Boolean(catalog&&reportedId&&reportedId!==catalog.songId);
+    const resolved=stale?(catalog||{audio:source,title:'Uncatalogued recording'}):(track||catalog||{});
     return {...resolved,title:resolved.title||media?.dataset?.title||'Call Me Daddy',artist:resolved.artist||'MusicSubject × Call Me Daddy',cover:resolved.cover||FALLBACK_COVER,audio:resolved.audio||source};
   };
+  // A retained owner frame may still run an older adapter. Reconcile its report
+  // here as well, at the document that actually renders the shared dock.
+  const activeTrack=()=>active?normalizeTrack(active.track(),active.media()):null;
   const trackKey=track=>absolute(track?.audio)||`${track?.songId||track?.id||''}:${track?.variantId||'main'}`;
   const fallbackRoute=track=>{
     const url=new URL('/now-playing/',location.origin);
@@ -97,7 +103,7 @@
     followPending={key,generation};
     try{
       const route=await resolveRoute(track);
-      if(generation!==followGeneration||!active?.playing()||trackKey(active.track())!==key)return false;
+      if(generation!==followGeneration||!active?.playing()||trackKey(activeTrack())!==key)return false;
       if(!samePage(route)){
         if(!window.CMDPersistentSite?.open)return false;
         window.CMDPersistentSite.open(route);
@@ -106,14 +112,14 @@
     }finally{if(followPending?.generation===generation)followPending=null}
   }
   async function openCurrentTrack(){
-    const track=active?.track();if(!track)return;
+    const track=activeTrack();if(!track)return;
     const key=trackKey(track),route=await resolveRoute(track);
-    if(!active||trackKey(active.track())!==key||samePage(route))return;
+    if(!active||trackKey(activeTrack())!==key||samePage(route))return;
     if(window.CMDPersistentSite?.open)window.CMDPersistentSite.open(route);
     else location.assign(route);
   }
   function recordingIdentity(){
-    const track=active?.track(),catalog=active&&catalogTrackFor(active.media());
+    const track=activeTrack(),catalog=active&&catalogTrackFor(active.media());
     return {songId:catalog?.songId||track?.songId||String(track?.id||'').split(':')[0],variantId:catalog?.variantId||track?.variantId||'main'};
   }
 
@@ -166,7 +172,7 @@
     }));
     if(typeof ResizeObserver==='function')new ResizeObserver(()=>window.CMDPersistentSite?.refreshClearance?.()).observe(root);
     nodes.songBreak.addEventListener('click',()=>{
-      const track=active?.track(),engine=active?.ownerWindow?.CMDCatalogCycle||window.CMDCatalogCycle;
+      const track=activeTrack(),engine=active?.ownerWindow?.CMDCatalogCycle||window.CMDCatalogCycle;
       if(!track||!engine?.takeBreak)return;
       const songId=track.songId||String(track.id||'').split(':')[0];
       engine.takeBreak(songId);lastBreak={songId,title:track.title,engine};
@@ -177,7 +183,7 @@
     });
     nodes.undoBreak.addEventListener('click',()=>{if(!lastBreak)return;lastBreak.engine.undoBreak(lastBreak.songId);nodes.breakMessage.textContent=`${lastBreak.title} can play again.`;lastBreak=null;nodes.undoBreak.hidden=true;render()});
     nodes.art.addEventListener('click',()=>active?.toggle?.());nodes.toggle.addEventListener('click',()=>active?.toggle?.());
-    nodes.previous.addEventListener('click',()=>active?.previous?.());nodes.next.addEventListener('click',()=>active?.next?.());nodes.share.addEventListener('click',()=>active?.share?.());
+    nodes.previous.addEventListener('click',()=>active?.previous?.());nodes.next.addEventListener('click',()=>active?.next?.());nodes.share.addEventListener('click',()=>shareActive());
     nodes.title.addEventListener('click',()=>void openCurrentTrack());
     let scrubbing=false;const seekFromPointer=event=>{if(!active)return;const duration=active.duration(),rect=nodes.progress.getBoundingClientRect(),x=event.clientX;if(!Number.isFinite(duration)||duration<=0||rect.width<=0||typeof x!=='number')return;active.seek(Math.max(0,Math.min(duration,(x-rect.left)/rect.width*duration)))};nodes.progress.addEventListener('pointerdown',event=>{if(!active||(event.button!=null&&event.button!==0))return;scrubbing=true;nodes.progress.classList.add('is-scrubbing');try{nodes.progress.setPointerCapture(event.pointerId)}catch{}seekFromPointer(event);event.preventDefault()});nodes.progress.addEventListener('pointermove',event=>{if(!scrubbing)return;seekFromPointer(event);event.preventDefault()});const endScrub=event=>{if(!scrubbing)return;scrubbing=false;nodes.progress.classList.remove('is-scrubbing');try{if(event&&event.pointerId!=null)nodes.progress.releasePointerCapture(event.pointerId)}catch{}};nodes.progress.addEventListener('pointerup',endScrub);nodes.progress.addEventListener('pointercancel',endScrub);nodes.progress.addEventListener('click',event=>{if(scrubbing)return;seekFromPointer(event)});nodes.progress.addEventListener('keydown',event=>{if(!active||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const duration=active.duration();if(!Number.isFinite(duration)||duration<=0)return;active.seek(event.key==='Home'?0:event.key==='End'?duration:Math.max(0,Math.min(duration,active.time()+(event.key==='ArrowRight'?5:-5))));event.preventDefault()});
     return root;
@@ -187,6 +193,13 @@
     const url=window.CMDShortLinks?.forTrack(track)||track.shareUrl||track.experience||fallbackRoute(track),detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
     const data={title:`${track.title}${detail}`,text:`Listen to ${track.title}${detail}.`,url:absolute(url)};
     try{if(navigator.share)return navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});return navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{return false}
+  }
+  function shareActive(){
+    if(!active)return false;
+    const reported=active.track(),track=activeTrack();
+    const songId=value=>value?.songId||String(value?.id||'').split(':')[0];
+    if(trackKey(reported)!==trackKey(track)||songId(reported)!==songId(track)||reported?.title!==track.title)return defaultShare(track);
+    return active.share?.();
   }
   function configureMediaSession(adapter){
     if(!('mediaSession'in navigator))return;
@@ -200,7 +213,7 @@
     const parent=parentPlayer();
     if(parent?.adopt?.(active,window)){root.hidden=true;return}
     if(parent&&!active.playing()){root.hidden=true;return}
-    const media=active.media(),track=active.track(),playing=active.playing(),duration=active.duration(),time=active.time();
+    const media=active.media(),track=activeTrack(),playing=active.playing(),duration=active.duration(),time=active.time();
     const ratio=Number.isFinite(duration)&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
     if(nodes.image.src!==absolute(track.cover||FALLBACK_COVER))nodes.image.src=track.cover||FALLBACK_COVER;
     nodes.image.alt=`${track.title} artwork`;nodes.image.onerror=()=>{if(nodes.image.src!==absolute(FALLBACK_COVER))nodes.image.src=FALLBACK_COVER};
@@ -289,7 +302,7 @@
       activate(adapter,{show:true,passive:true});return true;
     }catch{return false}
   }
-  window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,getActive:()=>active?.handle||null,getTrack:()=>active?.track()||null,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(['play','pause','toggle','next','previous','seek','share'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
+  window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,openCurrentTrack,getActive:()=>active?.handle||null,getTrack:activeTrack,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(action==='share')return shareActive();if(['play','pause','toggle','next','previous','seek'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
   loadFeature('CMDListenerTaste','/listener-taste.js?v=20260911-player').then(()=>render());
   window.addEventListener?.('cmd:taste-change',()=>render());
   window.addEventListener?.('storage',event=>{if(!event.key||event.key==='cmd-listener-taste-v2')render()});
