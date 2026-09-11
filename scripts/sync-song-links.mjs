@@ -76,7 +76,7 @@ export function buildLinks(catalog, registry) {
         audio: variant.audio || '', aliases, target: target.pathname + target.search + target.hash });
     }
   }
-  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', other: 'https.fyi' }, rows };
+  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', other: 'suno.fyi' }, rows };
   data.revision = createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0, 16);
   return data;
 }

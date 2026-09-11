@@ -84,7 +84,7 @@ test('genre sharing respects the recording, while uncertain genres stay universa
   const dubstep = data.rows.find(row => row.songId === 'satans-loan');
   assert.equal(links.forTrack({ songId: dubstep.songId }), `https://dubstep.bid/${dubstep.number}`);
   const neutral = data.rows.find(row => row.genre === 'other');
-  assert.match(links.forTrack({ songId: neutral.songId, variantId: neutral.version }), /^https:\/\/https\.fyi\//);
+  assert.match(links.forTrack({ songId: neutral.songId, variantId: neutral.version }), /^https:\/\/suno\.fyi\//);
   assert.equal(genreFor({ id: 'unknown', variants: [{ id: 'a', audio: '/a' }, { id: 'b', audio: '/b' }], description: 'A dubstep remix exists' }, { label: 'Original' }), 'other');
   assert.equal(genreFor({ id: 'unknown', shareGenre: 'hiphop' }, { shareGenre: 'dubstep' }), 'dubstep');
 });
@@ -109,7 +109,7 @@ test('page, catalog and version URLs share the same mapping without shortening u
 test('inactive or stale domains preserve working links; universal domain is the fallback', async () => {
   const original = `${data.origin}/cheap-to-inform/`;
   for (const links of [await browser([]), await browser(Object.values(data.domains), true)]) assert.equal(links.forUrl(original), original);
-  assert.equal((await browser(['https.fyi'])).forUrl(original), 'https://https.fyi/9');
+  assert.equal((await browser(['suno.fyi'])).forUrl(original), 'https://suno.fyi/9');
 });
 
 test('invalid links, methods and injected destinations cannot redirect to an unrelated song/site', () => {
@@ -124,7 +124,7 @@ test('invalid links, methods and injected destinations cannot redirect to an unr
 test('readiness is public and revision-specific; new releases resolve without redeploying redirect Worker', async () => {
   const updated = { ...data, revision: 'next-release', rows: [...data.rows, { ...data.rows[0], number: 999 }] };
   const latest = await liveRegistry(async () => new Response(JSON.stringify(updated)));
-  assert.equal(handleShortLink(new Request('https://https.fyi/999'), latest).status, 302);
+  assert.equal(handleShortLink(new Request('https://suno.fyi/999'), latest).status, 302);
   const status = handleShortLink(new Request('https://dubstep.bid/.well-known/music-links'), latest);
   assert.equal(status.headers.get('access-control-allow-origin'), '*');
   assert.equal((await status.json()).revision, 'next-release');

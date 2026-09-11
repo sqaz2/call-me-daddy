@@ -7,7 +7,7 @@ const data=require('../data/song-links.json');
   for(const active of [true,false]){
    const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-   await context.route(/https:\/\/(hiphop\.bid|dubstep\.bid|https\.fyi)\//,route=>active?route.fulfill({status:200,headers:{'access-control-allow-origin':'*','content-type':'application/json'},body:JSON.stringify({service:'musicsubject-song-links',revision:data.revision})}):route.abort());
+   await context.route(/https:\/\/(hiphop\.bid|dubstep\.bid|suno\.fyi)\//,route=>active?route.fulfill({status:200,headers:{'access-control-allow-origin':'*','content-type':'application/json'},body:JSON.stringify({service:'musicsubject-song-links',revision:data.revision})}):route.abort());
    await page.addInitScript(()=>{window.shared=[];Object.defineProperty(navigator,'share',{value:payload=>{window.shared.push({...payload,activeGesture:navigator.userActivation.isActive});return Promise.resolve()}})});
    await page.goto(`${process.env.BASE_URL || 'http://127.0.0.1:8765'}/cheap-to-inform/`,{waitUntil:'load'});
    await page.evaluate(()=>window.CMDShortLinks.ready);

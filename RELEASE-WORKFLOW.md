@@ -19,7 +19,7 @@ reserved. New songs and versions are appended automatically.
 
 Optional `song.shareGenre` or `song.variants[].shareGenre` accepts `hiphop`,
 `dubstep` or `other`. A version override takes priority. Explicit genre labels
-provide a conservative default; unidentified music uses `https.fyi`.
+provide a conservative default; unidentified music uses `suno.fyi`.
 See `SHORT-LINKS.md` for the one-time domain activation and verification.
 
 ## If the song story is not written yet
