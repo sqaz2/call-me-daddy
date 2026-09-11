@@ -1,13 +1,5 @@
 name: Song domain activation
 on:
-  push:
-    branches: [main]
-    paths:
-      - wrangler.jsonc
-      - worker/**
-      - data/song-links.json
-      - scripts/check-song-links-live.mjs
-      - .github/workflows/song-domain-checks.yml
   workflow_dispatch:
 permissions:
   contents: read
