@@ -20,10 +20,15 @@ collection/update links without a unique song remain unchanged.
 
 ## Domain activation through the existing publisher
 
-The main `call-me-daddy` Worker handles the three short domains before serving
-assets. `wrangler.jsonc` declares those domains alongside the existing music
-hostname, so the already-connected Cloudflare Git integration can attach them
-when it publishes `main`. A new ChatGPT Cloudflare connection is not required.
+The main `call-me-daddy` Worker can handle the three short domains before serving
+assets. Automatic domain attachment was attempted in PR #58, but Cloudflare's
+production build failed. The added domain declarations were removed to avoid
+blocking normal music publication. Short domains are not yet confirmed active.
+
+To finish activation, inspect the failed Cloudflare build, resolve its reported
+domain/account issue, then add custom-domain routes for `hiphop.bid`, `dubstep.bid`
+and `https.fyi` alongside the existing hostname in `wrangler.jsonc`. The existing
+Git publisher can deploy this; a ChatGPT Cloudflare connection is not required.
 The domains must be active zones in that Cloudflare account, and the existing
 build credential must permit their attachment. Existing conflicting DNS or
 redirect rules may still need attention in Cloudflare's dashboard.
@@ -35,7 +40,7 @@ service deployment; do not deploy both configurations against the same domains.
 
 `Song domain activation` verifies all three HTTPS hosts, the readiness revision,
 V6 and earlier-version redirects, Cheap to Inform, destination pages and unknown
-links after main changes. A failed verification is not proof of a site outage;
+links when run manually after activation. A failed verification is not proof of a site outage;
 inspect the existing Cloudflare build and domain status for the specific cause.
 
 The browser checks domain readiness before the share gesture and uses a domain
