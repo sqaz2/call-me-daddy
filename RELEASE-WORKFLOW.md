@@ -20,6 +20,11 @@ reserved. New songs and versions are appended automatically.
 Optional `song.shareGenre` or `song.variants[].shareGenre` accepts `hiphop`,
 `dubstep` or `other`. A version override takes priority. Explicit genre labels
 provide a conservative default; unidentified music uses `suno.fyi`.
+For satire and joke songs, set `song.shareCategory` to `jokes` (or a variant's
+`shareCategory` for one recording). This selects `jokes.win` before the genre
+domain. `music` opts out; variant metadata takes priority. Existing reviewed
+comedy assignments live in `content/song-share-categories.json`. Explicit
+satire/comedy/parody `kind` labels also classify new releases automatically.
 See `SHORT-LINKS.md` for the one-time domain activation and verification.
 
 ## If the song story is not written yet
