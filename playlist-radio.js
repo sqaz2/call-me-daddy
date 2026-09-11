@@ -59,6 +59,8 @@
   }
 
   function shareUrl(track){
+    const short=window.CMDShortLinks?.forTrack(track);
+    if(short)return short;
     const dedicated=track?.shareUrl||track?.experience;
     if(dedicated){
       const url=new URL(dedicated,location.origin);

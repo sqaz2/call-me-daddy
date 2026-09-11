@@ -390,6 +390,8 @@
   }
 
   function songShareUrl(song,variant){
+    const short=window.CMDShortLinks?.forTrack({...song,...variant,songId:song?.id,variantId:variant?.id});
+    if(short)return short;
     if(!variant)return new URL(song.experience||song.youtubeUrl||'/music/',location.origin).href;
     const url=new URL('/music/',location.origin);
     url.searchParams.set('song',song.id);

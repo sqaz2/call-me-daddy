@@ -127,7 +127,7 @@
   }
   function defaultShare(track){
     if(!track)return false;if(window.CMDPlaylistRadio?.share)return window.CMDPlaylistRadio.share(track);
-    const url=track.shareUrl||track.experience||fallbackRoute(track),detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
+    const url=window.CMDShortLinks?.forTrack(track)||track.shareUrl||track.experience||fallbackRoute(track),detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
     const data={title:`${track.title}${detail}`,text:`Listen to ${track.title}${detail}.`,url:absolute(url)};
     try{if(navigator.share)return navigator.share(data);return navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{return false}
   }

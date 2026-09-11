@@ -58,6 +58,8 @@ jobs:
           node --check canadian-crop-dusting/player.js
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
+      - name: Permanent song links and sharing
+        run: node --test tests/song-links.test.mjs
       - name: Media size safety
         run: node --test tests/media-audit.test.mjs
       - name: Radio engine tests
@@ -120,6 +122,7 @@ jobs:
           mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
+          node scripts/check-song-links-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
       - uses: actions/upload-artifact@v4

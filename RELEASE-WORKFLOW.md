@@ -11,6 +11,17 @@ node scripts/sync-releases.mjs --check
 
 The sync command validates local audio, artwork, story routes and share routes, then updates the canonical song catalog, homepage/update feed, radio profile, sitemap and a static social-preview page under `updates/`.
 
+It also assigns permanent numbered share links. Commit `content/song-links.json`,
+`data/song-links.json`, `worker/song-links-data.mjs` and the generated prefix of
+`share.js` with each release. Never renumber, reorder or delete existing song
+numbers or version slots in `content/song-links.json`; removed entries stay
+reserved. New songs and versions are appended automatically.
+
+Optional `song.shareGenre` or `song.variants[].shareGenre` accepts `hiphop`,
+`dubstep` or `other`. A version override takes priority. Explicit genre labels
+provide a conservative default; unidentified music uses `https.fyi`.
+See `SHORT-LINKS.md` for the one-time domain activation and verification.
+
 ## If the song story is not written yet
 
 Remove `song.experience`. Set both `song.shareUrl` and `update.href` to an exact player route such as `/music/?song=song-slug&version=main&intent=surprise&share=1`. The site will say that the story is coming instead of linking to an empty page.

@@ -4,3 +4,9 @@ wrangler.jsonc
 README.md
 UPLOAD-INSTRUCTIONS.txt
 assets/README.md
+wrangler.short-links.jsonc
+short-links/
+worker/
+scripts/
+tests/
+content/

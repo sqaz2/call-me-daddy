@@ -118,7 +118,8 @@
   document.querySelectorAll('[data-share]').forEach(button => {
     button.addEventListener('click', async () => {
       const title = button.dataset.title || 'Call Me Daddy update';
-      const url = absoluteUrl(button.dataset.share || '/updates/');
+      const original = absoluteUrl(button.dataset.share || '/updates/');
+      const url = window.CMDShortLinks?.forUrl(original) || original;
       try {
         if (navigator.share) {
           await navigator.share({ title, text: title, url });
