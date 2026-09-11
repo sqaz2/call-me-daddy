@@ -125,6 +125,7 @@ jobs:
           sleep 2
           node scripts/check-song-links-browser.cjs
           node scripts/check-home-discovery-browser.cjs
+          node scripts/check-listening-variety-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
       - uses: actions/upload-artifact@v4

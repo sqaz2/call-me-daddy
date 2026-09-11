@@ -5,7 +5,7 @@ const path=require('node:path');
 const vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
 const sourceFiles=['data/songs.js','data/archive-catalog.js','data/radio-intents.js','data/2026-08-25-uploads.js','data/2026-08-26-uploads.js','data/2026-08-27-uploads.js','catalog-cycle.js'];
-function loadRadio(search=''){const storage=new Map();const window={};const context=vm.createContext({window,location:{search},localStorage:{getItem:key=>storage.has(key)?storage.get(key):null,setItem:(key,value)=>storage.set(key,String(value))},crypto:{getRandomValues:values=>{values[0]=123456789;values[1]=987654321;return values;}},URLSearchParams,Date,Math,Uint32Array});sourceFiles.forEach(file=>vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file}));return {window,storage};}
+function loadRadio(search=''){const storage=new Map();const window={};const context=vm.createContext({window,location:{search},localStorage:{getItem:key=>storage.has(key)?storage.get(key):null,setItem:(key,value)=>storage.set(key,String(value))},crypto:{getRandomValues:values=>{values[0]=123456789;values[1]=987654321;return values;}},URLSearchParams,Date,Math,Uint32Array});sourceFiles.forEach(file=>vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file}));return {window,storage,context};}
 function build(search='',options={}){const {window}=loadRadio(search);const cycle=window.CMDCatalogCycle.build(window.CMD_SONGS,{intent:'surprise',seed:'route-test-42',cycleNumber:1,ignoreHistory:true,...options});return {window,cycle};}
 const ids=cycle=>Array.from(cycle,track=>track.songId);
 test('the same intention and seed rebuild the same route and versions',()=>{const first=build('',{intent:'laugh',seed:'same-route'}).cycle;const second=build('',{intent:'laugh',seed:'same-route'}).cycle;assert.deepEqual(Array.from(first,track=>[track.songId,track.variantId]),Array.from(second,track=>[track.songId,track.variantId]));});
@@ -23,3 +23,47 @@ test('alternate versions rotate deterministically between cycles',()=>{const {wi
 test('legacy exact song/version links still take the first slot',()=>{const search='?song=i-need-love&version=dubstep-cinematic-terror&intent=think&seed=shared-route&share=1';const {cycle}=build(search,{intent:'think',seed:'shared-route'});assert.equal(cycle[0].songId,'i-need-love');assert.equal(cycle[0].variantId,'dubstep-cinematic-terror');});
 test('unknown intentions fall back to Play the site',()=>{const {window}=loadRadio();assert.equal(window.CMDCatalogCycle.normalizeIntent('make-me-a-sandwich'),'surprise');const cycle=window.CMDCatalogCycle.build(window.CMD_SONGS,{intent:'make-me-a-sandwich',seed:'fallback-route',cycleNumber:1,ignoreHistory:true});assert.ok(cycle.every(track=>track.radioIntent==='surprise'));});
 test('every catalog identity has an explicit intention profile',()=>{const {window}=loadRadio();assert.deepEqual(Object.keys(window.CMD_RADIO_CONFIG.profiles).sort(),Array.from(window.CMD_SONGS,song=>song.id).sort());});
+
+test('ordinary radio places every nonrecent identity before the recent listening window',()=>{
+  const {window}=loadRadio();const engine=window.CMDCatalogCycle;
+  const first=engine.build(window.CMD_SONGS,{intent:'surprise',seed:'heard-before'});
+  first.slice(0,8).forEach(track=>engine.remember(track));
+  const recent=new Set(engine.readHistory().slice(0,8));
+  for(let i=0;i<40;i++){
+    const cycle=engine.build(window.CMD_SONGS,{intent:'surprise',seed:`return-${i}`});
+    const cutoff=cycle.length-8;
+    assert.ok(cycle.slice(0,cutoff).every(track=>!recent.has(track.songId)));
+    assert.ok(cycle.slice(cutoff).every(track=>recent.has(track.songId)));
+    assert.equal(new Set(ids(cycle)).size,cycle.length);
+  }
+});
+test('fresh sessions vary their first radio choice without relying on saved history',()=>{
+  const {window}=loadRadio();const starts=new Map();
+  for(let i=0;i<100;i++){
+    const id=window.CMDCatalogCycle.build(window.CMD_SONGS,{intent:'surprise',seed:`fresh-${i}`})[0].songId;
+    starts.set(id,(starts.get(id)||0)+1);
+  }
+  assert.ok(starts.size>15);
+  assert.ok(Math.max(...starts.values())<15);
+});
+test('a song break excludes all versions, can be undone and expires',()=>{
+  const {window,storage}=loadRadio();const e=window.CMDCatalogCycle;
+  e.takeBreak('survival-mode');
+  assert.equal(e.isOnBreak('survival-mode'),true);
+  assert.ok(!ids(e.build(window.CMD_SONGS)).includes('survival-mode'));
+  assert.equal(e.build(window.CMD_SONGS.filter(s=>s.id==='survival-mode'),{explicitPick:true}).length,1);
+  e.undoBreak('survival-mode');assert.equal(e.isOnBreak('survival-mode'),false);
+  storage.set('cmd-song-breaks-v1',JSON.stringify({'survival-mode':Date.now()-1}));
+  assert.equal(e.isOnBreak('survival-mode'),false);
+});
+
+
+test('a prebuilt radio cycle rechecks breaks before choosing the next recording',()=>{
+  const {window,context}=loadRadio();
+  vm.runInContext(fs.readFileSync(path.join(root,'playlist-radio.js'),'utf8'),context);
+  const order=window.CMDCatalogCycle.build(window.CMD_SONGS,{seed:'prebuilt',intent:'surprise'});
+  const radio=window.CMDPlaylistRadio.create({seed:'prebuilt',intent:'surprise'});
+  assert.equal(radio.next().songId,order[0].songId);
+  window.CMDCatalogCycle.takeBreak(order[1].songId);
+  assert.equal(radio.next().songId,order[2].songId);
+});

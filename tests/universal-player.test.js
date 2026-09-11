@@ -56,7 +56,7 @@ class FakeElement extends FakeTarget{
     const controls=node('div','cmd-universal-controls');controls.append(node('button','cmd-universal-prev'),node('button','cmd-universal-toggle'),node('button','cmd-universal-next'),node('button','cmd-universal-share'));
     const progress=node('div','cmd-universal-progress');progress.append(node('span',''),node('i','cmd-universal-thumb'));
     const times=node('div','cmd-universal-times');times.append(node('span','cmd-universal-current'),node('span',''),node('span','cmd-universal-duration'));
-    shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));
+    shell.append(node('details','cmd-listening-options'),node('p','cmd-listening-next'),node('button','cmd-song-break'),node('p','cmd-break-message'),node('button','cmd-undo-break'));shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));
     this.appendChild(shell);
   }
   get innerHTML(){return this._innerHTML||''}

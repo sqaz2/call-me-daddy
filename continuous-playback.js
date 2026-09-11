@@ -55,6 +55,15 @@
     let destroyed=false;
     let controller=null;
     let preloadLink=null;
+    let rememberedSource='';
+    const cleanup=[];
+    const lifecycleTarget={addEventListener:(...args)=>addEventListener(...args),removeEventListener:(...args)=>{if(typeof removeEventListener==='function')removeEventListener(...args)}};
+    const listen=(target,type,callback)=>{
+      const handler=event=>{if(!destroyed)callback(event)};
+      target.addEventListener(type,handler);
+      cleanup.push(()=>target.removeEventListener?.(type,handler));
+    };
+    const onBreak=track=>window.CMDCatalogCycle?.isOnBreak?.(track?.songId||track?.id);
 
     const status=(kind,detail)=>options.onStatus?.(kind,detail,current);
     const currentTrack=()=>queue[index]||current;
@@ -103,6 +112,7 @@
       try{navigator.mediaSession.setPositionState({duration:audio.duration,playbackRate:audio.playbackRate||1,position:Math.min(audio.currentTime,audio.duration)})}catch{}
     };
     const primeNext=track=>{
+      if(!hasPlayed)return;
       if(!track?.audio||!document?.createElement||!document?.head?.appendChild)return;
       const href=absolute(track.audio);
       if(preloadLink?.href===href)return;
@@ -110,14 +120,19 @@
       preloadLink.href=href;
     };
     const ensureNext=()=>{
+      if(preparedIndex>=0&&onBreak(queue[preparedIndex]))preparedIndex=-1;
       if(preparedIndex>=0){primeNext(queue[preparedIndex]);return preparedIndex;}
-      if(index<queue.length-1){preparedIndex=index+1;primeNext(queue[preparedIndex]);return preparedIndex;}
+      for(let nextIndex=index+1;nextIndex<queue.length;nextIndex+=1){
+        if(onBreak(queue[nextIndex]))continue;
+        preparedIndex=nextIndex;primeNext(queue[preparedIndex]);return preparedIndex;
+      }
       const track=radio?.next?.();
       if(track?.audio){queue.push(track);preparedIndex=queue.length-1;primeNext(track);return preparedIndex;}
       if(options.loopLocal&&queue.length){preparedIndex=0;primeNext(queue[0]);return preparedIndex;}
       return -1;
     };
     const play=()=>{
+      if(destroyed)return false;
       hasPlayed=true;
       wantsPlayback=true;
       persist(true);
@@ -138,9 +153,10 @@
       persist(true);
     };
     const load=(nextIndex,{autoplay=true,position=0,reason='manual'}={})=>{
-      if(!queue.length)return false;
+      if(destroyed||!queue.length)return false;
       index=((nextIndex%queue.length)+queue.length)%queue.length;
       current=queue[index];
+      rememberedSource='';
       preparedIndex=-1;
       pendingPosition=position>0?position:null;
       pendingAutoplay=Boolean(autoplay&&pendingPosition!==null);
@@ -158,6 +174,7 @@
       return true;
     };
     const next=(reason='next')=>{
+      if(destroyed)return false;
       const target=ensureNext();
       if(target<0){wantsPlayback=false;status('unavailable');persist(true);return false;}
       preparedIndex=-1;
@@ -182,7 +199,7 @@
       if(audio.paused)play();
     };
 
-    audio.addEventListener('play',()=>{
+    listen(audio,'play',()=>{
       sourceTransition=false;
       hasPlayed=true;
       wantsPlayback=true;
@@ -199,8 +216,16 @@
         window.CMDPersistentSite?.followTrack?.(request.track,{reason:request.reason,seconds:Number(options.pageFollowSeconds)||5});
       }
       persist(true);
+      ensureNext();
     });
-    audio.addEventListener('pause',()=>{
+    listen(audio,'playing',()=>{
+      const track=currentTrack(),source=absolute(track?.audio);
+      if(source&&source!==rememberedSource){
+        rememberedSource=source;
+        window.CMDCatalogCycle?.remember?.(track);
+      }
+    });
+    listen(audio,'pause',()=>{
       if(!sourceTransition&&!audio.ended&&document.visibilityState!=='hidden'){
         wantsPlayback=false;
         pendingPageFollow=null;
@@ -211,12 +236,12 @@
       announce('pause');
       persist(true);
     });
-    audio.addEventListener('ended',()=>{
+    listen(audio,'ended',()=>{
       wantsPlayback=true;
       persist(true);
       next('ended');
     });
-    audio.addEventListener('loadedmetadata',()=>{
+    listen(audio,'loadedmetadata',()=>{
       if(pendingPosition!==null){
         const seek=Math.max(0,Math.min(pendingPosition,Math.max(0,(audio.duration||pendingPosition)-.25)));
         pendingPosition=null;
@@ -226,10 +251,10 @@
       setPositionState();
       options.onReady?.(currentTrack());
     });
-    audio.addEventListener('timeupdate',()=>{persist();setPositionState();options.onTime?.(audio.currentTime,audio.duration,currentTrack());announce('time')});
-    audio.addEventListener('waiting',()=>{status('waiting');announce('status',{status:'waiting'})});
-    audio.addEventListener('stalled',()=>{status('stalled');announce('status',{status:'stalled'})});
-    audio.addEventListener('error',()=>{
+    listen(audio,'timeupdate',()=>{persist();setPositionState();options.onTime?.(audio.currentTime,audio.duration,currentTrack());announce('time')});
+    listen(audio,'waiting',()=>{status('waiting');announce('status',{status:'waiting'})});
+    listen(audio,'stalled',()=>{status('stalled');announce('status',{status:'stalled'})});
+    listen(audio,'error',()=>{
       sourceTransition=false;
       if(!wantsPlayback)return;
       consecutiveErrors+=1;
@@ -240,12 +265,12 @@
     });
 
     const lifecycleSave=()=>persist(true);
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')lifecycleSave();else recover()});
-    document.addEventListener('freeze',lifecycleSave);
-    document.addEventListener('resume',recover);
-    addEventListener('pagehide',lifecycleSave);
-    addEventListener('pageshow',recover);
-    addEventListener('online',recover);
+    listen(document,'visibilitychange',()=>{if(document.visibilityState==='hidden')lifecycleSave();else recover()});
+    listen(document,'freeze',lifecycleSave);
+    listen(document,'resume',recover);
+    listen(lifecycleTarget,'pagehide',lifecycleSave);
+    listen(lifecycleTarget,'pageshow',recover);
+    listen(lifecycleTarget,'online',recover);
 
     if('mediaSession'in navigator){
       const handlers={
@@ -265,7 +290,7 @@
       current:currentTrack,
       peekNext:()=>preparedIndex>=0?queue[preparedIndex]||null:null,
       getState:()=>({id,index,wantsPlayback,hasPlayed,current:currentTrack(),length:queue.length}),
-      destroy:()=>{destroyed=true;audio.__cmdContinuousPlayback=false;audio.__cmdContinuousPlaybackController=null;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.();if(preloadLink){preloadLink.remove?.();preloadLink=null}}
+      destroy:()=>{destroyed=true;cleanup.forEach(remove=>remove());audio.__cmdContinuousPlayback=false;audio.__cmdContinuousPlaybackController=null;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.();if(preloadLink){preloadLink.remove?.();preloadLink=null}}
     };
     audio.__cmdContinuousPlaybackController=controller;
 

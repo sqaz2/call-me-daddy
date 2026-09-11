@@ -34,7 +34,7 @@ class Element extends Target{
     if(!value.includes('cmd-universal-shell'))return;
     const shell=node('div','cmd-universal-shell'),art=node('button','cmd-universal-art'),copy=node('div','cmd-universal-copy'),controls=node('div','cmd-universal-controls'),progress=node('div','cmd-universal-progress'),times=node('div','cmd-universal-times');
     art.append(node('img',''),node('span',''));copy.append(node('small','cmd-universal-context'),node('button','cmd-universal-title'),node('span','cmd-universal-detail'),node('a','cmd-universal-story'));
-    controls.append(...['prev','toggle','next','share'].map(n=>node('button',`cmd-universal-${n}`)));progress.append(node('span',''),node('i','cmd-universal-thumb'));times.append(node('span','cmd-universal-current'),node('span','cmd-universal-duration'));shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));this.append(shell);
+    controls.append(...['prev','toggle','next','share'].map(n=>node('button',`cmd-universal-${n}`)));progress.append(node('span',''),node('i','cmd-universal-thumb'));times.append(node('span','cmd-universal-current'),node('span','cmd-universal-duration'));shell.append(node('details','cmd-listening-options'),node('p','cmd-listening-next'),node('button','cmd-song-break'),node('p','cmd-break-message'),node('button','cmd-undo-break'));shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));this.append(shell);
   }
 }
 class Media extends Target{

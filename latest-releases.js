@@ -37,6 +37,7 @@
     for (const entry of ordered) {
       const song = byId.get(entry.songId);
       if (!song) continue;
+      if (window.CMDCatalogCycle?.isOnBreak?.(song.id)) continue;
       try { if (window.CMDContentIntensity?.isAllowed && !window.CMDContentIntensity.isAllowed(song.id, { intent: 'surprise' })) continue; } catch {}
       const all = Array.isArray(song.variants) && song.variants.some(variant => localAudio(variant?.audio))
         ? song.variants.filter(variant => localAudio(variant?.audio))

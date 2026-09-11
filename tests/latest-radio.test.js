@@ -174,3 +174,8 @@ test('entry points record the visit and Updates loads shared dependencies before
   assert.ok(!read('updates/latest-player.js').includes("addEventListener('ended'"));
   assert.ok(read('persistent-site-browser.js').includes('/visit-history.js'));
 });
+
+test('newest-first respects a song break without changing the release order',()=>{
+  const e=env();e.window.CMDCatalogCycle={isOnBreak:id=>id==='middle'};
+  assert.deepEqual(ids(builder(e)()),['new','old']);
+});
