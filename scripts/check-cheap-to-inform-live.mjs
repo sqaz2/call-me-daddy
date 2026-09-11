@@ -11,7 +11,8 @@ const once=async()=>{
   assert.ok(html.includes('https://suno.com/s/Gn6OwZiICiZD9qjd'));
   assert.ok(html.includes('huge audiences are cheap to mobilize and expensive to inform.'));
   const evidence=[];
-  for(const [file,size,type] of [['audio.mp3',3139641,'audio/'],['cover.jpg',409327,'image/'],['background.mp4',4090357,'video/']]){
+  // Byte-range delivery is a contract for the streaming audio and video.
+  for(const [file,size,type] of [['audio.mp3',3139641,'audio/'],['background.mp4',4090357,'video/']]){
     const response=await get(`/media/songs/2026/09/cheap-to-inform/${file}`, {range:'bytes=0-511'});
     assert.equal(response.status,206,`${file} range response`);
     assert.ok((response.headers.get('content-type')||'').startsWith(type));
@@ -19,6 +20,11 @@ const once=async()=>{
     assert.equal((await response.arrayBuffer()).byteLength,512);
     evidence.push({file,status:response.status,contentRange:response.headers.get('content-range')});
   }
+  const cover=await get('/media/songs/2026/09/cheap-to-inform/cover.jpg');
+  assert.equal(cover.status,200,'Artwork HTTP status');
+  assert.ok((cover.headers.get('content-type')||'').startsWith('image/'));
+  assert.equal((await cover.arrayBuffer()).byteLength,409327,'Original artwork byte length');
+  evidence.push({file:'cover.jpg',status:cover.status,bytes:409327});
   for(const path of ['/data/songs.js','/data/briefing.js','/data/radio-intents.js','/sitemap.xml','/updates/release-cheap-to-inform/']){
     const response=await get(path);
     assert.equal(response.status,200,path);
