@@ -1,0 +1,43 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const { chromium } = require('playwright');
+const data = require('../data/song-links.json');
+(async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await context.route(/https:\/\/(hiphop\.bid|dubstep\.bid|suno\.fyi|jokes\.win)\//, route => route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'content-type': 'application/json' }, body: JSON.stringify({ service: 'musicsubject-song-links', revision: data.revision }) }));
+    await page.goto(`${process.env.BASE_URL || 'http://127.0.0.1:8765'}/`, { waitUntil: 'load' });
+    const input = page.getByRole('searchbox', { name: 'Search songs' });
+    assert.ok((await input.boundingBox()).y < 400, 'Search must be visible on the first mobile screen');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+    assert.equal(await page.locator('[data-home-song]').count(), 4);
+    fs.mkdirSync('/tmp/replay-qa', { recursive: true });
+    await page.screenshot({ path: '/tmp/replay-qa/home-mobile.png', fullPage: true });
+    await input.fill('musician police');
+    assert.equal(await page.locator('[data-home-song]').count(), 1);
+    assert.equal(await page.locator('[data-home-song] .home-song-open').getAttribute('href'), '/the-musician-police/');
+    await input.fill('booger');
+    assert.equal(await page.locator('[data-home-song="id-pick-you-first"]').count(), 1);
+    await input.fill('survival mode');
+    await page.getByText('Choose a version', { exact: true }).click();
+    const earlier = await page.getByRole('link', { name: /Earlier Celtic North Remix/ }).getAttribute('href');
+    assert.ok(earlier.includes('song=survival-mode') && earlier.includes('version=celtic-north-remix'));
+    await input.fill('zzzz-not-a-song');
+    assert.ok(await page.getByText('No songs found.', { exact: true }).isVisible());
+    await page.getByRole('button', { name: 'Show all songs', exact: true }).click();
+    assert.equal(await page.locator('[data-home-song]').count(), 59);
+    await page.getByRole('button', { name: 'Jokes & satire', exact: true }).click();
+    assert.equal(await page.locator('[data-home-song]').count(), 16);
+    assert.equal(await page.locator('[data-home-song="survival-mode"]').count(), 0);
+    await page.getByRole('button', { name: 'All songs', exact: true }).click();
+    await page.getByRole('button', { name: /Play newest first/ }).click();
+    await page.waitForFunction(() => window.CMDUniversalPlayer?.getMedia()?.currentTime > 0.1);
+    assert.deepEqual(errors, []);
+    console.log(JSON.stringify({ homepageSearch: true, title: true, lyric: true, versions: true, emptyState: true, genres: true, firstTapPlayback: true, errors }));
+    await context.close();
+  } finally { await browser.close(); }
+})().catch(error => { console.error(error); process.exit(1); });

@@ -51,6 +51,29 @@ test('Survival Mode V6 is /1 on every domain and the earlier mix is /1/2', () =>
   }
 });
 
+test('requested number audit keeps unique assignments and the correct destinations', () => {
+  const registry = JSON.parse(fs.readFileSync(new URL('../content/song-links.json', import.meta.url), 'utf8'));
+  assert.equal(new Set(registry.songs.map(song => song.number)).size, registry.songs.length);
+  assert.equal(new Set(registry.songs.map(song => song.songId)).size, registry.songs.length);
+  for (const [number, songId] of [[36, 'thirty-six'], [48, 'one-million-dollars'], [50, 'the-musician-police']]) {
+    assert.equal(registry.songs.find(song => song.number === number).songId, songId);
+    const row = data.rows.find(row => row.number === number);
+    assert.equal(row.songId, songId);
+    assert.equal(handleShortLink(new Request(`https://jokes.win/${number}`)).headers.get('location'), new URL(row.target, data.origin).href);
+  }
+});
+
+test('share messages contain one correct short URL and preserve existing prose', async () => {
+  const links = await browser();
+  const original = `${data.origin}/the-musician-police/`;
+  const message = links.prepareShare({ title: 'The Musician Police', text: 'WEE-OOO! Here comes the chorus.', url: original });
+  assert.equal(message.text, 'WEE-OOO! Here comes the chorus.\nhttps://jokes.win/50');
+  assert.equal(links.prepareShare(message).text, message.text);
+  assert.equal(links.prepareShare({ text: `Listen here: ${original}`, url: original }).text, 'Listen here: https://jokes.win/50');
+  const offline = await browser([]);
+  assert.equal(offline.prepareShare({ text: 'Listen.', url: original }).text, `Listen.\n${original}`);
+});
+
 test('every generated link has a real page and preserves its recording through the catalog player', () => {
   const catalog = loadCatalog();
   for (const row of data.rows) {

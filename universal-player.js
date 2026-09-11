@@ -129,7 +129,7 @@
     if(!track)return false;if(window.CMDPlaylistRadio?.share)return window.CMDPlaylistRadio.share(track);
     const url=window.CMDShortLinks?.forTrack(track)||track.shareUrl||track.experience||fallbackRoute(track),detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
     const data={title:`${track.title}${detail}`,text:`Listen to ${track.title}${detail}.`,url:absolute(url)};
-    try{if(navigator.share)return navigator.share(data);return navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{return false}
+    try{if(navigator.share)return navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});return navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{return false}
   }
   function configureMediaSession(adapter){
     if(!('mediaSession'in navigator))return;

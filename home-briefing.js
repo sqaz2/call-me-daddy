@@ -194,7 +194,10 @@
     const hero = document.querySelector('.hero');
     const latest = document.querySelector('.latest-section');
     if (!document.getElementById('briefing')) {
-      if (hero?.parentNode) hero.insertAdjacentElement('afterend', section);
+      if (document.getElementById('home-discovery') && latest) {
+        section.querySelector('.briefing-radio-card')?.remove();
+        latest.insertAdjacentElement('afterend', section);
+      } else if (hero?.parentNode) hero.insertAdjacentElement('afterend', section);
       else if (latest?.parentNode) latest.insertAdjacentElement('beforebegin', section);
       else document.querySelector('main')?.prepend(section);
     }
@@ -213,7 +216,7 @@
         const className = escapeHtml(entry.cardClass || '');
         const titleLines = Array.isArray(entry.cardLines) && entry.cardLines.length ? entry.cardLines : [entry.title];
         const cover = entry.cover || song?.cover || '';
-        const video = entry.video || (song?.catalogVideo ? song?.video : '') || '';
+        const video = document.getElementById('home-discovery') ? '' : entry.video || (song?.catalogVideo ? song?.video : '') || '';
         const media = entry.cardClass === 'pulse-uprising'
           ? '<span class="pulse-card-art" aria-hidden="true"></span>'
           : video

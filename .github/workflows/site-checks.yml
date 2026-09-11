@@ -32,6 +32,7 @@ jobs:
           node --check universal-player.js
           node --check persistent-site-browser.js
           node --check home-briefing.js
+          node --check home-discovery.js
           node --check placeholder-art.js
           node --check music/music.js
           node --check swipe-nav.js
@@ -123,6 +124,7 @@ jobs:
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
           node scripts/check-song-links-browser.cjs
+          node scripts/check-home-discovery-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
       - uses: actions/upload-artifact@v4

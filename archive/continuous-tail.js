@@ -25,7 +25,7 @@
   async function shareLocal(button){
     const data={title:`${button.dataset.title} — ${button.dataset.version}`,text:`Listen to ${button.dataset.title} — ${button.dataset.version}.`,url:versionShareUrl(button)};
     if(window.CMDShare?.nativeShare)return window.CMDShare.nativeShare(data);
-    try{if(navigator.share)return navigator.share(data);await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
+    try{if(navigator.share)return navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
   }
 
   playButtons.forEach((button,index)=>{

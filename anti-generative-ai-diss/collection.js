@@ -30,7 +30,7 @@
     const button=event.target.closest('[data-share-track]');if(!button)return;
     const track=tracks.find(item=>item.id===button.dataset.shareTrack);if(!track)return;
     const data={title:`${track.title} — Call Me Daddy`,text:`Listen to ${track.title}.`,url:new URL(track.href,location.origin).href};
-    if(window.CMDShare?.nativeShare)window.CMDShare.nativeShare(data);else if(navigator.share)navigator.share(data);
+    if(window.CMDShare?.nativeShare)window.CMDShare.nativeShare(data);else if(navigator.share)navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});
   });
 
   if(community&&data.community){

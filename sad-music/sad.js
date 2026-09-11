@@ -9,7 +9,7 @@
     const grid=wrap.querySelector('.sad-card-grid');
     group.songs.forEach(song=>{
       const card=document.createElement('article');card.className='sad-card';card.dataset.song=song.id;card.dataset.accent=song.accent||'';card.innerHTML=`<div class="sad-card-top"><span class="sad-card-era">${safe(song.era)}</span><span class="sad-version-count">${song.versions.length} ${song.versions.length===1?'version':'versions'}</span></div><h3>${safe(song.title)}</h3><p>${safe(song.summary)}</p><div class="sad-card-actions"><a class="primary" href="${safe(song.route)}">Open song →</a><button class="sad-quick-play" type="button" hidden>▶ Play</button><button class="sad-share-song" type="button">↗ Share song</button></div>`;
-      card.querySelector('.sad-share-song')?.addEventListener('click',()=>{const data={title:song.title,text:`Listen to ${song.title}.`,url:window.CMDShortLinks?.forTrack({songId:song.id,variantId:song.versions?.[0]?.id})||new URL(song.route,location.origin).href};if(window.CMDShare?.nativeShare)window.CMDShare.nativeShare(data);else if(navigator.share)navigator.share(data)});
+      card.querySelector('.sad-share-song')?.addEventListener('click',()=>{const data={title:song.title,text:`Listen to ${song.title}.`,url:window.CMDShortLinks?.forTrack({songId:song.id,variantId:song.versions?.[0]?.id})||new URL(song.route,location.origin).href};if(window.CMDShare?.nativeShare)window.CMDShare.nativeShare(data);else if(navigator.share)navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')})});
       grid.appendChild(card);
     });
     groups.appendChild(wrap);

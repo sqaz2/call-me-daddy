@@ -36,7 +36,7 @@
       audio.id = 'latestRadioAudio'; audio.preload = 'none'; audio.hidden = true;
       document.body.appendChild(audio);
       signature = nextSignature;
-      controller = window.CMDContinuousPlayback.create({ id: 'latest-release-radio', route: '/updates/',
+      controller = window.CMDContinuousPlayback.create({ id: 'latest-release-radio', route: location.pathname,
         audio, tracks: next.tracks, localCount: next.tracks.length, intent: 'surprise', excludeIds: next.excludeIds,
         onStatus: kind => {
           if (kind === 'blocked' || kind === 'failed') status.textContent = 'Playback needs a tap. Press Play newest first to retry.';
