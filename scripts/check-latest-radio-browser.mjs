@@ -45,12 +45,13 @@ async function shown(selector) {
 try {
   await page.goto(base + '/', { waitUntil: 'networkidle' });
   assert.equal(await page.evaluate(() => window.CMDVisitHistory.current().previousAt), since);
-  await page.locator('.navlinks a[href="/updates/"]').tap();
+  await page.locator('.navlinks a[href="#latest"]').tap();
+  await page.getByRole('link', { name: 'All releases →', exact: true }).tap();
   await page.locator('#latestRadioPlay').waitFor();
   assert.match(await page.locator('#latestRadioStatus').textContent(), /2 releases.*since your last visit/);
   assert.equal(await page.evaluate(() => window.CMDVisitHistory.current().previousAt), since);
   assert.equal(await page.locator('#latestRadioAudio').count(), 0);
-  check('Home → What Changed preserves the previous visit and opening the feed is silent');
+  check('Home → Latest → All releases preserves the previous visit and opening the feed is silent');
   await page.reload({ waitUntil: 'networkidle' });
   assert.equal(await page.evaluate(() => window.CMDVisitHistory.current().previousAt), since);
   check('Reload does not erase the new-since-last-visit boundary');
