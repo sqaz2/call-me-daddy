@@ -141,7 +141,11 @@
       .cmd-site-session-pill button{width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font:700 16px/1 system-ui;cursor:pointer}
       .cmd-now-song-link{display:inline-flex;align-items:center;justify-content:center;margin-top:10px;min-height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.045);color:#f4f0e8;text-decoration:none;font:850 11px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
       .cmd-now-song-link[hidden]{display:none!important}`;
-    document.head.appendChild(style);overlay=document.createElement('div');overlay.className='cmd-site-view';overlay.innerHTML='<div class="cmd-site-session-pill" hidden><span>♪ music continues</span><button type="button" aria-label="Return to player">×</button></div>';document.body.appendChild(overlay);overlay.querySelector('button').addEventListener('click',returnToOwner);
+    document.head.appendChild(style);overlay=document.createElement('div');overlay.className='cmd-site-view';overlay.innerHTML='<div class="cmd-site-session-pill" hidden><span>♪ music continues</span><button type="button" aria-label="Return to playing song">×</button></div>';document.body.appendChild(overlay);overlay.querySelector('button').addEventListener('click',()=>{
+      const player=window.CMDUniversalPlayer;
+      if(player?.getTrack?.()&&player.openCurrentTrack){void player.openCurrentTrack();return;}
+      returnToOwner();
+    });
   };
   const openView=(url,{push=true}={})=>{
     ensureOverlay();session=true;overlay.classList.add('is-open');document.documentElement.style.overflow='hidden';if(push&&!internalNav)history.pushState({cmdView:url.href},'',url.href);internalNav=false;

@@ -159,6 +159,28 @@ test('a known owner iframe uses the top dock and its own real controls',()=>{
 test('an unrelated or cross-origin window cannot adopt the site dock',()=>{
   const env=environment();assert.equal(env.api.adopt({}, {location:{origin:'https://malicious.test'}}),false);assert.equal(env.api.adopt({}, {location:{origin:env.location.origin}}),false);
 });
+
+test('the top dock independently checks a stale child report against its actual audio',async()=>{
+  const env=environment({fetch:async()=>response()}),audio=new Media('/unfinished.mp3'),shared=[];
+  env.window.CMDPlaylistRadio={share:track=>shared.push(track)};
+  const child={location:{origin:env.location.origin}},frame=new Element('iframe');frame.contentWindow=child;env.document.body.append(frame);
+  let next=0,previous=0,legacyShares=0;
+  const adapter={id:'stale-child',handle:{id:'stale-child'},ownerWindow:child,media:()=>audio,track:()=>songs[0],playing:()=>!audio.paused,time:()=>audio.currentTime,duration:()=>audio.duration,context:()=> 'Play the site',status:()=>'',play:()=>audio.play(),pause:()=>audio.pause(),toggle:()=>audio.pause(),seek:time=>{audio.currentTime=time},previous:()=>previous++,next:()=>next++,share:()=>legacyShares++};
+  audio.paused=false;assert.equal(env.api.adopt(adapter,child),true);await flush();
+  assert.equal(env.api.getTrack().id,'unfinished');assert.equal(env.root().querySelector('.cmd-universal-title').textContent,'Unfinished');
+  assert.equal(env.root().querySelector('img').src,'/unfinished.jpg');assert.equal(env.navigator.mediaSession.metadata.title,'Unfinished');
+  assert.deepEqual(env.navigations,['/now-playing/?song=unfinished&version=main']);
+  env.root().querySelector('.cmd-universal-share').emit('click');assert.equal(shared[0].id,'unfinished');assert.equal(legacyShares,0);
+  env.root().querySelector('.cmd-universal-next').emit('click');env.root().querySelector('.cmd-universal-prev').emit('click');
+  assert.deepEqual({next,previous},{next:1,previous:1});
+  audio.paused=true;assert.equal(env.api.adopt(adapter,child),true);assert.equal(env.root().querySelector('.cmd-universal-toggle').getAttribute('aria-label'),'Play');
+});
+
+test('matching audio URLs cannot hide a conflicting song identity in a player report',()=>{
+  const env=environment(),audio=new Media('/unfinished.mp3');
+  env.api.connect({id:'mixed-metadata',media:audio,track:{...songs[0],audio:'/unfinished.mp3'}});audio.play();
+  assert.equal(env.api.getTrack().id,'unfinished');assert.equal(env.root().querySelector('.cmd-universal-title').textContent,'Unfinished');
+});
 test('Superstore delegates first tap, next and previous to exactly one shared controller',()=>{
   const env=environment();const ids={};for(const id of ['ssPlayer','ssAudio','ssPlayerStatus','ssPlayerCover','ssPlayerTitle','ssPlayerLabel','ssPlay','ssPrev','ssNext','ssPlayerShare','ssProgress','ssProgressBar'])ids[id]=id==='ssAudio'?new Media():new Element();
   env.document.getElementById=id=>ids[id];const button=new Element('button');env.document.querySelector=()=>null;env.document.querySelectorAll=s=>s==='[data-ss-play]'?[button]:[];
@@ -193,6 +215,15 @@ function persistentEnvironment(){
   vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../persistent-site-browser.js'),'utf8'),env.context);
   return {...env,site:env.window.CMDPersistentSite,rootAudio};
 }
+test('returning from browsing opens the playing recording instead of the original audio-owner page',async()=>{
+  const env=persistentEnvironment();env.rootAudio.src='/armando.mp3';
+  env.api.connect({id:'radio-owner',media:env.rootAudio,track:songs[1]});env.rootAudio.play();await flush();
+  env.site.open('/home/');
+  env.document.body.querySelector('.cmd-site-session-pill').querySelector('button').emit('click');await flush();
+  const frame=env.document.body.querySelector('iframe');
+  assert.equal(frame?.src,'https://example.test/now-playing/?song=armando&version=main');
+  assert.equal(env.rootAudio.paused,false);assert.equal(env.rootAudio.src,'/armando.mp3');
+});
 test('persistent navigation retains an owner iframe when another song page opens',()=>{
   const env=persistentEnvironment();env.site.setSession(true);env.site.open('/first/');
   const first=env.document.body.querySelector('iframe');first.contentWindow.audio.paused=false;env.site.claimPlayback(first.contentWindow);env.site.open('/second/');

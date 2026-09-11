@@ -67,6 +67,15 @@ test('ended moves to the prepared next song immediately on the same audio elemen
   assert.equal(controller.current().title,'Second');
 });
 
+test('track callbacks and subscribers never announce the next title against the previous audio source',()=>{
+  const env=environment(),audio=new FakeAudio('/satans-loan.mp3'),seen=[];
+  env.window.CMDContinuousPlayback.subscribe(event=>{if(event.type==='track')seen.push([event.track.audio,event.audio.src]);});
+  const controller=env.window.CMDContinuousPlayback.create({audio,tracks:[{id:'satans-loan',title:"Satan's Loan",audio:'/satans-loan.mp3'},{id:'superstore-effect',title:'the superstore effect',audio:'/superstore-effect.mp3'}],onTrack:track=>seen.push([track.audio,audio.src])});
+  controller.play();controller.next();controller.load(0,{autoplay:true});
+  assert.ok(seen.length>=6);
+  seen.forEach(([announced,playing])=>assert.equal(announced,playing,'Track changes must install their media source before publishing metadata'));
+});
+
 test('a background pause recovers when the document resumes',async()=>{
   const env=environment();
   const audio=new FakeAudio('/first.mp3');

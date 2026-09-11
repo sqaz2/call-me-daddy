@@ -162,11 +162,13 @@
       pendingAutoplay=Boolean(autoplay&&pendingPosition!==null);
       sourceTransition=true;
       pendingPageFollow=options.followPages===false||reason==='restore'||!current.experience?null:{track:current,reason};
+      // Observers can synchronously read current() and the media source. Install
+      // both before notifying the dock, page controls or Media Session.
+      audio.src=current.audio;
+      audio.load();
       options.onTrack?.(current,{index,reason,radio:index>=Number(options.localCount??options.tracks?.length??queue.length)});
       announce('track',{reason,radio:index>=Number(options.localCount??options.tracks?.length??queue.length)});
       setMediaSession(current);
-      audio.src=current.audio;
-      audio.load();
       persist(true);
       ensureNext();
       if(autoplay&&pendingPosition===null)play();
@@ -306,10 +308,10 @@
       load(restoredIndex,{autoplay:true,position:Number(snapshot.currentTime)||0,reason:'restore'});
     }else if(queue.length){
       current=queue[index];
-      options.onTrack?.(current,{index,reason:'ready',radio:false});
-      announce('track',{reason:'ready',radio:false});
       const declaredSource=typeof audio.getAttribute==='function'?audio.getAttribute('src'):audio.src;
       if(!declaredSource&&current.audio){audio.src=current.audio;audio.load();}
+      options.onTrack?.(current,{index,reason:'ready',radio:false});
+      announce('track',{reason:'ready',radio:false});
       ensureNext();
     }
 
@@ -320,7 +322,7 @@
   window.CMDUniversalPlayer?.observeContinuous?.(window.CMDContinuousPlayback);
   if(document?.createElement&&document?.head?.appendChild&&!window.CMDUniversalPlayer&&!document.querySelector?.('script[data-cmd-universal-player]')){
     const script=document.createElement('script');
-    script.src='/universal-player.js?v=20260907-scrub';
+    script.src='/universal-player.js?v=20260911-source-sync';
     script.dataset.cmdUniversalPlayer='';
     document.head.appendChild(script);
   }
