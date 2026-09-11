@@ -36,6 +36,9 @@ test('Still Building page starts both recordings and stays on the shared player'
   assert.match(html,/data-version="celtic-north-remix"/);
   assert.match(html,/Compare old Stomp Clamp/);
   assert.match(html,/Compare old Survival Mode/);
+  assert.match(html,/href="\/sad-music\/stomp-clamp\/">Explore old Stomp Clamp/);
+  assert.match(html,/href="\/now-playing\/\?song=survival-mode&amp;version=celtic-north-remix">Explore old Survival Mode/);
+  assert.match(read('still-building/page.css'),/button\.building-button-secondary[^}]*background:#0d0f14/);
   assert.match(html,/id="buildingAudio"/);
   assert.match(html,/continuous-playback\.js/);
   assert.match(script,/CMDContinuousPlayback/);
