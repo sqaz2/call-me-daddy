@@ -70,78 +70,49 @@
     };
   }).sort((a, b) => score(b.published) - score(a.published));
 
-  const groups = new Map();
-  resolved.forEach(entry => {
-    const key = dayKey(entry.published);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(entry);
-  });
-
-  feed.innerHTML = [...groups.entries()].map(([key, entries]) => {
-    const partial = monthOnly(key);
-    const label = prettyDate(entries[0]?.published || key);
-    const cards = entries.map(entry => `
-      <article class="update-card" id="${escapeHtml(entry.id)}">
-        <div class="update-meta">
-          <span>${escapeHtml(entry.type || 'Update')}</span>
-          ${entry.badge ? `<b>${escapeHtml(entry.badge)}</b>` : ''}
-          ${entry.song ? `<span>${escapeHtml(entry.song.artist || '')}</span>` : ''}
-        </div>
-        <h3>${escapeHtml(entry.title)}</h3>
-        <p>${escapeHtml(entry.summary)}</p>
-        <div class="update-actions">
-          ${entry.href ? `<a href="${escapeHtml(entry.href)}">${escapeHtml(entry.cta || (entry.song ? 'Open release' : 'Open'))} →</a>` : ''}
-          <a href="${escapeHtml(entry.updateHref)}" aria-label="Permanent page for ${escapeHtml(entry.title)}">Open update</a>
-          <button class="update-share" type="button" data-share="${escapeHtml(entry.updateHref)}" data-title="${escapeHtml(entry.title)}">Share update</button>
-        </div>
-      </article>`).join('');
-
-    return `
-      <section class="updates-day" data-date="${escapeHtml(key)}">
-        <div class="updates-day-head">
-          <h2>${escapeHtml(label)}</h2>
-          <span>${partial ? 'Exact day not recorded' : `${entries.length} ${entries.length === 1 ? 'update' : 'updates'}`}</span>
-        </div>
-        <div class="updates-list">${cards}</div>
-      </section>`;
-  }).join('') || '<p class="updates-empty">No public updates yet.</p>';
-
-  const featuredCount = resolved.filter(entry => entry.featured).length;
-  const updateCount = document.getElementById('updateCount');
-  const releaseCount = document.getElementById('releaseCount');
-  const catalogCount = document.getElementById('catalogCount');
-  if (updateCount) updateCount.textContent = String(resolved.length);
-  if (releaseCount) releaseCount.textContent = String(featuredCount);
-  if (catalogCount) catalogCount.textContent = String(songs.length);
-
-  const absoluteUrl = path => new URL(path, location.origin).href;
-  document.querySelectorAll('[data-share]').forEach(button => {
-    button.addEventListener('click', async () => {
-      const title = button.dataset.title || 'Call Me Daddy update';
-      const original = absoluteUrl(button.dataset.share || '/updates/');
-      const url = window.CMDShortLinks?.forUrl(original) || original;
-      try {
-        if (navigator.share) {
-          await navigator.share({ title, text: window.CMDShortLinks?.prepareShare({ title, text: title, url }).text || `${title}\n${url}` });
-          return;
-        }
-        await navigator.clipboard.writeText(`${title}\n${url}`);
-        const previous = button.textContent;
-        button.textContent = 'Link copied';
-        setTimeout(() => { button.textContent = previous; }, 1800);
-      } catch (_) {
-        try {
-          await navigator.clipboard.writeText(`${title}\n${url}`);
-          button.textContent = 'Link copied';
-        } catch (_) {
-          location.href = url;
-        }
-      }
-    });
-  });
-
-  if (location.hash.length > 1) {
-    const id = decodeURIComponent(location.hash.slice(1));
-    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
+  const search=document.getElementById('updatesSearch');
+  const more=document.getElementById('updatesMore');
+  const count=document.getElementById('updatesResultCount');
+  const buttons=[...document.querySelectorAll('[data-feed-filter]')];
+  const normalize=value=>String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const isSite=entry=>/^(site update|sharing|listening path)$/i.test(entry.type||'')||!entry.song;
+  let filter='music',limit=12;
+  function render(){
+    const query=normalize(search.value).trim();
+    const matching=resolved.filter(entry=>(filter==='site'?isSite(entry):!isSite(entry))&&normalize(`${entry.title} ${entry.summary} ${entry.song?.title||''}`).includes(query));
+    const visible=matching.slice(0,limit);
+    count.textContent=`${matching.length} ${filter==='site'?'site notes':'releases'}${query?' found':''}`;
+    buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.feedFilter===filter)));
+    feed.innerHTML=visible.map(entry=>{
+      const cover=entry.song?.cover||entry.cardImage||'';
+      return `<article class="update-card" id="${escapeHtml(entry.id)}">
+        <a class="update-open" href="${escapeHtml(entry.href||entry.updateHref)}">
+          ${cover?`<img src="${escapeHtml(cover)}" alt="" width="72" height="72" loading="lazy">`:''}
+          <div><time>${escapeHtml(prettyDate(entry.published))}</time><h2>${escapeHtml(entry.title)}</h2><p>${escapeHtml(entry.summary)}</p><span class="update-open-label">${entry.song?'Open release':'Read note'} →</span></div>
+        </a>
+        <button class="update-share" type="button" data-share="${escapeHtml(entry.updateHref)}" data-title="${escapeHtml(entry.title)}" aria-label="Share ${escapeHtml(entry.title)}">Share</button>
+      </article>`;
+    }).join('')||'<p class="updates-empty">Nothing found. Try a song title or fewer words.</p>';
+    more.hidden=visible.length>=matching.length;
+    more.textContent=filter==='site'?'Show older notes':'Show older releases';
   }
+  search.addEventListener('input',()=>{limit=12;render()});
+  buttons.forEach(button=>button.addEventListener('click',()=>{filter=button.dataset.feedFilter;limit=12;render()}));
+  more.addEventListener('click',()=>{limit+=12;render()});
+  feed.addEventListener('click',async event=>{
+    const button=event.target.closest('button[data-share]');if(!button)return;
+    const title=button.dataset.title,url=new URL(button.dataset.share,location.origin).href;
+    if(window.CMDShare?.nativeShare){
+      const done=await window.CMDShare.nativeShare({title,text:title,url});
+      if(done&&!navigator.share)button.textContent='Copied';
+      return;
+    }
+    try{await navigator.clipboard.writeText(`${title}\n${url}`);button.textContent='Copied'}catch{button.textContent='Try again'}
+  });
+  if(location.hash.length>1){
+    let id='';try{id=decodeURIComponent(location.hash.slice(1))}catch{}
+    const target=resolved.find(entry=>entry.id===id);
+    if(target){filter=isSite(target)?'site':'music';limit=resolved.length;}
+    render();requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({block:'start'}));
+  }else render();
 })();

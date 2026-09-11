@@ -1339,6 +1339,7 @@
       if(song)selectSong(song);
     },
     getCurrent:()=>current,
+    peekNext:()=>cycle.slice(cycleIndex+1).find(track=>!cycleEngine?.isOnBreak?.(track.songId||track.id))||null,
     next:nextTrack,
     previous
   };

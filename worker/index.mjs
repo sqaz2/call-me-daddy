@@ -167,6 +167,13 @@ export async function handleRequest(request, env) {
   const shortLink = handleShortLink(request);
   if (shortLink) return shortLink;
   const url = new URL(request.url);
+  if (/^\/music\/?$/.test(url.pathname) && ['GET','HEAD'].includes(request.method) &&
+      !['song','intent','seed'].some(key => url.searchParams.has(key))) {
+    const home = new URL('/', url);
+    if (url.searchParams.has('q')) home.searchParams.set('q', url.searchParams.get('q'));
+    home.hash = 'homeSearchForm';
+    return Response.redirect(home.href, 302);
+  }
   const rangeable = RANGEABLE_MEDIA.test(url.pathname);
   const method = request.method.toUpperCase();
 

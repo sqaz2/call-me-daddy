@@ -195,8 +195,7 @@
     const latest = document.querySelector('.latest-section');
     if (!document.getElementById('briefing')) {
       if (document.getElementById('home-discovery') && latest) {
-        section.querySelector('.briefing-radio-card')?.remove();
-        latest.insertAdjacentElement('afterend', section);
+        const more=document.createElement('a');more.className='home-browse-all';more.style.cssText='display:flex;align-items:center;justify-content:center';more.href='/updates/';more.textContent='All releases →';latest.appendChild(more);
       } else if (hero?.parentNode) hero.insertAdjacentElement('afterend', section);
       else if (latest?.parentNode) latest.insertAdjacentElement('beforebegin', section);
       else document.querySelector('main')?.prepend(section);
