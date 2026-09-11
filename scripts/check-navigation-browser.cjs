@@ -30,7 +30,7 @@ const {chromium}=require('playwright');
   assert.equal(await page.locator('.music-section').isVisible(),false);
   assert.equal(await page.locator('#cmdRadioGate').count(),0);
   assert.equal(await page.locator('#catalogPlayer').isVisible(),false,'Old player controls must stay hidden before the first play');
-  assert.equal(await page.locator('#listenContext').innerText(),'Selected recording');
+  assert.equal(await page.locator('#listenContext').textContent(),'Selected recording');
   assert.equal(await page.evaluate(()=>[...document.querySelectorAll('audio')].some(m=>!m.paused)),false);
   await page.locator('#listenPlay').click();
   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia()?.currentTime>0.1);
