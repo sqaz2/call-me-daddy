@@ -53,6 +53,9 @@ The mobile checks caught an old shared-song Radio introduction covering the
 new Play button; focused listening no longer mounts that extra entry step.
 Explicit recording selection also resolves the requested version independently
 of radio filtering, including recordings outside the default radio mix.
+The live visual review caught legacy player controls appearing before the first
+play, when the universal player's styles had not loaded yet. The focused view
+now hides that old dock from its first render, with a pre-play browser regression.
 
 No lyrics, artwork, audio, numbered links or protected sequence order were
 changed. Physical-phone and assistive-technology testing remain separate from

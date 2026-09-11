@@ -30,7 +30,7 @@
     const playing=matches&&media&&!media.paused;
     if(track){
       el('listenTitle').textContent=track.title;
-      el('listenContext').textContent='Now listening';
+      el('listenContext').textContent=playing?'Now playing':'Selected recording';
       el('listenDetail').textContent=[track.artist,track.variantLabel].filter(Boolean).join(' · ');
       el('listenArt').hidden=false;el('listenCover').src=track.cover||'/media/site/image-coming-soon.jpg';
       el('listenArt').setAttribute('aria-label',`${playing?'Pause':'Play'} ${track.title}`);
