@@ -20,15 +20,18 @@ collection/update links without a unique song remain unchanged.
 
 ## Domain activation through the existing publisher
 
-The main `call-me-daddy` Worker can handle the three short domains before serving
-assets. Automatic domain attachment was attempted in PR #58, but Cloudflare's
-production build failed. The added domain declarations were removed to avoid
-blocking normal music publication. Short domains are not yet confirmed active.
+The main `call-me-daddy` Worker handles short domains before serving assets.
+`wrangler.jsonc` attaches `hiphop.bid` and `dubstep.bid` through the existing Git
+publisher. Verify successful deployment and the live workflow before claiming
+either domain is active. A ChatGPT Cloudflare connection is not required.
 
-To finish activation, inspect the failed Cloudflare build, resolve its reported
-domain/account issue, then add custom-domain routes for `hiphop.bid`, `dubstep.bid`
-and `https.fyi` alongside the existing hostname in `wrangler.jsonc`. The existing
-Git publisher can deploy this; a ChatGPT Cloudflare connection is not required.
+`https.fyi` remains pending. The owner supplied the PR #58 production log:
+Cloudflare error 100117 says that hostname already has externally managed DNS
+records (A, CNAME, etc.). Inspect the apex records in the https.fyi zone, remove
+the conflicting web record after confirming its purpose, then add
+`{ "pattern": "https.fyi", "custom_domain": true }` to `wrangler.jsonc` and publish.
+Do not delete unrelated subdomain, mail or verification records. Check existing
+redirect rules if readiness still returns a redirect after attachment.
 The domains must be active zones in that Cloudflare account, and the existing
 build credential must permit their attachment. Existing conflicting DNS or
 redirect rules may still need attention in Cloudflare's dashboard.
@@ -38,9 +41,11 @@ so future releases and their short links update together. The optional standalon
 `wrangler.short-links.jsonc` remains available only for a deliberate separate
 service deployment; do not deploy both configurations against the same domains.
 
-`Song domain activation` verifies all three HTTPS hosts, the readiness revision,
+`Song domain activation` verifies configured short HTTPS hosts, the readiness revision,
 V6 and earlier-version redirects, Cheap to Inform, destination pages and unknown
-links when run manually after activation. A failed verification is not proof of a site outage;
+links after relevant main changes or a manual run. Domains awaiting attachment are
+explicitly reported as pending. Use `node scripts/check-song-links-live.mjs --all`
+to check all three regardless of configuration. A failed verification is not proof of a site outage;
 inspect the existing Cloudflare build and domain status for the specific cause.
 
 The browser checks domain readiness before the share gesture and uses a domain

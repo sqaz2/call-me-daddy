@@ -12,6 +12,8 @@
     {
       "pattern": "callmedaddy.musicsubject.com",
       "custom_domain": true
-    }
+    },
+    { "pattern": "hiphop.bid", "custom_domain": true },
+    { "pattern": "dubstep.bid", "custom_domain": true }
   ]
 }
