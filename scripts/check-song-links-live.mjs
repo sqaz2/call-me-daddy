@@ -14,7 +14,7 @@ for (const domain of Object.values(data.domains).filter(domain => !domains.inclu
 for (const domain of domains) {
   try {
     const status = await get(`https://${domain}/.well-known/music-links`);
-    assert.equal(status.status, 200, `${domain} readiness HTTP ${status.status}`);
+    assert.equal(status.status, 200, `${domain} readiness HTTP ${status.status}${status.headers.has('location') ? ` redirect to ${status.headers.get('location')}` : ''}`);
     const marker = await status.json();
     assert.equal(marker.service, 'musicsubject-song-links');
     assert.equal(marker.revision, data.revision, `${domain} has a different song map`);

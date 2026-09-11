@@ -21,16 +21,15 @@ collection/update links without a unique song remain unchanged.
 ## Domain activation through the existing publisher
 
 The main `call-me-daddy` Worker handles short domains before serving assets.
-`wrangler.jsonc` attaches `hiphop.bid` and `dubstep.bid` through the existing Git
+`wrangler.jsonc` attaches `hiphop.bid`, `dubstep.bid` and `https.fyi` through the existing Git
 publisher. Verify successful deployment and the live workflow before claiming
-either domain is active. A ChatGPT Cloudflare connection is not required.
+any domain is active. A ChatGPT Cloudflare connection is not required.
 
-`https.fyi` remains pending. The owner supplied the PR #58 production log:
+The initial `https.fyi` attachment failed. The owner supplied the PR #58 production log:
 Cloudflare error 100117 says that hostname already has externally managed DNS
-records (A, CNAME, etc.). Inspect the apex records in the https.fyi zone, remove
-the conflicting web record after confirming its purpose, then add
-`{ "pattern": "https.fyi", "custom_domain": true }` to `wrangler.jsonc` and publish.
-Do not delete unrelated subdomain, mail or verification records. Check existing
+records (A, CNAME, etc.). The owner confirmed removal of the conflicting apex
+`A @ 192.0.2.1` record before this attachment was re-enabled. The separate `www`
+record was left alone. Check existing
 redirect rules if readiness still returns a redirect after attachment.
 The domains must be active zones in that Cloudflare account, and the existing
 build credential must permit their attachment. Existing conflicting DNS or
