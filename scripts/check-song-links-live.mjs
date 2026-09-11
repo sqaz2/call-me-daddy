@@ -1,9 +1,17 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import data from '../worker/song-links-data.mjs';
 
 const get = url => fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(12000) });
 const failures = [];
-for (const domain of Object.values(data.domains)) {
+const config = JSON.parse(readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8'));
+const configured = new Set(config.routes.filter(route => route.custom_domain).map(route => route.pattern));
+const domains = Object.values(data.domains).filter(domain => process.argv.includes('--all') || configured.has(domain));
+assert.ok(domains.length, 'No short domains are configured for deployment');
+for (const domain of Object.values(data.domains).filter(domain => !domains.includes(domain))) {
+  console.log(`PENDING ${domain}: not configured for attachment yet`);
+}
+for (const domain of domains) {
   try {
     const status = await get(`https://${domain}/.well-known/music-links`);
     assert.equal(status.status, 200, `${domain} readiness HTTP ${status.status}`);
