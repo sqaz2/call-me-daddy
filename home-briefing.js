@@ -270,14 +270,5 @@
       primary?.insertAdjacentElement('afterend', radioButton);
     }
 
-    const nav = document.querySelector('.navlinks');
-    if (nav && !nav.querySelector('a[href="/updates/"]')) {
-      const link = document.createElement('a');
-      link.href = '/updates/';
-      link.textContent = 'Updates';
-      const about = nav.querySelector('a[href="#about"]');
-      if (about) nav.insertBefore(link, about);
-      else nav.appendChild(link);
-    }
   });
 })();

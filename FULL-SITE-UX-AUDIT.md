@@ -56,6 +56,9 @@ of radio filtering, including recordings outside the default radio mix.
 The live visual review caught legacy player controls appearing before the first
 play, when the universal player's styles had not loaded yet. The focused view
 now hides that old dock from its first render, with a pre-play browser regression.
+Live navigation review also found the briefing script adding a duplicate Updates
+menu item after the static navigation loaded. Navigation now stays owned by the
+page, and browser checks verify the final menu after release cards render.
 
 No lyrics, artwork, audio, numbered links or protected sequence order were
 changed. Physical-phone and assistive-technology testing remain separate from

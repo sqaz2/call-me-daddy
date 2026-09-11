@@ -11,6 +11,8 @@ const {chromium}=require('playwright');
   await page.goto(base+'/music/',{waitUntil:'load'});
   assert.equal(new URL(page.url()).pathname,'/');
   assert.ok(await page.getByRole('searchbox',{name:'Search songs',exact:true}).isVisible());
+  await page.locator('.home-browse-all').waitFor();
+  assert.deepEqual(await page.locator('.navlinks a').allTextContents(),['Search songs','Latest','Archive','About']);
   await page.goto(base+'/updates/',{waitUntil:'load'});
   assert.ok((await page.locator('.update-card').first().boundingBox()).y<700,'The first release is on the initial mobile screen');
   assert.equal(await page.locator('.updates-summary').count(),0);
