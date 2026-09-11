@@ -27,6 +27,7 @@ const {chromium}=require('playwright');
   assert.ok((await page.locator('#listenTitle').innerText()).includes('Survival Mode'));
   assert.ok((await page.locator('#listenDetail').innerText()).includes('Earlier Celtic North Remix'));
   assert.equal(await page.locator('.music-section').isVisible(),false);
+  assert.equal(await page.locator('#cmdRadioGate').count(),0);
   assert.equal(await page.evaluate(()=>[...document.querySelectorAll('audio')].some(m=>!m.paused)),false);
   await page.locator('#listenPlay').click();
   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia()?.currentTime>0.1);

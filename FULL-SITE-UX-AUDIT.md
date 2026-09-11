@@ -49,6 +49,11 @@ sharing, an initial-screen release, first-tap exact-version audio, a single dock
 Home browsing while that audio continues, and first-tap radio. Screenshots of
 Latest and a selected alternate version are kept with browser-check artifacts.
 
+The mobile checks caught an old shared-song Radio introduction covering the
+new Play button; focused listening no longer mounts that extra entry step.
+Explicit recording selection also resolves the requested version independently
+of radio filtering, including recordings outside the default radio mix.
+
 No lyrics, artwork, audio, numbered links or protected sequence order were
 changed. Physical-phone and assistive-technology testing remain separate from
 mobile Chromium automation. The audit does not certify all pages as WCAG AA.

@@ -60,7 +60,7 @@ jobs:
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
       - name: Permanent song links and sharing
-        run: node --test tests/song-links.test.mjs
+        run: node --test tests/song-links.test.mjs tests/navigation.test.mjs
       - name: Media size safety
         run: node --test tests/media-audit.test.mjs
       - name: Radio engine tests

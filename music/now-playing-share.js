@@ -106,7 +106,7 @@
   });
 
   function mountSharedRadio(){
-    if(!sharedRequest)return;
+    if(!sharedRequest||document.body.classList.contains('focused-listening'))return;
     const song=songs.find(item=>item.id===sharedRequest.songId);
     if(!song)return;
     const variants=variantsFor(song);
