@@ -9,6 +9,13 @@
    */
   const CLUSTERS=[
     {
+      id:'cinematic-perspectives',
+      label:'Cinematic Perspectives',
+      bleed:'light',
+      keywords:['cinematic','fictional','scene-study','perspective','rap'],
+      songIds:['cheap-to-inform']
+    },
+    {
       id:'melancholy-heavy',
       label:'Melancholy/Heavy',
       bleed:'full',

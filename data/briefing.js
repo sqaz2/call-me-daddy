@@ -1,9 +1,31 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-10T01:40:00Z",
+  updated: "2026-09-11T01:00:00-06:00",
   entries: [
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-cheap-to-inform",
+      "published": "2026-09-11T01:00:00-06:00",
+      "type": "New release",
+      "songId": "cheap-to-inform",
+      "title": "Cheap to Inform — An Imagined Scene",
+      "summary": "A fictional movie scene, not my family history: two wounded perspectives, two cheering audiences, and the point where being understood turns into keeping the fight alive.",
+      "href": "/cheap-to-inform/",
+      "sharePath": "/updates/release-cheap-to-inform/",
+      "cta": "Hear the scene",
+      "featured": true,
+      "cover": "/media/songs/2026/09/cheap-to-inform/cover.jpg",
+      "cardLines": [
+        "CHEAP TO",
+        "INFORM"
+      ],
+      "cardTag": "Scene study · Fictional perspectives",
+      "cardSummary": "Two open wounds. Two sold-out rooms. An imagined scene about family hurt and the audience around it—not an autobiography.",
+      "badge": "Scene study",
+      "intent": "think",
+      "featuredOrder": 0.125
+    },
     {
       "id": "release-canadian-crop-dusting",
       "published": "2026-09-10T01:40:00Z",
@@ -24,7 +46,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
       "badge": "New remix",
       "intent": "laugh",
-      "featuredOrder": 0.14285714285714285
+      "featuredOrder": 0.25
     },
     {
       "id": "release-everybody-else-less",
@@ -46,7 +68,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
       "badge": "New song page",
       "intent": "think",
-      "featuredOrder": 0.2857142857142857
+      "featuredOrder": 0.375
     },
     {
       "id": "release-set-a-table-for-two",
@@ -68,7 +90,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.42857142857142855
+      "featuredOrder": 0.5
     },
     {
       "id": "release-satans-loan",
@@ -90,7 +112,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.5714285714285714
+      "featuredOrder": 0.625
     },
     {
       "id": "release-superstore-effect",
@@ -112,7 +134,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.7142857142857143
+      "featuredOrder": 0.75
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -134,7 +156,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.8571428571428571
+      "featuredOrder": 0.875
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-still-building",published:"2026-09-10T10:30:00Z",type:"Two-song V6 release",songId:"stomp-clamp",title:"Still Building — Two Survival Songs",summary:"I Need That Sound and Survival Mode: two personal songs rebuilt in Suno V6 while I work toward a life beyond survival mode.",href:"/still-building/",sharePath:"/updates/release-still-building/",cta:"Play both V6 remixes",featured:true,featuredOrder:0.07142857142857142,cover:"/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg",cardLines:["STILL","BUILDING"],cardTag:"Two survival songs · Suno V6",cardSummary:"Working. Building. Trying to turn the van into a chapter instead of the ending.",badge:"New V6 remixes",intent:"think"},

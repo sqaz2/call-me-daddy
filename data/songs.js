@@ -1,6 +1,33 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "cheap-to-inform",
+    "title": "Cheap to Inform",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-11",
+    "project": "Cheap to Inform",
+    "description": "Scene study · Fictional perspectives. A cinematic, dual-voice rap about family hurt, public audiences and the pressure to keep a fight alive. Not autobiographical.",
+    "audio": "/media/songs/2026/09/cheap-to-inform/audio.mp3",
+    "cover": "/media/songs/2026/09/cheap-to-inform/cover.jpg",
+    "video": "/media/songs/2026/09/cheap-to-inform/background.mp4",
+    "experience": "/cheap-to-inform/",
+    "shareUrl": "/cheap-to-inform/",
+    "kind": "song",
+    "storyType": "scene-study",
+    "storyLabel": "Scene study · Fictional perspectives",
+    "sunoUrl": "https://suno.com/s/Gn6OwZiICiZD9qjd",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Original",
+        "audio": "/media/songs/2026/09/cheap-to-inform/audio.mp3",
+        "cover": "/media/songs/2026/09/cheap-to-inform/cover.jpg"
+      }
+    ]
+  },
+  {
     "id": "canadian-crop-dusting",
     "title": "Canadian Crop Dusting",
     "artist": "MusicSubject × Call Me Daddy",
