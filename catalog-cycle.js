@@ -3,6 +3,19 @@
 
   const HISTORY_STORAGE='cmd-radio-history-v1';
   const LAST_STORAGE='cmd-radio-last-track-v1';
+  const BREAK_STORAGE='cmd-song-breaks-v1';
+  let memoryHistory=[],memoryBreaks={};
+  function readBreaks(){try{return JSON.parse(localStorage.getItem(BREAK_STORAGE)||'{}')||{}}catch{return memoryBreaks}}
+  function isOnBreak(songId){return Number(readBreaks()[songId])>Date.now()}
+  function takeBreak(songId){
+    if(!songId)return;
+    memoryBreaks={...readBreaks(),[songId]:Date.now()+30*86400000};
+    try{localStorage.setItem(BREAK_STORAGE,JSON.stringify(memoryBreaks))}catch{}
+  }
+  function undoBreak(songId){
+    memoryBreaks={...readBreaks()};delete memoryBreaks[songId];
+    try{localStorage.setItem(BREAK_STORAGE,JSON.stringify(memoryBreaks))}catch{}
+  }
   const config=window.CMD_RADIO_CONFIG||{};
   const settings=config.settings||{};
   const profiles=config.profiles||{};
@@ -64,7 +77,7 @@
     try{
       const history=JSON.parse(localStorage.getItem(HISTORY_STORAGE)||'[]');
       return Array.isArray(history)?history.filter(Boolean):[];
-    }catch{return [];}
+    }catch{return memoryHistory;}
   }
 
   function remember(track){
@@ -73,6 +86,7 @@
     const limit=Math.max(8,Number(settings.recentWindow)||8)*2;
     const history=readHistory().filter(id=>id!==songId);
     history.unshift(songId);
+    memoryHistory=history.slice(0,limit);
     try{localStorage.setItem(HISTORY_STORAGE,JSON.stringify(history.slice(0,limit)))}catch{}
     try{
       const payload={
@@ -253,7 +267,7 @@
     else if(ageDays>=900)why.push('deep catalog pull');
 
     const historyIndex=history.indexOf(songId);
-    if(historyIndex<0)why.push('new to you');
+    if(historyIndex<0)why.push('not recently played here');
     else if(historyIndex>=6)why.push('back after a while');
 
     if(taste==='killed')why.push('Second skip — parked this version');
@@ -306,7 +320,7 @@
     const cycleNumber=Math.max(1,Number(options.cycleNumber)||1);
     const excluded=new Set(options.excludeIds||[]);
     try{window.CMDContentIntensity?.syncTasteUnlock?.()}catch{}
-    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&variants(song).length&&!songFullyKilled(song)&&vibeAllowed(song.id,intent,options));
+    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&(!isOnBreak(song.id)||options.explicitPick||(!sharedConsumed&&sharedRequest?.songId===song.id))&&variants(song).length&&!songFullyKilled(song)&&vibeAllowed(song.id,intent,options));
     const rng=randomFrom(`${seed}|${intent}|${cycleNumber}`);
     const history=options.ignoreHistory?[]:readHistory();
     const newestTimestamp=Math.max(0,...playable.map(timestamp));
@@ -318,7 +332,10 @@
       newestTimestamp,
       rng
     });
-    let ordered=[...protectedList,...remainder];
+    // Keep curated story sequences intact; ordinary radio gives unheard-in-this-
+    // browser songs a full turn before returning to the recent listening window.
+    const recent=new Set(history.slice(0,Math.max(1,Number(settings.recentWindow)||8)));
+    let ordered=[...protectedList,...remainder.filter(song=>!recent.has(song.id)),...remainder.filter(song=>recent.has(song.id))];
     const shared=!sharedConsumed?sharedRequest:null;
     if(shared){
       const sharedIndex=ordered.findIndex(song=>song.id===shared.songId);
@@ -355,6 +372,7 @@
     count,
     remember,
     readHistory,
+    isOnBreak,takeBreak,undoBreak,
     createSeed,
     cleanSeed,
     normalizeIntent,

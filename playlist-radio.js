@@ -37,11 +37,16 @@
     }
 
     function next(){
-      if(!cycle.length||index>=cycle.length-1){
-        if(!build())return null;
+      for(let attempts=0;attempts<=playable.length;attempts+=1){
+        if(!cycle.length||index>=cycle.length-1){
+          if(!build())return null;
+        }
+        const candidate=cycle[++index]||null;
+        if(!candidate||engine?.isOnBreak?.(candidate.songId)||window.CMDListenerTaste?.isKilled?.(candidate.songId,candidate.variantId))continue;
+        current=candidate;
+        return current;
       }
-      current=cycle[++index]||null;
-      return current;
+      return null;
     }
 
     function previous(){

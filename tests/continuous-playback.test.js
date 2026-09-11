@@ -148,3 +148,27 @@ test('reload restores the same song and position from the tab session',async()=>
   assert.equal(restoredAudio.playCalls,1);
   assert.equal(restoredEnv.navigator.audioSession.type,'playback');
 });
+
+test('release history is recorded on actual playback, not idle preparation or pause/resume',()=>{
+  const env=environment(),audio=new FakeAudio(),heard=[];
+  env.window.CMDCatalogCycle={remember:track=>heard.push(track.id)};
+  const c=env.window.CMDContinuousPlayback.create({audio,tracks:[{id:'first',audio:'/first.mp3'},{id:'second',audio:'/second.mp3'}]});
+  assert.deepEqual(heard,[]);c.play();assert.deepEqual(heard,[]);
+  audio.emit('playing');c.pause();c.play();audio.emit('playing');
+  assert.deepEqual(heard,['first']);c.next();audio.emit('playing');
+  assert.deepEqual(heard,['first','second']);
+});
+test('a queued song put on break is skipped even when it was already prepared',()=>{
+  const env=environment(),audio=new FakeAudio(),parked=new Set();
+  env.window.CMDCatalogCycle={isOnBreak:id=>parked.has(id)};
+  const c=env.window.CMDContinuousPlayback.create({audio,tracks:[{id:'first',audio:'/first.mp3'},{id:'second',audio:'/second.mp3'},{id:'third',audio:'/third.mp3'}]});
+  assert.equal(c.peekNext().id,'second');parked.add('second');c.next();
+  assert.equal(c.current().id,'third');
+});
+test('destroyed controllers cannot advance, recover or overwrite metadata from late events',()=>{
+  const env=environment(),audio=new FakeAudio();let updates=0;
+  const c=env.window.CMDContinuousPlayback.create({audio,tracks:[{id:'first',audio:'/first.mp3'},{id:'second',audio:'/second.mp3'}],onTrack:()=>updates++});
+  c.play();c.destroy();const calls=audio.playCalls,changes=updates;
+  audio.emit('ended');audio.emit('error');env.document.emit('resume');c.next();c.play();
+  assert.equal(audio.playCalls,calls);assert.equal(updates,changes);assert.equal(audio.src,'/first.mp3');
+});

@@ -14,8 +14,8 @@
   const intentById=new Map(intents.map(intent=>[intent.id,intent]));
   const initialQuery=(()=>{try{return new URLSearchParams(location.search)}catch{return new URLSearchParams()}})();
   let activeIntent=cycleEngine?.normalizeIntent(initialQuery.get('intent'))||'surprise';
-  let radioSeed=cycleEngine?.cleanSeed(initialQuery.get('seed'))||cycleEngine?.createSeed?.()||Date.now().toString(36);
-  let deterministicRoute=initialQuery.get('share')==='1';
+  let radioSeed=(!initialQuery.has('song')&&cycleEngine?.cleanSeed(initialQuery.get('seed')))||cycleEngine?.createSeed?.()||Date.now().toString(36);
+  let deterministicRoute=!initialQuery.has('song')&&initialQuery.has('seed')&&initialQuery.get('share')==='1';
   const grid=document.getElementById('songGrid');
   const count=document.getElementById('catalogCount');
   const intentMount=document.getElementById('intentRadio');
@@ -832,6 +832,7 @@
         seed:radioSeed,
         cycleNumber:Math.max(1,cycleNumber),
         ignoreHistory:true,
+        explicitPick:true,
         includeHeavy:true
       }):[{...song,songId:song.id}];
       if(forced[0]){
@@ -851,11 +852,15 @@
 
   function nextTrack(){
     ensureCycle();
-    if(cycleIndex>=cycle.length-1){
-      buildCycle();
+    for(let attempts=0;attempts<=playableSongs.length;attempts+=1){
+      if(cycleIndex>=cycle.length-1)buildCycle();
+      const track=cycle[++cycleIndex];
+      if(!track){audio.pause();return;}
+      if(cycleEngine?.isOnBreak?.(track.songId||track.id))continue;
+      loadTrack(track,true);
+      return;
     }
-    cycleIndex+=1;
-    loadTrack(cycle[cycleIndex],true);
+    audio.pause();
   }
 
   function previous(){
