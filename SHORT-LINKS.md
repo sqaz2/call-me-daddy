@@ -18,29 +18,25 @@ route, which cues the selected song/version and then continues radio. Dedicated
 single-song pages remain the destination for unambiguous singles. Editorial
 collection/update links without a unique song remain unchanged.
 
-## One-time activation
+## Domain activation through the existing publisher
 
-The redirect service is separate from the music-site deployment so missing new
-domain setup cannot take the existing site offline. Once all three zones are
-active in the same Cloudflare account, deploy:
+The main `call-me-daddy` Worker handles the three short domains before serving
+assets. `wrangler.jsonc` declares those domains alongside the existing music
+hostname, so the already-connected Cloudflare Git integration can attach them
+when it publishes `main`. A new ChatGPT Cloudflare connection is not required.
+The domains must be active zones in that Cloudflare account, and the existing
+build credential must permit their attachment. Existing conflicting DNS or
+redirect rules may still need attention in Cloudflare's dashboard.
 
-```sh
-npx wrangler deploy --config wrangler.short-links.jsonc
-```
+The main Worker uses the bundled registry from the same publication as the site,
+so future releases and their short links update together. The optional standalone
+`wrangler.short-links.jsonc` remains available only for a deliberate separate
+service deployment; do not deploy both configurations against the same domains.
 
-The configuration attaches only the three requested custom domains. Check for
-existing DNS/redirect rules on those hosts first; replace only rules that would
-intercept this requested music short-link service. Do not alter mail records.
-
-Then verify HTTPS on all three domains, the public JSON response at
-`/.well-known/music-links`, `/1`, `/1/2`, a single-song link, and an unknown number
-(404). Verify the destination actually cues the selected recording. The root
-of each short domain redirects to the existing music catalogue.
-
-The redirect Worker reads the latest map from the music site's public
-`/data/song-links.json` (up to 60 seconds of cache), with a bundled snapshot if
-the main site is temporarily unreachable. New songs therefore need only the
-normal music-site publication, not new DNS records or manual redirects.
+`Song domain activation` verifies all three HTTPS hosts, the readiness revision,
+V6 and earlier-version redirects, Cheap to Inform, destination pages and unknown
+links after main changes. A failed verification is not proof of a site outage;
+inspect the existing Cloudflare build and domain status for the specific cause.
 
 The browser checks domain readiness before the share gesture and uses a domain
 only when its published registry revision matches. An inactive, redirected,

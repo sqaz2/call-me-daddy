@@ -1,3 +1,5 @@
+import { handleShortLink } from './short-links.mjs';
+
 const RANGEABLE_MEDIA = /\.(?:aac|flac|m4a|mp3|mp4|ogg|wav|webm)$/i;
 
 const withStreamingHeaders = response => {
@@ -162,6 +164,8 @@ async function fromAssets(request, assets) {
 }
 
 export async function handleRequest(request, env) {
+  const shortLink = handleShortLink(request);
+  if (shortLink) return shortLink;
   const url = new URL(request.url);
   const rangeable = RANGEABLE_MEDIA.test(url.pathname);
   const method = request.method.toUpperCase();

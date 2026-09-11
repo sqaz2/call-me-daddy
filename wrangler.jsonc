@@ -6,21 +6,15 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
-    "run_worker_first": [
-      "/media/*.aac",
-      "/media/*.flac",
-      "/media/*.m4a",
-      "/media/*.mp3",
-      "/media/*.mp4",
-      "/media/*.ogg",
-      "/media/*.wav",
-      "/media/*.webm"
-    ]
+    "run_worker_first": true
   },
   "routes": [
     {
       "pattern": "callmedaddy.musicsubject.com",
       "custom_domain": true
-    }
+    },
+    { "pattern": "hiphop.bid", "custom_domain": true },
+    { "pattern": "dubstep.bid", "custom_domain": true },
+    { "pattern": "https.fyi", "custom_domain": true }
   ]
 }
