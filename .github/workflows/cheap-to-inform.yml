@@ -1,0 +1,63 @@
+name: Cheap to Inform release checks
+on:
+  pull_request:
+    paths:
+      - 'cheap-to-inform/**'
+      - 'content/releases/2026-09-11-cheap-to-inform.json'
+      - 'scripts/check-cheap-to-inform-*.mjs'
+      - '.github/workflows/cheap-to-inform.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'cheap-to-inform/**'
+      - 'content/releases/2026-09-11-cheap-to-inform.json'
+      - 'scripts/check-cheap-to-inform-*.mjs'
+      - '.github/workflows/cheap-to-inform.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Release contracts and generated catalog
+        run: |
+          node --test cheap-to-inform/page.test.cjs
+          node --test tests/playback-sync.test.js
+          node scripts/sync-releases.mjs --check
+      - name: Prepare real touch-browser checks
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: First tap, artwork, audio, motion controls and mobile layout
+        run: |
+          mkdir -p /tmp/cheap-to-inform-qa
+          node scripts/serve-release-test.mjs >/tmp/cheap-to-inform-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-cheap-to-inform-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cheap-to-inform-browser-qa
+          path: /tmp/cheap-to-inform-qa/
+          retention-days: 7
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: browser
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Confirm published page, media ranges and discovery feeds
+        run: node scripts/check-cheap-to-inform-live.mjs
