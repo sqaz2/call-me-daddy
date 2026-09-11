@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { syncSongLinks } from './sync-song-links.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const releaseRoot = path.join(root, 'content', 'releases');
@@ -325,4 +326,5 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(`${checkOnly ? 'Checked' : 'Synchronized'} ${releases.length} release manifest${releases.length === 1 ? '' : 's'}.`);
+syncSongLinks({ checkOnly });
+console.log(`${checkOnly ? 'Checked' : 'Synchronized'} ${releases.length} release manifest${releases.length === 1 ? '' : 's'} and permanent song links.`);

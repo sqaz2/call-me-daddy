@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 1,
+  "songs": [
+    {
+      "number": 1,
+      "songId": "survival-mode",
+      "versions": [
+        "suno-v6-remix",
+        "celtic-north-remix"
+      ]
+    },
+    {
+      "number": 2,
+      "songId": "2010-wows",
+      "versions": [
+        "special-2026-remix"
+      ]
+    },
+    {
+      "number": 3,
+      "songId": "anti-generative-ai-diss",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 4,
+      "songId": "armando",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 5,
+      "songId": "ashes-in-eastwood",
+      "versions": [
+        "marshmallows-over-the-wreckage"
+      ]
+    },
+    {
+      "number": 6,
+      "songId": "back-to-sticks",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 7,
+      "songId": "broke-my-mug-not-my-song",
+      "versions": [
+        "lofi-warehouse-techno"
+      ]
+    },
+    {
+      "number": 8,
+      "songId": "canadian-crop-dusting",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 9,
+      "songId": "cheap-to-inform",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 10,
+      "songId": "cloudlife",
+      "versions": [
+        "life-of-a-cloud",
+        "r-and-b-mix"
+      ]
+    },
+    {
+      "number": 11,
+      "songId": "concrete-under-evergreens",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 12,
+      "songId": "couple-friends-couple-calls",
+      "versions": [
+        "late-night-warehouse"
+      ]
+    },
+    {
+      "number": 13,
+      "songId": "cut-from-the-same-fabric-instrumental",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 14,
+      "songId": "did-armando-die-after-you-held-his-beer",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 15,
+      "songId": "everybody-else-less",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 16,
+      "songId": "find-your-people",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 17,
+      "songId": "fractured-face",
+      "versions": [
+        "may-2026-remastered"
+      ]
+    },
+    {
+      "number": 18,
+      "songId": "friction-the-what",
+      "versions": [
+        "may-2026-remix"
+      ]
+    },
+    {
+      "number": 19,
+      "songId": "funhouse-meltdown",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 20,
+      "songId": "hard-earned-light",
+      "versions": [
+        "epic-dubstep-mix"
+      ]
+    },
+    {
+      "number": 21,
+      "songId": "heartbreak-you-water-me",
+      "versions": [
+        "2026-remix"
+      ]
+    },
+    {
+      "number": 22,
+      "songId": "hell-has-people-too",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 23,
+      "songId": "her-perfume-rides-shotgun",
+      "versions": [
+        "power-ballad-dubstep-drop",
+        "v2-remastered"
+      ]
+    },
+    {
+      "number": 24,
+      "songId": "i-need-love",
+      "versions": [
+        "busker-mix-1",
+        "busker-mix-2",
+        "ska-punk-street-corner-7m12",
+        "dubstep-cinematic-terror"
+      ]
+    },
+    {
+      "number": 25,
+      "songId": "i-wont-let-the-wifi-go",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 26,
+      "songId": "id-pick-you-first",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 27,
+      "songId": "keep-moving",
+      "versions": [
+        "v2",
+        "trap-mix"
+      ]
+    },
+    {
+      "number": 28,
+      "songId": "level-up",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 29,
+      "songId": "locked-in-these-walls",
+      "versions": [
+        "remastered",
+        "edm-hybrid-vision"
+      ]
+    },
+    {
+      "number": 30,
+      "songId": "make-me-an-animal",
+      "versions": [
+        "edm-switch-up-mix",
+        "late-night-warehouse-remastered",
+        "may-2026-remastered"
+      ]
+    },
+    {
+      "number": 31,
+      "songId": "mind-at-war",
+      "versions": [
+        "melodic-dubstep-remix"
+      ]
+    },
+    {
+      "number": 32,
+      "songId": "namaste-hamster",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 33,
+      "songId": "never-come-back-down",
+      "versions": [
+        "lofi-warehouse-techno"
+      ]
+    },
+    {
+      "number": 34,
+      "songId": "numbness-as-a-trap",
+      "versions": [
+        "may-2026-remix",
+        "lofi-warehouse-echo",
+        "barbershop-wobble-edit"
+      ]
+    },
+    {
+      "number": 35,
+      "songId": "one-brick",
+      "versions": [
+        "barbershop-dubstep-acappella",
+        "extended-v1"
+      ]
+    },
+    {
+      "number": 36,
+      "songId": "one-million-dollars",
+      "versions": [
+        "dr-evil-satire"
+      ]
+    },
+    {
+      "number": 37,
+      "songId": "power-moves-only",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 38,
+      "songId": "pull-me-like-that",
+      "versions": [
+        "may-2026-chopped"
+      ]
+    },
+    {
+      "number": 39,
+      "songId": "satans-loan",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 40,
+      "songId": "september-26th-heartbreak",
+      "versions": [
+        "2026-remix"
+      ]
+    },
+    {
+      "number": 41,
+      "songId": "set-a-table-for-two",
+      "versions": [
+        "main",
+        "voice-clone"
+      ]
+    },
+    {
+      "number": 42,
+      "songId": "seven-days-locked",
+      "versions": [
+        "where-the-lights-fade",
+        "vicious-with-myself"
+      ]
+    },
+    {
+      "number": 43,
+      "songId": "shooting-star",
+      "versions": [
+        "2019-cut"
+      ]
+    },
+    {
+      "number": 44,
+      "songId": "side-chick-finder",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 45,
+      "songId": "stomp-clamp",
+      "versions": [
+        "suno-v6-remix",
+        "lofi-warehouse-echo"
+      ]
+    },
+    {
+      "number": 46,
+      "songId": "superstore-effect",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 47,
+      "songId": "the-loudest-one-in-my-head",
+      "versions": [
+        "remix"
+      ]
+    },
+    {
+      "number": 48,
+      "songId": "the-musician-police",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 49,
+      "songId": "the-tune-of-magical-song",
+      "versions": [
+        "deep-dark-dubstep-drop-remastered"
+      ]
+    },
+    {
+      "number": 50,
+      "songId": "thirty-six",
+      "versions": [
+        "main"
+      ]
+    },
+    {
+      "number": 51,
+      "songId": "twas-the-tism-mlord",
+      "versions": [
+        "final-glitch-edit"
+      ]
+    },
+    {
+      "number": 52,
+      "songId": "under-watch",
+      "versions": [
+        "dubstep-survival"
+      ]
+    },
+    {
+      "number": 53,
+      "songId": "what-is-my-opponent-threatening-right-now",
+      "versions": [
+        "can-i-get-mated"
+      ]
+    },
+    {
+      "number": 54,
+      "songId": "where-monsters-are",
+      "versions": [
+        "dnb-folk-tale",
+        "monster-and-maiden",
+        "monster-and-maiden-alt"
+      ]
+    },
+    {
+      "number": 55,
+      "songId": "where-the-bad-girls-at",
+      "versions": [
+        "concrete-heels-female",
+        "bad-girls-at-war-male"
+      ]
+    },
+    {
+      "number": 56,
+      "songId": "where-the-teeth-are-kept",
+      "versions": [
+        "google-gemini"
+      ]
+    },
+    {
+      "number": 57,
+      "songId": "wild-ways",
+      "versions": [
+        "ai-voice-version",
+        "edm-remix",
+        "crowd-drop-remix"
+      ]
+    },
+    {
+      "number": 58,
+      "songId": "will-to-live",
+      "versions": [
+        "2026",
+        "too-many-things",
+        "namaste-hamster-requiem",
+        "more-original-2026"
+      ]
+    },
+    {
+      "number": 59,
+      "songId": "youtube-W47ebCMfrBI",
+      "versions": [
+        "main"
+      ]
+    }
+  ]
+}

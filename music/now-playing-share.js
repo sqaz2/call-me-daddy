@@ -29,6 +29,8 @@
     return url.href;
   };
   const songShareUrl=(song,variant)=>{
+    const short=window.CMDShortLinks?.forTrack({...song,...variant,songId:song?.id,variantId:variant?.id});
+    if(short)return short;
     const dedicated=song?.shareUrl||song?.experience;
     if(dedicated){
       const url=new URL(dedicated,location.origin);
