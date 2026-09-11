@@ -71,6 +71,21 @@ test('listener taste persists likes and dislikes',()=>{
   assert.ok(window.CMDListenerTaste.weightMultiplier('armando')<=0.0000011);
 });
 
+test('liked recordings retain distinct versions, most recent first, and update on unlike',()=>{
+  const {window,storage}=loadScripts(['listener-taste.js']);
+  storage.set('cmd-listener-taste-v2',JSON.stringify({'survival::v6':{status:'like',updatedAt:10},'survival::original':{status:'like',updatedAt:20},'other':{status:'dislike',updatedAt:30}}));
+  assert.deepEqual(JSON.parse(JSON.stringify(window.CMDListenerTaste.likedRecordings())),[{songId:'survival',variantId:'original',updatedAt:20},{songId:'survival',variantId:'v6',updatedAt:10}]);
+  window.CMDListenerTaste.like('survival','original');assert.equal(window.CMDListenerTaste.likedRecordings().length,1);
+});
+test('likes remain usable for this session when browser storage cannot be written',()=>{
+  const events=[],window={dispatchEvent:event=>events.push(event.type)};
+  vm.runInNewContext(read('listener-taste.js'),{window,CustomEvent:class{constructor(type){this.type=type}},localStorage:{getItem:()=>null,setItem(){throw Error('Storage blocked')}}});
+  window.CMDListenerTaste.like('survival','v6');assert.equal(window.CMDListenerTaste.get('survival','v6'),'like');
+  assert.equal(window.CMDListenerTaste.likedRecordings()[0].variantId,'v6');
+  window.CMDListenerTaste.like('survival','v6');assert.equal(window.CMDListenerTaste.likedRecordings().length,0);
+  assert.deepEqual(events,['cmd:taste-change','cmd:taste-change']);
+});
+
 test('variant dislike keys stay isolated and exploration tapers',()=>{
   const {window}=loadScripts(['data/taste-clusters.js','listener-taste.js']);
   const taste=window.CMDListenerTaste;
@@ -137,5 +152,5 @@ test('wild ways player uses lower swipe threshold on copy/player',()=>{
   assert.ok(source.includes('threshold:40'));
   assert.ok(source.includes('archive-player-copy'));
   const html=read('archive/wild-ways/index.html');
-  assert.ok(html.includes('swipe-nav.js?v=20260905-listener'));
+  assert.ok(html.includes('swipe-nav.js?v=20260911-player'));
 });

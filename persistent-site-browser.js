@@ -98,14 +98,24 @@
     return clearance;
   };
   const updatePillClearance=()=>{
-    clearanceRaf=0;if(!overlay?.classList.contains('is-open'))return;const pill=overlay.querySelector('.cmd-site-session-pill');if(!pill)return;let clearance=0;
+    clearanceRaf=0;let clearance=0;
     try{clearance=Math.max(visibleBottomClearance(document,window),visibleBottomClearance(viewFrame?.contentDocument,viewFrame?.contentWindow))}catch{}
-    const cap=Math.max(0,(window.innerHeight||0)-100);pill.style.setProperty('--cmd-player-clearance',`${Math.min(clearance,cap)}px`);updatePillState();
+    document.documentElement.style.setProperty('--cmd-player-clearance',`${clearance}px`);
+    try{viewFrame?.contentDocument?.documentElement?.style.setProperty('--cmd-player-clearance',`${clearance}px`)}catch{}
+    const pill=overlay?.querySelector('.cmd-site-session-pill');
+    const cap=Math.max(0,(window.innerHeight||0)-100);pill?.style.setProperty('--cmd-player-clearance',`${Math.min(clearance,cap)}px`);updatePillState();
   };
   function scheduleClearance(){if(clearanceRaf)return;clearanceRaf=requestAnimationFrame(updatePillClearance)}
   const watchFrameLayout=()=>{
     clearanceObserver?.disconnect();clearanceObserver=null;
-    try{const body=viewFrame?.contentDocument?.body;if(!body)return;clearanceObserver=new MutationObserver(scheduleClearance);clearanceObserver.observe(body,{subtree:true,attributes:true,attributeFilter:['class','hidden','style']})}catch{}
+    try{
+      const doc=viewFrame?.contentDocument,body=doc?.body;if(!body)return;
+      if(doc.head&&doc.createElement&&!doc.getElementById('cmd-frame-player-clearance')){
+        const style=doc.createElement('style');style.id='cmd-frame-player-clearance';
+        style.textContent='html{scroll-padding-bottom:var(--cmd-player-clearance,240px)}body{padding-bottom:var(--cmd-player-clearance,240px)!important}';doc.head.appendChild(style);
+      }
+      clearanceObserver=new MutationObserver(scheduleClearance);clearanceObserver.observe(body,{subtree:true,attributes:true,attributeFilter:['class','hidden','style']});
+    }catch{}
     scheduleClearance();
   };
   const bindFrame=frame=>{

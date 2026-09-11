@@ -1,7 +1,7 @@
 (()=>{
   if(window.CMDUniversalPlayer)return;
 
-  const VERSION='1.1.0';
+  const VERSION='1.2.0';
   const CONTACT_URL='https://facebook.com/callmedaddy';
   const FALLBACK_COVER=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const adapters=new Map();
@@ -9,7 +9,19 @@
   const coreHandles=new WeakMap();
   const routeCache=new Map();
   let active=null,root=null,nodes=null,stopCoreObserver=null;
-  let followKey='',followGeneration=0,lastMediaKey='',lastBreak=null;
+  let followKey='',followGeneration=0,followPending=null,lastMediaKey='',lastBreak=null;
+  const features=new Map();
+  function loadFeature(name,src){
+    if(window[name])return Promise.resolve(window[name]);
+    if(features.has(name))return features.get(name);
+    const ready=new Promise(resolve=>{
+      const script=document.createElement('script');script.src=src;
+      script.addEventListener('load',()=>resolve(window[name]||null),{once:true});
+      script.addEventListener('error',()=>{features.delete(name);resolve(null)},{once:true});
+      document.head.appendChild(script);
+    });
+    features.set(name,ready);return ready;
+  }
 
   const absolute=value=>{if(!value)return'';try{return new URL(value,location.href).href}catch{return String(value)}};
   const samePage=value=>{try{const u=new URL(value,location.href);return u.pathname===location.pathname&&u.search===location.search}catch{return false}};
@@ -20,7 +32,7 @@
     const source=mediaSource(media);
     if(!source)return null;
     for(const song of [window.CMD_SONGS,window.CMD_ARCHIVE_CATALOG].filter(Array.isArray).flat()){
-      const variant=[song,...(Array.isArray(song?.variants)?song.variants:[])].find(item=>absolute(item?.audio||item?.src||item?.expectedPath)===source);
+      const variant=[...(Array.isArray(song?.variants)?song.variants:[]),song].find(item=>absolute(item?.audio||item?.src||item?.expectedPath)===source);
       if(variant)return {...song,...variant,id:variant!==song?`${song.id}:${variant.id||'main'}`:song.id,songId:song.id,variantId:variant!==song?variant.id||'main':'main',variantLabel:variant.label||song.kind||'',variantCount:Math.max(1,(song.variants||[]).filter(item=>item?.audio||item?.src||item?.expectedPath).length),title:song.title,artist:song.artist,project:song.project,cover:variant.cover||song.cover||'',audio:variant.audio||variant.src||variant.expectedPath||song.audio||'',experience:song.experience||''};
     }
     return null;
@@ -76,17 +88,33 @@
     if(!available)routeCache.delete(key);
     return available?`${target.pathname}${target.search}${target.hash}`:fallback;
   }
-  function cancelFollow(){followGeneration+=1;followKey=''}
+  function cancelFollow(){followGeneration+=1;followKey='';followPending=null}
   async function followTrack(track){
     if(!track||!(track.songId||track.id)||!active?.playing()||active.followPages===false)return false;
     const key=trackKey(track);
-    if(!key||key===followKey)return false;
-    followKey=key;
+    if(!key||key===followKey||followPending?.key===key)return false;
     const generation=++followGeneration;
-    const route=await resolveRoute(track);
-    if(generation!==followGeneration||!active?.playing()||trackKey(active.track())!==key)return false;
-    if(!samePage(route)&&window.CMDPersistentSite?.open)window.CMDPersistentSite.open(route);
-    return true;
+    followPending={key,generation};
+    try{
+      const route=await resolveRoute(track);
+      if(generation!==followGeneration||!active?.playing()||trackKey(active.track())!==key)return false;
+      if(!samePage(route)){
+        if(!window.CMDPersistentSite?.open)return false;
+        window.CMDPersistentSite.open(route);
+      }
+      followKey=key;return true;
+    }finally{if(followPending?.generation===generation)followPending=null}
+  }
+  async function openCurrentTrack(){
+    const track=active?.track();if(!track)return;
+    const key=trackKey(track),route=await resolveRoute(track);
+    if(!active||trackKey(active.track())!==key||samePage(route))return;
+    if(window.CMDPersistentSite?.open)window.CMDPersistentSite.open(route);
+    else location.assign(route);
+  }
+  function recordingIdentity(){
+    const track=active?.track(),catalog=active&&catalogTrackFor(active.media());
+    return {songId:catalog?.songId||track?.songId||String(track?.id||'').split(':')[0],variantId:catalog?.variantId||track?.variantId||'main'};
   }
 
   function injectStyles(){
@@ -104,6 +132,11 @@
       .cmd-universal-copy{min-width:0;align-self:center}.cmd-universal-copy small,.cmd-universal-copy span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmd-universal-context{color:#c7a968;font-size:.64rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.cmd-universal-title{display:block;width:100%;margin:3px 0 2px;padding:0;overflow:hidden;border:0;background:transparent;color:#f5f1ea;font:900 1.03rem/1.15 system-ui,sans-serif;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.cmd-universal-detail{color:#aaa59d;font-size:.7rem}.cmd-universal-story{display:inline-flex!important;width:max-content;max-width:100%;margin-top:4px;color:#d7d1c7!important;font-size:.68rem!important;font-weight:850;text-decoration:none}.cmd-universal-story.is-coming{color:#d7b266!important}.cmd-universal-controls{display:flex;align-items:center;gap:6px}.cmd-universal-controls button{display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:#191919;color:#f5f1ea;font:900 .95rem/1 system-ui,sans-serif;cursor:pointer}.cmd-universal-controls .cmd-universal-toggle{width:50px;height:50px;background:#f2efe8;color:#080808;font-size:1.02rem}.cmd-universal-controls button:disabled{cursor:not-allowed;opacity:.34}.cmd-universal-controls button:focus-visible,.cmd-universal-art:focus-visible,.cmd-universal-title:focus-visible,.cmd-universal-progress:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-universal-progress{--progress:0%;position:relative;grid-column:1/-1;height:32px;margin:0;border:0;border-radius:0;background:transparent;cursor:pointer;overflow:visible;touch-action:none;-webkit-user-select:none;user-select:none}.cmd-universal-progress::before{content:"";position:absolute;left:0;right:0;top:50%;height:10px;transform:translateY(-50%);border-radius:999px;background:#2b2927;pointer-events:none}.cmd-universal-progress span{position:absolute;left:0;top:50%;width:0;height:10px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,#d7b266,#f4f0e8);pointer-events:none}.cmd-universal-thumb{position:absolute;top:50%;left:var(--progress);width:18px;height:18px;border:2px solid #f4f0e8;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8e8,#d7b266 58%,#9a7428);box-shadow:0 1px 6px rgba(0,0,0,.55),0 0 0 3px rgba(215,178,102,.22);transform:translate(-50%,-50%);pointer-events:none}.cmd-universal-progress.is-scrubbing .cmd-universal-thumb{width:22px;height:22px;box-shadow:0 2px 10px rgba(0,0,0,.6),0 0 0 4px rgba(215,178,102,.32)}.cmd-universal-times{position:absolute;right:14px;bottom:5px;display:flex;gap:7px;color:#77736d;font-size:.58rem;pointer-events:none}.cmd-universal-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
       @media(max-width:680px){body.cmd-universal-open{padding-bottom:calc(172px + env(safe-area-inset-bottom))!important}.cmd-universal-player{right:8px;bottom:max(8px,env(safe-area-inset-bottom));left:8px;width:calc(100% - 16px)}.cmd-universal-shell{grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto 32px;padding:10px 11px 12px;border-radius:21px;gap:8px 10px}.cmd-universal-art{width:48px;height:48px;border-radius:11px}.cmd-universal-controls{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.cmd-universal-controls button,.cmd-universal-controls .cmd-universal-toggle{width:100%;height:38px;border-radius:999px}.cmd-universal-title{font-size:.96rem}.cmd-universal-detail{font-size:.66rem}.cmd-universal-story{font-size:.64rem!important}.cmd-universal-times{display:none}}
       .cmd-listening-options{grid-column:1/-1;font-size:.78rem}.cmd-listening-options summary{min-height:32px;display:flex;align-items:center;cursor:pointer;color:#d7d1c7}.cmd-listening-options[open]{max-height:180px;overflow:auto}.cmd-listening-options p{margin:8px 0;color:#aaa59d}.cmd-listening-options button{min-height:44px;padding:8px 12px;border:1px solid #555;border-radius:10px;background:#191919;color:#f5f1ea;font:inherit}.cmd-listening-options button:focus-visible,.cmd-listening-options summary:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-listening-options [hidden]{display:none!important}.cmd-universal-controls button{min-height:44px}.cmd-universal-times{position:static;grid-column:1/-1;grid-row:3;justify-content:flex-end}
+      body.cmd-universal-open{padding-bottom:var(--cmd-player-clearance,240px)!important}
+      .cmd-universal-controls .cmd-universal-like[aria-pressed="true"]{background:#d6ebc5;color:#172010;border-color:#d6ebc5}
+      .cmd-universal-copy,.cmd-universal-art{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+      .cmd-universal-times{display:flex;grid-row:auto;color:#b5b1a8;font-size:.66rem}
+      @media(max-width:680px){.cmd-universal-controls{grid-template-columns:repeat(5,minmax(0,1fr))}}
       @media(prefers-reduced-motion:reduce){.cmd-universal-player *{scroll-behavior:auto!important}}
     `;
     document.head.appendChild(style);
@@ -114,13 +147,24 @@
     root.innerHTML=`<div class="cmd-universal-shell">
       <button class="cmd-universal-art" type="button" aria-label="Play or pause"><img alt=""><span aria-hidden="true">▶</span></button>
       <div class="cmd-universal-copy"><small class="cmd-universal-context">Play the site</small><button class="cmd-universal-title" type="button">Choose a song</button><span class="cmd-universal-detail">Ready</span><a class="cmd-universal-story" href="/music/">Browse music →</a></div>
-      <div class="cmd-universal-controls" role="group" aria-label="Playback controls"><button class="cmd-universal-prev" type="button" aria-label="Previous song">↶</button><button class="cmd-universal-toggle" type="button" aria-label="Play">▶</button><button class="cmd-universal-next" type="button" aria-label="Next song">↷</button><button class="cmd-universal-share" type="button" aria-label="Share current song">↗</button></div>
+      <div class="cmd-universal-controls" role="group" aria-label="Playback controls"><button class="cmd-universal-prev" type="button" aria-label="Previous song">↶</button><button class="cmd-universal-toggle" type="button" aria-label="Play">▶</button><button class="cmd-universal-next" type="button" aria-label="Next song">↷</button><button class="cmd-universal-like" type="button" aria-label="Like current song" aria-pressed="false" disabled>♡</button><button class="cmd-universal-share" type="button" aria-label="Share current song">↗</button></div>
       <div class="cmd-universal-progress" role="slider" tabindex="0" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span><i class="cmd-universal-thumb" aria-hidden="true"></i></div>
-      <details class="cmd-listening-options"><summary>Up next &amp; listening options</summary><p class="cmd-listening-next"></p><button class="cmd-song-break" type="button">Take a break from this song</button><p>Skips this song and its versions for 30 days on this browser. You can still choose it directly.</p><p class="cmd-break-message" role="status"></p><button class="cmd-undo-break" type="button" hidden>Undo song break</button></details><div class="cmd-universal-times"><span class="cmd-universal-current">0:00</span><span>/</span><span class="cmd-universal-duration">0:00</span></div><span class="cmd-universal-live" aria-live="polite"></span></div>`;
+      <div class="cmd-universal-times"><span class="cmd-universal-current">0:00</span><span>/</span><span class="cmd-universal-duration">0:00</span></div><details class="cmd-listening-options"><summary>Up next &amp; listening options</summary><p class="cmd-listening-next"></p><p>Swipe the artwork or title left for next, right for previous. Tap the title to return to the playing song.</p><button class="cmd-song-break" type="button">Take a break from this song</button><p>Skips this song and its versions for 30 days on this browser. You can still choose it directly.</p><p class="cmd-break-message" role="status"></p><button class="cmd-undo-break" type="button" hidden>Undo song break</button></details><span class="cmd-universal-live" aria-live="polite"></span></div>`;
     document.body.appendChild(root);
     const q=s=>root.querySelector(s);
     nodes={art:q('.cmd-universal-art'),image:q('img'),icon:q('.cmd-universal-art span'),context:q('.cmd-universal-context'),title:q('.cmd-universal-title'),detail:q('.cmd-universal-detail'),story:q('.cmd-universal-story'),previous:q('.cmd-universal-prev'),toggle:q('.cmd-universal-toggle'),next:q('.cmd-universal-next'),share:q('.cmd-universal-share'),progress:q('.cmd-universal-progress'),bar:q('.cmd-universal-progress span'),thumb:q('.cmd-universal-thumb'),current:q('.cmd-universal-current'),duration:q('.cmd-universal-duration'),live:q('.cmd-universal-live'),options:q('.cmd-listening-options'),upcoming:q('.cmd-listening-next'),songBreak:q('.cmd-song-break'),breakMessage:q('.cmd-break-message'),undoBreak:q('.cmd-undo-break')};
     nodes.options.addEventListener('toggle',()=>window.CMDPersistentSite?.refreshClearance?.());
+    nodes.like=q('.cmd-universal-like');
+    nodes.like.addEventListener('click',()=>{
+      const identity=recordingIdentity(),taste=window.CMDListenerTaste;
+      if(!identity.songId||!taste)return;
+      taste.like(identity.songId,identity.variantId);render();
+    });
+    loadFeature('CMDSwipeNav','/swipe-nav.js?v=20260911-player').then(swipe=>swipe?.attach({
+      target:root,ignore:'.cmd-universal-controls, .cmd-universal-progress, details, a, input, textarea, select, [data-no-swipe]',
+      onNext:()=>active?.next?.(),onPrev:()=>{if(active?.previous){active.seek(0);active.previous()}}
+    }));
+    if(typeof ResizeObserver==='function')new ResizeObserver(()=>window.CMDPersistentSite?.refreshClearance?.()).observe(root);
     nodes.songBreak.addEventListener('click',()=>{
       const track=active?.track(),engine=active?.ownerWindow?.CMDCatalogCycle||window.CMDCatalogCycle;
       if(!track||!engine?.takeBreak)return;
@@ -134,7 +178,7 @@
     nodes.undoBreak.addEventListener('click',()=>{if(!lastBreak)return;lastBreak.engine.undoBreak(lastBreak.songId);nodes.breakMessage.textContent=`${lastBreak.title} can play again.`;lastBreak=null;nodes.undoBreak.hidden=true;render()});
     nodes.art.addEventListener('click',()=>active?.toggle?.());nodes.toggle.addEventListener('click',()=>active?.toggle?.());
     nodes.previous.addEventListener('click',()=>active?.previous?.());nodes.next.addEventListener('click',()=>active?.next?.());nodes.share.addEventListener('click',()=>active?.share?.());
-    nodes.title.addEventListener('click',()=>{const track=active?.track();if(track?.experience&&!samePage(track.experience)){if(window.CMDPersistentSite?.open)window.CMDPersistentSite.open(track.experience);else location.assign(track.experience);return}if(!track?.experience)window.open(CONTACT_URL,'_blank','noopener')});
+    nodes.title.addEventListener('click',()=>void openCurrentTrack());
     let scrubbing=false;const seekFromPointer=event=>{if(!active)return;const duration=active.duration(),rect=nodes.progress.getBoundingClientRect(),x=event.clientX;if(!Number.isFinite(duration)||duration<=0||rect.width<=0||typeof x!=='number')return;active.seek(Math.max(0,Math.min(duration,(x-rect.left)/rect.width*duration)))};nodes.progress.addEventListener('pointerdown',event=>{if(!active||(event.button!=null&&event.button!==0))return;scrubbing=true;nodes.progress.classList.add('is-scrubbing');try{nodes.progress.setPointerCapture(event.pointerId)}catch{}seekFromPointer(event);event.preventDefault()});nodes.progress.addEventListener('pointermove',event=>{if(!scrubbing)return;seekFromPointer(event);event.preventDefault()});const endScrub=event=>{if(!scrubbing)return;scrubbing=false;nodes.progress.classList.remove('is-scrubbing');try{if(event&&event.pointerId!=null)nodes.progress.releasePointerCapture(event.pointerId)}catch{}};nodes.progress.addEventListener('pointerup',endScrub);nodes.progress.addEventListener('pointercancel',endScrub);nodes.progress.addEventListener('click',event=>{if(scrubbing)return;seekFromPointer(event)});nodes.progress.addEventListener('keydown',event=>{if(!active||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const duration=active.duration();if(!Number.isFinite(duration)||duration<=0)return;active.seek(event.key==='Home'?0:event.key==='End'?duration:Math.max(0,Math.min(duration,active.time()+(event.key==='ArrowRight'?5:-5))));event.preventDefault()});
     return root;
   }
@@ -160,17 +204,22 @@
     const ratio=Number.isFinite(duration)&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
     if(nodes.image.src!==absolute(track.cover||FALLBACK_COVER))nodes.image.src=track.cover||FALLBACK_COVER;
     nodes.image.alt=`${track.title} artwork`;nodes.image.onerror=()=>{if(nodes.image.src!==absolute(FALLBACK_COVER))nodes.image.src=FALLBACK_COVER};
-    nodes.title.textContent=track.title;nodes.title.setAttribute('aria-label',track.experience?(samePage(track.experience)?`${track.title}, current song page`:`Open ${track.title} song page`):`Ask about ${track.title}`);
+    nodes.title.textContent=track.title;nodes.title.setAttribute('aria-label',track.experience&&samePage(track.experience)?`${track.title}, current song page`:`Open ${track.title} song page`);
     nodes.context.textContent=active.context(track);
     const upcoming=active.upcoming?.();
     nodes.upcoming.textContent=upcoming?`Up next: ${upcoming.title}${upcoming.variantCount>1&&upcoming.variantLabel?' — '+upcoming.variantLabel:''}`:'More music follows this song.';
     nodes.songBreak.disabled=!(active.ownerWindow?.CMDCatalogCycle||window.CMDCatalogCycle)?.takeBreak;
 
-    const detail=message||active.status()||(playing?'Playing':media?.ended?'Loading next…':media?.paused?'Paused':'Ready');
+    const identity=recordingIdentity(),taste=window.CMDListenerTaste;
+    const liked=Boolean(identity.songId&&taste?.get(identity.songId,identity.variantId)==='like');
+    nodes.like.disabled=!identity.songId||!taste;nodes.like.textContent=liked?'♥':'♡';
+    nodes.like.setAttribute('aria-pressed',String(liked));nodes.like.setAttribute('aria-label',`${liked?'Unlike':'Like'} ${track.title}`);
+    const detail=message||active.status()||(playing?(upcoming?`Next: ${upcoming.title}`:'Playing'):media?.ended?'Loading next…':media?.paused?'Paused':'Ready');
     nodes.detail.textContent=detail;const spoken=`${track.title}. ${playing?'Playing':detail}`;if(nodes.live.textContent!==spoken)nodes.live.textContent=spoken;
     nodes.icon.textContent=playing?'❚❚':'▶';nodes.toggle.textContent=playing?'❚❚':'▶';nodes.toggle.setAttribute('aria-label',playing?'Pause':'Play');nodes.art.setAttribute('aria-label',playing?`Pause ${track.title}`:`Play ${track.title}`);
     nodes.previous.disabled=typeof active.previous!=='function';nodes.next.disabled=typeof active.next!=='function';nodes.share.disabled=typeof active.share!=='function';
     nodes.bar.style.width=`${ratio*100}%`;nodes.progress.style.setProperty?.('--progress',`${ratio*100}%`);if(nodes.thumb)nodes.thumb.style.left=`${ratio*100}%`;nodes.progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)));nodes.current.textContent=formatTime(time);nodes.duration.textContent=formatTime(duration);
+    nodes.progress.setAttribute('aria-valuetext',duration>0?`${formatTime(time)} of ${formatTime(duration)}`:'Duration unavailable');
     nodes.story.classList.remove('is-coming');
     if(track.experience){nodes.story.href=track.experience;nodes.story.target='';nodes.story.rel='';nodes.story.textContent=samePage(track.experience)?'You’re on this song’s page':'Open song story →'}
     else{nodes.story.href=CONTACT_URL;nodes.story.target='_blank';nodes.story.rel='noopener';nodes.story.classList.add('is-coming');nodes.story.textContent='Story coming soon · ask me about this song ↗'}
@@ -241,6 +290,9 @@
     }catch{return false}
   }
   window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,getActive:()=>active?.handle||null,getTrack:()=>active?.track()||null,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(['play','pause','toggle','next','previous','seek','share'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
+  loadFeature('CMDListenerTaste','/listener-taste.js?v=20260911-player').then(()=>render());
+  window.addEventListener?.('cmd:taste-change',()=>render());
+  window.addEventListener?.('storage',event=>{if(!event.key||event.key==='cmd-listener-taste-v2')render()});
   observeContinuous(window.CMDContinuousPlayback);
   document.addEventListener('play',event=>{const media=event.target;if(!media||mediaOwners.has(media)||media.muted||media.__cmdContinuousPlaybackController)return;connect({id:`native:${media.id||adapters.size+1}`,media,track:catalogTrackFor(media),activate:true,show:true})},true);
   const queued=Array.isArray(window.CMDUniversalPlayerQueue)?window.CMDUniversalPlayerQueue.splice(0):[];queued.forEach(callback=>{try{callback(window.CMDUniversalPlayer)}catch{}});

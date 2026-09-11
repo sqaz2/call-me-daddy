@@ -33,6 +33,8 @@
     let tracking=false;
     let ignored=false;
     let pointerId=null;
+    let suppressClickUntil=0;
+    const usePointer=typeof window.PointerEvent==='function';
 
     const inIgnore=el=>{
       try{return Boolean(el?.closest?.(ignore))}catch{return false}
@@ -49,6 +51,8 @@
     };
 
     const onStart=event=>{
+      if(event.touches?.length>1){onCancel();return;}
+      if(event.isPrimary===false){onCancel();return;}
       const point=event.touches?event.touches[0]:event;
       if(!point)return;
       ignored=inIgnore(event.target);
@@ -75,6 +79,7 @@
       // Require clear horizontal dominance
       if(absX<absY*axisBias)return;
       if(absY>restraint&&absX<absY*1.5)return;
+      suppressClickUntil=Date.now()+500;
       if(dx<0){
         flashNudge('next');
         onNext();
@@ -85,6 +90,15 @@
     };
 
     const onCancel=()=>{tracking=false;ignored=false;pointerId=null};
+    const onMove=event=>{
+      if(!tracking||ignored||event.pointerId==null||event.pointerId!==pointerId)return;
+      const dx=Math.abs(event.clientX-startX),dy=Math.abs(event.clientY-startY);
+      if(dx>12&&dx>dy*axisBias)try{target.setPointerCapture?.(pointerId)}catch{}
+    };
+    const onClick=event=>{
+      if(Date.now()>=suppressClickUntil)return;
+      suppressClickUntil=0;event.preventDefault();event.stopImmediatePropagation();
+    };
 
     const onPointerDown=event=>{
       if(event.pointerType==='mouse')return;
@@ -95,20 +109,27 @@
       onEnd(event);
     };
 
-    target.addEventListener('touchstart',onStart,{passive:true});
-    target.addEventListener('touchend',onEnd,{passive:true});
-    target.addEventListener('touchcancel',onCancel,{passive:true});
-    target.addEventListener('pointerdown',onPointerDown,{passive:true});
-    target.addEventListener('pointerup',onPointerUp,{passive:true});
-    target.addEventListener('pointercancel',onCancel,{passive:true});
+    if(usePointer){
+      target.addEventListener('pointerdown',onPointerDown,{passive:true});
+      target.addEventListener('pointermove',onMove,{passive:true});
+      target.addEventListener('pointerup',onPointerUp,{passive:true});
+      target.addEventListener('pointercancel',onCancel,{passive:true});
+    }else{
+      target.addEventListener('touchstart',onStart,{passive:true});
+      target.addEventListener('touchend',onEnd,{passive:true});
+      target.addEventListener('touchcancel',onCancel,{passive:true});
+    }
+    target.addEventListener('click',onClick,true);
 
     return ()=>{
       target.removeEventListener('touchstart',onStart);
       target.removeEventListener('touchend',onEnd);
       target.removeEventListener('touchcancel',onCancel);
       target.removeEventListener('pointerdown',onPointerDown);
+      target.removeEventListener('pointermove',onMove);
       target.removeEventListener('pointerup',onPointerUp);
       target.removeEventListener('pointercancel',onCancel);
+      target.removeEventListener('click',onClick,true);
     };
   }
 
