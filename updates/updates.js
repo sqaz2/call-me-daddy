@@ -86,7 +86,7 @@
     feed.innerHTML=visible.map(entry=>{
       const cover=entry.song?.cover||entry.cardImage||'';
       return `<article class="update-card" id="${escapeHtml(entry.id)}">
-        <a class="update-open" href="${escapeHtml(entry.href||entry.updateHref)}">
+        <a class="update-open" href="${escapeHtml(entry.song?(entry.href||entry.updateHref):entry.updateHref)}">
           ${cover?`<img src="${escapeHtml(cover)}" alt="" width="72" height="72" loading="lazy">`:''}
           <div><time>${escapeHtml(prettyDate(entry.published))}</time><h2>${escapeHtml(entry.title)}</h2><p>${escapeHtml(entry.summary)}</p><span class="update-open-label">${entry.song?'Open release':'Read note'} →</span></div>
         </a>

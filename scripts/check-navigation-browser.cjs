@@ -20,6 +20,7 @@ const {chromium}=require('playwright');
   assert.ok((await page.evaluate(()=>window.__shares.at(-1).text)).match(/https?:\/\//));
   await search.fill('');await page.getByRole('button',{name:'Site notes',exact:true}).click();
   assert.ok((await page.locator('#updatesResultCount').innerText()).includes('site notes'));
+  assert.ok((await page.locator('.update-open').first().getAttribute('href')).startsWith('/updates/'),'Read note opens the note itself');
   await page.getByRole('button',{name:'Music',exact:true}).click();
   fs.mkdirSync('/tmp/replay-qa',{recursive:true});
   await page.screenshot({path:'/tmp/replay-qa/latest-simple-mobile.png'});
