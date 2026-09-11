@@ -7,6 +7,20 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const origin = 'https://callmedaddy.musicsubject.com';
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
+const shareCategories = JSON.parse(read('content/song-share-categories.json'));
+for (const [songId, category] of Object.entries(shareCategories)) {
+  if (!['jokes', 'music'].includes(category)) throw new Error(`Invalid shareCategory: ${songId}`);
+}
+export function shareCategoryFor(song, variant) {
+  const explicit = variant.shareCategory ?? song.shareCategory ?? shareCategories[song.id];
+  if (explicit !== undefined) {
+    if (!['jokes', 'music'].includes(explicit)) throw new Error(`Invalid shareCategory: ${song.id}`);
+    return explicit;
+  }
+  // Editorial kind labels are deliberate; do not infer comedy from personal lyrics
+  // or a variant title such as Will to Live's Namaste, Hamster Requiem.
+  return /\b(satire|satirical|comedy|parody)\b/i.test(song.kind || '') ? 'jokes' : 'music';
+}
 export function loadCatalog() {
   const context = vm.createContext({ window: {}, location: { search: '' }, URLSearchParams });
   for (const file of ['data/songs.js', 'data/archive-catalog.js', 'data/radio-intents.js',
@@ -72,11 +86,11 @@ export function buildLinks(catalog, registry) {
       }
       const aliases = [song.experience, song.shareUrl, `/updates/release-${song.id}/`].filter(Boolean);
       rows.push({ number: saved.number, slot: index + 1, songId: song.id, version: id,
-        title: song.title, label: variant.label || '', genre: genreFor(song, variant),
+        title: song.title, label: variant.label || '', genre: genreFor(song, variant), shareCategory: shareCategoryFor(song, variant),
         audio: variant.audio || '', aliases, target: target.pathname + target.search + target.hash });
     }
   }
-  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', other: 'suno.fyi' }, rows };
+  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', other: 'suno.fyi', jokes: 'jokes.win' }, rows };
   data.revision = createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0, 16);
   return data;
 }

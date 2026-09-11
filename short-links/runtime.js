@@ -7,8 +7,8 @@
   const pathFor = row => `/${row.number}${row.slot === 1 ? '' : `/${row.slot}`}`;
   const urlFor = row => {
     if (!row) return '';
-    const preferred = data.domains[row.genre];
-    const domain = ready.has(preferred) ? preferred : ready.has(data.domains.other) ? data.domains.other : '';
+    const candidates = [row.shareCategory === 'jokes' ? data.domains.jokes : null, data.domains[row.genre], data.domains.other];
+    const domain = candidates.find(domain => domain && ready.has(domain));
     return domain ? `https://${domain}${pathFor(row)}` : '';
   };
   function rowForTrack(track) {

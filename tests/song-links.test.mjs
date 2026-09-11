@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import { allocate, buildLinks, genreFor, loadCatalog } from '../scripts/sync-song-links.mjs';
+import { allocate, buildLinks, genreFor, loadCatalog, shareCategoryFor } from '../scripts/sync-song-links.mjs';
 import data from '../worker/song-links-data.mjs';
 import { handleShortLink, liveRegistry } from '../worker/short-links.mjs';
 import mainWorker from '../worker/index.mjs';
@@ -83,10 +83,31 @@ test('genre sharing respects the recording, while uncertain genres stay universa
   assert.equal(links.forTrack({ songId: 'survival-mode', variantId: 'suno-v6-remix' }), 'https://hiphop.bid/1');
   const dubstep = data.rows.find(row => row.songId === 'satans-loan');
   assert.equal(links.forTrack({ songId: dubstep.songId }), `https://dubstep.bid/${dubstep.number}`);
-  const neutral = data.rows.find(row => row.genre === 'other');
+  const neutral = data.rows.find(row => row.genre === 'other' && row.shareCategory !== 'jokes');
   assert.match(links.forTrack({ songId: neutral.songId, variantId: neutral.version }), /^https:\/\/suno\.fyi\//);
   assert.equal(genreFor({ id: 'unknown', variants: [{ id: 'a', audio: '/a' }, { id: 'b', audio: '/b' }], description: 'A dubstep remix exists' }, { label: 'Original' }), 'other');
   assert.equal(genreFor({ id: 'unknown', shareGenre: 'hiphop' }, { shareGenre: 'dubstep' }), 'dubstep');
+});
+
+test('joke sharing wins over genre, preserves versions and falls back when unavailable', async () => {
+  const links = await browser();
+  const withoutJokes = await browser(Object.values(data.domains).filter(domain => domain !== 'jokes.win'));
+  const onlyUniversal = await browser(['suno.fyi']);
+  for (const row of data.rows.filter(row => row.shareCategory === 'jokes')) {
+    const suffix = `/${row.number}${row.slot === 1 ? '' : `/${row.slot}`}`;
+    const track = { audio: row.audio, songId: row.songId, variantId: row.version };
+    assert.equal(links.forTrack(track), `https://jokes.win${suffix}`);
+    assert.equal(withoutJokes.forTrack(track), `https://${data.domains[row.genre]}${suffix}`);
+    assert.equal(onlyUniversal.forTrack(track), `https://suno.fyi${suffix}`);
+    assert.equal(handleShortLink(new Request(`https://jokes.win${suffix}`)).headers.get('location'), new URL(row.target, data.origin).href);
+  }
+  for (const id of ['survival-mode', 'cheap-to-inform', 'everybody-else-less', 'will-to-live', 'satans-loan', 'stomp-clamp']) {
+    assert.ok(data.rows.filter(row => row.songId === id).every(row => row.shareCategory === 'music'), id);
+  }
+  assert.equal(shareCategoryFor({ id: 'new', kind: 'Satirical civic ballad' }, {}), 'jokes');
+  assert.equal(shareCategoryFor({ id: 'new', shareCategory: 'jokes' }, { shareCategory: 'music' }), 'music');
+  assert.equal(shareCategoryFor({ id: 'new', kind: 'Personal song' }, { label: 'Namaste Hamster Requiem' }), 'music');
+  assert.throws(() => shareCategoryFor({ id: 'new', shareCategory: 'typo' }, {}), /Invalid shareCategory/);
 });
 
 test('actual audio overrides stale metadata, alternate mixes and rapid skips keep their own links', async () => {
