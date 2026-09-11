@@ -59,7 +59,7 @@
     const live=owner()?.getTrack?.(),media=owner()?.getMedia?.();
     if(media&&(media===audio||(picked?.audio&&live?.audio&&new URL(picked.audio,location.origin).href===new URL(live.audio,location.origin).href))){owner().control('toggle');paint();return;}
     if(media)owner().control('pause');
-    if(picked)catalog.playSongId(picked.songId);else if(!id)catalog.next();
+    if(picked)catalog.playRecording(picked.songId,picked.variantId);else if(!id)catalog.next();
     handle.activate();paint();
   };
   el('listenPlay').addEventListener('click',play);el('listenArt').addEventListener('click',play);
