@@ -3,6 +3,7 @@
 
   const STORAGE='cmd-listener-taste-v2';
   const LEGACY_STORAGE='cmd-listener-taste-v1';
+  let memoryMap={},memoryOnly=false;
 
   function now(){return Date.now()}
 
@@ -40,6 +41,7 @@
   }
 
   function readMap(){
+    if(memoryOnly)return {...memoryMap};
     migrateLegacy();
     try{
       const raw=JSON.parse(localStorage.getItem(STORAGE)||'{}');
@@ -49,12 +51,15 @@
         const record=normalizeRecord(raw[key]);
         if(record)map[key]=record;
       });
+      memoryMap={...map};
       return map;
-    }catch{return {};}
+    }catch{memoryOnly=true;return {...memoryMap};}
   }
 
   function writeMap(map){
-    try{localStorage.setItem(STORAGE,JSON.stringify(map||{}))}catch{}
+    memoryMap={...map};
+    try{localStorage.setItem(STORAGE,JSON.stringify(map||{}))}catch{memoryOnly=true;}
+    if(typeof window.dispatchEvent==='function'&&typeof CustomEvent==='function')window.dispatchEvent(new CustomEvent('cmd:taste-change'));
   }
 
   /**
@@ -222,6 +227,13 @@
     return Object.keys(map).filter(key=>statusOf(map[key])==='like').map(key=>parseKey(key).songId);
   }
 
+  function likedRecordings(){
+    const map=readMap();
+    return Object.keys(map).filter(key=>statusOf(map[key])==='like')
+      .map(key=>({...parseKey(key),updatedAt:map[key].updatedAt}))
+      .sort((a,b)=>b.updatedAt-a.updatedAt);
+  }
+
   function dislikes(){
     const map=readMap();
     return Object.keys(map).filter(key=>{
@@ -265,6 +277,7 @@
     explorationFactor,
     weightMultiplier,
     likes,
+    likedRecordings,
     dislikes
   };
 })();

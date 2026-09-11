@@ -53,7 +53,7 @@ class FakeElement extends FakeTarget{
     const shell=node('div','cmd-universal-shell');
     const art=node('button','cmd-universal-art');art.append(node('img',''),node('span',''));
     const copy=node('div','cmd-universal-copy');copy.append(node('small','cmd-universal-context'),node('button','cmd-universal-title'),node('span','cmd-universal-detail'),node('a','cmd-universal-story'));
-    const controls=node('div','cmd-universal-controls');controls.append(node('button','cmd-universal-prev'),node('button','cmd-universal-toggle'),node('button','cmd-universal-next'),node('button','cmd-universal-share'));
+    const controls=node('div','cmd-universal-controls');controls.append(...['prev','toggle','next','like','share'].map(name=>node('button',`cmd-universal-${name}`)));
     const progress=node('div','cmd-universal-progress');progress.append(node('span',''),node('i','cmd-universal-thumb'));
     const times=node('div','cmd-universal-times');times.append(node('span','cmd-universal-current'),node('span',''),node('span','cmd-universal-duration'));
     shell.append(node('details','cmd-listening-options'),node('p','cmd-listening-next'),node('button','cmd-song-break'),node('p','cmd-break-message'),node('button','cmd-undo-break'));shell.append(art,copy,controls,progress,times,node('span','cmd-universal-live'));
@@ -86,12 +86,13 @@ function environment(){
     open:(url,target,features)=>opened.push({url,target,features})
   };
   const navigator={clipboard:{writeText(){}}};
-  const context=vm.createContext({window,document,location,navigator,URL,Number,String,Array,Object,Map,WeakMap,Set,Math});
+  const fetch=async url=>({ok:true,url,headers:{get:()=> 'text/html'},text:async()=>'<html><title>Song</title></html>'});
+  const context=vm.createContext({window,document,location,navigator,fetch,setTimeout,clearTimeout,URL,Number,String,Array,Object,Map,WeakMap,Set,Math});
   vm.runInContext(source,context,{filename:'universal-player.js'});
   return {window,document,opened,persistent};
 }
 
-test('one universal transport controls a legacy player and marks a missing story honestly',()=>{
+test('one universal transport controls a legacy player and opens an honest fallback for a missing story',async()=>{
   const env=environment();
   const media=new FakeMedia();
   const replacement=new FakeElement('div');
@@ -136,10 +137,12 @@ test('one universal transport controls a legacy player and marks a missing story
 
 
   root.querySelector('.cmd-universal-title').emit('click');
-  assert.equal(env.opened[0].url,'https://facebook.com/callmedaddy');
+  for(let i=0;i<12;i++)await Promise.resolve();
+  assert.equal(env.persistent.at(-1),'/now-playing/?song=song&version=main');
+  assert.deepEqual(env.opened,[]);
 });
 
-test('the universal transport opens only a declared song story',()=>{
+test('the universal transport opens an available declared song story',async()=>{
   const env=environment();
   const media=new FakeMedia();
   const handle=env.window.CMDUniversalPlayer.connect({id:'story',media,track:{title:'Ready Story',audio:'/song.mp3',experience:'/ready-story/'}});
@@ -150,6 +153,7 @@ test('the universal transport opens only a declared song story',()=>{
   assert.equal(story.href,'/ready-story/');
   assert.equal(story.classList.contains('is-coming'),false);
   root.querySelector('.cmd-universal-title').emit('click');
+  for(let i=0;i<12;i++)await Promise.resolve();
   assert.deepEqual(env.persistent,['/ready-story/']);
 });
 

@@ -52,6 +52,12 @@
 .home-page .briefing-feed { gap: 10px; }
 .home-page .home-listening { padding-top: 8px; padding-bottom: 28px; }
 .home-page .home-listening-head { display: none; }
+.home-likes { padding-top: 8px; padding-bottom: 28px; }
+.home-likes-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.home-likes-head h2 { margin: 0; font-size: clamp(1.5rem, 4vw, 2.3rem); line-height: 1.15; }
+.home-likes-head p { margin: 0; color: #adb5a5; font-size: .8rem; }
+.home-liked-results { list-style: none; margin: 0; padding: 0; }
+.home-liked-more summary { min-height: 44px; padding: 14px 0; color: #ccebb5; cursor: pointer; }
 .home-page .home-recents { margin-top: 16px; }
 .home-page .section-head h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
 @media (max-width: 600px) {

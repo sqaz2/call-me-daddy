@@ -127,6 +127,7 @@ jobs:
           node scripts/check-home-discovery-browser.cjs
           node scripts/check-listening-variety-browser.cjs
           node scripts/check-navigation-browser.cjs
+          node scripts/check-player-controls-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
       - uses: actions/upload-artifact@v4

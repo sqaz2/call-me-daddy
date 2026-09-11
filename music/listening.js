@@ -11,12 +11,12 @@
   const intent=engine.intents.find(i=>i.id===engine.normalizeIntent(params.get('intent')));
   const owner=()=>{try{return window.top.CMDUniversalPlayer||player}catch{return player}};
   const safe=text=>String(text||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const route=()=>location.pathname+location.search;
+  const selectedRoute=location.pathname+location.search;
   const getTrack=()=>{
     const track=catalog.getCurrent()||picked;
     // Keep the selected recording's listening screen in view. Further songs
     // follow their story pages through the existing universal owner.
-    return track&&picked&&track.songId===picked.songId&&track.variantId===picked.variantId?{...track,experience:route()}:track;
+    return track&&picked&&track.songId===picked.songId&&track.variantId===picked.variantId?{...track,experience:selectedRoute}:track;
   };
   const handle=player.connect({id:'focused-catalog',audio,getTrack,getUpcoming:()=>catalog.peekNext?.(),
     getContext:track=>track?.variantLabel||intent?.label||'Radio',play:()=>audio.play(),pause:()=>audio.pause(),
