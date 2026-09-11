@@ -5,8 +5,26 @@ import vm from 'node:vm';
 import { allocate, buildLinks, genreFor, loadCatalog } from '../scripts/sync-song-links.mjs';
 import data from '../worker/song-links-data.mjs';
 import { handleShortLink, liveRegistry } from '../worker/short-links.mjs';
+import mainWorker from '../worker/index.mjs';
 
 const source = fs.readFileSync(new URL('../short-links/runtime.js', import.meta.url), 'utf8').replace('/* SONG_LINK_DATA */', JSON.stringify(data));
+
+test('the existing music Worker routes short domains before assets and preserves ordinary pages', async () => {
+  let assetRequests = 0;
+  const env = { ASSETS: { fetch: async () => { assetRequests++; return new Response('existing song page'); } } };
+  for (const host of Object.values(data.domains)) {
+    const response = await mainWorker.fetch(new Request(`https://${host}/1`), env);
+    assert.equal(response.status, 302);
+    assert.equal(new URL(response.headers.get('location')).searchParams.get('song'), 'survival-mode');
+    assert.equal((await mainWorker.fetch(new Request(`https://${host}/cheap-to-inform/`), env)).status, 404);
+  }
+  assert.equal(assetRequests, 0);
+  assert.equal(await (await mainWorker.fetch(new Request(`${data.origin}/cheap-to-inform/`), env)).text(), 'existing song page');
+  assert.equal(assetRequests, 1);
+  const config = JSON.parse(fs.readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8'));
+  assert.equal(config.assets.run_worker_first, true);
+  assert.deepEqual(config.routes.map(route => route.pattern).sort(), [new URL(data.origin).hostname, ...Object.values(data.domains)].sort());
+});
 async function browser(active = Object.values(data.domains), stale = false) {
   const window = {};
   const context = vm.createContext({ window, location: { origin: data.origin }, URL, AbortSignal, Promise,

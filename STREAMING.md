@@ -1,6 +1,6 @@
 # Streaming media foundation
 
-The public player URLs stay under `/media/...`. A selective Worker now runs only for audio and video files and provides proper single-range HTTP responses.
+The public player URLs stay under `/media/...`. The Worker handles numbered song redirects first, passes ordinary music-site pages to static assets, and provides proper single-range HTTP responses for audio and video files.
 
 ## Current delivery
 
