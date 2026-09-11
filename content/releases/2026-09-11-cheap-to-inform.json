@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "cheap-to-inform",
+    "title": "Cheap to Inform",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-11",
+    "project": "Cheap to Inform",
+    "description": "Scene study · Fictional perspectives. A cinematic, dual-voice rap about family hurt, public audiences and the pressure to keep a fight alive. Not autobiographical.",
+    "audio": "/media/songs/2026/09/cheap-to-inform/audio.mp3",
+    "cover": "/media/songs/2026/09/cheap-to-inform/cover.jpg",
+    "video": "/media/songs/2026/09/cheap-to-inform/background.mp4",
+    "experience": "/cheap-to-inform/",
+    "shareUrl": "/cheap-to-inform/",
+    "kind": "song",
+    "storyType": "scene-study",
+    "storyLabel": "Scene study · Fictional perspectives",
+    "sunoUrl": "https://suno.com/s/Gn6OwZiICiZD9qjd",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Original",
+        "audio": "/media/songs/2026/09/cheap-to-inform/audio.mp3",
+        "cover": "/media/songs/2026/09/cheap-to-inform/cover.jpg"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 10,
+    "think": 98,
+    "level-up": 20,
+    "heavy": 55,
+    "old-files": 5
+  },
+  "update": {
+    "id": "release-cheap-to-inform",
+    "published": "2026-09-11T01:00:00-06:00",
+    "type": "New release",
+    "songId": "cheap-to-inform",
+    "title": "Cheap to Inform — An Imagined Scene",
+    "summary": "A fictional movie scene, not my family history: two wounded perspectives, two cheering audiences, and the point where being understood turns into keeping the fight alive.",
+    "href": "/cheap-to-inform/",
+    "sharePath": "/updates/release-cheap-to-inform/",
+    "cta": "Hear the scene",
+    "featured": true,
+    "cover": "/media/songs/2026/09/cheap-to-inform/cover.jpg",
+    "cardLines": ["CHEAP TO", "INFORM"],
+    "cardTag": "Scene study · Fictional perspectives",
+    "cardSummary": "Two open wounds. Two sold-out rooms. An imagined scene about family hurt and the audience around it—not an autobiography.",
+    "badge": "Scene study",
+    "intent": "think"
+  }
+}
