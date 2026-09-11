@@ -6,6 +6,6 @@
   "routes": [
     { "pattern": "hiphop.bid", "custom_domain": true },
     { "pattern": "dubstep.bid", "custom_domain": true },
-    { "pattern": "https.fyi", "custom_domain": true }
+    { "pattern": "suno.fyi", "custom_domain": true }
   ]
 }

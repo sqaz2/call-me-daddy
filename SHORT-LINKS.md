@@ -1,6 +1,6 @@
 # Permanent song share links
 
-Use `hiphop.bid` for hip-hop, `dubstep.bid` for dubstep and `https.fyi` for
+Use `hiphop.bid` for hip-hop, `dubstep.bid` for dubstep and `suno.fyi` for
 everything else. All three domains resolve the same permanent numbers.
 Survival Mode's Suno V6 remix is `/1`; its earlier recording is `/1/2`.
 The default version of a song uses `/NUMBER`; other versions use
@@ -21,19 +21,19 @@ collection/update links without a unique song remain unchanged.
 ## Domain activation through the existing publisher
 
 The main `call-me-daddy` Worker handles short domains before serving assets.
-`wrangler.jsonc` attaches `hiphop.bid`, `dubstep.bid` and `https.fyi` through the existing Git
-publisher. Verify successful deployment and the live workflow before claiming
-any domain is active. A ChatGPT Cloudflare connection is not required.
+`wrangler.jsonc` attaches `hiphop.bid`, `dubstep.bid` and `suno.fyi` through the
+existing Git publisher. Verify successful deployment and the live workflow before
+claiming a domain is active. A ChatGPT Cloudflare connection is not required.
 
-The initial `https.fyi` attachment failed. The owner supplied the PR #58 production log:
-Cloudflare error 100117 says that hostname already has externally managed DNS
-records (A, CNAME, etc.). The owner confirmed removal of the conflicting apex
-`A @ 192.0.2.1` record before this attachment was re-enabled. The separate `www`
-record was left alone. Check existing
-redirect rules if readiness still returns a redirect after attachment.
-The domains must be active zones in that Cloudflare account, and the existing
-build credential must permit their attachment. Existing conflicting DNS or
-redirect rules may still need attention in Cloudflare's dashboard.
+The owner replaced the general share domain `https.fyi` with `suno.fyi`.
+Song numbers, version slots and destinations are unchanged. The old `https.fyi`
+custom-domain binding stays attached to preserve its existing DNS and Facebook
+homepage forwarding; new song sharing no longer probes or selects that host.
+The standalone redirect configuration uses only the three current share domains.
+
+Domains must be active zones in the publishing Cloudflare account. Existing apex
+DNS records or forwarding rules may need adjustment before a new host is ready.
+The readiness check reports any forwarding destination that intercepts it.
 
 The main Worker uses the bundled registry from the same publication as the site,
 so future releases and their short links update together. The optional standalone
@@ -50,7 +50,7 @@ inspect the existing Cloudflare build and domain status for the specific cause.
 The browser checks domain readiness before the share gesture and uses a domain
 only when its published registry revision matches. An inactive, redirected,
 unreachable or stale domain never replaces a working existing share URL.
-If a genre domain is unavailable, an active `https.fyi` is preferred.
+If a genre domain is unavailable, an active `suno.fyi` is preferred.
 Reload the page after activating the service to start using short URLs.
 
 ## Checks
