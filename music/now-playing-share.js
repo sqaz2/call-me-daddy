@@ -46,7 +46,7 @@
     const data={title:`${song.title}${detail}`,text:`Listen to ${song.title}${detail}.`,url:songShareUrl(song,variant)};
     if(window.CMDShare?.nativeShare){await window.CMDShare.nativeShare(data);return;}
     try{
-      if(navigator.share){await navigator.share(data);return;}
+      if(navigator.share){await navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});return;}
       await navigator.clipboard?.writeText(`${data.text}\n${data.url}`);
     }catch{}
   };

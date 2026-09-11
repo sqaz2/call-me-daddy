@@ -86,7 +86,7 @@
     };
     if(window.CMDShare?.nativeShare)return window.CMDShare.nativeShare(data);
     try{
-      if(navigator.share){await navigator.share(data);return true;}
+      if(navigator.share){await navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});return true;}
       await navigator.clipboard?.writeText(`${data.text}\n${data.url}`);
       return true;
     }catch{return false;}

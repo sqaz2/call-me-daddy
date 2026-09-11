@@ -99,7 +99,7 @@
     const songId=track.songId||track.id,variantId=track.variantId||'';
     const url=new URL('/music/',location.origin);url.searchParams.set('song',songId);if(variantId)url.searchParams.set('version',variantId);url.searchParams.set('intent',track.radioIntent||'surprise');if(track.radioSeed)url.searchParams.set('seed',track.radioSeed);url.searchParams.set('share','1');
     const detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';const data={title:`${track.title}${detail}`,text:`Listen to ${track.title}${detail}.`,url:url.href};
-    if(window.CMDShare?.nativeShare)await window.CMDShare.nativeShare(data);else try{if(navigator.share)await navigator.share(data);else await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
+    if(window.CMDShare?.nativeShare)await window.CMDShare.nativeShare(data);else try{if(navigator.share)await navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});else await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
   }
 
   document.querySelectorAll('[data-trilogy-track]').forEach(control=>control.addEventListener('click',event=>{event.preventDefault();selectTrack(control.dataset.trilogyTrack,true)}));

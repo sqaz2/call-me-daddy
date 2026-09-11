@@ -81,7 +81,9 @@
     const briefing=document.getElementById('briefing');
     const latest=document.querySelector('.latest-section');
     const hero=document.querySelector('.hero');
-    if(briefing)briefing.insertAdjacentElement('afterend',section);
+    const discovery=document.getElementById('home-discovery');
+    if(discovery)discovery.insertAdjacentElement('afterend',section);
+    else if(briefing)briefing.insertAdjacentElement('afterend',section);
     else if(latest)latest.insertAdjacentElement('beforebegin',section);
     else if(hero)hero.insertAdjacentElement('afterend',section);
     else document.querySelector('main')?.prepend(section);

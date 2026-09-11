@@ -406,7 +406,7 @@
     const detail=variant&&variantsFor(song).length>1?` — ${variant.label||song.kind||'Version'}`:'';
     const data={title:`${song.title}${detail}`,text:`Listen to ${song.title}${detail}.`,url:songShareUrl(song,variant)};
     if(window.CMDShare?.nativeShare)return window.CMDShare.nativeShare(data);
-    try{if(navigator.share)return navigator.share(data);await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
+    try{if(navigator.share)return navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});await navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{}
   }
 
   function syncUrl(){

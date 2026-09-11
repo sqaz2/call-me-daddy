@@ -10,7 +10,7 @@
   ];
 
   function normalize(value){
-    return String(value||'').toLowerCase().replace(/\s+/g,' ').trim();
+    return String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/['’]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
   }
 
   function songHaystack(song){

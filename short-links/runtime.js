@@ -34,6 +34,14 @@
   }
   const forTrack = track => urlFor(rowForTrack(track));
   const forUrl = value => urlFor(rowForUrl(value)) || value;
+  const prepareShare = input => {
+    const original = input?.url || '';
+    const url = original ? forUrl(original) : '';
+    let text = String(input?.text || input?.title || '').trim();
+    if (original && url !== original) text = text.split(original).join(url);
+    if (url && !text.includes(url)) text = [text, url].filter(Boolean).join('\n');
+    return { ...input, text, url };
+  };
   // Checks happen before the tap. Native sharing stays synchronous with the user gesture.
   const checking = typeof fetch === 'function' ? Promise.all(Object.values(data.domains).map(async domain => {
     try {
@@ -43,5 +51,5 @@
       if (status.service === 'musicsubject-song-links' && status.revision === data.revision) ready.add(domain);
     } catch { /* Preserve existing working URLs until this exact registry is deployed. */ }
   })) : Promise.resolve();
-  window.CMDShortLinks = { forTrack, forUrl, rowForTrack, rowForUrl, ready: checking };
+  window.CMDShortLinks = { forTrack, forUrl, rowForTrack, rowForUrl, prepareShare, ready: checking };
 })();

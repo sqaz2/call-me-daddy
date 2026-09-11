@@ -122,16 +122,16 @@
       const url = window.CMDShortLinks?.forUrl(original) || original;
       try {
         if (navigator.share) {
-          await navigator.share({ title, text: title, url });
+          await navigator.share({ title, text: window.CMDShortLinks?.prepareShare({ title, text: title, url }).text || `${title}\n${url}` });
           return;
         }
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(`${title}\n${url}`);
         const previous = button.textContent;
         button.textContent = 'Link copied';
         setTimeout(() => { button.textContent = previous; }, 1800);
       } catch (_) {
         try {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(`${title}\n${url}`);
           button.textContent = 'Link copied';
         } catch (_) {
           location.href = url;
