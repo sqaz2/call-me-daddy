@@ -14,17 +14,19 @@ The site has four jobs:
 ### Front door
 
 - `/` — **Call Me Daddy × MusicSubject home**
-  - latest public briefing
+  - prominent title, lyric and version search
   - newest releases
   - intention-radio entry points
   - featured interactive projects
-  - routes into the current catalog
+  - compact results covering the complete catalog
   - routes into the historical / explicit archives
   - external platform links
 
 ### Listen
 
-- `/music/` — **main current music catalog**
+The homepage is the single catalog and search entry. Generic `/music/` visits redirect to homepage search. Existing `/music/?song=…&version=…` and `/music/?intent=…` routes remain focused listening screens, with one shared dock and optional lyrics/version controls.
+
+- `/music/?song=…` — **selected recording**
   - artwork-first playback
   - intention-weighted radio routes
   - alternate versions rotate between cycles instead of repeating the same song identity in one cycle
@@ -34,7 +36,7 @@ The site has four jobs:
 
 ### Updates
 
-- `/updates/` — **public update history**
+- `/updates/` — **Latest releases**, with search, older-release pagination and a separate Site notes filter
   - new music
   - remixes / alternate versions
   - archive finds
@@ -199,7 +201,7 @@ Historical material belongs under:
 - **Do not invent archive dates.** Approximate dates stay labeled approximate until verified.
 - **Artwork-first playback** remains the visual rule wherever possible.
 - **Mobile-first navigation:** the shared top navigation remains usable on small screens as a horizontally scrollable route bar instead of disappearing.
-- **Search UI can wait while the catalog is small, but catalog metadata should stay structured now so title / artist / project / era / remix search can be added cleanly once the library becomes large.**
+- **Home owns search and browsing. Do not introduce a second competing catalog or direct visitors through technical update statistics before showing songs.**
 
 ## Structural rule
 

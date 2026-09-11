@@ -1338,7 +1338,20 @@
       const song=songs.find(item=>item.id===id);
       if(song)selectSong(song);
     },
+    playRecording(id,versionId){
+      const song=songs.find(item=>item.id===id);
+      const variants=variantsFor(song),variant=variants.find(item=>item.id===versionId);
+      if(!song||!variant)return false;
+      ensureCycle();
+      const track={...song,...variant,songId:song.id,title:song.title,variantId:variant.id,variantLabel:variant.label||song.kind,variantCount:variants.length,cover:variant.cover||song.cover};
+      let target=cycle.findIndex(item=>(item.songId||item.id)===id);
+      if(target<0){cycle.unshift(track);target=0;}else cycle[target]=track;
+      cycleIndex=target;
+      loadTrack(track,true);
+      return true;
+    },
     getCurrent:()=>current,
+    peekNext:()=>cycle.slice(cycleIndex+1).find(track=>!cycleEngine?.isOnBreak?.(track.songId||track.id))||null,
     next:nextTrack,
     previous
   };

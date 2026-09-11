@@ -60,7 +60,7 @@ jobs:
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
       - name: Permanent song links and sharing
-        run: node --test tests/song-links.test.mjs
+        run: node --test tests/song-links.test.mjs tests/navigation.test.mjs
       - name: Media size safety
         run: node --test tests/media-audit.test.mjs
       - name: Radio engine tests
@@ -126,6 +126,7 @@ jobs:
           node scripts/check-song-links-browser.cjs
           node scripts/check-home-discovery-browser.cjs
           node scripts/check-listening-variety-browser.cjs
+          node scripts/check-navigation-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
       - uses: actions/upload-artifact@v4
