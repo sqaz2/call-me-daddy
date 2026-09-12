@@ -47,7 +47,7 @@ const data=require('../data/song-links.json');
     await page.waitForFunction(audio=>{const media=window.CMDUniversalPlayer?.getMedia();return media?.currentSrc.endsWith(audio)&&!media.paused&&media.currentTime>.1;},row.audio);
     await page.locator('.cmd-universal-share').click();
     shared=await page.evaluate(()=>window.shared.at(-1));
-    const expected=active?`https://${data.domains[row.genre]}/${row.number}${row.slot===1?'':`/${row.slot}`}`:data.origin+row.target;
+    const expected=active?`https://${data.domains[row.genre]}/${row.number}${row.slot===1?'':`/${row.slot}`}`:new URL(row.target,process.env.BASE_URL || 'http://127.0.0.1:8765').href;
     assert.ok(shared.text.endsWith(expected),shared.text);assert.equal(shared.url,undefined);
     assert.equal((shared.text.match(/https?:\/\//g)||[]).length,1);assert.equal(shared.activeGesture,true);
     assert.ok(shared.text.includes(row.label));assert.deepEqual(errors,[]);
