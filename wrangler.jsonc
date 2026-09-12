@@ -2,17 +2,18 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "call-me-daddy",
   "compatibility_date": "2026-08-16",
-  "main": "worker/index.mjs",
+  "main": "worker/site.mjs",
+  "build": {
+    "command": "node scripts/build-song-social.mjs",
+    "watch_dir": ["content", "data/songs.js", "data/archive-catalog.js", "data/2026-08-25-uploads.js", "data/2026-08-26-uploads.js", "data/2026-08-27-uploads.js", "data/2026-08-29-uploads.js", "catalog-cycle.js", "scripts/build-song-social.mjs", "song-social.mjs"]
+  },
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
     "run_worker_first": true
   },
   "routes": [
-    {
-      "pattern": "callmedaddy.musicsubject.com",
-      "custom_domain": true
-    },
+    { "pattern": "callmedaddy.musicsubject.com", "custom_domain": true },
     { "pattern": "hiphop.bid", "custom_domain": true },
     { "pattern": "dubstep.bid", "custom_domain": true },
     { "pattern": "dnb.fyi", "custom_domain": true },

@@ -1,0 +1,60 @@
+name: Song artwork and share previews
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  artwork:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build catalog artwork index
+        run: node scripts/build-song-social.mjs
+      - name: Artwork, streaming, short-link and playback regressions
+        run: node --test tests/song-social-unit.test.mjs tests/song-social-catalog.test.mjs tests/media-stream.test.mjs tests/song-links.test.mjs tests/playback-sync.test.js
+      - name: Prepare real Worker and browser
+        run: |
+          npm install --no-save --package-lock=false wrangler playwright
+          npx playwright install --with-deps chromium
+      - name: Browser favicon and persistent navigation
+        run: |
+          npx wrangler dev --ip 127.0.0.1 --port 8787 >/tmp/song-artwork-worker.log 2>&1 &
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:8787/data/song-social.json >/dev/null && break || sleep 2; done
+          node scripts/check-song-social-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: song-artwork-checks
+          path: |
+            data/song-social.json
+            /tmp/song-artwork-*
+          retention-days: 7
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: artwork
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify public crawler HTML and artwork after Cloudflare deploys
+        run: node scripts/check-song-social-live.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: song-artwork-production
+          path: /tmp/song-artwork-live.json
+          retention-days: 7
