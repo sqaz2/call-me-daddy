@@ -20,7 +20,9 @@ for (const domain of domains) {
     assert.equal(marker.revision, data.revision, `${domain} has a different song map`);
     const joke = data.rows.find(row => row.shareCategory === 'jokes' && row.slot === 1);
     const jokeVersion = data.rows.find(row => row.shareCategory === 'jokes' && row.slot > 1);
-    const paths = new Set(['/1', '/1/2', '/9', ...[joke, jokeVersion].filter(Boolean).map(row => `/${row.number}${row.slot === 1 ? '' : `/${row.slot}`}`)]);
+    const dnb = data.rows.find(row => row.genre === 'dnb');
+    const earlierDnbSong = dnb && data.rows.find(row => row.songId === dnb.songId && row.genre !== 'dnb');
+    const paths = new Set(['/1', '/1/2', '/9', ...[joke, jokeVersion, dnb, earlierDnbSong].filter(Boolean).map(row => `/${row.number}${row.slot === 1 ? '' : `/${row.slot}`}`)]);
     for (const path of paths) {
       const [number, slot = '1'] = path.slice(1).split('/');
       const row = data.rows.find(row => row.number === Number(number) && row.slot === Number(slot));
@@ -29,10 +31,10 @@ for (const domain of domains) {
       assert.equal(response.headers.get('location'), new URL(row.target, data.origin).href);
     }
     assert.equal((await get(`https://${domain}/999999`)).status, 404);
-    console.log(`PASS https://${domain}: current registry, V6, earlier mix, Cheap to Inform, satire and alternate joke recording, unknown-link 404`);
+    console.log(`PASS https://${domain}: current registry, V6, earlier mix, Cheap to Inform, satire and alternate joke recording, DnB and sibling version, unknown-link 404`);
   } catch (error) { failures.push(`${domain}: ${error.message}${error.cause?.code ? ` (${error.cause.code})` : ''}`); }
 }
-for (const path of ['/music/?song=survival-mode&version=suno-v6-remix&share=1', '/cheap-to-inform/']) {
+for (const path of ['/music/?song=survival-mode&version=suno-v6-remix&share=1', '/cheap-to-inform/', ...data.rows.filter(row => row.genre === 'dnb').map(row => row.target)]) {
   try { assert.equal((await get(`${data.origin}${path}`)).status, 200, `Destination ${path}`); }
   catch (error) { failures.push(error.message); }
 }

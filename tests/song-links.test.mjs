@@ -24,6 +24,7 @@ test('the existing music Worker routes short domains before assets and preserves
   const config = JSON.parse(fs.readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8'));
   assert.equal(config.assets.run_worker_first, true);
   assert.ok(config.routes.some(route => route.pattern === new URL(data.origin).hostname && route.custom_domain));
+  for (const host of Object.values(data.domains)) assert.ok(config.routes.some(route => route.pattern === host && route.custom_domain), `${host} is attached by the existing publisher`);
 });
 async function browser(active = Object.values(data.domains), stale = false) {
   const window = {};
@@ -110,6 +111,39 @@ test('genre sharing respects the recording, while uncertain genres stay universa
   assert.match(links.forTrack({ songId: neutral.songId, variantId: neutral.version }), /^https:\/\/suno\.fyi\//);
   assert.equal(genreFor({ id: 'unknown', variants: [{ id: 'a', audio: '/a' }, { id: 'b', audio: '/b' }], description: 'A dubstep remix exists' }, { label: 'Original' }), 'other');
   assert.equal(genreFor({ id: 'unknown', shareGenre: 'hiphop' }, { shareGenre: 'dubstep' }), 'dubstep');
+});
+
+test('DnB labels and explicit overrides classify recordings without reclassifying sibling versions', () => {
+  for (const label of ['DNB Folk Tale', 'DnB remix', 'D&B', 'Drum and Bass', 'drum & bass', 'drum-and-bass', "drum 'n' bass"]) {
+    assert.equal(genreFor({ id: 'new' }, { label }), 'dnb', label);
+  }
+  assert.equal(genreFor({ id: 'new', shareGenre: 'dnb' }, {}), 'dnb');
+  assert.equal(genreFor({ id: 'new', shareGenre: 'dubstep' }, { shareGenre: 'dnb' }), 'dnb');
+  assert.equal(genreFor({ id: 'new', shareGenre: 'dnb' }, { shareGenre: 'other' }), 'other');
+  const song = loadCatalog().find(song => song.id === 'where-monsters-are');
+  assert.deepEqual(song.variants.map(variant => genreFor(song, variant)), ['dnb', 'other', 'other']);
+  assert.equal(genreFor({ id: 'unknown', title: 'Bass drums in the rain' }, {}), 'other');
+  assert.equal(genreFor({ id: 'unknown' }, { label: 'Deep Dark Dubstep Drop Mix' }), 'dubstep');
+});
+
+test('DnB sharing selects /54 for the actual recording, retains sibling links and falls back safely', async () => {
+  const links = await browser();
+  const row = data.rows.find(row => row.songId === 'where-monsters-are' && row.version === 'dnb-folk-tale');
+  assert.equal(data.domains.dnb, 'dnb.fyi');
+  assert.equal(row.number, 54); assert.equal(row.slot, 1); assert.equal(row.genre, 'dnb');
+  const original = new URL(row.target, data.origin).href;
+  const message = links.prepareShare({ text: 'Listen to Where Monsters Are — DNB Folk Tale.', url: original });
+  assert.equal(message.url, 'https://dnb.fyi/54');
+  assert.equal(message.text, 'Listen to Where Monsters Are — DNB Folk Tale.\nhttps://dnb.fyi/54');
+  assert.equal(links.forTrack({ songId: 'satans-loan', variantId: 'main', audio: row.audio }), 'https://dnb.fyi/54');
+  for (const [version, slot] of [['monster-and-maiden', 2], ['monster-and-maiden-alt', 3]]) {
+    assert.equal(links.forTrack({ songId: row.songId, variantId: version }), `https://suno.fyi/54/${slot}`);
+  }
+  const fallback = await browser(Object.values(data.domains).filter(domain => domain !== 'dnb.fyi'));
+  assert.equal(fallback.forUrl(original), 'https://suno.fyi/54');
+  assert.equal((await browser([])).forUrl(original), original);
+  const redirect = handleShortLink(new Request('https://dnb.fyi/54'));
+  assert.equal(redirect.status, 302); assert.equal(redirect.headers.get('location'), original);
 });
 
 test('joke sharing wins over genre, preserves versions and falls back when unavailable', async () => {

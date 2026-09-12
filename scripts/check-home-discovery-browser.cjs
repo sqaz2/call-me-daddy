@@ -9,7 +9,7 @@ const data = require('../data/song-links.json');
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
-    await context.route(/https:\/\/(hiphop\.bid|dubstep\.bid|suno\.fyi|jokes\.win)\//, route => route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'content-type': 'application/json' }, body: JSON.stringify({ service: 'musicsubject-song-links', revision: data.revision }) }));
+    await context.route(url => Object.values(data.domains).includes(url.hostname), route => route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'content-type': 'application/json' }, body: JSON.stringify({ service: 'musicsubject-song-links', revision: data.revision }) }));
     await page.goto(`${process.env.BASE_URL || 'http://127.0.0.1:8765'}/`, { waitUntil: 'load' });
     const input = page.getByRole('searchbox', { name: 'Search songs' });
     assert.ok((await input.boundingBox()).y < 400, 'Search must be visible on the first mobile screen');

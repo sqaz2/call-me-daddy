@@ -8,7 +8,7 @@
   const setMeta=(selector,value)=>{const el=document.querySelector(selector);if(el&&value)el.setAttribute('content',value);};
   const loadShare=()=>{
     const s=document.createElement('script');
-    s.src='/share.js';
+    s.src='/share.js?v=20260912-dnb';
     document.body.appendChild(s);
   };
   if(watch)watch.href=url;
