@@ -1,0 +1,96 @@
+name: Animal v6 release
+on:
+  push:
+    branches: [main, release/make-me-an-animal-v6]
+    paths:
+      - 'make-me-an-animal-v6/**'
+      - 'media/songs/2026/09/make-me-an-animal-v6/**'
+      - 'content/releases/2026-09-12-make-me-an-animal-v6.json'
+      - 'scripts/*animal-v6*.mjs'
+      - 'tests/animal-v6.test.mjs'
+      - '.github/workflows/animal-v6.yml'
+  pull_request:
+    paths:
+      - 'make-me-an-animal-v6/**'
+      - 'content/releases/2026-09-12-make-me-an-animal-v6.json'
+      - 'scripts/*animal-v6*.mjs'
+      - 'tests/animal-v6.test.mjs'
+      - '.github/workflows/animal-v6.yml'
+permissions:
+  contents: read
+jobs:
+  prepare:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/release/make-me-an-animal-v6'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/make-me-an-animal-v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Migrate the existing song family and synchronize release outputs
+        run: |
+          node scripts/prepare-animal-v6.mjs
+          node scripts/sync-releases.mjs --check
+          node --test tests/animal-v6.test.mjs tests/aug29-uploads.test.js tests/playback-sync.test.js
+      - name: Commit the manifest and generated files together
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add content/releases/2026-09-12-make-me-an-animal-v6.json content/sources/make-me-an-animal-v6.json data/2026-08-29-uploads.js tests/aug29-uploads.test.js data/songs.js data/briefing.js data/radio-intents.js data/song-lyrics.js sitemap.xml content/song-links.json data/song-links.json worker/song-links-data.mjs share.js updates/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Synchronize Animal v6 release manifest and preserve earlier version links'
+            git push origin HEAD:release/make-me-an-animal-v6
+          fi
+  browser:
+    needs: prepare
+    if: always() && (needs.prepare.result == 'success' || needs.prepare.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'push' && github.ref == 'refs/heads/release/make-me-an-animal-v6' && 'release/make-me-an-animal-v6' || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Release, shared-player and complete unit regressions
+        run: |
+          node --check make-me-an-animal-v6/player.js
+          node scripts/sync-releases.mjs --check
+          node --test tests/
+      - name: Install touch-browser test support
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Real audio, video, artwork, versions and touch layout
+        run: |
+          mkdir -p /tmp/animal-v6-qa
+          node scripts/serve-release-test.mjs >/tmp/animal-v6-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-animal-v6-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: animal-v6-browser-qa
+          path: /tmp/animal-v6-qa/
+          retention-days: 7
+  production:
+    needs: browser
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify the published release, exact-version short link and media ranges
+        run: node scripts/check-animal-v6-live.mjs
