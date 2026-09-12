@@ -1,0 +1,66 @@
+name: Animal v6 release
+on:
+  push:
+    branches: [main, release/make-me-an-animal-v6]
+    paths:
+      - 'make-me-an-animal-v6/**'
+      - 'media/songs/2026/09/make-me-an-animal-v6/**'
+      - 'content/releases/2026-09-12-make-me-an-animal-v6.json'
+      - 'scripts/*animal-v6*.mjs'
+      - 'tests/animal-v6.test.mjs'
+      - '.github/workflows/animal-v6.yml'
+  pull_request:
+    paths:
+      - 'make-me-an-animal-v6/**'
+      - 'content/releases/2026-09-12-make-me-an-animal-v6.json'
+      - 'scripts/*animal-v6*.mjs'
+      - 'tests/animal-v6.test.mjs'
+      - '.github/workflows/animal-v6.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Release, shared-player and complete unit regressions
+        run: |
+          node --check make-me-an-animal-v6/player.js
+          node scripts/sync-releases.mjs --check
+          node --test tests/*.test.*
+      - name: Install touch-browser test support
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+      - name: Real audio, video, artwork, versions and touch layout
+        run: |
+          mkdir -p /tmp/animal-v6-qa
+          node scripts/serve-release-test.mjs >/tmp/animal-v6-qa/server.log 2>&1 &
+          sleep 2
+          node scripts/check-animal-v6-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: animal-v6-browser-qa
+          path: /tmp/animal-v6-qa/
+          retention-days: 7
+  production:
+    needs: browser
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify the published release, exact-version short link and media ranges
+        run: node scripts/check-animal-v6-live.mjs

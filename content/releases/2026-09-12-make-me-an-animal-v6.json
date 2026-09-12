@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "make-me-an-animal",
+    "title": "Make Me an Animal",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "project": "Make Me an Animal",
+    "description": "Make Me an Animal returns in Suno v6, with new lion artwork and a short background video. The three earlier Animal recordings remain available.",
+    "aliases": [
+      "Animal Day",
+      "Make Me Animal"
+    ],
+    "audio": "/media/songs/2026/09/make-me-an-animal-v6/audio.mp3",
+    "cover": "/media/songs/2026/09/make-me-an-animal-v6/cover.png",
+    "experience": "/make-me-an-animal-v6/",
+    "shareUrl": "/make-me-an-animal-v6/?song=make-me-an-animal&version=suno-v6",
+    "kind": "Suno v6 · 4 versions",
+    "variants": [
+      {
+        "id": "suno-v6",
+        "label": "Suno v6",
+        "audio": "/media/songs/2026/09/make-me-an-animal-v6/audio.mp3",
+        "cover": "/media/songs/2026/09/make-me-an-animal-v6/cover.png",
+        "video": "/media/songs/2026/09/make-me-an-animal-v6/background.mp4",
+        "date": "2026-09-12",
+        "sunoUrl": "https://suno.com/s/SAkaHGkSiHPbGl0Q",
+        "experience": "/make-me-an-animal-v6/?song=make-me-an-animal&version=suno-v6"
+      },
+      {
+        "id": "edm-switch-up-mix",
+        "label": "EDM Switch-Up Mix",
+        "audio": "/media/songs/2026/08/make-me-an-animal/edm-switch-up-mix.mp3",
+        "cover": "/media/songs/2026/08/make-me-an-animal/cover.jpg",
+        "video": "/media/songs/2025/shared/make-me-animal-pull-me-like-that/background.mp4",
+        "experience": "/make-me-an-animal-v6/?song=make-me-an-animal&version=edm-switch-up-mix"
+      },
+      {
+        "id": "late-night-warehouse-remastered",
+        "label": "Animal Day · Late Night Warehouse Mix · Remastered",
+        "audio": "/media/songs/2026/08/make-me-an-animal/late-night-warehouse-remastered.mp3",
+        "cover": "/media/songs/2026/08/make-me-an-animal/cover.jpg",
+        "video": "/media/songs/2025/shared/make-me-animal-pull-me-like-that/background.mp4",
+        "experience": "/make-me-an-animal-v6/?song=make-me-an-animal&version=late-night-warehouse-remastered"
+      },
+      {
+        "id": "may-2026-remastered",
+        "label": "Animal · May 2026 Remastered · 2025 song",
+        "audio": "/media/songs/2026/08/make-me-an-animal/may-2026-remastered.mp3",
+        "cover": "/media/songs/2026/08/make-me-an-animal/cover.jpg",
+        "video": "/media/songs/2025/shared/make-me-animal-pull-me-like-that/background.mp4",
+        "experience": "/make-me-an-animal-v6/?song=make-me-an-animal&version=may-2026-remastered"
+      }
+    ],
+    "lineage": "Created in 2025. The EDM Switch-Up Mix, Late Night Warehouse Mix and May 2026 Remaster are preserved alongside the new September 2026 Suno v6 recording.",
+    "video": "/media/songs/2026/09/make-me-an-animal-v6/background.mp4",
+    "catalogVideo": true,
+    "month": 9,
+    "date": "2026-09-12",
+    "originalYear": 2025,
+    "releaseManaged": true,
+    "sunoUrl": "https://suno.com/s/SAkaHGkSiHPbGl0Q"
+  },
+  "radio": {
+    "surprise": 100,
+    "laugh": 64,
+    "think": 58,
+    "level-up": 84,
+    "heavy": 76,
+    "old-files": 76
+  },
+  "update": {
+    "id": "release-make-me-an-animal-v6",
+    "published": "2026-09-12T16:37:47Z",
+    "type": "New version",
+    "songId": "make-me-an-animal",
+    "versionId": "suno-v6",
+    "title": "Make Me an Animal v6",
+    "summary": "A new Suno v6 recording, lion artwork and background video. All three earlier Animal versions are still here.",
+    "href": "/make-me-an-animal-v6/?song=make-me-an-animal&version=suno-v6",
+    "sharePath": "/updates/release-make-me-an-animal-v6/",
+    "cta": "Play Animal v6",
+    "featured": true,
+    "cardLines": [
+      "MAKE ME AN",
+      "ANIMAL v6"
+    ],
+    "cardTag": "New version · Suno v6",
+    "cardSummary": "The new v6 recording. One Animal family, with the three earlier recordings preserved.",
+    "badge": "NEW · v6"
+  }
+}
