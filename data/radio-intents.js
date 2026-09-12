@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "make-me-an-animal": {
+    "surprise": 100,
+    "laugh": 64,
+    "think": 58,
+    "level-up": 84,
+    "heavy": 76,
+    "old-files": 76
+  },
   "cheap-to-inform": {
     "surprise": 80,
     "laugh": 10,

@@ -1,0 +1,62 @@
+{
+  "sourceCommit": "e533591ef1c88c5db7744c34b8475983ff369dde",
+  "sunoUrl": "https://suno.com/s/SAkaHGkSiHPbGl0Q",
+  "assets": [
+    {
+      "file": "audio.mp3",
+      "uploaded": "Make Me an Animal (Remix).mp3",
+      "gitBlob": "0958e851b9a56e44c7be14b923639938d024bd74",
+      "path": "/media/songs/2026/09/make-me-an-animal-v6/audio.mp3"
+    },
+    {
+      "file": "cover.png",
+      "uploaded": "file_00000000c7fc8230b8598e88805b74c9.png",
+      "gitBlob": "541c502069eaa0e0ca7b55e43e73bdab1f0b6a42",
+      "path": "/media/songs/2026/09/make-me-an-animal-v6/cover.png"
+    },
+    {
+      "file": "background.mp4",
+      "uploaded": "grok_video_2026-09-12-10-35-35.mp4",
+      "gitBlob": "aa12db7296c7d849edce76cc6901dd5b882f5d52",
+      "path": "/media/songs/2026/09/make-me-an-animal-v6/background.mp4"
+    }
+  ],
+  "originalSong": {
+    "id": "make-me-an-animal",
+    "title": "Make Me an Animal",
+    "artist": "Call Me Daddy",
+    "year": 2025,
+    "project": "Make Me an Animal",
+    "description": "Make Me an Animal—also known as Animal Day—is a 2025 song with three uploaded versions now preserved together: the EDM Switch-Up Mix, Late Night Warehouse Mix and May 2026 Remaster.",
+    "aliases": [
+      "Animal Day",
+      "Make Me Animal"
+    ],
+    "audio": "/media/songs/2026/08/make-me-an-animal/edm-switch-up-mix.mp3",
+    "cover": "/media/songs/2026/08/make-me-an-animal/cover.jpg",
+    "experience": "/updates/release-make-me-an-animal/",
+    "shareUrl": "/updates/release-make-me-an-animal/",
+    "kind": "3 versions",
+    "variants": [
+      {
+        "id": "edm-switch-up-mix",
+        "label": "EDM Switch-Up Mix",
+        "audio": "/media/songs/2026/08/make-me-an-animal/edm-switch-up-mix.mp3"
+      },
+      {
+        "id": "late-night-warehouse-remastered",
+        "label": "Animal Day · Late Night Warehouse Mix · Remastered",
+        "audio": "/media/songs/2026/08/make-me-an-animal/late-night-warehouse-remastered.mp3"
+      },
+      {
+        "id": "may-2026-remastered",
+        "label": "Animal · May 2026 Remastered · 2025 song",
+        "audio": "/media/songs/2026/08/make-me-an-animal/may-2026-remastered.mp3"
+      }
+    ],
+    "lineage": "Created in 2025 with Suno v5-era work. Public Suno v4.5 tracks also survive, preserving an earlier stage in the progression of the AI music tools. The current catalog holds three later uploaded versions.",
+    "video": "/media/songs/2025/shared/make-me-animal-pull-me-like-that/background.mp4",
+    "catalogVideo": true
+  },
+  "notes": "Supplied media is moved without re-encoding or image edits. No unverified lyrics or song story have been added."
+}
