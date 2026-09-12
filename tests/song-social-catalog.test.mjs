@@ -20,6 +20,10 @@ test('Animal v6 is lion artwork; all three older Animal recordings remain distin
   assert.match(record.image, /make-me-an-animal-v6\/cover\.png/);
   assert.ok(record.width > 0 && record.height > 0);
   assert.equal(data.pages['/make-me-an-animal-v6/'].image, record.image);
+  const original = data.pages['/updates/release-make-me-an-animal/'];
+  assert.equal(original.version, 'edm-switch-up-mix');
+  assert.equal(original.image, song.versions['edm-switch-up-mix'].image);
+  assert.match(original.title, /2025 Song Family/);
   for (const [id, earlier] of Object.entries(song.versions)) if (id !== 'suno-v6') assert.notEqual(earlier.image, record.image);
 });
 test('every numbered recording with artwork has correct raw HTML, canonical and favicon', async () => {

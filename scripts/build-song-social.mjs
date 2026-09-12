@@ -3,7 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { loadCatalog } from './sync-song-links.mjs';
-import { ORIGIN, imageURL, readHead, routePath } from '../song-social.mjs';
+import { ORIGIN, imageURL, readHead, routePath, attributes } from '../song-social.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const hash = value => createHash('sha256').update(value).digest('hex').slice(0, 16);
 
@@ -87,7 +87,7 @@ export function buildSongSocial({ catalog = loadCatalog(), write = true } = {}) 
       const file = path.join(dir, entry.name);
       if (entry.isDirectory()) { walk(file); continue; }
       if (!/\.html$/i.test(entry.name)) continue;
-      const raw = readHead(fs.readFileSync(file, 'utf8'));
+      const html = fs.readFileSync(file, 'utf8'), raw = readHead(html);
       const route = routePath('/' + path.relative(root, file).split(path.sep).join('/'));
       let record = { ...raw, ...artwork(raw.image), canonical: new URL(route, ORIGIN).href };
       const candidates = associations.get(route) || [], ids = [...new Set(candidates.map(r => r.songId))];
@@ -95,11 +95,16 @@ export function buildSongSocial({ catalog = loadCatalog(), write = true } = {}) 
         const songId = ids[0], song = songs[songId];
         const sourcePath = value => { try { return new URL(value, ORIGIN).pathname; } catch { return ''; } };
         const matching = Object.entries(song.versions).filter(([, r]) => raw.image && sourcePath(r.image) === sourcePath(raw.image));
-        const preferred = candidates.find(r => r.version === song.defaultVersion)?.version || candidates[0].version;
+        // Older story pages can have no og:image but explicitly cue an earlier mix.
+        // Their primary recording link is stronger evidence than today's catalog default.
+        const primary = [...html.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, '').matchAll(/<a\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi)]
+          .map(m => { try { return new URL(attributes(m[0]).href || '/', ORIGIN); } catch { return null; } })
+          .find(url => url?.origin === ORIGIN && ['/music/', '/now-playing/'].includes(routePath(url.href)) && url.searchParams.get('song') === songId && Object.hasOwn(song.versions, url.searchParams.get('version')));
+        const preferred = primary?.searchParams.get('version') || candidates.find(r => r.version === song.defaultVersion)?.version || candidates[0].version;
         const version = (matching.find(([id]) => id === preferred) || matching[0])?.[0] || preferred;
         const selected = song.versions[version] || song.versions[song.defaultVersion];
         // Keep a dedicated page's authored wording when its photo matches the recording.
-        record = { ...selected, ...(matching.length ? record : {}), canonical: new URL(route, ORIGIN).href, songId, version };
+        record = { ...selected, ...(matching.length ? record : !raw.image ? { title: raw.title || selected.title, description: raw.description || selected.description } : {}), canonical: new URL(route, ORIGIN).href, songId, version };
       }
       if (record.image) pages[route] = record;
     }
