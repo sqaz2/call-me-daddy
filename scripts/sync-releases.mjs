@@ -275,7 +275,7 @@ function renderUpdatePage(release, update) {
     <div data-share data-share-label="Share this release" data-share-title="${escapeHtml(title)} — Call Me Daddy" data-share-text="${escapeHtml(summary)}"></div>
     <p class="update-post-note">${escapeHtml(note)}</p>
   </main>
-  <script src="/share.js?v=20260823-2"></script>
+  <script src="/share.js?v=20260912-dnb"></script>
 </body>
 </html>
 `;

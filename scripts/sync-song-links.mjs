@@ -35,12 +35,13 @@ const variants = song => song.variants?.filter(v => v.audio).length
 export function genreFor(song, variant) {
   const explicit = variant.shareGenre || song.shareGenre;
   if (explicit) {
-    if (!['hiphop', 'dubstep', 'other'].includes(explicit)) throw new Error(`Invalid shareGenre: ${song.id}`);
+    if (!['hiphop', 'dubstep', 'dnb', 'other'].includes(explicit)) throw new Error(`Invalid shareGenre: ${song.id}`);
     return explicit;
   }
   if (song.id === 'survival-mode' || song.id === 'cheap-to-inform') return 'hiphop';
   const label = `${variant.genre || ''} ${variant.label || ''}`;
   const text = variants(song).length > 1 ? label : `${label} ${song.genre || ''} ${song.title} ${song.kind || ''} ${song.description || ''}`;
+  if (/\bdnb\b|\bd\s*&\s*b\b|\bdrum(?:s)?[\s-]+(?:and|&|['’]?n['’]?)[\s-]+bass\b/i.test(text)) return 'dnb';
   if (/\bdubstep\b/i.test(text)) return 'dubstep';
   if (/\bhip[ -]?hop\b|\brap\b/i.test(text)) return 'hiphop';
   return 'other';
@@ -90,7 +91,7 @@ export function buildLinks(catalog, registry) {
         audio: variant.audio || '', aliases, target: target.pathname + target.search + target.hash });
     }
   }
-  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', other: 'suno.fyi', jokes: 'jokes.win' }, rows };
+  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', dnb: 'dnb.fyi', other: 'suno.fyi', jokes: 'jokes.win' }, rows };
   data.revision = createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0, 16);
   return data;
 }

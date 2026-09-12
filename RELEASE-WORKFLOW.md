@@ -18,8 +18,11 @@ numbers or version slots in `content/song-links.json`; removed entries stay
 reserved. New songs and versions are appended automatically.
 
 Optional `song.shareGenre` or `song.variants[].shareGenre` accepts `hiphop`,
-`dubstep` or `other`. A version override takes priority. Explicit genre labels
+`dubstep`, `dnb` or `other`. A version override takes priority. Explicit genre labels
 provide a conservative default; unidentified music uses `suno.fyi`.
+DnB, D&B and drum-and-bass labels select `dnb.fyi`. In multi-version songs,
+classification uses the individual recording's label, so older versions retain
+their own genres and share domains.
 For satire and joke songs, set `song.shareCategory` to `jokes` (or a variant's
 `shareCategory` for one recording). This selects `jokes.win` before the genre
 domain. `music` opts out; variant metadata takes priority. Existing reviewed
