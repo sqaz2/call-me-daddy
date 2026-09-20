@@ -19,6 +19,9 @@
     { "pattern": "dnb.fyi", "custom_domain": true },
     { "pattern": "https.fyi", "custom_domain": true },
     { "pattern": "suno.fyi", "custom_domain": true },
-    { "pattern": "jokes.win", "custom_domain": true }
+    { "pattern": "jokes.win", "custom_domain": true },
+    { "pattern": "music.frigging.link", "custom_domain": true },
+    { "pattern": "music.fricking.link", "custom_domain": true },
+    { "pattern": "satans.loan/music*", "zone_name": "satans.loan" }
   ]
 }

@@ -7,11 +7,31 @@ on:
       - worker/**
       - data/song-links.json
       - scripts/check-song-links-live.mjs
+      - scripts/check-music-aliases-live.mjs
       - .github/workflows/song-domain-checks.yml
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
+  verify-music-shortcuts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify named music shortcuts after Cloudflare publishes
+        run: |
+          for attempt in 1 2 3 4 5 6 7 8; do
+            if node scripts/check-music-aliases-live.mjs; then exit 0; fi
+            if [ "$attempt" -lt 8 ]; then sleep 20; fi
+          done
+          echo "Music shortcuts are not ready. Check domain attachment and existing forwarding rules."
+          exit 1
   verify-live-domains:
     runs-on: ubuntu-latest
     timeout-minutes: 8

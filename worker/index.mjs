@@ -167,6 +167,9 @@ export async function handleRequest(request, env) {
   const shortLink = handleShortLink(request);
   if (shortLink) return shortLink;
   const url = new URL(request.url);
+  // The /music* route also matches /musical. Leave those unrelated paths at
+  // their existing origin instead of serving this site's assets on satans.loan.
+  if (url.hostname === 'satans.loan') return fetch(request);
   if (/^\/music\/?$/.test(url.pathname) && ['GET','HEAD'].includes(request.method) &&
       !['song','intent','seed'].some(key => url.searchParams.has(key))) {
     const home = new URL('/', url);

@@ -1,7 +1,18 @@
 import data from './song-links-data.mjs';
 
+const musicHosts = new Set(['music.frigging.link', 'music.fricking.link']);
+
 export function handleShortLink(request, links = data) {
   const url = new URL(request.url);
+  const musicHost = musicHosts.has(url.hostname);
+  const songAlias = url.hostname === 'satans.loan' && /^\/music\/?$/.test(url.pathname);
+  if (musicHost || songAlias) {
+    const headers = { 'cache-control': 'public, max-age=60', 'x-content-type-options': 'nosniff' };
+    if (!['GET', 'HEAD'].includes(request.method)) return new Response(null, { status: 405, headers: { ...headers, allow: 'GET, HEAD' } });
+    if (musicHost && !/^\/(?:music\/?)?$/.test(url.pathname)) return new Response(request.method === 'HEAD' ? null : 'Music link not found.', { status: 404, headers });
+    // Fixed destinations keep tracking parameters from overriding the selected song.
+    return new Response(null, { status: 302, headers: { ...headers, location: `${data.origin}${songAlias ? '/satans-loan/' : '/'}` } });
+  }
   const shortHost = Object.values(data.domains).includes(url.hostname);
   const numeric = /^\/[0-9]+(?:\/[0-9]+)?\/?$/.test(url.pathname);
   if (!shortHost && !numeric && url.pathname !== '/.well-known/music-links') return null;
