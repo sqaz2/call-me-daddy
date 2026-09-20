@@ -1,5 +1,20 @@
 # Permanent song share links
 
+## Named music shortcuts
+
+The existing publisher attaches `music.frigging.link` and `music.fricking.link`.
+Their root and `/music` (with or without a trailing slash) redirect directly to
+`https://callmedaddy.musicsubject.com/`.
+
+`satans.loan/music` and `/music/` redirect to
+`https://callmedaddy.musicsubject.com/satans-loan/`. Only the `/music*` Worker route
+is attached on that domain; its existing homepage and other paths keep their
+origin. Query parameters cannot change these destinations.
+
+Cloudflare redirect rules run before the Worker. Any existing domain-wide
+forwarding rule must exclude the music shortcut for this route to take effect.
+Verify the public redirects after deployment before calling them live.
+
 Use `hiphop.bid` for hip-hop, `dubstep.bid` for dubstep, `dnb.fyi` for drum and
 bass, and `suno.fyi` for everything else. Satire and joke songs prefer
 `jokes.win`, across genres. All five share domains resolve the same permanent numbers.
