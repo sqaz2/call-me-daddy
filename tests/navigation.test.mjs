@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handleRequest} from '../worker/index.mjs';
+import siteWorker from '../worker/site.mjs';
 const origin='https://callmedaddy.musicsubject.com';
 const env={ASSETS:{fetch:async request=>new Response(new URL(request.url).pathname)}};
 test('generic Music visits consolidate on homepage search',async()=>{
@@ -41,9 +42,9 @@ test('music subdomains reject unknown links and unsupported methods',async()=>{
  }
 });
 test('the narrow satans.loan route leaves other paths with their current origin',async t=>{
- const upstream=new Response('Existing domain page');
+ const upstream=new Response('<html>Existing domain page</html>',{headers:{'content-type':'text/html'}});
  const passthrough=t.mock.method(globalThis,'fetch',async()=>upstream);
  const request=new Request('https://satans.loan/musical');
- assert.equal(await handleRequest(request,env),upstream);
+ assert.equal(await siteWorker.fetch(request,env),upstream);
  assert.equal(passthrough.mock.calls[0].arguments[0],request);
 });

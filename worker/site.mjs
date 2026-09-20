@@ -13,6 +13,7 @@ async function socialIndex(assets, request) {
   return data;
 }
 export async function decorateSongHTML(request, response, env) {
+  if (new URL(request.url).hostname === 'satans.loan') return response;
   if (request.method !== 'GET' || response.status !== 200 || !/\btext\/html\b/i.test(response.headers.get('content-type') || '')) return response;
   let data = null;
   try { data = await socialIndex(env.ASSETS, request); }
