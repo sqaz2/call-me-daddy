@@ -26,7 +26,7 @@
         'couple-friends-couple-calls','the-loudest-one-in-my-head','mind-at-war',
         'shooting-star','september-26th-heartbreak','heartbreak-you-water-me','cloudlife',
         'thirty-six','broke-my-mug-not-my-song','fractured-face','her-perfume-rides-shotgun',
-        '2010-wows','satans-loan'
+        '2010-wows','satans-loan','the-games-she-hates'
       ]
     },
     {

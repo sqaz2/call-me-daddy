@@ -438,6 +438,16 @@
       "versions": [
         "main"
       ]
+    },
+    {
+      "number": 60,
+      "songId": "the-games-she-hates",
+      "versions": [
+        "main",
+        "be-yourself",
+        "be-yourself-2",
+        "end-this-cycle"
+      ]
     }
   ]
 }

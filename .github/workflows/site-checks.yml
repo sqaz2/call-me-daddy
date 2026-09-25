@@ -57,6 +57,8 @@ jobs:
           node --check scripts/check-replay-return-browser.mjs
           node --check worker/index.mjs
           node --check canadian-crop-dusting/player.js
+          node --check the-games-she-hates/player.js
+          node --check scripts/check-games-she-hates-browser.cjs
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
       - name: Permanent song links and sharing
@@ -99,6 +101,8 @@ jobs:
         run: node --test tests/release-workflow.test.mjs
       - name: Canadian Crop Dusting release integration
         run: node --test tests/canadian-crop-dusting.test.mjs
+      - name: The Games She Hates release
+        run: node --test tests/games-she-hates.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs
 
@@ -131,6 +135,7 @@ jobs:
           node scripts/check-player-source-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
+          node scripts/check-games-she-hates-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

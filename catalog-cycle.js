@@ -205,6 +205,15 @@
     const list=livingVariants(song);
     if(!list.length)return null;
     let index=(hash(`${seed}|${song.id}`)+Math.max(0,cycleNumber-1))%list.length;
+    // Some releases keep an editorial opener until trustworthy audience data
+    // exists. Device history, random seeds and a few repeat plays cannot elect it.
+    // Explicit version links still take precedence, including bonus recordings.
+    if(song.openerPolicy?.mode==='editorial'&&!forcedVariantId){
+      const eligible=new Set(song.openerPolicy.eligibleVersions||[]);
+      const preferred=list.findIndex(v=>v.id===song.openerPolicy.defaultVersion&&eligible.has(v.id)&&!v.bonus);
+      index=preferred>=0?preferred:list.findIndex(v=>eligible.has(v.id)&&!v.bonus);
+      if(index<0)return null;
+    }
     if(forcedVariantId){
       const forcedLiving=list.findIndex(variant=>String(variant.id||'')===forcedVariantId);
       if(forcedLiving>=0){

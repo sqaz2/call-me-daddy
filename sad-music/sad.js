@@ -31,6 +31,7 @@
       project:'When Things Got Heavy',
       variantLabel:version.label,
       audio:version.audio,
+      cover:version.cover||song.cover||(window.CMD_SONGS||[]).find(item=>item.id===song.id)?.cover||'',
       experience:song.route,
       song,
       version

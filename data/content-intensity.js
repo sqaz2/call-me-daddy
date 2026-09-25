@@ -22,6 +22,7 @@
 
     // --- deep (melancholy / heartbreak / heavy but not ambush) ---
     'cheap-to-inform':'deep',
+    'the-games-she-hates':'deep',
     'the-loudest-one-in-my-head':'deep',
     'mind-at-war':'deep',
     'shooting-star':'deep',

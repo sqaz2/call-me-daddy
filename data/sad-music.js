@@ -1,5 +1,13 @@
 window.CMD_SAD_MUSIC = [
   {
+    id:'the-games-she-hates',title:'End This Cycle',era:'2026',group:'2026 · pressure',
+    summary:'Bonus from The Games She Hates: a personal spoken opening, then the fourteen-year-old poem.',
+    story:'The opening reflects the headspace I was in before the poem begins.',
+    route:'/the-games-she-hates/?version=end-this-cycle#bonus',accent:'cycle',
+    cover:'/media/songs/2026/09/the-games-she-hates/end-this-cycle.jpg',
+    versions:[{id:'end-this-cycle',label:'End This Cycle · bonus · explicit',audio:'/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3',expectedPath:'/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3'}]
+  },
+  {
     id:'locked-in-these-walls',title:'Locked in These Walls',era:'2025',group:'2025 · first van-life stretch',
     summary:'One of the songs from around June 2025, when living in the van had just become home.',
     story:'Locked in These Walls sits beside Under Watch and Seven Days Locked as a small cluster from that first stretch of homelessness and van life.',
