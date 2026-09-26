@@ -32,6 +32,10 @@ jobs:
           node --check universal-player.js
           node --check persistent-site-browser.js
           node --check app/install.js
+          node --check my-music/library.js
+          node --check my-music/page.js
+          node --check song-moments.js
+          node --check music/listening.js
           node --check sw.js
           node --check home-briefing.js
           node --check home-discovery.js
@@ -95,6 +99,8 @@ jobs:
         run: node --test tests/playlist-continuity.test.js
       - name: Background playback recovery tests
         run: node --test tests/continuous-playback.test.js tests/installable-app.test.mjs
+      - name: Personal library and exact song moments
+        run: node --test tests/my-music.test.mjs tests/song-moments.test.js
       - name: Universal player tests
         run: node --test tests/universal-player.test.js
       - name: Public feed tests
@@ -129,6 +135,7 @@ jobs:
           mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
+          node scripts/check-my-music-browser.cjs
           node scripts/check-games-she-hates-browser.cjs
           node scripts/check-song-links-browser.cjs
           node scripts/check-home-discovery-browser.cjs
@@ -146,4 +153,3 @@ jobs:
             /tmp/replay-qa/
             /tmp/table-for-two-qa/
           retention-days: 7
-

@@ -1,7 +1,7 @@
 (()=>{
   if(window.CMDUniversalPlayer)return;
 
-  const VERSION='1.3.0';
+  const VERSION='1.4.0';
   const CONTACT_URL='https://facebook.com/callmedaddy';
   const FALLBACK_COVER=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const adapters=new Map();
@@ -137,7 +137,7 @@
       .cmd-universal-art span{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.38);font-size:1rem;text-shadow:0 2px 8px #000;opacity:.92}
       .cmd-universal-copy{min-width:0;align-self:center}.cmd-universal-copy small,.cmd-universal-copy span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmd-universal-context{color:#c7a968;font-size:.64rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.cmd-universal-title{display:block;width:100%;margin:3px 0 2px;padding:0;overflow:hidden;border:0;background:transparent;color:#f5f1ea;font:900 1.03rem/1.15 system-ui,sans-serif;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.cmd-universal-detail{color:#aaa59d;font-size:.7rem}.cmd-universal-story{display:inline-flex!important;width:max-content;max-width:100%;margin-top:4px;color:#d7d1c7!important;font-size:.68rem!important;font-weight:850;text-decoration:none}.cmd-universal-story.is-coming{color:#d7b266!important}.cmd-universal-controls{display:flex;align-items:center;gap:6px}.cmd-universal-controls button{display:grid;place-items:center;width:40px;height:40px;padding:0;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:#191919;color:#f5f1ea;font:900 .95rem/1 system-ui,sans-serif;cursor:pointer}.cmd-universal-controls .cmd-universal-toggle{width:50px;height:50px;background:#f2efe8;color:#080808;font-size:1.02rem}.cmd-universal-controls button:disabled{cursor:not-allowed;opacity:.34}.cmd-universal-controls button:focus-visible,.cmd-universal-art:focus-visible,.cmd-universal-title:focus-visible,.cmd-universal-progress:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-universal-progress{--progress:0%;position:relative;grid-column:1/-1;height:32px;margin:0;border:0;border-radius:0;background:transparent;cursor:pointer;overflow:visible;touch-action:none;-webkit-user-select:none;user-select:none}.cmd-universal-progress::before{content:"";position:absolute;left:0;right:0;top:50%;height:10px;transform:translateY(-50%);border-radius:999px;background:#2b2927;pointer-events:none}.cmd-universal-progress span{position:absolute;left:0;top:50%;width:0;height:10px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,#d7b266,#f4f0e8);pointer-events:none}.cmd-universal-thumb{position:absolute;top:50%;left:var(--progress);width:18px;height:18px;border:2px solid #f4f0e8;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8e8,#d7b266 58%,#9a7428);box-shadow:0 1px 6px rgba(0,0,0,.55),0 0 0 3px rgba(215,178,102,.22);transform:translate(-50%,-50%);pointer-events:none}.cmd-universal-progress.is-scrubbing .cmd-universal-thumb{width:22px;height:22px;box-shadow:0 2px 10px rgba(0,0,0,.6),0 0 0 4px rgba(215,178,102,.32)}.cmd-universal-times{position:absolute;right:14px;bottom:5px;display:flex;gap:7px;color:#77736d;font-size:.58rem;pointer-events:none}.cmd-universal-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
       @media(max-width:680px){body.cmd-universal-open{padding-bottom:calc(172px + env(safe-area-inset-bottom))!important}.cmd-universal-player{right:8px;bottom:max(8px,env(safe-area-inset-bottom));left:8px;width:calc(100% - 16px)}.cmd-universal-shell{grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto 32px;padding:10px 11px 12px;border-radius:21px;gap:8px 10px}.cmd-universal-art{width:48px;height:48px;border-radius:11px}.cmd-universal-controls{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.cmd-universal-controls button,.cmd-universal-controls .cmd-universal-toggle{width:100%;height:38px;border-radius:999px}.cmd-universal-title{font-size:.96rem}.cmd-universal-detail{font-size:.66rem}.cmd-universal-story{font-size:.64rem!important}.cmd-universal-times{display:none}}
-      .cmd-listening-options{grid-column:1/-1;font-size:.78rem}.cmd-listening-options summary{min-height:32px;display:flex;align-items:center;cursor:pointer;color:#d7d1c7}.cmd-listening-options[open]{max-height:180px;overflow:auto}.cmd-listening-options p{margin:8px 0;color:#aaa59d}.cmd-listening-options button{min-height:44px;padding:8px 12px;border:1px solid #555;border-radius:10px;background:#191919;color:#f5f1ea;font:inherit}.cmd-listening-options button:focus-visible,.cmd-listening-options summary:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-listening-options [hidden]{display:none!important}.cmd-universal-controls button{min-height:44px}.cmd-universal-times{position:static;grid-column:1/-1;grid-row:3;justify-content:flex-end}
+      .cmd-listening-options{grid-column:1/-1;font-size:.78rem}.cmd-listening-options summary{min-height:32px;display:flex;align-items:center;cursor:pointer;color:#d7d1c7}.cmd-listening-options[open]{max-height:180px;overflow:auto}.cmd-listening-options p{margin:8px 0;color:#aaa59d}.cmd-listening-options button,.cmd-listening-options .cmd-my-music{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;border:1px solid #555;border-radius:10px;background:#191919;color:#f5f1ea;font:inherit;text-decoration:none}.cmd-listening-options button:focus-visible,.cmd-listening-options summary:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-listening-options [hidden]{display:none!important}.cmd-moment-copy{width:100%;box-sizing:border-box;margin:6px 0;padding:10px;background:#111;color:#f5f1ea;border:1px solid #555;border-radius:8px}.cmd-universal-controls button{min-height:44px}.cmd-universal-times{position:static;grid-column:1/-1;grid-row:3;justify-content:flex-end}
       body.cmd-universal-open{padding-bottom:var(--cmd-player-clearance,240px)!important}
       .cmd-universal-controls .cmd-universal-like[aria-pressed="true"]{background:#d6ebc5;color:#172010;border-color:#d6ebc5}
       .cmd-universal-copy,.cmd-universal-art{touch-action:pan-y;user-select:none;-webkit-user-select:none}
@@ -155,11 +155,13 @@
       <div class="cmd-universal-copy"><small class="cmd-universal-context">Play the site</small><button class="cmd-universal-title" type="button">Choose a song</button><span class="cmd-universal-detail">Ready</span><a class="cmd-universal-story" href="/music/">Browse music →</a></div>
       <div class="cmd-universal-controls" role="group" aria-label="Playback controls"><button class="cmd-universal-prev" type="button" aria-label="Previous song">↶</button><button class="cmd-universal-toggle" type="button" aria-label="Play">▶</button><button class="cmd-universal-next" type="button" aria-label="Next song">↷</button><button class="cmd-universal-like" type="button" aria-label="Like current song" aria-pressed="false" disabled>♡</button><button class="cmd-universal-share" type="button" aria-label="Share current song">↗</button></div>
       <div class="cmd-universal-progress" role="slider" tabindex="0" aria-label="Seek through song" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span><i class="cmd-universal-thumb" aria-hidden="true"></i></div>
-      <div class="cmd-universal-times"><span class="cmd-universal-current">0:00</span><span>/</span><span class="cmd-universal-duration">0:00</span></div><details class="cmd-listening-options"><summary>Up next &amp; listening options</summary><p class="cmd-listening-next"></p><p>Swipe the artwork or title left for next, right for previous. Tap the title to return to the playing song.</p><button class="cmd-song-break" type="button">Take a break from this song</button><p>Skips this song and its versions for 30 days on this browser. You can still choose it directly.</p><p class="cmd-break-message" role="status"></p><button class="cmd-undo-break" type="button" hidden>Undo song break</button></details><span class="cmd-universal-live" aria-live="polite"></span></div>`;
+      <div class="cmd-universal-times"><span class="cmd-universal-current">0:00</span><span>/</span><span class="cmd-universal-duration">0:00</span></div><details class="cmd-listening-options"><summary>Up next &amp; listening options</summary><p class="cmd-listening-next"></p><a class="cmd-my-music" href="/my-music/">My Music</a> <button class="cmd-share-moment" type="button" disabled>Share this moment · 0:00</button><p class="cmd-moment-status" role="status"></p><input class="cmd-moment-copy" aria-label="Song moment link — select and copy" type="url" readonly hidden><p>Swipe the artwork or title left for next, right for previous. Tap the title to return to the playing song.</p><button class="cmd-song-break" type="button">Take a break from this song</button><p>Skips this song and its versions for 30 days on this browser. You can still choose it directly.</p><p class="cmd-break-message" role="status"></p><button class="cmd-undo-break" type="button" hidden>Undo song break</button></details><span class="cmd-universal-live" aria-live="polite"></span></div>`;
     document.body.appendChild(root);
     const q=s=>root.querySelector(s);
     nodes={art:q('.cmd-universal-art'),image:q('img'),icon:q('.cmd-universal-art span'),context:q('.cmd-universal-context'),title:q('.cmd-universal-title'),detail:q('.cmd-universal-detail'),story:q('.cmd-universal-story'),previous:q('.cmd-universal-prev'),toggle:q('.cmd-universal-toggle'),next:q('.cmd-universal-next'),share:q('.cmd-universal-share'),progress:q('.cmd-universal-progress'),bar:q('.cmd-universal-progress span'),thumb:q('.cmd-universal-thumb'),current:q('.cmd-universal-current'),duration:q('.cmd-universal-duration'),live:q('.cmd-universal-live'),options:q('.cmd-listening-options'),upcoming:q('.cmd-listening-next'),songBreak:q('.cmd-song-break'),breakMessage:q('.cmd-break-message'),undoBreak:q('.cmd-undo-break')};
     nodes.options.addEventListener('toggle',()=>window.CMDPersistentSite?.refreshClearance?.());
+    nodes.shareMoment=q('.cmd-share-moment');nodes.momentStatus=q('.cmd-moment-status');nodes.momentCopy=q('.cmd-moment-copy');
+    nodes.shareMoment?.addEventListener('click',()=>void shareMoment());
     nodes.like=q('.cmd-universal-like');
     nodes.like.addEventListener('click',()=>{
       const identity=recordingIdentity(),taste=window.CMDListenerTaste;
@@ -201,6 +203,16 @@
     if(trackKey(reported)!==trackKey(track)||songId(reported)!==songId(track)||reported?.title!==track.title)return defaultShare(track);
     return active.share?.();
   }
+  async function shareMoment(){
+    if(!active||!window.CMDSongMoments)return false;
+    const track={...activeTrack(),...recordingIdentity()},media=active.media();
+    if(nodes.momentCopy)nodes.momentCopy.hidden=true;
+    if(nodes.momentStatus)nodes.momentStatus.textContent='';
+    const result=await window.CMDSongMoments.share(track,media?.currentTime??active.time());
+    if(nodes.momentStatus)nodes.momentStatus.textContent=result.status==='copied'?'Moment link copied.':result.status==='shared'?'Moment ready to share.':result.status==='copy'?'Select and copy this moment link:':'';
+    if(result.status==='copy'&&nodes.momentCopy){nodes.momentCopy.value=result.url;nodes.momentCopy.hidden=false;nodes.momentCopy.focus();nodes.momentCopy.select()}
+    window.CMDPersistentSite?.refreshClearance?.();return result;
+  }
   // Android associates a Media Session with the frame that owns the audio.
   // The top-level dock can control a retained frame, but cannot own its session.
   function mediaContext(adapter){
@@ -221,6 +233,7 @@
     if(parent?.adopt?.(active,window)){root.hidden=true;return}
     if(parent&&!active.playing()){root.hidden=true;return}
     const media=active.media(),track=activeTrack(),playing=active.playing(),duration=active.duration(),time=active.time();
+    try{window.CMDMyMusic?.rememberPlayback?.({track,media,playing,queue:active.queue?.()||[track],index:active.queueIndex?.()||0})}catch{}
     const ratio=Number.isFinite(duration)&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
     if(nodes.image.src!==absolute(track.cover||FALLBACK_COVER))nodes.image.src=track.cover||FALLBACK_COVER;
     nodes.image.alt=`${track.title} artwork`;nodes.image.onerror=()=>{if(nodes.image.src!==absolute(FALLBACK_COVER))nodes.image.src=FALLBACK_COVER};
@@ -231,6 +244,7 @@
     nodes.songBreak.disabled=!(active.ownerWindow?.CMDCatalogCycle||window.CMDCatalogCycle)?.takeBreak;
 
     const identity=recordingIdentity(),taste=window.CMDListenerTaste;
+    if(nodes.shareMoment){nodes.shareMoment.disabled=!identity.songId||!window.CMDSongMoments;nodes.shareMoment.textContent=`Share this moment · ${formatTime(media?.currentTime??time)}`}
     const liked=Boolean(identity.songId&&taste?.get(identity.songId,identity.variantId)==='like');
     nodes.like.disabled=!identity.songId||!taste;nodes.like.textContent=liked?'♥':'♡';
     nodes.like.setAttribute('aria-pressed',String(liked));nodes.like.setAttribute('aria-label',`${liked?'Unlike':'Like'} ${track.title}`);
@@ -276,7 +290,7 @@
       time:()=>Number(options.getTime?.()??dynamicMedia()?.currentTime)||0,duration:()=>Number(options.getDuration?.()??dynamicMedia()?.duration)||0,
       context:track=>String(options.getContext?.(track)||options.context||[track.variantLabel,track.project,track.artist].filter(Boolean).slice(0,2).join(' · ')||'Play the site'),status:()=>String(options.getStatus?.()||statusOverride||''),
       play:options.play||(()=>dynamicMedia()?.play?.()),pause:options.pause||(()=>dynamicMedia()?.pause?.()),toggle:options.toggle||(()=>{const media=dynamicMedia();return media?.paused?media.play?.():media?.pause?.()}),seek:options.seek||(time=>{const media=dynamicMedia();if(media)media.currentTime=time}),
-      upcoming:()=>options.getUpcoming?.()||null,previous:typeof options.previous==='function'?options.previous:null,next:typeof options.next==='function'?options.next:null,share:options.share||(()=>defaultShare(adapter.track()))};
+      upcoming:()=>options.getUpcoming?.()||null,queue:()=>options.getQueue?.()||[adapter.track()],queueIndex:()=>Number(options.getQueueIndex?.())||0,previous:typeof options.previous==='function'?options.previous:null,next:typeof options.next==='function'?options.next:null,share:options.share||(()=>defaultShare(adapter.track()))};
     const events=['play','playing','pause','timeupdate','durationchange','loadstart','loadedmetadata','waiting','stalled','ended','error'];
     const onMediaEvent=event=>{
       if(disposed||mediaOwners.get(event.target)!==adapter)return;
@@ -295,7 +309,7 @@
     const controller=event?.controller;if(!controller)return;
     let handle=coreHandles.get(controller);
     if(!handle){const localCount=Number(event.options?.localCount??event.options?.tracks?.length??Infinity);
-      handle=connect({id:`core:${event.id}`,audio:event.audio,getTrack:()=>controller.current(),getUpcoming:()=>controller.peekNext?.(),getContext:track=>[track?.variantLabel,controller.getState().index>=localCount?'Play the site':track?.project,track?.artist].filter(Boolean).slice(0,2).join(' · '),play:()=>controller.play(),pause:()=>controller.pause(),toggle:()=>controller.toggle(),previous:()=>controller.previous(),next:()=>controller.next('universal-next'),seek:time=>{event.audio.currentTime=time},replaceElement:event.options?.replacePlayer||null,followPages:event.options?.followPages});coreHandles.set(controller,handle)}
+      handle=connect({id:`core:${event.id}`,audio:event.audio,getTrack:()=>controller.current(),getUpcoming:()=>controller.peekNext?.(),getQueue:()=>controller.getQueue?.()||[controller.current()],getQueueIndex:()=>controller.getState().index,getContext:track=>[track?.variantLabel,controller.getState().index>=localCount?'Play the site':track?.project,track?.artist].filter(Boolean).slice(0,2).join(' · '),play:()=>controller.play(),pause:()=>controller.pause(),toggle:()=>controller.toggle(),previous:()=>controller.previous(),next:()=>controller.next('universal-next'),seek:time=>{event.audio.currentTime=time},replaceElement:event.options?.replacePlayer||null,followPages:event.options?.followPages});coreHandles.set(controller,handle)}
     const remaining=Number(event.state?.secondsRemaining),upcoming=event.state?.nextTrack;
     const upNext=event.type==='time'&&upcoming&&remaining>0&&remaining<=5?`Up next in ${Math.max(1,Math.ceil(remaining))} · ${upcoming.title||'another song'}`:'';
     const status=upNext||(event.state?.status==='waiting'||event.state?.status==='stalled'?'Buffering…':event.state?.status==='error'?'Skipping unavailable track…':'');
@@ -311,8 +325,10 @@
       activate(adapter,{show:true,passive:true});return true;
     }catch{return false}
   }
-  window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,openCurrentTrack,getActive:()=>active?.handle||null,getTrack:activeTrack,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(action==='share')return shareActive();if(['play','pause','toggle','next','previous','seek'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
-  loadFeature('CMDListenerTaste','/listener-taste.js?v=20260911-player').then(()=>render());
+  window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,openCurrentTrack,getActive:()=>active?.handle||null,getTrack:activeTrack,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(action==='share')return shareActive();if(action==='shareMoment')return shareMoment();if(['play','pause','toggle','next','previous','seek'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
+  loadFeature('CMDListenerTaste','/listener-taste.js?v=20260926-library-1').then(()=>render());
+  loadFeature('CMDSongMoments','/song-moments.js?v=20260926-moments-1').then(()=>render());
+  loadFeature('CMDMyMusic','/my-music/library.js?v=20260926-library-1').then(()=>render());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')render()});
   window.addEventListener?.('cmd:taste-change',()=>render());
   window.addEventListener?.('storage',event=>{if(!event.key||event.key==='cmd-listener-taste-v2')render()});
@@ -320,4 +336,3 @@
   document.addEventListener('play',event=>{const media=event.target;if(!media||mediaOwners.has(media)||media.muted||media.__cmdContinuousPlaybackController)return;connect({id:`native:${media.id||adapters.size+1}`,media,track:catalogTrackFor(media),activate:true,show:true})},true);
   const queued=Array.isArray(window.CMDUniversalPlayerQueue)?window.CMDUniversalPlayerQueue.splice(0):[];queued.forEach(callback=>{try{callback(window.CMDUniversalPlayer)}catch{}});
 })();
-
