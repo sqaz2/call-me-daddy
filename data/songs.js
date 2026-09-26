@@ -63,7 +63,7 @@ window.CMD_SONGS = [
         "label": "End This Cycle · bonus",
         "audio": "/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3",
         "cover": "/media/songs/2026/09/the-games-she-hates/end-this-cycle.jpg",
-        "duration": 171.624,
+        "duration": 139.632,
         "sunoUrl": "https://suno.com/song/17b1c12e-dba9-48c4-8397-232f109171d3",
         "sunoTitle": "End This Cycle",
         "shareGenre": "other",

@@ -31,9 +31,14 @@
       "file": "End This Cycle.mp3",
       "variantId": "end-this-cycle",
       "sunoUrl": "https://suno.com/song/17b1c12e-dba9-48c4-8397-232f109171d3",
-      "duration": 171.624,
-      "lyricsSource": "Original MP3 USLT tag, preserved verbatim",
-      "artworkSource": "Original MP3 APIC tag, extracted without alteration"
+      "duration": 139.632,
+      "lyricsSource": "Edited MP3 USLT tag; removed spoken introduction",
+      "artworkSource": "Original MP3 APIC tag, extracted without alteration",
+      "editedAudio": "/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3",
+      "edit": {
+        "removedStartSeconds": 32,
+        "fadeInSeconds": 0.35
+      }
     }
   ]
 }

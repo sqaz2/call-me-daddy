@@ -15,15 +15,22 @@ function load(search=''){
  for(const p of ['data/radio-intents.js','catalog-cycle.js'])vm.runInContext(read(p),context);
  return window;
 }
-test('four original recordings remain distinct and byte-for-byte unchanged',()=>{
+test('three original recordings are unchanged and the bonus is the edited cut',()=>{
  const hashes=new Set();
- for(const record of sources.recordings){
+ for(const record of sources.recordings.slice(0,3)){
   const variant=song.variants.find(v=>v.id===record.variantId);
   const hash=p=>createHash('sha256').update(fs.readFileSync(new URL('../'+p,import.meta.url))).digest('hex');
   assert.equal(hash(record.file),hash(variant.audio.slice(1)));
   hashes.add(hash(record.file));
  }
- assert.equal(hashes.size,4);
+ assert.equal(hashes.size,3);
+ const bonus=song.variants.find(v=>v.id==='end-this-cycle');
+ const original=sources.recordings.find(v=>v.variantId==='end-this-cycle');
+ const hash=p=>createHash('sha256').update(fs.readFileSync(new URL('../'+p,import.meta.url))).digest('hex');
+ assert.notEqual(hash(original.file),hash(bonus.audio.slice(1)));
+ assert.equal(bonus.duration,139.632);
+ assert.equal(original.edit.removedStartSeconds,32);
+ assert.equal(original.edit.fadeInSeconds,0.35);
 });
 test('editorial opener stays fixed across seeds, repeat cycles, and absent audience data',()=>{
  const w=load();
@@ -68,5 +75,5 @@ test('search finds title, alternate title, bonus title, and original poem',()=>{
  for(const query of ['The Games She Hates','Be Yourself','End This Cycle','your behavior is beautiful by nature'])assert.equal(window.CMDCatalogSearch.filterSongs([song],query).length,1);
  const lyrics=JSON.parse(read('the-games-she-hates/lyrics.json'));
  assert.equal(lyrics.main,manifest.lyrics.text);
- assert.ok(lyrics['end-this-cycle'].startsWith('[Intro]\n[Spoken]\n'));
+ assert.ok(lyrics['end-this-cycle'].startsWith('[Verse]\n'));
 });
