@@ -277,3 +277,40 @@ test('Superstore attaches to a live shared session without creating a competing 
   assert.equal(creates,0);assert.equal(coverPlay.hidden,true);
   button.emit('click');assert.equal(creates,0);assert.equal(live.paused,true);assert.equal(ids.ssAudio.plays,0);
 });
+
+
+test('phone controls and metadata live in the audio owner frame, not the dock frame',()=>{
+  const top=environment(),child=environment(),audio=new Media('/armando.mp3');
+  child.window.navigator=child.navigator;
+  child.window.MediaMetadata=class{constructor(value){Object.assign(this,value)}};
+  child.window.top=top.window;
+  const frame=new Element('iframe');frame.contentWindow=child.window;top.document.body.append(frame);
+  let next=0;child.api.connect({id:'phone-owner',media:audio,track:songs[1],next:()=>next++});audio.play();
+  assert.equal(child.navigator.mediaSession.metadata.title,'Armando');
+  assert.equal(child.navigator.mediaSession.playbackState,'playing');
+  assert.equal(top.navigator.mediaSession.metadata,undefined);
+  child.actions.nexttrack();assert.equal(next,1);
+  child.actions.pause();assert.equal(audio.paused,true);
+  child.actions.play();assert.equal(audio.paused,false);
+  child.actions.stop();assert.equal(audio.paused,true);
+});
+test('background track changes play immediately but defer story work until visible',async()=>{
+  let requests=0;const env=environment({fetch:async()=>{requests++;return response()}}),audio=new Media('/armando.mp3');
+  env.document.visibilityState='hidden';env.api.connect({id:'background',media:audio,track:songs[1]});audio.play();await flush();
+  assert.equal(audio.paused,false);assert.equal(requests,0);assert.deepEqual(env.navigations,[]);
+  env.document.visibilityState='visible';env.document.emit('visibilitychange');await flush();
+  assert.equal(requests,1);assert.deepEqual(env.navigations,['/armando/']);assert.equal(audio.plays,1);
+});
+test('hiding during a route lookup does not open a story behind the lock screen',async()=>{
+  let finish;const env=environment({fetch:()=>new Promise(resolve=>finish=resolve)}),audio=new Media('/armando.mp3');
+  env.api.connect({id:'hide-during-follow',media:audio,track:songs[1]});audio.play();
+  env.document.visibilityState='hidden';finish(response());await flush();assert.deepEqual(env.navigations,[]);
+  env.document.visibilityState='visible';env.document.emit('visibilitychange');await flush();assert.deepEqual(env.navigations,['/armando/']);
+});
+test('switching playback owner clears the old controller intent even while hidden',()=>{
+  const env=persistentEnvironment();env.document.visibilityState='hidden';
+  let wants=true,calls=0;env.rootAudio.__cmdContinuousPlaybackController={pause(){calls++;wants=false;env.rootAudio.pause()}};
+  env.site.setSession(true);env.site.open('/next/');const frame=env.document.body.querySelector('iframe');
+  env.site.claimPlayback(frame.contentWindow);
+  assert.ok(calls>0);assert.equal(wants,false);assert.equal(env.site.ownsPlayback(),false);assert.equal(env.site.ownsPlayback(frame.contentWindow),true);
+});

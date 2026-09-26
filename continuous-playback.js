@@ -196,7 +196,7 @@
     };
     const toggle=()=>audio.paused?play():(pause(),false);
     const recover=()=>{
-      if(destroyed||!wantsPlayback)return;
+      if(destroyed||!wantsPlayback||window.CMDPersistentSite?.ownsPlayback?.()===false)return;
       if(audio.ended){next('resume-ended');return;}
       if(audio.paused)play();
     };
@@ -206,6 +206,7 @@
       hasPlayed=true;
       wantsPlayback=true;
       consecutiveErrors=0;
+      configureMediaActions();
       setMediaSession(currentTrack());
       if('mediaSession'in navigator){try{navigator.mediaSession.playbackState='playing'}catch{}}
       options.onPlayState?.(true,currentTrack());
@@ -274,10 +275,12 @@
     listen(lifecycleTarget,'pageshow',recover);
     listen(lifecycleTarget,'online',recover);
 
-    if('mediaSession'in navigator){
+    function configureMediaActions(){
+      if(!('mediaSession'in navigator))return;
       const handlers={
         play,
         pause,
+        stop:pause,
         nexttrack:()=>next('media-next'),
         previoustrack:previous,
         seekbackward:details=>{audio.currentTime=Math.max(0,audio.currentTime-(details.seekOffset||10))},
@@ -322,8 +325,9 @@
   window.CMDUniversalPlayer?.observeContinuous?.(window.CMDContinuousPlayback);
   if(document?.createElement&&document?.head?.appendChild&&!window.CMDUniversalPlayer&&!document.querySelector?.('script[data-cmd-universal-player]')){
     const script=document.createElement('script');
-    script.src='/universal-player.js?v=20260911-source-sync';
+    script.src='/universal-player.js?v=20260926-background-1';
     script.dataset.cmdUniversalPlayer='';
     document.head.appendChild(script);
   }
 })();
+

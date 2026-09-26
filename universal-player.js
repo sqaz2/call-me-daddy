@@ -1,7 +1,7 @@
 (()=>{
   if(window.CMDUniversalPlayer)return;
 
-  const VERSION='1.2.1';
+  const VERSION='1.3.0';
   const CONTACT_URL='https://facebook.com/callmedaddy';
   const FALLBACK_COVER=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const adapters=new Map();
@@ -96,14 +96,14 @@
   }
   function cancelFollow(){followGeneration+=1;followKey='';followPending=null}
   async function followTrack(track){
-    if(!track||!(track.songId||track.id)||!active?.playing()||active.followPages===false)return false;
+    if(document.visibilityState==='hidden'||!track||!(track.songId||track.id)||!active?.playing()||active.followPages===false)return false;
     const key=trackKey(track);
     if(!key||key===followKey||followPending?.key===key)return false;
     const generation=++followGeneration;
     followPending={key,generation};
     try{
       const route=await resolveRoute(track);
-      if(generation!==followGeneration||!active?.playing()||trackKey(activeTrack())!==key)return false;
+      if(document.visibilityState==='hidden'||generation!==followGeneration||!active?.playing()||trackKey(activeTrack())!==key)return false;
       if(!samePage(route)){
         if(!window.CMDPersistentSite?.open)return false;
         window.CMDPersistentSite.open(route);
@@ -201,10 +201,17 @@
     if(trackKey(reported)!==trackKey(track)||songId(reported)!==songId(track)||reported?.title!==track.title)return defaultShare(track);
     return active.share?.();
   }
+  // Android associates a Media Session with the frame that owns the audio.
+  // The top-level dock can control a retained frame, but cannot own its session.
+  function mediaContext(adapter){
+    try{return adapter.ownerWindow?.navigator?adapter.ownerWindow:null}catch{return null}
+  }
   function configureMediaSession(adapter){
-    if(!('mediaSession'in navigator))return;
-    const handlers={play:adapter.play,pause:adapter.pause,previoustrack:adapter.previous,nexttrack:adapter.next,seekbackward:d=>adapter.seek(Math.max(0,adapter.time()-(d.seekOffset||10))),seekforward:d=>adapter.seek(Math.min(adapter.duration()||Infinity,adapter.time()+(d.seekOffset||10))),seekto:d=>{if(typeof d.seekTime==='number')adapter.seek(d.seekTime)}};
-    Object.entries(handlers).forEach(([action,handler])=>{try{navigator.mediaSession.setActionHandler(action,typeof handler==='function'?handler:null)}catch{}});
+    const nav=mediaContext(adapter)?.navigator||navigator;
+    if('audioSession'in nav){try{nav.audioSession.type='playback'}catch{}}
+    if(!('mediaSession'in nav))return;
+    const handlers={play:adapter.play,pause:adapter.pause,stop:adapter.pause,previoustrack:adapter.previous,nexttrack:adapter.next,seekbackward:d=>adapter.seek(Math.max(0,adapter.time()-(d.seekOffset||10))),seekforward:d=>adapter.seek(Math.min(adapter.duration()||Infinity,adapter.time()+(d.seekOffset||10))),seekto:d=>{if(typeof d.seekTime==='number')adapter.seek(d.seekTime)}};
+    Object.entries(handlers).forEach(([action,handler])=>{try{nav.mediaSession.setActionHandler(action,typeof handler==='function'?handler:null)}catch{}});
   }
   function parentPlayer(){try{return window.top&&window.top!==window.self&&window.top.location.origin===location.origin?window.top.CMDUniversalPlayer:null}catch{return null}}
   function render(message=''){
@@ -237,10 +244,12 @@
     if(track.experience){nodes.story.href=track.experience;nodes.story.target='';nodes.story.rel='';nodes.story.textContent=samePage(track.experience)?'You’re on this song’s page':'Open song story →'}
     else{nodes.story.href=CONTACT_URL;nodes.story.target='_blank';nodes.story.rel='noopener';nodes.story.classList.add('is-coming');nodes.story.textContent='Story coming soon · ask me about this song ↗'}
     const key=trackKey(track);
-    if('mediaSession'in navigator){
+    const owner=mediaContext(active),nav=owner?.navigator||navigator;
+    const Metadata=owner?.MediaMetadata||(typeof MediaMetadata!=='undefined'?MediaMetadata:null);
+    if('mediaSession'in nav){
       configureMediaSession(active);
-      if((key!==lastMediaKey||navigator.mediaSession.metadata?.title!==track.title)&&typeof MediaMetadata!=='undefined')try{navigator.mediaSession.metadata=new MediaMetadata({title:track.title,artist:track.artist,album:track.project||'Play the site',artwork:track.cover?[{src:absolute(track.cover)}]:[]});lastMediaKey=key}catch{}
-      try{navigator.mediaSession.playbackState=playing?'playing':'paused';if(Number.isFinite(duration)&&duration>0)navigator.mediaSession.setPositionState({duration,playbackRate:media?.playbackRate||1,position:Math.min(time,duration)})}catch{}
+      if((key!==lastMediaKey||nav.mediaSession.metadata?.title!==track.title)&&Metadata)try{nav.mediaSession.metadata=new Metadata({title:track.title,artist:track.artist,album:track.project||'Play the site',artwork:track.cover?[{src:absolute(track.cover)}]:[]});lastMediaKey=key}catch{}
+      try{nav.mediaSession.playbackState=playing?'playing':'paused';if(Number.isFinite(duration)&&duration>0)nav.mediaSession.setPositionState({duration,playbackRate:media?.playbackRate||1,position:Math.min(time,duration)})}catch{}
     }
     if(playing)void followTrack(track);
   }
@@ -304,9 +313,11 @@
   }
   window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,openCurrentTrack,getActive:()=>active?.handle||null,getTrack:activeTrack,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(action==='share')return shareActive();if(['play','pause','toggle','next','previous','seek'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
   loadFeature('CMDListenerTaste','/listener-taste.js?v=20260911-player').then(()=>render());
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')render()});
   window.addEventListener?.('cmd:taste-change',()=>render());
   window.addEventListener?.('storage',event=>{if(!event.key||event.key==='cmd-listener-taste-v2')render()});
   observeContinuous(window.CMDContinuousPlayback);
   document.addEventListener('play',event=>{const media=event.target;if(!media||mediaOwners.has(media)||media.muted||media.__cmdContinuousPlaybackController)return;connect({id:`native:${media.id||adapters.size+1}`,media,track:catalogTrackFor(media),activate:true,show:true})},true);
   const queued=Array.isArray(window.CMDUniversalPlayerQueue)?window.CMDUniversalPlayerQueue.splice(0):[];queued.forEach(callback=>{try{callback(window.CMDUniversalPlayer)}catch{}});
 })();
+
