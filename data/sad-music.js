@@ -1,8 +1,8 @@
 window.CMD_SAD_MUSIC = [
   {
     id:'the-games-she-hates',title:'End This Cycle',era:'2026',group:'2026 · pressure',
-    summary:'Bonus from The Games She Hates: a personal spoken opening, then the fourteen-year-old poem.',
-    story:'The opening reflects the headspace I was in before the poem begins.',
+    summary:'Bonus from The Games She Hates: two sets of lyrics mixed into one recording.',
+    story:'It didn’t work as one song, but the two sets of lyrics could easily become separate songs later.',
     route:'/the-games-she-hates/?version=end-this-cycle#bonus',accent:'cycle',
     cover:'/media/songs/2026/09/the-games-she-hates/end-this-cycle.jpg',
     versions:[{id:'end-this-cycle',label:'End This Cycle · bonus · explicit',audio:'/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3',expectedPath:'/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3'}]
