@@ -135,6 +135,7 @@ jobs:
           mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
+          node scripts/check-my-music-browser.cjs
           node scripts/check-games-she-hates-browser.cjs
           node scripts/check-song-links-browser.cjs
           node scripts/check-home-discovery-browser.cjs
@@ -144,7 +145,6 @@ jobs:
           node scripts/check-player-source-browser.cjs
           node scripts/check-table-for-two-browser.mjs
           node scripts/check-replay-return-browser.mjs
-          node scripts/check-my-music-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
