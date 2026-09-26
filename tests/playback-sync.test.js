@@ -132,6 +132,14 @@ test('only the root dock remembers the adopted owner queue and its current index
   child.api.connect({id:'saved-queue',media:audio,track:songs[1],getQueue:()=>songs,getQueueIndex:()=>1});audio.play();
   assert.equal(childRemembered.length,0);assert.equal(remembered.at(-1).media,audio);assert.equal(remembered.at(-1).queue,songs);assert.equal(remembered.at(-1).index,1);assert.equal(remembered.at(-1).track.songId||remembered.at(-1).track.id,'armando');
 });
+test('quiet support observes only the root dock and the actual adopted recording',()=>{
+  const top=environment(),child=environment(),audio=new Media('/armando.mp3'),observed=[],childObserved=[];
+  top.window.CMDQuietTip={observe:value=>observed.push(value)};child.window.CMDQuietTip={observe:value=>childObserved.push(value)};
+  child.window.top=top.window;const frame=new Element('iframe');frame.contentWindow=child.window;top.document.body.append(frame);
+  child.api.connect({id:'support-owner',media:audio,track:songs[0]});audio.play();
+  assert.equal(childObserved.length,0);assert.equal(observed.at(-1).media,audio);assert.equal(observed.at(-1).playing,true);assert.equal(observed.at(-1).track.songId||observed.at(-1).track.id,'armando');
+  assert.equal(audio.pauses,0);assert.equal(audio.loads,0);
+});
 test('manual title navigation checks the exact version without reloading its audio',async()=>{
   const env=environment({fetch:async()=>response()}),audio=new Media('/version-six.mp3');
   env.api.connect({id:'version-route',media:audio,track:{id:'survival:v6',songId:'survival',variantId:'v6',variantCount:2,title:'Survival Mode',audio:'/version-six.mp3',experience:'/survival/'}});

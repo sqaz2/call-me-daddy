@@ -35,6 +35,9 @@ jobs:
           node --check my-music/library.js
           node --check my-music/page.js
           node --check song-moments.js
+          node --check quiet-tip.js
+          node --check quiet-tip-ui.js
+          node --check scripts/check-quiet-tip-browser.cjs
           node --check music/listening.js
           node --check sw.js
           node --check home-briefing.js
@@ -101,6 +104,8 @@ jobs:
         run: node --test tests/continuous-playback.test.js tests/installable-app.test.mjs
       - name: Personal library and exact song moments
         run: node --test tests/my-music.test.mjs tests/song-moments.test.js
+      - name: Quiet listener support
+        run: node --test tests/quiet-tip.test.js
       - name: Universal player tests
         run: node --test tests/universal-player.test.js
       - name: Public feed tests
@@ -135,6 +140,7 @@ jobs:
           mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
+          node scripts/check-quiet-tip-browser.cjs
           node scripts/check-my-music-browser.cjs
           node scripts/check-games-she-hates-browser.cjs
           node scripts/check-song-links-browser.cjs
