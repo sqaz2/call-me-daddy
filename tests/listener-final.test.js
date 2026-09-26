@@ -80,10 +80,34 @@ test('liked recordings retain distinct versions, most recent first, and update o
 test('likes remain usable for this session when browser storage cannot be written',()=>{
   const events=[],window={dispatchEvent:event=>events.push(event.type)};
   vm.runInNewContext(read('listener-taste.js'),{window,CustomEvent:class{constructor(type){this.type=type}},localStorage:{getItem:()=>null,setItem(){throw Error('Storage blocked')}}});
+  assert.equal(window.CMDListenerTaste.storageStatus().persistent,false);
   window.CMDListenerTaste.like('survival','v6');assert.equal(window.CMDListenerTaste.get('survival','v6'),'like');
   assert.equal(window.CMDListenerTaste.likedRecordings()[0].variantId,'v6');
   window.CMDListenerTaste.like('survival','v6');assert.equal(window.CMDListenerTaste.likedRecordings().length,0);
   assert.deepEqual(events,['cmd:taste-change','cmd:taste-change']);
+});
+
+test('taste storage status reflects a write failure after earlier successful saves',()=>{
+  const storage=new Map(),window={};let blocked=false;
+  vm.runInNewContext(read('listener-taste.js'),{window,localStorage:{getItem:key=>storage.get(key)||null,setItem(key,value){if(blocked)throw Error('Quota');storage.set(key,value)},removeItem:key=>storage.delete(key)}});
+  const taste=window.CMDListenerTaste;
+  assert.equal(taste.storageStatus().persistent,true);
+  taste.like('survival','v6');blocked=true;taste.like('survival','original');
+  assert.equal(taste.storageStatus().persistent,false);
+  assert.equal(taste.likedRecordings().length,2);
+});
+
+test('same-origin song frames share top-level memory-only likes and storage status',()=>{
+  const top={location:{origin:'https://callmedaddy.musicsubject.com'}};top.top=top;
+  vm.runInNewContext(read('listener-taste.js'),{window:top,localStorage:{getItem:()=>null,setItem(){throw Error('Storage blocked')}}});
+  top.CMDListenerTaste.like('survival','v6');
+  const child={top,location:top.location};
+  vm.runInNewContext(read('listener-taste.js'),{window:child});
+  assert.equal(child.CMDListenerTaste,top.CMDListenerTaste);
+  assert.equal(child.CMDListenerTaste.get('survival','v6'),'like');
+  assert.equal(child.CMDListenerTaste.storageStatus().persistent,false);
+  child.CMDListenerTaste.like('other','main');
+  assert.equal(top.CMDListenerTaste.get('other','main'),'like');
 });
 
 test('variant dislike keys stay isolated and exploration tapers',()=>{

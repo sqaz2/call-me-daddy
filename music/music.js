@@ -412,7 +412,7 @@
   function syncUrl(){
     try{
       const url=new URL(location.href);
-      ['song','version','share'].forEach(key=>url.searchParams.delete(key));
+      ['song','version','share','t'].forEach(key=>url.searchParams.delete(key));
       url.searchParams.set('intent',activeIntent);
       url.searchParams.set('seed',radioSeed);
       history.replaceState({},'',url);
@@ -1351,6 +1351,8 @@
       return true;
     },
     getCurrent:()=>current,
+    getQueue:()=>cycle.slice(),
+    getQueueIndex:()=>cycleIndex,
     peekNext:()=>cycle.slice(cycleIndex+1).find(track=>!cycleEngine?.isOnBreak?.(track.songId||track.id))||null,
     next:nextTrack,
     previous

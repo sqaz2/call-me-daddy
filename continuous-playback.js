@@ -294,6 +294,7 @@
       play,pause,toggle,next,previous,load,
       current:currentTrack,
       peekNext:()=>preparedIndex>=0?queue[preparedIndex]||null:null,
+      getQueue:()=>queue.map(track=>({...track})),
       getState:()=>({id,index,wantsPlayback,hasPlayed,current:currentTrack(),length:queue.length}),
       destroy:()=>{destroyed=true;cleanup.forEach(remove=>remove());audio.__cmdContinuousPlayback=false;audio.__cmdContinuousPlaybackController=null;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.();if(preloadLink){preloadLink.remove?.();preloadLink=null}}
     };
@@ -330,4 +331,3 @@
     document.head.appendChild(script);
   }
 })();
-

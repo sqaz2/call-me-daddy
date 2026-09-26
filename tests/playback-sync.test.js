@@ -117,6 +117,21 @@ test('liking primary audio saves its real named version and never a stale adapte
   env.root().querySelector('.cmd-universal-like').emit('click');
   assert.deepEqual(saved,[['survival','v6']]);assert.equal(env.api.getTrack().variantId,'v6');
 });
+test('sharing a moment uses the actual recording and position instead of a stale adapter',async()=>{
+  const env=environment(),audio=new Media('/version-six.mp3'),shared=[];
+  env.window.CMD_SONGS=[{id:'survival',title:'Survival Mode',audio:'/version-six.mp3',variants:[{id:'v6',label:'V6',audio:'/version-six.mp3'}]}];
+  env.window.CMDSongMoments={share:async(track,time)=>{shared.push({track,time});return {status:'copied'}}};
+  env.api.connect({id:'moment',media:audio,track:songs[0]});audio.play();audio.currentTime=83;
+  await env.api.control('shareMoment');
+  assert.equal(shared[0].track.songId,'survival');assert.equal(shared[0].track.variantId,'v6');assert.equal(shared[0].track.title,'Survival Mode');assert.equal(shared[0].time,83);
+});
+test('only the root dock remembers the adopted owner queue and its current index',()=>{
+  const top=environment(),child=environment(),audio=new Media('/armando.mp3'),remembered=[],childRemembered=[];
+  top.window.CMDMyMusic={rememberPlayback:value=>remembered.push(value)};child.window.CMDMyMusic={rememberPlayback:value=>childRemembered.push(value)};
+  child.window.top=top.window;const frame=new Element('iframe');frame.contentWindow=child.window;top.document.body.append(frame);
+  child.api.connect({id:'saved-queue',media:audio,track:songs[1],getQueue:()=>songs,getQueueIndex:()=>1});audio.play();
+  assert.equal(childRemembered.length,0);assert.equal(remembered.at(-1).media,audio);assert.equal(remembered.at(-1).queue,songs);assert.equal(remembered.at(-1).index,1);assert.equal(remembered.at(-1).track.songId||remembered.at(-1).track.id,'armando');
+});
 test('manual title navigation checks the exact version without reloading its audio',async()=>{
   const env=environment({fetch:async()=>response()}),audio=new Media('/version-six.mp3');
   env.api.connect({id:'version-route',media:audio,track:{id:'survival:v6',songId:'survival',variantId:'v6',variantCount:2,title:'Survival Mode',audio:'/version-six.mp3',experience:'/survival/'}});

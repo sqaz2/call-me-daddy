@@ -1,9 +1,14 @@
 (()=>{
   if(window.CMDListenerTaste)return;
+  // Retained song frames use the dock's session state when storage is blocked.
+  try{
+    const top=window.top;
+    if(top&&top!==window&&top.location?.origin&&top.location.origin===window.location?.origin&&top.CMDListenerTaste){window.CMDListenerTaste=top.CMDListenerTaste;return;}
+  }catch{}
 
   const STORAGE='cmd-listener-taste-v2';
   const LEGACY_STORAGE='cmd-listener-taste-v1';
-  let memoryMap={},memoryOnly=false;
+  let memoryMap={},memoryOnly=false,persistenceChecked=false;
 
   function now(){return Date.now()}
 
@@ -58,8 +63,17 @@
 
   function writeMap(map){
     memoryMap={...map};
-    try{localStorage.setItem(STORAGE,JSON.stringify(map||{}))}catch{memoryOnly=true;}
+    try{localStorage.setItem(STORAGE,JSON.stringify(map||{}));persistenceChecked=true;}catch{memoryOnly=true;}
     if(typeof window.dispatchEvent==='function'&&typeof CustomEvent==='function')window.dispatchEvent(new CustomEvent('cmd:taste-change'));
+  }
+
+  function storageStatus(){
+    readMap();
+    if(!memoryOnly&&!persistenceChecked){
+      persistenceChecked=true;
+      try{localStorage.setItem(`${STORAGE}:probe`,'1');localStorage.removeItem?.(`${STORAGE}:probe`)}catch{memoryOnly=true;}
+    }
+    return {persistent:!memoryOnly};
   }
 
   /**
@@ -276,6 +290,7 @@
     signalCount,
     explorationFactor,
     weightMultiplier,
+    storageStatus,
     likes,
     likedRecordings,
     dislikes

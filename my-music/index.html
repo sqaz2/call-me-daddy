@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <title>My Music — MusicSubject × Call Me Daddy</title>
+  <meta name="description" content="Your saved recordings, personal playlists and place in the music. MusicSubject × Call Me Daddy.">
+  <link rel="canonical" href="https://callmedaddy.musicsubject.com/my-music/">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/my-music/library.css?v=20260926-library-1">
+</head>
+<body>
+  <header><a href="/" class="brand">MusicSubject <span>× Call Me Daddy</span></a><nav aria-label="Music navigation"><a href="/">Find music</a><a href="/app/">Install app</a></nav></header>
+  <main>
+    <p class="eyebrow">Keep the good ones close</p>
+    <h1>My Music.</h1>
+    <p class="lede">Your favourite recordings. Your own order.</p>
+    <p id="storageNotice" class="privacy">Saved on this browser. No account needed. Clearing browser data removes your library; it doesn’t sync between devices.</p>
+    <p id="libraryStatus" class="status" role="status"></p>
+    <section class="resume-card" id="resumeCard" hidden aria-labelledby="resumeHeading">
+      <div><p class="eyebrow">Pick up where you left off</p><h2 id="resumeHeading">Your last queue</h2><p id="resumeDescription"></p></div>
+      <button id="resumeQueue" class="primary" type="button">▶ Resume queue</button>
+    </section>
+    <section aria-labelledby="savedHeading">
+      <div class="section-head"><div><p class="eyebrow">The version you meant to keep</p><h2 id="savedHeading">Saved recordings <span id="savedCount" class="count">0</span></h2></div><button id="playSaved" type="button" disabled>▶ Play saved</button></div>
+      <p id="savedEmpty" class="empty">Tap the heart on the player, or save a recording below. Each version gets its own place here.</p>
+      <div id="savedList" class="recordings"></div>
+    </section>
+    <section aria-labelledby="playlistsHeading">
+      <div class="section-head"><div><p class="eyebrow">Make it a set</p><h2 id="playlistsHeading">Your playlists</h2></div></div>
+      <form id="createPlaylist" class="inline-form"><label for="playlistName">New playlist</label><div><input id="playlistName" name="playlistName" maxlength="80" required placeholder="Night drives, favourite drops…" autocomplete="off"><button type="submit">Create playlist</button></div></form>
+      <div id="playlistChoices" class="playlist-choices" role="group" aria-label="Choose a playlist"></div>
+      <div id="playlistPanel" class="playlist-panel" hidden>
+        <div class="section-head"><h3 id="playlistTitle"></h3><button id="playPlaylist" class="primary" type="button">▶ Play playlist</button></div>
+        <p id="playlistHint" class="muted"></p>
+        <div id="playlistTracks" class="recordings"></div>
+        <details class="playlist-edit"><summary>Edit playlist name or delete</summary><form id="renamePlaylist" class="inline-form"><label for="renameName">Playlist name</label><div><input id="renameName" maxlength="80" required><button type="submit">Save name</button></div></form><button id="deletePlaylist" type="button">Delete playlist</button></details>
+      </div>
+    </section>
+    <section aria-labelledby="browseHeading">
+      <div class="section-head"><div><p class="eyebrow">Find your next keeper</p><h2 id="browseHeading">Add recordings</h2></div></div>
+      <p id="addHint" class="muted">Save a recording with its heart. Create a playlist above to start a collection.</p>
+      <label for="librarySearch">Search songs and versions</label>
+      <input id="librarySearch" class="search" type="search" placeholder="Song title, version or project…" autocomplete="off">
+      <p id="searchCount" class="muted"></p>
+      <div id="searchResults" class="recordings"></div>
+    </section>
+    <noscript><p>Turn on JavaScript to use your saved recordings and playlists. You can still <a href="/">browse the music</a>.</p></noscript>
+  </main>
+  <audio id="libraryAudio" preload="metadata"></audio>
+  <footer>MusicSubject × Call Me Daddy · <a href="/app/">Take the music with you</a></footer>
+  <script src="/data/songs.js?v=20260926-library-1"></script>
+  <script src="/data/archive-catalog.js?v=20260824-3"></script>
+  <script src="/data/2026-08-25-uploads.js?v=20260904-1"></script>
+  <script src="/data/2026-08-26-uploads.js?v=20260827-3"></script>
+  <script src="/data/2026-08-27-uploads.js?v=20260828-2"></script>
+  <script src="/data/2026-08-29-uploads.js?v=20260829-3"></script>
+  <script src="/data/artwork-fallback.js?v=20260829-1"></script>
+  <script src="/listener-taste.js?v=20260926-library-1"></script>
+  <script src="/catalog-cycle.js?v=20260905-vibe-guard"></script>
+  <script src="/my-music/library.js?v=20260926-library-1"></script>
+  <script src="/persistent-site-browser.js?v=20260911-source-sync"></script>
+  <script src="/universal-player.js?v=20260926-library-1"></script>
+  <script src="/continuous-playback.js?v=20260926-library-1"></script>
+  <script src="/my-music/page.js?v=20260926-library-1"></script>
+</body>
+</html>
