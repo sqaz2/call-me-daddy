@@ -5,7 +5,7 @@ export function addAppShell(html) {
   let head = '';
   if (!/<link\b[^>]*rel=["']manifest["']/i.test(html)) head += '<link rel="manifest" href="/manifest.webmanifest">';
   if (!/<meta\b[^>]*name=["']theme-color["']/i.test(html)) head += '<meta name="theme-color" content="#080808">';
-  if (!/<script\b[^>]*src=["']\/app\/install\.js/i.test(html)) head += '<script src="/app/install.js?v=20260926-background-1" defer></script>';
+  if (!/<script\b[^>]*src=["']\/app\/install\.js/i.test(html)) head += '<script src="/app/install.js?v=20260926-devices-1" defer></script>';
   return html.replace(/<\/head>/i, head + '</head>');
 }
 
