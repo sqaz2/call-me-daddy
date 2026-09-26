@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 9,
     "date": "2026-09-25",
     "project": "2012 poem → 2026 song",
-    "description": "A poem written by Will Crowell on September 25, 2012, turned into music fourteen years later. Three versions, plus End This Cycle as a bonus with a personal spoken opening.",
+    "description": "A poem written by Will Crowell on September 25, 2012, turned into music fourteen years later. Three versions, plus End This Cycle as a bonus that mixes two sets of lyrics.",
     "aliases": [
       "the games she hate",
       "Be Yourself",
@@ -70,7 +70,7 @@ window.CMD_SONGS = [
         "shareCategory": "music",
         "bonus": true,
         "explicit": true,
-        "description": "Bonus recording with a personal spoken opening before the 2012 poem. Also in When Things Got Heavy."
+        "description": "Two sets of lyrics mixed into one recording. It didn’t work as one song, but they could easily become two separate songs later. Also in When Things Got Heavy."
       }
     ],
     "openerPolicy": {
