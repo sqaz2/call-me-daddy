@@ -1,6 +1,98 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "the-games-she-hates",
+    "title": "The Games She Hates",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-25",
+    "project": "2012 poem → 2026 song",
+    "description": "A poem written by Will Crowell on September 25, 2012, turned into music fourteen years later. Three versions, plus End This Cycle as a bonus with a personal spoken opening.",
+    "aliases": [
+      "the games she hate",
+      "Be Yourself",
+      "End This Cycle",
+      "Will Crowell",
+      "September 25/12"
+    ],
+    "audio": "/media/songs/2026/09/the-games-she-hates/main.mp3",
+    "cover": "/media/songs/2026/09/the-games-she-hates/main.jpg",
+    "experience": "/the-games-she-hates/",
+    "shareUrl": "/the-games-she-hates/",
+    "kind": "Alternative R&B · Spoken word",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/song/e0a317de-1e23-4db8-9003-36ca83bd7201",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Title version",
+        "audio": "/media/songs/2026/09/the-games-she-hates/main.mp3",
+        "cover": "/media/songs/2026/09/the-games-she-hates/main.jpg",
+        "duration": 122.424,
+        "sunoUrl": "https://suno.com/song/e0a317de-1e23-4db8-9003-36ca83bd7201",
+        "sunoTitle": "the games she hate",
+        "shareGenre": "other",
+        "shareCategory": "music"
+      },
+      {
+        "id": "be-yourself",
+        "label": "Be Yourself · version 1",
+        "audio": "/media/songs/2026/09/the-games-she-hates/be-yourself.mp3",
+        "cover": "/media/songs/2026/09/the-games-she-hates/be-yourself.jpg",
+        "duration": 127.8,
+        "sunoUrl": "https://suno.com/song/3bd1f896-5f88-4d45-9440-0aeac92a6a33",
+        "sunoTitle": "Be Yourself",
+        "shareGenre": "other",
+        "shareCategory": "music"
+      },
+      {
+        "id": "be-yourself-2",
+        "label": "Be Yourself · version 2",
+        "audio": "/media/songs/2026/09/the-games-she-hates/be-yourself-2.mp3",
+        "cover": "/media/songs/2026/09/the-games-she-hates/be-yourself-2.jpg",
+        "duration": 131.232,
+        "sunoUrl": "https://suno.com/song/93272fad-da62-4daa-8295-a1c83622f50a",
+        "sunoTitle": "Be Yourself",
+        "shareGenre": "other",
+        "shareCategory": "music"
+      },
+      {
+        "id": "end-this-cycle",
+        "label": "End This Cycle · bonus",
+        "audio": "/media/songs/2026/09/the-games-she-hates/end-this-cycle.mp3",
+        "cover": "/media/songs/2026/09/the-games-she-hates/end-this-cycle.jpg",
+        "duration": 171.624,
+        "sunoUrl": "https://suno.com/song/17b1c12e-dba9-48c4-8397-232f109171d3",
+        "sunoTitle": "End This Cycle",
+        "shareGenre": "other",
+        "shareCategory": "music",
+        "bonus": true,
+        "explicit": true,
+        "description": "Bonus recording with a personal spoken opening before the 2012 poem. Also in When Things Got Heavy."
+      }
+    ],
+    "openerPolicy": {
+      "mode": "editorial",
+      "defaultVersion": "main",
+      "eligibleVersions": [
+        "main",
+        "be-yourself",
+        "be-yourself-2"
+      ],
+      "excludedVersions": [
+        "end-this-cycle"
+      ],
+      "minimumUniqueListenersPerVersion": 100,
+      "minimumObservationDays": 14,
+      "requireComparableExposure": true,
+      "requireClearStatisticalLead": true,
+      "aggregateDataSource": null,
+      "reason": "No verified cross-listener aggregate data is connected. Browser history and repeat plays never unlock audience ranking."
+    }
+  },
+  {
     "id": "make-me-an-animal",
     "title": "Make Me an Animal",
     "artist": "MusicSubject × Call Me Daddy",

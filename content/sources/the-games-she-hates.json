@@ -1,0 +1,39 @@
+{
+  "poemSource": "https://www.facebook.com/share/p/19TyhPWD8F/",
+  "poemDate": "2012-09-25",
+  "author": "Will Crowell",
+  "recordings": [
+    {
+      "file": "the games she hate.mp3",
+      "variantId": "main",
+      "sunoUrl": "https://suno.com/song/e0a317de-1e23-4db8-9003-36ca83bd7201",
+      "duration": 122.424,
+      "lyricsSource": "Original MP3 USLT tag, preserved verbatim",
+      "artworkSource": "Original MP3 APIC tag, extracted without alteration"
+    },
+    {
+      "file": "Be Yourself.mp3",
+      "variantId": "be-yourself",
+      "sunoUrl": "https://suno.com/song/3bd1f896-5f88-4d45-9440-0aeac92a6a33",
+      "duration": 127.8,
+      "lyricsSource": "Original MP3 USLT tag, preserved verbatim",
+      "artworkSource": "Original MP3 APIC tag, extracted without alteration"
+    },
+    {
+      "file": "Be Yourself (1).mp3",
+      "variantId": "be-yourself-2",
+      "sunoUrl": "https://suno.com/song/93272fad-da62-4daa-8295-a1c83622f50a",
+      "duration": 131.232,
+      "lyricsSource": "Original MP3 USLT tag, preserved verbatim",
+      "artworkSource": "Original MP3 APIC tag, extracted without alteration"
+    },
+    {
+      "file": "End This Cycle.mp3",
+      "variantId": "end-this-cycle",
+      "sunoUrl": "https://suno.com/song/17b1c12e-dba9-48c4-8397-232f109171d3",
+      "duration": 171.624,
+      "lyricsSource": "Original MP3 USLT tag, preserved verbatim",
+      "artworkSource": "Original MP3 APIC tag, extracted without alteration"
+    }
+  ]
+}

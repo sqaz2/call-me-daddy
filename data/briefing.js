@@ -1,9 +1,31 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-12T16:37:47Z",
+  updated: "2026-09-25T01:20:00Z",
   entries: [
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-the-games-she-hates",
+      "published": "2026-09-25T01:20:00Z",
+      "type": "Poem to song · three versions + bonus",
+      "songId": "the-games-she-hates",
+      "title": "The Games She Hates",
+      "summary": "Written September 25, 2012. Turned into a song fourteen years later. Three versions of the poem, with End This Cycle as a bonus.",
+      "href": "/the-games-she-hates/",
+      "sharePath": "/updates/release-the-games-she-hates/",
+      "cta": "Listen to the versions",
+      "featured": true,
+      "cover": "/media/songs/2026/09/the-games-she-hates/main.jpg",
+      "cardLines": [
+        "THE GAMES",
+        "SHE HATES"
+      ],
+      "cardTag": "2012 → 2026 · Alternative R&B / spoken word",
+      "cardSummary": "A fourteen-year-old poem. Three versions. One bonus.",
+      "badge": "New release",
+      "intent": "think",
+      "featuredOrder": 0.1
+    },
     {
       "id": "release-make-me-an-animal-v6",
       "published": "2026-09-12T16:37:47Z",
@@ -23,7 +45,7 @@ window.CMD_BRIEFING = {
       "cardTag": "New version · Suno v6",
       "cardSummary": "The new v6 recording. One Animal family, with the three earlier recordings preserved.",
       "badge": "NEW · v6",
-      "featuredOrder": 0.1111111111111111
+      "featuredOrder": 0.2
     },
     {
       "id": "release-cheap-to-inform",
@@ -45,7 +67,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Two open wounds. Two sold-out rooms. An imagined scene about family hurt and the audience around it—not an autobiography.",
       "badge": "Scene study",
       "intent": "think",
-      "featuredOrder": 0.2222222222222222
+      "featuredOrder": 0.3
     },
     {
       "id": "release-canadian-crop-dusting",
@@ -67,7 +89,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
       "badge": "New remix",
       "intent": "laugh",
-      "featuredOrder": 0.3333333333333333
+      "featuredOrder": 0.4
     },
     {
       "id": "release-everybody-else-less",
@@ -89,7 +111,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
       "badge": "New song page",
       "intent": "think",
-      "featuredOrder": 0.4444444444444444
+      "featuredOrder": 0.5
     },
     {
       "id": "release-set-a-table-for-two",
@@ -111,7 +133,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.5555555555555556
+      "featuredOrder": 0.6
     },
     {
       "id": "release-satans-loan",
@@ -133,7 +155,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.6666666666666666
+      "featuredOrder": 0.7
     },
     {
       "id": "release-superstore-effect",
@@ -155,7 +177,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.7777777777777778
+      "featuredOrder": 0.8
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -177,7 +199,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.8888888888888888
+      "featuredOrder": 0.9
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-still-building",published:"2026-09-10T10:30:00Z",type:"Two-song V6 release",songId:"stomp-clamp",title:"Still Building — Two Survival Songs",summary:"I Need That Sound and Survival Mode: two personal songs rebuilt in Suno V6 while I work toward a life beyond survival mode.",href:"/still-building/",sharePath:"/updates/release-still-building/",cta:"Play both V6 remixes",featured:true,featuredOrder:0.07142857142857142,cover:"/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg",cardLines:["STILL","BUILDING"],cardTag:"Two survival songs · Suno V6",cardSummary:"Working. Building. Trying to turn the van into a chapter instead of the ending.",badge:"New V6 remixes",intent:"think"},

@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "the-games-she-hates": {
+    "surprise": 75,
+    "laugh": 0,
+    "think": 95,
+    "level-up": 30,
+    "heavy": 15,
+    "old-files": 85
+  },
   "make-me-an-animal": {
     "surprise": 100,
     "laugh": 64,

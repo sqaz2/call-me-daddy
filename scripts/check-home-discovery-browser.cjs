@@ -29,7 +29,7 @@ const data = require('../data/song-links.json');
     await input.fill('zzzz-not-a-song');
     assert.ok(await page.getByText('No songs found.', { exact: true }).isVisible());
     await page.getByRole('button', { name: 'Show all songs', exact: true }).click();
-    assert.equal(await page.locator('[data-home-song]').count(), 59);
+    assert.equal(await page.locator('[data-home-song]').count(), await page.evaluate(() => window.CMD_SONGS.length));
     await page.getByRole('button', { name: 'Jokes & satire', exact: true }).click();
     assert.equal(await page.locator('[data-home-song]').count(), 16);
     assert.equal(await page.locator('[data-home-song="survival-mode"]').count(), 0);
