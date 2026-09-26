@@ -1,7 +1,7 @@
 (()=>{
   if(window.CMDUniversalPlayer)return;
 
-  const VERSION='1.4.0';
+  const VERSION='1.4.1';
   const CONTACT_URL='https://facebook.com/callmedaddy';
   const FALLBACK_COVER=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const adapters=new Map();
@@ -234,6 +234,7 @@
     if(parent&&!active.playing()){root.hidden=true;return}
     const media=active.media(),track=activeTrack(),playing=active.playing(),duration=active.duration(),time=active.time();
     try{window.CMDMyMusic?.rememberPlayback?.({track,media,playing,queue:active.queue?.()||[track],index:active.queueIndex?.()||0})}catch{}
+    try{window.CMDQuietTip?.observe?.({track,media,playing})}catch{}
     const ratio=Number.isFinite(duration)&&duration>0?Math.max(0,Math.min(1,time/duration)):0;
     if(nodes.image.src!==absolute(track.cover||FALLBACK_COVER))nodes.image.src=track.cover||FALLBACK_COVER;
     nodes.image.alt=`${track.title} artwork`;nodes.image.onerror=()=>{if(nodes.image.src!==absolute(FALLBACK_COVER))nodes.image.src=FALLBACK_COVER};
@@ -329,6 +330,7 @@
   loadFeature('CMDListenerTaste','/listener-taste.js?v=20260926-library-1').then(()=>render());
   loadFeature('CMDSongMoments','/song-moments.js?v=20260926-moments-1').then(()=>render());
   loadFeature('CMDMyMusic','/my-music/library.js?v=20260926-library-1').then(()=>render());
+  loadFeature('CMDQuietTip','/quiet-tip.js?v=20260926-tip-1').then(()=>render());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')render()});
   window.addEventListener?.('cmd:taste-change',()=>render());
   window.addEventListener?.('storage',event=>{if(!event.key||event.key==='cmd-listener-taste-v2')render()});
