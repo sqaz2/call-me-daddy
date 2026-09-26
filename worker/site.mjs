@@ -1,6 +1,14 @@
 import { handleRequest } from './index.mjs';
 import { resolveSocial, rewriteHead, readHead, SOCIAL_VERSION } from '../song-social.mjs';
 
+export function addAppShell(html) {
+  let head = '';
+  if (!/<link\b[^>]*rel=["']manifest["']/i.test(html)) head += '<link rel="manifest" href="/manifest.webmanifest">';
+  if (!/<meta\b[^>]*name=["']theme-color["']/i.test(html)) head += '<meta name="theme-color" content="#080808">';
+  if (!/<script\b[^>]*src=["']\/app\/install\.js/i.test(html)) head += '<script src="/app/install.js?v=20260926-background-1" defer></script>';
+  return html.replace(/<\/head>/i, head + '</head>');
+}
+
 // The asset binding is deployment-scoped. Never cache failed lookups or mix deployments.
 const indexes = new WeakMap();
 async function socialIndex(assets, request) {
@@ -23,7 +31,7 @@ export async function decorateSongHTML(request, response, env) {
   // Dedicated pages still receive artwork icons if a metadata asset is temporarily unavailable.
   const fallback = readHead(html);
   const record = selected || fallback;
-  const body = rewriteHead(html, record);
+  const body = addAppShell(rewriteHead(html, record));
   const headers = new Headers(response.headers);
   for (const name of ['content-length', 'content-encoding', 'etag', 'last-modified', 'content-md5']) headers.delete(name);
   headers.set('cache-control', 'public, max-age=0, must-revalidate');
@@ -32,5 +40,13 @@ export async function decorateSongHTML(request, response, env) {
   return new Response(body, { status: response.status, statusText: response.statusText, headers });
 }
 export default { async fetch(request, env) {
-  return decorateSongHTML(request, await handleRequest(request, env), env);
+  const response = await handleRequest(request, env);
+  // Revalidate playback code and the service worker on subsequent visits.
+  if (/^\/(?:continuous-playback\.js|universal-player\.js|persistent-site-browser\.js|sw\.js|app\/install\.js)$/.test(new URL(request.url).pathname)) {
+    const headers = new Headers(response.headers);
+    headers.set('cache-control', 'no-cache');
+    return new Response(response.body, {status:response.status, statusText:response.statusText, headers});
+  }
+  return decorateSongHTML(request, response, env);
 } };
+

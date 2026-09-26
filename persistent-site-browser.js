@@ -4,16 +4,17 @@
     const visit=document.createElement('script');visit.src='/visit-history.js?v=20260908-latest-1';
     document.head.appendChild(visit);
   }
-  const VERSION='20260906-2';
+  const VERSION='20260926-background-1';
   const CLAIM='cmd:claim-playback';
   const PAUSE='cmd:pause-playback';
   const REFRESH='cmd:refresh-clearance';
+  const pauseMedia=el=>{try{const controller=el.__cmdContinuousPlaybackController;if(controller)controller.pause();else el.pause()}catch{}};
   const isAudibleMedia=el=>el instanceof HTMLAudioElement||(el instanceof HTMLVideoElement&&!el.muted);
 
   if(window.top!==window.self){
     if(window.CMDPersistentSite?.version===VERSION)return;
     const pauseLocal=()=>{
-      document.querySelectorAll('audio,video').forEach(el=>{if(!isAudibleMedia(el))return;try{el.pause()}catch{}});
+      document.querySelectorAll('audio,video').forEach(el=>{if(!isAudibleMedia(el))return;pauseMedia(el)});
       document.dispatchEvent(new CustomEvent('cmd:persistent-pause'));
     };
     const claimPlayback=()=>{try{window.parent.postMessage({type:CLAIM},location.origin)}catch{}};
@@ -24,6 +25,7 @@
     window.CMDPersistentSite={
       version:VERSION,setSession:value=>{if(value)claimPlayback()},claimPlayback,refreshClearance:refresh,
       // Never navigate/unload the frame that owns the running audio.
+      ownsPlayback:()=>topSite()?.ownsPlayback?.(window)??true,
       open:url=>{const site=topSite();if(site?.open)site.open(url);else location.href=url},
       followTrack:track=>topSite()?.followTrack?.(track),cancelFollow:()=>topSite()?.cancelFollow?.(),
       makeSongLink(container,track,{show=false}={}){
@@ -75,9 +77,9 @@
   const ownerIsActive=()=>ownerWindow!==window?session:Boolean(playingMediaIn(window)||session);
   const pauseWindow=win=>{
     if(!win)return;
-    if(win===window){document.querySelectorAll('audio,video').forEach(el=>{if(!isAudibleMedia(el))return;try{el.pause()}catch{}});document.dispatchEvent(new CustomEvent('cmd:persistent-pause'));return}
+    if(win===window){document.querySelectorAll('audio,video').forEach(el=>{if(!isAudibleMedia(el))return;pauseMedia(el)});document.dispatchEvent(new CustomEvent('cmd:persistent-pause'));return}
     try{win.postMessage({type:PAUSE},location.origin)}catch{}
-    try{win.document.querySelectorAll('audio,video').forEach(el=>{if(!isAudibleMedia(el))return;try{el.pause()}catch{}});win.document.dispatchEvent(new CustomEvent('cmd:persistent-pause'))}catch{}
+    try{win.document.querySelectorAll('audio,video').forEach(el=>{if(!isAudibleMedia(el))return;pauseMedia(el)});win.document.dispatchEvent(new CustomEvent('cmd:persistent-pause'))}catch{}
   };
   const frameForWindow=win=>[...frames].find(f=>f.contentWindow===win)||null;
   const cleanupFrames=()=>{const ownerFrame=frameForWindow(ownerWindow);[...frames].forEach(frame=>{if(frame===viewFrame||frame===ownerFrame)return;frame.remove();frames.delete(frame)})};
@@ -177,6 +179,7 @@
     const target=event.state?.cmdView;if(target){const url=sameOriginUrl(target);if(url)openView(url,{push:false})}else if(ownerWindow===window)closeView({historyBack:true});else returnToOwner();
   });
   window.CMDPersistentSite={
+    ownsPlayback:(source=window)=>ownerWindow===source,
     version:VERSION,open:url=>{const u=sameOriginUrl(url);if(u)openView(u)},
     setSession:value=>{session=Boolean(value);if(value)claimOwner(window);updatePillState()},
     claimPlayback:source=>{if(source&&source!==window&&!frameForWindow(source))return;const owner=source||window;if(ownerWindow!==owner||!session)claimOwner(owner)},
@@ -186,3 +189,4 @@
   };
   offerPlaybackResume();
 })();
+

@@ -31,6 +31,8 @@ jobs:
           node --check continuous-playback.js
           node --check universal-player.js
           node --check persistent-site-browser.js
+          node --check app/install.js
+          node --check sw.js
           node --check home-briefing.js
           node --check home-discovery.js
           node --check placeholder-art.js
@@ -92,7 +94,7 @@ jobs:
       - name: Playlist continuity tests
         run: node --test tests/playlist-continuity.test.js
       - name: Background playback recovery tests
-        run: node --test tests/continuous-playback.test.js
+        run: node --test tests/continuous-playback.test.js tests/installable-app.test.mjs
       - name: Universal player tests
         run: node --test tests/universal-player.test.js
       - name: Public feed tests
@@ -144,3 +146,4 @@ jobs:
             /tmp/replay-qa/
             /tmp/table-for-two-qa/
           retention-days: 7
+

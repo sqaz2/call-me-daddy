@@ -181,3 +181,27 @@ test('destroyed controllers cannot advance, recover or overwrite metadata from l
   audio.emit('ended');audio.emit('error');env.document.emit('resume');c.next();c.play();
   assert.equal(audio.playCalls,calls);assert.equal(updates,changes);assert.equal(audio.src,'/first.mp3');
 });
+
+
+test('idle controller creation cannot steal phone media actions from a playing controller',()=>{
+  const env=environment(),actions={};
+  env.navigator.mediaSession={setActionHandler:(name,fn)=>actions[name]=fn,setPositionState(){}};
+  const a=new FakeAudio('/first.mp3'),b=new FakeAudio('/second.mp3');
+  const first=env.window.CMDContinuousPlayback.create({audio:a,tracks:[{audio:'/first.mp3'}],loopLocal:true});first.play();
+  const pause=actions.pause;
+  env.window.CMDContinuousPlayback.create({audio:b,tracks:[{audio:'/second.mp3'}],loopLocal:true});
+  assert.equal(actions.pause,pause);env.document.visibilityState='hidden';actions.pause();env.document.emit('resume');
+  assert.equal(a.paused,true);assert.equal(b.playCalls,0);assert.equal(first.getState().wantsPlayback,false);
+});
+test('a retired background owner never restarts when the page resumes',()=>{
+  const env=environment(),audio=new FakeAudio();
+  const player=env.window.CMDContinuousPlayback.create({audio,tracks:[{audio:'/first.mp3'}],loopLocal:true});player.play();
+  env.document.visibilityState='hidden';audio.pause();env.window.CMDPersistentSite.ownsPlayback=()=>false;
+  env.document.visibilityState='visible';env.document.emit('visibilitychange');assert.equal(audio.playCalls,1);
+});
+test('the next recording starts from ended while hidden without a timer or new element',()=>{
+  const env=environment(),audio=new FakeAudio();
+  const player=env.window.CMDContinuousPlayback.create({audio,tracks:[{audio:'/first.mp3'},{audio:'/second.mp3'}]});player.play();
+  env.document.visibilityState='hidden';audio.ended=true;audio.paused=true;audio.emit('ended');
+  assert.equal(audio.src,'/second.mp3');assert.equal(audio.paused,false);assert.equal(audio.playCalls,2);
+});

@@ -48,6 +48,8 @@ try {
   await page.locator('.navlinks a[href="#latest"]').tap();
   await page.getByRole('link', { name: 'All releases →', exact: true }).tap();
   await page.locator('#latestRadioPlay').waitFor();
+  // The button exists in static HTML before the deferred player initializes.
+  await page.waitForFunction(() => /2 releases.*since your last visit/.test(document.getElementById('latestRadioStatus')?.textContent || ''));
   assert.match(await page.locator('#latestRadioStatus').textContent(), /2 releases.*since your last visit/);
   assert.equal(await page.evaluate(() => window.CMDVisitHistory.current().previousAt), since);
   assert.equal(await page.locator('#latestRadioAudio').count(), 0);
