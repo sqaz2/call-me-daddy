@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "2010-wows",
+    "title": "2010 WOWS",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-29",
+    "originalYear": 2010,
+    "project": "Archive",
+    "description": "A song from 2010, remembered and rebuilt in 2026. Close My Eyes joins the Special 2026 Remix and the positive rewrite in the same song history.",
+    "aliases": [
+      "Close My Eyes",
+      "Close My Eyes 2010 Special 2026 ai-mix"
+    ],
+    "audio": "/media/songs/2026/09/2010-wows/close-my-eyes-ai-mix.mp3",
+    "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg",
+    "experience": "/archive/2010-wows/",
+    "shareUrl": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+    "youtubeId": "Vay_RvzdeGs",
+    "youtubeUrl": "https://youtube.com/shorts/Vay_RvzdeGs?feature=share",
+    "positiveSunoUrl": "https://suno.com/s/Zooqq8Q9KsTbnAjw",
+    "kind": "Archive · 2 playable versions",
+    "releaseManaged": true,
+    "lineage": "Written in 2010, resurfaced from long-term memory and rebuilt in 2026. The Special Remix, positive rewrite and Close My Eyes AI mix stay together under 2010 WOWS.",
+    "variants": [
+      {
+        "id": "close-my-eyes-ai-mix",
+        "label": "Close My Eyes · 2026 AI Mix",
+        "audio": "/media/songs/2026/09/2010-wows/close-my-eyes-ai-mix.mp3",
+        "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg",
+        "date": "2026-09-29",
+        "duration": 181.584,
+        "experience": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+        "shareUrl": "/archive/2010-wows/?version=close-my-eyes-ai-mix"
+      },
+      {
+        "id": "special-2026-remix",
+        "label": "Special 2026 Remix",
+        "audio": "/media/archive/2010-wows/2026/special-remix.mp3",
+        "cover": "https://i.ytimg.com/vi/Vay_RvzdeGs/hqdefault.jpg",
+        "duration": 167.832,
+        "experience": "/archive/2010-wows/?version=special-2026-remix",
+        "shareUrl": "/archive/2010-wows/?version=special-2026-remix"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 76,
+    "laugh": 44,
+    "think": 90,
+    "level-up": 84,
+    "heavy": 70,
+    "old-files": 100
+  },
+  "update": {
+    "id": "2010-wows-close-my-eyes",
+    "published": "2026-09-29T19:24:05-06:00",
+    "type": "New version",
+    "songId": "2010-wows",
+    "variantId": "close-my-eyes-ai-mix",
+    "title": "2010 WOWS · Close My Eyes",
+    "summary": "Close My Eyes — the new 2026 AI mix — is now part of 2010 WOWS. Hear it alongside the earlier remix and follow the original song history.",
+    "href": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+    "sharePath": "/updates/2010-wows-close-my-eyes/",
+    "cta": "Hear Close My Eyes",
+    "intent": "old-files",
+    "featured": true,
+    "cardLines": [
+      "CLOSE MY",
+      "EYES"
+    ],
+    "cardTag": "2010 WOWS · New version",
+    "cardSummary": "A new 2026 AI mix, together with the earlier 2010 WOWS versions.",
+    "badge": "NEW MIX"
+  }
+}

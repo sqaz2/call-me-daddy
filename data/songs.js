@@ -1,6 +1,52 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "2010-wows",
+    "title": "2010 WOWS",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-29",
+    "originalYear": 2010,
+    "project": "Archive",
+    "description": "A song from 2010, remembered and rebuilt in 2026. Close My Eyes joins the Special 2026 Remix and the positive rewrite in the same song history.",
+    "aliases": [
+      "Close My Eyes",
+      "Close My Eyes 2010 Special 2026 ai-mix"
+    ],
+    "audio": "/media/songs/2026/09/2010-wows/close-my-eyes-ai-mix.mp3",
+    "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg",
+    "experience": "/archive/2010-wows/",
+    "shareUrl": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+    "youtubeId": "Vay_RvzdeGs",
+    "youtubeUrl": "https://youtube.com/shorts/Vay_RvzdeGs?feature=share",
+    "positiveSunoUrl": "https://suno.com/s/Zooqq8Q9KsTbnAjw",
+    "kind": "Archive · 2 playable versions",
+    "releaseManaged": true,
+    "lineage": "Written in 2010, resurfaced from long-term memory and rebuilt in 2026. The Special Remix, positive rewrite and Close My Eyes AI mix stay together under 2010 WOWS.",
+    "variants": [
+      {
+        "id": "close-my-eyes-ai-mix",
+        "label": "Close My Eyes · 2026 AI Mix",
+        "audio": "/media/songs/2026/09/2010-wows/close-my-eyes-ai-mix.mp3",
+        "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg",
+        "date": "2026-09-29",
+        "duration": 181.584,
+        "experience": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+        "shareUrl": "/archive/2010-wows/?version=close-my-eyes-ai-mix"
+      },
+      {
+        "id": "special-2026-remix",
+        "label": "Special 2026 Remix",
+        "audio": "/media/archive/2010-wows/2026/special-remix.mp3",
+        "cover": "https://i.ytimg.com/vi/Vay_RvzdeGs/hqdefault.jpg",
+        "duration": 167.832,
+        "experience": "/archive/2010-wows/?version=special-2026-remix",
+        "shareUrl": "/archive/2010-wows/?version=special-2026-remix"
+      }
+    ]
+  },
+  {
     "id": "the-games-she-hates",
     "title": "The Games She Hates",
     "artist": "MusicSubject × Call Me Daddy",
