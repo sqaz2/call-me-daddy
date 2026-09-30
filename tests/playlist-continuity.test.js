@@ -63,7 +63,7 @@ test('collection pages load the radio math before their local player',()=>{
     'cut-from-the-same-fabric/index.html':'/cut-from-the-same-fabric/player.js',
     'old-files-new-tools/index.html':'/old-files-new-tools/player.js',
     'archive/i-need-love/index.html':'/archive/continuous-tail.js',
-    'archive/2010-wows/index.html':'/archive/continuous-tail.js',
+    'archive/2010-wows/index.html':'/archive/2010-wows/player.js',
     'concrete-under-evergreens/index.html':'/concrete-under-evergreens/player.js',
     'namaste-hamster/index.html':'/namaste-hamster/namaste.js',
     'id-pick-you-first/index.html':'/id-pick-you-first/player.js',

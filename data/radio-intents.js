@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "2010-wows": {
+    "surprise": 76,
+    "laugh": 44,
+    "think": 90,
+    "level-up": 84,
+    "heavy": 70,
+    "old-files": 100
+  },
   "the-games-she-hates": {
     "surprise": 75,
     "laugh": 0,

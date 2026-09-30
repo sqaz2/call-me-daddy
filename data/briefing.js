@@ -1,9 +1,31 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-09-25T01:20:00Z",
+  updated: "2026-09-29T19:24:05-06:00",
   entries: [
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "2010-wows-close-my-eyes",
+      "published": "2026-09-29T19:24:05-06:00",
+      "type": "New version",
+      "songId": "2010-wows",
+      "variantId": "close-my-eyes-ai-mix",
+      "title": "2010 WOWS · Close My Eyes",
+      "summary": "Close My Eyes — the new 2026 AI mix — is now part of 2010 WOWS. Hear it alongside the earlier remix and follow the original song history.",
+      "href": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+      "sharePath": "/updates/2010-wows-close-my-eyes/",
+      "cta": "Hear Close My Eyes",
+      "intent": "old-files",
+      "featured": true,
+      "cardLines": [
+        "CLOSE MY",
+        "EYES"
+      ],
+      "cardTag": "2010 WOWS · New version",
+      "cardSummary": "A new 2026 AI mix, together with the earlier 2010 WOWS versions.",
+      "badge": "NEW MIX",
+      "featuredOrder": 0.09090909090909091
+    },
     {
       "id": "release-the-games-she-hates",
       "published": "2026-09-25T01:20:00Z",
@@ -24,7 +46,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "A fourteen-year-old poem. Three versions. One bonus.",
       "badge": "New release",
       "intent": "think",
-      "featuredOrder": 0.1
+      "featuredOrder": 0.18181818181818182
     },
     {
       "id": "release-make-me-an-animal-v6",
@@ -45,7 +67,7 @@ window.CMD_BRIEFING = {
       "cardTag": "New version · Suno v6",
       "cardSummary": "The new v6 recording. One Animal family, with the three earlier recordings preserved.",
       "badge": "NEW · v6",
-      "featuredOrder": 0.2
+      "featuredOrder": 0.2727272727272727
     },
     {
       "id": "release-cheap-to-inform",
@@ -67,7 +89,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Two open wounds. Two sold-out rooms. An imagined scene about family hurt and the audience around it—not an autobiography.",
       "badge": "Scene study",
       "intent": "think",
-      "featuredOrder": 0.3
+      "featuredOrder": 0.36363636363636365
     },
     {
       "id": "release-canadian-crop-dusting",
@@ -89,7 +111,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
       "badge": "New remix",
       "intent": "laugh",
-      "featuredOrder": 0.4
+      "featuredOrder": 0.45454545454545453
     },
     {
       "id": "release-everybody-else-less",
@@ -111,7 +133,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
       "badge": "New song page",
       "intent": "think",
-      "featuredOrder": 0.5
+      "featuredOrder": 0.5454545454545454
     },
     {
       "id": "release-set-a-table-for-two",
@@ -133,7 +155,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.6
+      "featuredOrder": 0.6363636363636364
     },
     {
       "id": "release-satans-loan",
@@ -155,7 +177,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.7
+      "featuredOrder": 0.7272727272727273
     },
     {
       "id": "release-superstore-effect",
@@ -177,7 +199,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.8
+      "featuredOrder": 0.8181818181818182
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -199,7 +221,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.9
+      "featuredOrder": 0.9090909090909091
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-still-building",published:"2026-09-10T10:30:00Z",type:"Two-song V6 release",songId:"stomp-clamp",title:"Still Building — Two Survival Songs",summary:"I Need That Sound and Survival Mode: two personal songs rebuilt in Suno V6 while I work toward a life beyond survival mode.",href:"/still-building/",sharePath:"/updates/release-still-building/",cta:"Play both V6 remixes",featured:true,featuredOrder:0.07142857142857142,cover:"/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg",cardLines:["STILL","BUILDING"],cardTag:"Two survival songs · Suno V6",cardSummary:"Working. Building. Trying to turn the van into a chapter instead of the ending.",badge:"New V6 remixes",intent:"think"},
