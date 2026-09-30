@@ -183,6 +183,22 @@ test('an unrelated or cross-origin window cannot adopt the site dock',()=>{
   const env=environment();assert.equal(env.api.adopt({}, {location:{origin:'https://malicious.test'}}),false);assert.equal(env.api.adopt({}, {location:{origin:env.location.origin}}),false);
 });
 
+test('the visible dock copies the actual version after an owner-frame source change',async()=>{
+  const top=environment(),child=environment(),audio=new Media('/main.mp3'),shared=[];
+  const catalog=[{id:'keep-moving',title:'Keep Moving',audio:'/main.mp3',variants:[{id:'v2',label:'v2',audio:'/main.mp3'},{id:'trap-mix',label:'Trap Mix',audio:'/trap.mp3'}]}];
+  top.window.CMD_SONGS=catalog;child.window.CMD_SONGS=catalog;
+  top.window.CMDShare={isFacebookBrowser:()=>true,shareTrack:(track,options)=>shared.push({track,options})};
+  child.window.top=top.window;const frame=new Element('iframe');frame.contentWindow=child.window;top.document.body.append(frame);
+  child.api.connect({id:'share-owner',media:audio,track:{...catalog[0],songId:'keep-moving',variantId:'v2'},share:()=>assert.fail('hidden legacy share callback must not be used')});audio.play();
+  const button=top.root().querySelector('.cmd-universal-share');
+  assert.equal(button.textContent,'Copy link');assert.equal(button.getAttribute('aria-label'),'Copy current song link');
+  button.emit('click');assert.equal(shared[0].track.variantId,'v2');
+  audio.src='/trap.mp3';audio.emit('timeupdate');
+  top.root().querySelector('.cmd-copy-song-link').emit('click');
+  assert.equal(shared[1].track.songId,'keep-moving');assert.equal(shared[1].track.variantId,'trap-mix');assert.equal(shared[1].track.variantLabel,'Trap Mix');assert.equal(shared[1].options.copyOnly,true);
+  assert.equal(audio.loads,0);assert.equal(audio.pauses,0);assert.equal(audio.plays,1);
+});
+
 test('the top dock independently checks a stale child report against its actual audio',async()=>{
   const env=environment({fetch:async()=>response()}),audio=new Media('/unfinished.mp3'),shared=[];
   env.window.CMDPlaylistRadio={share:track=>shared.push(track)};

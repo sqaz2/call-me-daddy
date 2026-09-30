@@ -12,6 +12,7 @@ const music = fs.readFileSync('music/index.html', 'utf8');
 const binding = { async fetch() { return Response.json(data); } };
 const source = html => new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8', etag: '"before"', 'content-length': '99' } });
 const icon = html => [...html.matchAll(/<link\b[^>]*>/gi)].map(m => attributes(m[0])).find(a => a.rel === 'icon')?.href;
+const playerBody = html => html.split('</head>')[1].replace(/(src=["']\/share\.js)\?[^"']*/gi, '$1');
 
 test('Animal v6 is lion artwork; all three older Animal recordings remain distinct', async () => {
   const song = data.songs['make-me-an-animal'];
@@ -37,7 +38,7 @@ test('every numbered recording with artwork has correct raw HTML, canonical and 
     const html = await response.text(), parsed = readHead(html);
     assert.equal(parsed.image, record.image, row.songId); assert.equal(icon(html), record.image, row.songId);
     assert.equal(parsed.canonical, record.canonical); assert.equal(response.headers.get('etag'), null);
-    assert.equal(html.split('</head>')[1], music.split('</head>')[1], 'player body must not change');
+    assert.equal(playerBody(html), playerBody(music), 'player body must not change apart from the share-script cache version');
     checked++;
   }
   assert.ok(checked > 50); console.log(`Verified ${checked} recording previews against the complete numbered registry.`);

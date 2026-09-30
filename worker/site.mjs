@@ -2,6 +2,8 @@ import { handleRequest } from './index.mjs';
 import { resolveSocial, rewriteHead, readHead, SOCIAL_VERSION } from '../song-social.mjs';
 
 export function addAppShell(html) {
+  // Refresh already-cached share scripts without rewriting generated releases.
+  html = html.replace(/(<script\b[^>]*\bsrc=["']\/share\.js)(?:\?[^"']*)?(["'])/gi, '$1?v=20260930-facebook-1$2');
   let head = '';
   if (!/<link\b[^>]*rel=["']manifest["']/i.test(html)) head += '<link rel="manifest" href="/manifest.webmanifest">';
   if (!/<meta\b[^>]*name=["']theme-color["']/i.test(html)) head += '<meta name="theme-color" content="#080808">';
@@ -42,7 +44,7 @@ export async function decorateSongHTML(request, response, env) {
 export default { async fetch(request, env) {
   const response = await handleRequest(request, env);
   // Revalidate playback code and the service worker on subsequent visits.
-  if (/^\/(?:continuous-playback\.js|universal-player\.js|persistent-site-browser\.js|listener-taste\.js|song-moments\.js|quiet-tip(?:-ui)?\.js|sw\.js|app\/install\.js|my-music\/(?:library|page)\.js|music\/(?:music|listening)\.js)$/.test(new URL(request.url).pathname)) {
+  if (/^\/(?:continuous-playback\.js|universal-player\.js|persistent-site-browser\.js|share\.js|listener-taste\.js|song-moments\.js|quiet-tip(?:-ui)?\.js|sw\.js|app\/install\.js|my-music\/(?:library|page)\.js|music\/(?:music|listening)\.js)$/.test(new URL(request.url).pathname)) {
     const headers = new Headers(response.headers);
     headers.set('cache-control', 'no-cache');
     return new Response(response.body, {status:response.status, statusText:response.statusText, headers});
