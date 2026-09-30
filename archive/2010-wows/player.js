@@ -71,6 +71,9 @@
       id:SONG_ID,audio,tracks,startIndex:selected,localCount:tracks.length,intent:'old-files',pageFollowSeconds:0,
       onTrack:track=>{const index=indexFor(track?.audio);if(index>=0)selected=index;message='';},
       onPlayState:()=>{message='';draw()},
+      // A waiting/stalled event can arrive after play. Clear it once audio
+      // time advances with enough decoded data to continue.
+      onTime:()=>{if(message==='Buffering…'&&!audio.paused&&audio.readyState>=3){message='';draw()}},
       onStatus:kind=>{message=kind==='failed'?'Playback stopped. Tap the artwork to retry.':kind==='error'?'Recording unavailable. The shared player is trying the next song.':kind==='blocked'?'Ready — tap the artwork to continue.':'Buffering…';draw()},
       onNeedsTap:()=>{message='Ready — tap the artwork to continue.';draw()}
     });
