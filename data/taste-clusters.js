@@ -58,7 +58,7 @@
       keywords:['level-up','anthem','keep-moving','brick','power'],
       songIds:[
         'level-up','keep-moving','one-brick','find-your-people','hard-earned-light',
-        'power-moves-only','stomp-clamp','8-walmart-parking-lot'
+        'power-moves-only','stomp-clamp','8-walmart-parking-lot','since-before-youtube'
       ]
     },
     {

@@ -1,6 +1,42 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "since-before-youtube",
+    "title": "since before YouTube",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-30",
+    "project": "since before YouTube",
+    "description": "“It ain’t brand new—it’s just new to you.” The final recording of since before YouTube, with the full lyrics and a release note from the McDonald’s drive-through.",
+    "aliases": [
+      "Before YouTube",
+      "Tell Me Something That I Don’t Know",
+      "It’s Just New to You"
+    ],
+    "audio": "/media/songs/2026/09/since-before-youtube/final.mp3",
+    "cover": "/media/songs/2026/09/since-before-youtube/cover.jpg",
+    "experience": "/since-before-youtube/",
+    "shareUrl": "/since-before-youtube/?version=final",
+    "kind": "Song · Final version",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/LwgadsoEOqZGTwPK",
+    "variants": [
+      {
+        "id": "final",
+        "label": "Final version",
+        "audio": "/media/songs/2026/09/since-before-youtube/final.mp3",
+        "cover": "/media/songs/2026/09/since-before-youtube/cover.jpg",
+        "duration": 120.432,
+        "date": "2026-09-30",
+        "experience": "/since-before-youtube/?version=final",
+        "shareUrl": "/since-before-youtube/?version=final",
+        "sunoUrl": "https://suno.com/s/LwgadsoEOqZGTwPK"
+      }
+    ]
+  },
+  {
     "id": "8-walmart-parking-lot",
     "title": "8 (Walmart Parking Lot)",
     "artist": "MusicSubject × Call Me Daddy",

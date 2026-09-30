@@ -468,6 +468,13 @@
         "extended-hook",
         "extended-hook-remix"
       ]
+    },
+    {
+      "number": 63,
+      "songId": "since-before-youtube",
+      "versions": [
+        "final"
+      ]
     }
   ]
 }
