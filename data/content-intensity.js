@@ -21,6 +21,7 @@
     'numbness-as-a-trap':'raw',
 
     // --- deep (melancholy / heartbreak / heavy but not ambush) ---
+    'nobody-wants-to-listen':'deep',
     'cheap-to-inform':'deep',
     'the-games-she-hates':'deep',
     'the-loudest-one-in-my-head':'deep',
@@ -47,6 +48,7 @@
     'satans-loan':'deep',
 
     // --- light (comedy / satire / fun / forward motion) ---
+    '8-walmart-parking-lot':'light',
     'armando':'light',
     'id-pick-you-first':'light',
     'did-armando-die-after-you-held-his-beer':'light',

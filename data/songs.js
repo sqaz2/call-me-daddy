@@ -1,6 +1,113 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "8-walmart-parking-lot",
+    "title": "8 (Walmart Parking Lot)",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-29",
+    "project": "8 (Walmart Parking Lot)",
+    "description": "Eight twelve in the morning after an all-night DAW build. Burger King breakfast, the van, and a Walmart parking lot. Hear the remastered recording.",
+    "aliases": [
+      "8",
+      "Walmart Parking Lot",
+      "Smoking Weed in a Walmart Parking Lot"
+    ],
+    "audio": "/media/songs/2026/09/8-walmart-parking-lot/remastered.mp3",
+    "cover": "/media/songs/2026/09/8-walmart-parking-lot/remastered.jpg",
+    "experience": "/8-walmart-parking-lot/",
+    "shareUrl": "/8-walmart-parking-lot/?version=remastered",
+    "kind": "Hip-hop · Dubstep",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "remastered",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/09/8-walmart-parking-lot/remastered.mp3",
+        "cover": "/media/songs/2026/09/8-walmart-parking-lot/remastered.jpg",
+        "duration": 168.984,
+        "date": "2026-09-29",
+        "experience": "/8-walmart-parking-lot/?version=remastered",
+        "shareUrl": "/8-walmart-parking-lot/?version=remastered"
+      }
+    ]
+  },
+  {
+    "id": "nobody-wants-to-listen",
+    "title": "Nobody Wants to Listen",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-29",
+    "project": "Nobody Wants to Listen",
+    "description": "I can make music, but nobody wants to listen. The main track and four alternate cuts, including I Can Make Music — Chant and both Music with the Devil versions.",
+    "aliases": [
+      "I Can Make Music",
+      "I Can Make Music — Chant",
+      "Music with the Devil",
+      "Music with the Devil — Extended Hook"
+    ],
+    "audio": "/media/songs/2026/09/nobody-wants-to-listen/main.mp3",
+    "cover": "/media/songs/2026/09/nobody-wants-to-listen/main.jpg",
+    "experience": "/nobody-wants-to-listen/",
+    "shareUrl": "/nobody-wants-to-listen/?version=main",
+    "kind": "Chant · Spoken word",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Nobody Wants to Listen",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/main.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/main.jpg",
+        "duration": 65.04,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=main",
+        "shareUrl": "/nobody-wants-to-listen/?version=main"
+      },
+      {
+        "id": "beat-2",
+        "label": "Beat 2",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/beat-2.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/beat-2.jpg",
+        "duration": 117.912,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=beat-2",
+        "shareUrl": "/nobody-wants-to-listen/?version=beat-2"
+      },
+      {
+        "id": "chant",
+        "label": "I Can Make Music · Chant",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/chant.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/chant.jpg",
+        "duration": 118.704,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=chant",
+        "shareUrl": "/nobody-wants-to-listen/?version=chant"
+      },
+      {
+        "id": "extended-hook",
+        "label": "Extended Hook",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook.jpg",
+        "duration": 118.752,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=extended-hook",
+        "shareUrl": "/nobody-wants-to-listen/?version=extended-hook"
+      },
+      {
+        "id": "extended-hook-remix",
+        "label": "Extended Hook · Remix",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook-remix.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook-remix.jpg",
+        "duration": 48.144,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=extended-hook-remix",
+        "shareUrl": "/nobody-wants-to-listen/?version=extended-hook-remix"
+      }
+    ]
+  },
+  {
     "id": "2010-wows",
     "title": "2010 WOWS",
     "artist": "MusicSubject × Call Me Daddy",
@@ -9,22 +116,33 @@ window.CMD_SONGS = [
     "date": "2026-09-29",
     "originalYear": 2010,
     "project": "Archive",
-    "description": "A song from 2010, remembered and rebuilt in 2026. Close My Eyes joins the Special 2026 Remix and the positive rewrite in the same song history.",
+    "description": "A song from 2010, remembered and rebuilt in 2026. Gangster as Fuck Remix, Close My Eyes and the Special 2026 Remix stay together with the positive rewrite and original song history.",
     "aliases": [
       "Close My Eyes",
-      "Close My Eyes 2010 Special 2026 ai-mix"
+      "Close My Eyes 2010 Special 2026 ai-mix",
+      "2010 Wows (Gangster as Fuck Remix)"
     ],
-    "audio": "/media/songs/2026/09/2010-wows/close-my-eyes-ai-mix.mp3",
-    "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg",
+    "audio": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.mp3",
+    "cover": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.jpg",
     "experience": "/archive/2010-wows/",
-    "shareUrl": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+    "shareUrl": "/archive/2010-wows/?version=gangster-as-fuck-remix",
     "youtubeId": "Vay_RvzdeGs",
     "youtubeUrl": "https://youtube.com/shorts/Vay_RvzdeGs?feature=share",
     "positiveSunoUrl": "https://suno.com/s/Zooqq8Q9KsTbnAjw",
-    "kind": "Archive · 2 playable versions",
+    "kind": "Archive · 3 playable versions",
     "releaseManaged": true,
-    "lineage": "Written in 2010, resurfaced from long-term memory and rebuilt in 2026. The Special Remix, positive rewrite and Close My Eyes AI mix stay together under 2010 WOWS.",
+    "lineage": "Written in 2010, resurfaced from long-term memory and rebuilt in 2026. The Special Remix, positive rewrite, Close My Eyes AI mix and Gangster as Fuck Remix stay together under 2010 WOWS.",
     "variants": [
+      {
+        "id": "gangster-as-fuck-remix",
+        "label": "Gangster as Fuck Remix",
+        "audio": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.mp3",
+        "cover": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.jpg",
+        "duration": 169.152,
+        "date": "2026-09-29",
+        "experience": "/archive/2010-wows/?version=gangster-as-fuck-remix",
+        "shareUrl": "/archive/2010-wows/?version=gangster-as-fuck-remix"
+      },
       {
         "id": "close-my-eyes-ai-mix",
         "label": "Close My Eyes · 2026 AI Mix",

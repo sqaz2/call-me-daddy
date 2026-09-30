@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "8-walmart-parking-lot",
+    "title": "8 (Walmart Parking Lot)",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-29",
+    "project": "8 (Walmart Parking Lot)",
+    "description": "Eight twelve in the morning after an all-night DAW build. Burger King breakfast, the van, and a Walmart parking lot. Hear the remastered recording.",
+    "aliases": [
+      "8",
+      "Walmart Parking Lot",
+      "Smoking Weed in a Walmart Parking Lot"
+    ],
+    "audio": "/media/songs/2026/09/8-walmart-parking-lot/remastered.mp3",
+    "cover": "/media/songs/2026/09/8-walmart-parking-lot/remastered.jpg",
+    "experience": "/8-walmart-parking-lot/",
+    "shareUrl": "/8-walmart-parking-lot/?version=remastered",
+    "kind": "Hip-hop · Dubstep",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "remastered",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/09/8-walmart-parking-lot/remastered.mp3",
+        "cover": "/media/songs/2026/09/8-walmart-parking-lot/remastered.jpg",
+        "duration": 168.984,
+        "date": "2026-09-29",
+        "experience": "/8-walmart-parking-lot/?version=remastered",
+        "shareUrl": "/8-walmart-parking-lot/?version=remastered"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 90,
+    "laugh": 45,
+    "think": 60,
+    "level-up": 75,
+    "heavy": 65,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-8-walmart-parking-lot",
+    "published": "2026-09-29T21:32:28-06:00",
+    "type": "New release",
+    "songId": "8-walmart-parking-lot",
+    "title": "8 (Walmart Parking Lot)",
+    "summary": "Eight twelve in the morning after an all-night DAW build. Burger King breakfast, the van, and a Walmart parking lot. Hear the remastered recording.",
+    "href": "/8-walmart-parking-lot/",
+    "sharePath": "/updates/release-8-walmart-parking-lot/",
+    "cta": "Open the release",
+    "featured": true,
+    "cover": "/media/songs/2026/09/8-walmart-parking-lot/remastered.jpg",
+    "cardLines": [
+      "8",
+      "WALMART PARKING LOT"
+    ],
+    "cardTag": "Remastered · Hip-hop / dubstep",
+    "cardSummary": "Eight twelve in the morning after an all-night DAW build. Burger King breakfast, the van, and a Walmart parking lot. Hear the remastered recording.",
+    "badge": "NEW RELEASE",
+    "intent": "surprise"
+  }
+}

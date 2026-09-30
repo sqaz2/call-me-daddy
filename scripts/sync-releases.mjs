@@ -82,7 +82,7 @@ function parseManifest(file) {
 }
 
 function validateManifest(manifest, relative) {
-  const { song, radio, update } = manifest || {};
+  const { song, radio } = manifest || {};
   if (manifest?.schemaVersion !== 1) report(`${relative} needs schemaVersion 1`);
   if (!song || typeof song !== 'object') return report(`${relative} needs a song object`);
   if (!safeId.test(song.id || '')) report(`${relative} has an invalid song.id`);
@@ -115,20 +115,25 @@ function validateManifest(manifest, relative) {
     }
   }
 
-  if (!update || typeof update !== 'object') return report(`${relative} needs an update object`);
-  if (!safeId.test(update.id || '')) report(`${relative} has an invalid update.id`);
-  if (update.songId !== song.id) report(`${relative} update.songId must equal song.id`);
-  if (!validDate.test(String(update.published || ''))) report(`${relative} has an unsupported update.published value`);
-  if (!String(update.summary || '').trim()) report(`${relative} needs update.summary`);
-  if (!String(update.href || '').trim()) report(`${relative} needs update.href`);
-  requireLocalPage(update.href, `${relative} update.href`);
-  const expectedSharePath = `/updates/${update.id}/`;
-  if (update.sharePath !== expectedSharePath) report(`${relative} update.sharePath must be ${expectedSharePath}`);
-  if (update.featured !== true) report(`${relative} must set update.featured to true so new music reaches the homepage`);
-  if (!Array.isArray(update.cardLines) || !update.cardLines.length) report(`${relative} needs update.cardLines for the homepage card`);
-  if (!song.experience && song.audio) {
-    if (!isExactCatalogRoute(song.shareUrl, song.id)) report(`${relative} song.shareUrl must target /music/?song=${song.id} until its story exists`);
-    if (!isExactCatalogRoute(update.href, song.id)) report(`${relative} update.href must target /music/?song=${song.id} until its story exists`);
+  if (manifest.previousUpdates !== undefined && !Array.isArray(manifest.previousUpdates)) report(`${relative} previousUpdates must be an array`);
+  for (const update of [manifest.update, ...(Array.isArray(manifest.previousUpdates) ? manifest.previousUpdates : [])]) {
+    if (!update || typeof update !== 'object') { report(`${relative} needs an update object`); continue; }
+    if (!safeId.test(update.id || '')) report(`${relative} has an invalid update.id`);
+    if (update.songId !== song.id) report(`${relative} update.songId must equal song.id`);
+    if (!validDate.test(String(update.published || ''))) report(`${relative} has an unsupported update.published value`);
+    if (!String(update.summary || '').trim()) report(`${relative} needs update.summary`);
+    if (!String(update.href || '').trim()) report(`${relative} needs update.href`);
+    requireLocalPage(update.href, `${relative} update.href`);
+    const expectedSharePath = `/updates/${update.id}/`;
+    if (update.sharePath !== expectedSharePath) report(`${relative} update.sharePath must be ${expectedSharePath}`);
+    if (update === manifest.update && update.featured !== true) report(`${relative} must set update.featured to true so new music reaches the homepage`);
+    if (update.variantId && !song.variants?.some(variant => variant.id === update.variantId)) report(`${relative} update ${update.id} refers to an unknown version`);
+    requireLocalAsset(update.cover, `${relative} update ${update.id} cover`);
+    if (!Array.isArray(update.cardLines) || !update.cardLines.length) report(`${relative} needs update.cardLines for the homepage card`);
+    if (!song.experience && song.audio) {
+      if (!isExactCatalogRoute(song.shareUrl, song.id)) report(`${relative} song.shareUrl must target /music/?song=${song.id} until its story exists`);
+      if (!isExactCatalogRoute(update.href, song.id)) report(`${relative} update.href must target /music/?song=${song.id} until its story exists`);
+    }
   }
 }
 
@@ -139,6 +144,10 @@ const files = fs.readdirSync(releaseRoot)
 
 const parsed = files.map(parseManifest).filter(Boolean);
 for (const item of parsed) validateManifest(item.value, item.relative);
+if (problems.length) {
+  problems.forEach(problem => console.error(`- ${problem}`));
+  process.exit(1);
+}
 
 const releases = parsed.map(item => item.value).sort((a, b) => {
   const left = Date.parse(a.update.published) || 0;
@@ -147,7 +156,9 @@ const releases = parsed.map(item => item.value).sort((a, b) => {
 });
 
 const songIds = releases.map(item => item.song.id);
-const updateIds = releases.map(item => item.update.id);
+const announcements = releases.flatMap(release => [release.update, ...(Array.isArray(release.previousUpdates) ? release.previousUpdates : [])].map(update => ({ release, update })))
+  .sort((a, b) => Date.parse(b.update.published) - Date.parse(a.update.published) || a.update.id.localeCompare(b.update.id));
+const updateIds = announcements.map(item => item.update.id);
 if (new Set(songIds).size !== songIds.length) report('Release manifests contain duplicate song ids');
 if (new Set(updateIds).size !== updateIds.length) report('Release manifests contain duplicate update ids');
 
@@ -164,12 +175,15 @@ const briefingOriginal = read('data/briefing.js');
 const radioOriginal = read('data/radio-intents.js');
 const sitemapOriginal = read('sitemap.xml');
 
-const updates = releases.map((release, index) => {
-  const update = { ...release.update };
+const legacyOrders = [...withoutBlock(briefingOriginal, markers.updates).matchAll(/featuredOrder["']?\s*:\s*([\d.]+)/g)]
+  .map(match => Number(match[1])).filter(order => order > 0 && Number.isFinite(order));
+const firstLegacyOrder = Math.min(1, ...legacyOrders);
+const updates = announcements.map(({ update: announcement }, index) => {
+  const update = { ...announcement };
   delete update.featuredOrder;
-  // Manifest releases are newer than the hand-curated legacy slots (which start
-  // at 1). Fractions keep their explicit order without renumbering old cards.
-  if (update.featured) update.featuredOrder = (index + 1) / (releases.length + 1);
+  // Legacy cards can also use fractional slots. Keep generated orders below
+  // every reserved legacy slot without renumbering older hand-curated cards.
+  if (update.featured) update.featuredOrder = firstLegacyOrder * (index + 1) / (announcements.length + 1);
   return update;
 });
 
@@ -196,7 +210,7 @@ const sitemapBase = withoutBlock(sitemapOriginal, markers.sitemap);
 const existingUrls = new Set([...sitemapBase.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]));
 const generatedUrls = [];
 for (const release of releases) {
-  for (const route of [release.update.sharePath, release.song.experience]) {
+  for (const route of [release.update.sharePath, ...(release.previousUpdates || []).map(update => update.sharePath), release.song.experience]) {
     if (!route || !route.startsWith('/') || route.includes('#') || route.includes('?')) continue;
     const url = `${origin}${route}`;
     if (!existingUrls.has(url) && !generatedUrls.includes(url)) generatedUrls.push(url);
@@ -233,8 +247,8 @@ function renderUpdatePage(release, update) {
   const song = release.song;
   const title = update.title || song.title;
   const summary = update.summary || song.description;
-  const cover = update.cover || song.cover;
-  const version = song.variants?.[0]?.id || 'main';
+  const version = update.variantId || song.variants?.[0]?.id || 'main';
+  const cover = update.cover || song.variants?.find(variant => variant.id === version)?.cover || song.cover;
   const player = `/music/?song=${encodeURIComponent(song.id)}&version=${encodeURIComponent(version)}&intent=${encodeURIComponent(update.intent || 'surprise')}&share=1`;
   const note = song.lineage || song.description;
   const canonical = absoluteUrl(update.sharePath);
@@ -288,8 +302,8 @@ const planned = [
   ['data/radio-intents.js', radioExpected],
   ['sitemap.xml', sitemapExpected]
 ];
-for (let index = 0; index < releases.length; index += 1) {
-  planned.push([`updates/${releases[index].update.id}/index.html`, renderUpdatePage(releases[index], updates[index])]);
+for (let index = 0; index < announcements.length; index += 1) {
+  planned.push([`updates/${updates[index].id}/index.html`, renderUpdatePage(announcements[index].release, updates[index])]);
 }
 
 for (const [relative, expected] of planned) {

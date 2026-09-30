@@ -26,7 +26,7 @@
         'couple-friends-couple-calls','the-loudest-one-in-my-head','mind-at-war',
         'shooting-star','september-26th-heartbreak','heartbreak-you-water-me','cloudlife',
         'thirty-six','broke-my-mug-not-my-song','fractured-face','her-perfume-rides-shotgun',
-        '2010-wows','satans-loan','the-games-she-hates'
+        '2010-wows','satans-loan','the-games-she-hates','nobody-wants-to-listen'
       ]
     },
     {
@@ -58,7 +58,7 @@
       keywords:['level-up','anthem','keep-moving','brick','power'],
       songIds:[
         'level-up','keep-moving','one-brick','find-your-people','hard-earned-light',
-        'power-moves-only','stomp-clamp'
+        'power-moves-only','stomp-clamp','8-walmart-parking-lot'
       ]
     },
     {
