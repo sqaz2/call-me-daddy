@@ -122,6 +122,22 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "8-walmart-parking-lot": {
+    "surprise": 90,
+    "laugh": 45,
+    "think": 60,
+    "level-up": 75,
+    "heavy": 65,
+    "old-files": 0
+  },
+  "nobody-wants-to-listen": {
+    "surprise": 85,
+    "laugh": 20,
+    "think": 90,
+    "level-up": 65,
+    "heavy": 35,
+    "old-files": 20
+  },
   "2010-wows": {
     "surprise": 76,
     "laugh": 44,

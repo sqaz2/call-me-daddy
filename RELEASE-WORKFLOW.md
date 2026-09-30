@@ -43,6 +43,12 @@ Remove `song.experience`. Set both `song.shareUrl` and `update.href` to an exact
 - Never invent a story, platform link or listener claim to fill a blank field.
 - Commit the manifest and every generated file together. CI rejects drift.
 
+For another version of an existing song, keep its manifest and add the recording
+to `song.variants`. Move its earlier `update` into `previousUpdates` (an optional
+array), then write the new `update` with an exact `variantId`. Earlier announcements
+keep their dates, share paths and version links; set their `featured` to false so
+the homepage features the latest announcement for that song.
+
 
 ## Exact lyrics (optional)
 

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "nobody-wants-to-listen",
+    "title": "Nobody Wants to Listen",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-29",
+    "project": "Nobody Wants to Listen",
+    "description": "I can make music, but nobody wants to listen. The main track and four alternate cuts, including I Can Make Music — Chant and both Music with the Devil versions.",
+    "aliases": [
+      "I Can Make Music",
+      "I Can Make Music — Chant",
+      "Music with the Devil",
+      "Music with the Devil — Extended Hook"
+    ],
+    "audio": "/media/songs/2026/09/nobody-wants-to-listen/main.mp3",
+    "cover": "/media/songs/2026/09/nobody-wants-to-listen/main.jpg",
+    "experience": "/nobody-wants-to-listen/",
+    "shareUrl": "/nobody-wants-to-listen/?version=main",
+    "kind": "Chant · Spoken word",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Nobody Wants to Listen",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/main.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/main.jpg",
+        "duration": 65.04,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=main",
+        "shareUrl": "/nobody-wants-to-listen/?version=main"
+      },
+      {
+        "id": "beat-2",
+        "label": "Beat 2",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/beat-2.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/beat-2.jpg",
+        "duration": 117.912,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=beat-2",
+        "shareUrl": "/nobody-wants-to-listen/?version=beat-2"
+      },
+      {
+        "id": "chant",
+        "label": "I Can Make Music · Chant",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/chant.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/chant.jpg",
+        "duration": 118.704,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=chant",
+        "shareUrl": "/nobody-wants-to-listen/?version=chant"
+      },
+      {
+        "id": "extended-hook",
+        "label": "Extended Hook",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook.jpg",
+        "duration": 118.752,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=extended-hook",
+        "shareUrl": "/nobody-wants-to-listen/?version=extended-hook"
+      },
+      {
+        "id": "extended-hook-remix",
+        "label": "Extended Hook · Remix",
+        "audio": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook-remix.mp3",
+        "cover": "/media/songs/2026/09/nobody-wants-to-listen/extended-hook-remix.jpg",
+        "duration": 48.144,
+        "date": "2026-09-29",
+        "experience": "/nobody-wants-to-listen/?version=extended-hook-remix",
+        "shareUrl": "/nobody-wants-to-listen/?version=extended-hook-remix"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 85,
+    "laugh": 20,
+    "think": 90,
+    "level-up": 65,
+    "heavy": 35,
+    "old-files": 20
+  },
+  "update": {
+    "id": "release-nobody-wants-to-listen",
+    "published": "2026-09-29T21:32:27-06:00",
+    "type": "New release",
+    "songId": "nobody-wants-to-listen",
+    "title": "Nobody Wants to Listen",
+    "summary": "I can make music, but nobody wants to listen. The main track and four alternate cuts, including I Can Make Music — Chant and both Music with the Devil versions.",
+    "href": "/nobody-wants-to-listen/",
+    "sharePath": "/updates/release-nobody-wants-to-listen/",
+    "cta": "Open the release",
+    "featured": true,
+    "cover": "/media/songs/2026/09/nobody-wants-to-listen/main.jpg",
+    "cardLines": [
+      "NOBODY WANTS",
+      "TO LISTEN"
+    ],
+    "cardTag": "Main track + four alternate cuts",
+    "cardSummary": "I can make music, but nobody wants to listen. The main track and four alternate cuts, including I Can Make Music — Chant and both Music with the Devil versions.",
+    "badge": "NEW RELEASE",
+    "intent": "think"
+  }
+}

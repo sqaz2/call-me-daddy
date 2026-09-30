@@ -9,22 +9,33 @@
     "date": "2026-09-29",
     "originalYear": 2010,
     "project": "Archive",
-    "description": "A song from 2010, remembered and rebuilt in 2026. Close My Eyes joins the Special 2026 Remix and the positive rewrite in the same song history.",
+    "description": "A song from 2010, remembered and rebuilt in 2026. Gangster as Fuck Remix, Close My Eyes and the Special 2026 Remix stay together with the positive rewrite and original song history.",
     "aliases": [
       "Close My Eyes",
-      "Close My Eyes 2010 Special 2026 ai-mix"
+      "Close My Eyes 2010 Special 2026 ai-mix",
+      "2010 Wows (Gangster as Fuck Remix)"
     ],
-    "audio": "/media/songs/2026/09/2010-wows/close-my-eyes-ai-mix.mp3",
-    "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg",
+    "audio": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.mp3",
+    "cover": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.jpg",
     "experience": "/archive/2010-wows/",
-    "shareUrl": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+    "shareUrl": "/archive/2010-wows/?version=gangster-as-fuck-remix",
     "youtubeId": "Vay_RvzdeGs",
     "youtubeUrl": "https://youtube.com/shorts/Vay_RvzdeGs?feature=share",
     "positiveSunoUrl": "https://suno.com/s/Zooqq8Q9KsTbnAjw",
-    "kind": "Archive · 2 playable versions",
+    "kind": "Archive · 3 playable versions",
     "releaseManaged": true,
-    "lineage": "Written in 2010, resurfaced from long-term memory and rebuilt in 2026. The Special Remix, positive rewrite and Close My Eyes AI mix stay together under 2010 WOWS.",
+    "lineage": "Written in 2010, resurfaced from long-term memory and rebuilt in 2026. The Special Remix, positive rewrite, Close My Eyes AI mix and Gangster as Fuck Remix stay together under 2010 WOWS.",
     "variants": [
+      {
+        "id": "gangster-as-fuck-remix",
+        "label": "Gangster as Fuck Remix",
+        "audio": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.mp3",
+        "cover": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.jpg",
+        "duration": 169.152,
+        "date": "2026-09-29",
+        "experience": "/archive/2010-wows/?version=gangster-as-fuck-remix",
+        "shareUrl": "/archive/2010-wows/?version=gangster-as-fuck-remix"
+      },
       {
         "id": "close-my-eyes-ai-mix",
         "label": "Close My Eyes · 2026 AI Mix",
@@ -55,24 +66,49 @@
     "old-files": 100
   },
   "update": {
-    "id": "2010-wows-close-my-eyes",
-    "published": "2026-09-29T19:24:05-06:00",
+    "id": "2010-wows-gangster-remix",
+    "published": "2026-09-29T21:32:26-06:00",
     "type": "New version",
     "songId": "2010-wows",
-    "variantId": "close-my-eyes-ai-mix",
-    "title": "2010 WOWS · Close My Eyes",
-    "summary": "Close My Eyes — the new 2026 AI mix — is now part of 2010 WOWS. Hear it alongside the earlier remix and follow the original song history.",
-    "href": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
-    "sharePath": "/updates/2010-wows-close-my-eyes/",
-    "cta": "Hear Close My Eyes",
+    "variantId": "gangster-as-fuck-remix",
+    "title": "2010 WOWS · Gangster as Fuck Remix",
+    "summary": "Gangster as Fuck Remix joins Close My Eyes and the Special 2026 Remix on the existing 2010 WOWS page. Three local recordings, with the positive rewrite and song history still together.",
+    "href": "/archive/2010-wows/?version=gangster-as-fuck-remix",
+    "sharePath": "/updates/2010-wows-gangster-remix/",
+    "cta": "Hear the new remix",
     "intent": "old-files",
     "featured": true,
+    "cover": "/media/songs/2026/09/2010-wows/gangster-as-fuck-remix.jpg",
     "cardLines": [
-      "CLOSE MY",
-      "EYES"
+      "2010 WOWS",
+      "GANGSTER REMIX"
     ],
-    "cardTag": "2010 WOWS · New version",
-    "cardSummary": "A new 2026 AI mix, together with the earlier 2010 WOWS versions.",
+    "cardTag": "2010 WOWS · Another version",
+    "cardSummary": "Gangster as Fuck Remix joins the existing 2010 WOWS versions.",
     "badge": "NEW MIX"
-  }
+  },
+  "previousUpdates": [
+    {
+      "id": "2010-wows-close-my-eyes",
+      "published": "2026-09-29T19:24:05-06:00",
+      "type": "New version",
+      "songId": "2010-wows",
+      "variantId": "close-my-eyes-ai-mix",
+      "title": "2010 WOWS · Close My Eyes",
+      "summary": "Close My Eyes — the new 2026 AI mix — is now part of 2010 WOWS. Hear it alongside the earlier remix and follow the original song history.",
+      "href": "/archive/2010-wows/?version=close-my-eyes-ai-mix",
+      "sharePath": "/updates/2010-wows-close-my-eyes/",
+      "cta": "Hear Close My Eyes",
+      "intent": "old-files",
+      "featured": false,
+      "cardLines": [
+        "CLOSE MY",
+        "EYES"
+      ],
+      "cardTag": "2010 WOWS · New version",
+      "cardSummary": "A new 2026 AI mix, together with the earlier 2010 WOWS versions.",
+      "badge": "NEW MIX",
+      "cover": "/media/songs/2026/09/2010-wows/close-my-eyes-cover.jpg"
+    }
+  ]
 }

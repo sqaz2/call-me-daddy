@@ -14,7 +14,8 @@
       "songId": "2010-wows",
       "versions": [
         "special-2026-remix",
-        "close-my-eyes-ai-mix"
+        "close-my-eyes-ai-mix",
+        "gangster-as-fuck-remix"
       ]
     },
     {
@@ -448,6 +449,24 @@
         "be-yourself",
         "be-yourself-2",
         "end-this-cycle"
+      ]
+    },
+    {
+      "number": 61,
+      "songId": "8-walmart-parking-lot",
+      "versions": [
+        "remastered"
+      ]
+    },
+    {
+      "number": 62,
+      "songId": "nobody-wants-to-listen",
+      "versions": [
+        "main",
+        "beat-2",
+        "chant",
+        "extended-hook",
+        "extended-hook-remix"
       ]
     }
   ]

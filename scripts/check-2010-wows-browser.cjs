@@ -42,7 +42,7 @@ const out=process.env.QA_OUTPUT||'/tmp/replay-qa/2010-wows';fs.mkdirSync(out,{re
   await page.goto(base+'/archive/2010-wows/?version=special-2026-remix',{waitUntil:'networkidle'});assert.equal(await page.locator('[data-cut="special-2026-remix"]').getAttribute('aria-pressed'),'true');await page.locator('#releasePlay').click();await wait('special-2026-remix');check('Existing exact-version links still select the earlier remix');
   await page.goto(base+'/updates/',{waitUntil:'networkidle'});
   const tracks=await page.evaluate(()=>window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries}).tracks.map(t=>({id:t.songId,version:t.variantId})));
-  assert.equal(tracks[0].id,'2010-wows');assert.equal(tracks[0].version,'close-my-eyes-ai-mix');check('What’s New starts with this exact new mix');
+  assert(tracks.some(track=>track.id==='2010-wows'&&track.version==='gangster-as-fuck-remix'));check('What’s New includes the newest exact 2010 remix');
   const newCard=page.locator('a[href*="/archive/2010-wows/"][href*="close-my-eyes-ai-mix"]');assert(await newCard.count()>0);check('What’s New links to the existing song page');
   assert.deepEqual(errors,[]);check('No browser JavaScript errors');
  }finally{fs.writeFileSync(out+'/report.json',JSON.stringify({checks,errors},null,2));await browser.close()}

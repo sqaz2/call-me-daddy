@@ -1,6 +1,9 @@
 (()=>{
   'use strict';
-  const SONG_ID='2010-wows';
+  const SONG_ID=document.body.dataset.songId;
+  const intent=document.body.dataset.radioIntent||'surprise';
+  let lyrics={};
+  try{lyrics=JSON.parse(document.getElementById('releaseLyricsData')?.textContent||'{}')}catch{}
   const byId=id=>document.getElementById(id);
   const audio=byId('releaseAudio');
   const coverButton=byId('releasePlay');
@@ -14,7 +17,7 @@
     return;
   }
   const variants=song.variants.filter(variant=>variant?.audio);
-  const tracks=variants.map(variant=>({...song,...variant,id:`${SONG_ID}:${variant.id}`,songId:SONG_ID,variantId:variant.id,variantLabel:variant.label,variantCount:variants.length,title:song.title,cover:variant.cover||song.cover,radioIntent:'old-files'}));
+  const tracks=variants.map(variant=>({...song,...variant,id:`${SONG_ID}:${variant.id}`,songId:SONG_ID,variantId:variant.id,variantLabel:variant.label,variantCount:variants.length,title:song.title,cover:variant.cover||song.cover,radioIntent:intent}));
   const absolute=value=>{try{return new URL(value,location.href).href}catch{return String(value||'')}};
   const indexFor=source=>source?tracks.findIndex(track=>absolute(track.audio)===absolute(source)):-1;
   const formatTime=value=>{const seconds=Math.round(Number(value)||0);return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`};
@@ -54,13 +57,15 @@
     if(text)text.textContent=`${playing?'Pause':'Play'} ${track.variantLabel.toLowerCase()}`;
     if(label)label.textContent=track.variantLabel;
     if(duration)duration.textContent=formatTime(track.duration);
-    if(share){share.dataset.shareTitle=`${track.title} — ${track.variantLabel}`;share.dataset.shareUrl=new URL(`${song.experience}?version=${encodeURIComponent(track.variantId)}`,location.origin).href;share.dataset.shareText=`Listen to 2010 WOWS — ${track.variantLabel}.`}
+    if(share){share.dataset.shareTitle=`${track.title} — ${track.variantLabel}`;share.dataset.shareUrl=new URL(`${song.experience}?version=${encodeURIComponent(track.variantId)}`,location.origin).href;share.dataset.shareText=`Listen to ${track.title} — ${track.variantLabel}.`}
+    const words=byId('releaseLyrics'),lyricsLabel=byId('releaseLyricsLabel');
+    if(words&&words.dataset.version!==track.variantId){words.textContent=lyrics[track.variantId]||'';words.dataset.version=track.variantId;if(lyricsLabel)lyricsLabel.textContent=`${track.variantLabel} · lyrics`}
     document.querySelectorAll('[data-cut]').forEach(button=>{const active=button.dataset.cut===track.variantId;button.setAttribute('aria-pressed',String(active));const icon=button.querySelector('.cut-icon');if(icon)icon.textContent=active&&playing?'❚❚':'▶';});
     if(status){
       if(message)status.textContent=message;
       else if(current.index>=0)status.textContent=`${playing?'Playing':'Paused'} · ${track.variantLabel} · use the dock to seek or skip.`;
       else if(current.playing)status.textContent='Another song is playing in the dock. Tap a cut here to return.';
-      else status.textContent='Tap the artwork or a cut to play. Same song, three versions.';
+      else status.textContent=tracks.length>1?'Tap the artwork or choose a version to play.':'Tap the artwork to play.';
     }
   };
   const ensureController=()=>{
@@ -68,7 +73,7 @@
     if(!window.CMDContinuousPlayback?.create){message='The player did not load. Refresh to try again.';draw();return null}
     // No eager initialization: browsing this page must never steal another player's dock.
     controller=window.CMDContinuousPlayback.create({
-      id:SONG_ID,audio,tracks,startIndex:selected,localCount:tracks.length,intent:'old-files',pageFollowSeconds:0,
+      id:SONG_ID,audio,tracks,startIndex:selected,localCount:tracks.length,intent,pageFollowSeconds:0,
       onTrack:track=>{const index=indexFor(track?.audio);if(index>=0)selected=index;message='';},
       onPlayState:()=>{message='';draw()},
       // A waiting/stalled event can arrive after play. Clear it once audio

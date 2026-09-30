@@ -118,6 +118,8 @@ jobs:
         run: node --test tests/games-she-hates.test.mjs
       - name: 2010 WOWS version integration
         run: node --test tests/2010-wows.test.mjs
+      - name: September release pages and source recordings
+        run: node --test tests/september-release-pages.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs
 
@@ -142,6 +144,7 @@ jobs:
           mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
+          node scripts/check-september-releases-browser.cjs
           node scripts/check-2010-wows-browser.cjs
           node scripts/check-quiet-tip-browser.cjs
           node scripts/check-my-music-browser.cjs
