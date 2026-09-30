@@ -36,7 +36,7 @@ const out=process.env.QA_OUTPUT||'/tmp/replay-qa/2010-wows';fs.mkdirSync(out,{re
   await page.evaluate(()=>window.CMDPersistentSite.open('/archive/2010-wows/?version=close-my-eyes-ai-mix'));await page.waitForTimeout(1000);
   f=await frame();await f.locator('[data-cut="close-my-eyes-ai-mix"]').click();await wait('close-my-eyes-ai-mix');assert.equal(await audible(),1);check('Revisited page switches versions with one audio owner');
   await page.screenshot({path:out+'/playing.png',fullPage:true});
-  let docks=0;for(const f of page.frames())for(const d of await f.locator('.cmd-universal-player').all())if(await d.isVisible())docks++;assert.equal(docks,1);check('One visible shared dock');
+  let docks=0;for(const f of page.frames())for(const d of await f.locator('.cmd-universal-player').all())if(await d.isVisible())docks++;assert.equal(docks,1);assert.equal(await page.locator('.cmd-universal-player').evaluate(node=>getComputedStyle(node).position),'fixed');check('One visible fixed shared dock');
   await page.goto(base+'/archive/2010-wows/?version=special-2026-remix',{waitUntil:'networkidle'});assert.equal(await page.locator('[data-cut="special-2026-remix"]').getAttribute('aria-pressed'),'true');await page.locator('#releasePlay').click();await wait('special-2026-remix');check('Existing exact-version links still select the earlier remix');
   await page.goto(base+'/updates/',{waitUntil:'networkidle'});
   const tracks=await page.evaluate(()=>window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries}).tracks.map(t=>({id:t.songId,version:t.variantId})));
