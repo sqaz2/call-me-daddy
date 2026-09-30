@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "since-before-youtube": {
+    "surprise": 85,
+    "laugh": 25,
+    "think": 70,
+    "level-up": 90,
+    "heavy": 45,
+    "old-files": 15
+  },
   "8-walmart-parking-lot": {
     "surprise": 90,
     "laugh": 45,

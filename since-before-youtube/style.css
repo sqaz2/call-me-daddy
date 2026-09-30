@@ -1,0 +1,24 @@
+.before-youtube-release{--paper:#edf3ef;--muted:#a4bcb3;--accent:#b2d2bf;--line:#385348;--surface:#1b3027;background:radial-gradient(ellipse at 80% 5%,#456e6350,transparent 48rem),#101b18}
+.before-youtube-release .release-intro h1{font-size:clamp(58px,7.5vw,94px);line-height:1.02;letter-spacing:-.065em}
+.before-youtube-release .release-intro h1 em{display:inline-block;margin-top:5px}
+.before-youtube-release .release-intro-note{font-size:21px;line-height:1.5}
+.before-youtube-release .release-cover{border-color:#5b7c6d}
+.before-youtube-release .release-play-badge{background:#10231dea;border-color:#b2d2bf70}
+.before-youtube-release .release-cover:hover .release-play-badge{background:#10231d}
+.youtube-stage-links{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:13px}
+.youtube-stage-links>[data-share]{margin:0;padding:0;border:0}
+.youtube-hook{border-top:1px solid var(--line);padding:40px 0}
+.youtube-hook p{font-size:clamp(23px,3.8vw,39px);letter-spacing:-.04em;line-height:1.3;margin:0}
+.youtube-hook em{font-family:Georgia,serif;font-weight:400;color:var(--accent)}
+.before-youtube-release .release-lyrics pre{max-width:72ch;line-height:1.9;padding-bottom:32px}
+.youtube-release-note{padding-bottom:22px}
+.youtube-release-note blockquote{font-size:23px;line-height:1.5}
+.youtube-release-note .youtube-note-date{margin-top:18px!important;font-size:12px!important;letter-spacing:.035em}
+.before-youtube-release .release-footer-links{border-top:1px solid var(--line);margin-top:22px}
+@media(max-width:720px){
+ .before-youtube-release .release-intro h1{font-size:clamp(53px,15vw,76px);line-height:1.02}
+ .before-youtube-release .release-intro-note{font-size:17px}
+ .youtube-stage-links{font-size:12px}
+ .youtube-hook{padding:28px 0}
+ .youtube-release-note blockquote{font-size:21px}
+}

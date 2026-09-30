@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "since-before-youtube",
+    "title": "since before YouTube",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 9,
+    "date": "2026-09-30",
+    "project": "since before YouTube",
+    "description": "“It ain’t brand new—it’s just new to you.” The final recording of since before YouTube, with the full lyrics and a release note from the McDonald’s drive-through.",
+    "aliases": [
+      "Before YouTube",
+      "Tell Me Something That I Don’t Know",
+      "It’s Just New to You"
+    ],
+    "audio": "/media/songs/2026/09/since-before-youtube/final.mp3",
+    "cover": "/media/songs/2026/09/since-before-youtube/cover.jpg",
+    "experience": "/since-before-youtube/",
+    "shareUrl": "/since-before-youtube/?version=final",
+    "kind": "Song · Final version",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/LwgadsoEOqZGTwPK",
+    "variants": [
+      {
+        "id": "final",
+        "label": "Final version",
+        "audio": "/media/songs/2026/09/since-before-youtube/final.mp3",
+        "cover": "/media/songs/2026/09/since-before-youtube/cover.jpg",
+        "duration": 120.432,
+        "date": "2026-09-30",
+        "experience": "/since-before-youtube/?version=final",
+        "shareUrl": "/since-before-youtube/?version=final",
+        "sunoUrl": "https://suno.com/s/LwgadsoEOqZGTwPK"
+      }
+    ]
+  },
+  "lyrics": {
+    "text": "[Hook] Oh, tell me something that I don’t know ’Cause I was doing this since before YouTube You just found a sound I never let go It ain’t brand new—it’s just new to you\n[Verse] Before “link in bio,” before “smash like” I was making weird shit in the middle of the night No tutorial, just “what’s this do?” Hit the wrong damn button—made something new\nNow you’ve got a course and a point to prove Telling me the rules like I asked you to I’m still learning, but let’s be clear— You finding me now don’t mean I just got here\n[Hook] Oh, tell me something that I don’t know ’Cause I was doing this since before YouTube You just found a sound I never let go It ain’t brand new—it’s just new to you\n[Drop] Oh, tell me something Something I don’t know It ain’t new— It’s new to you",
+    "snippet": "You finding me now don’t mean I just got here",
+    "sunoUrl": "https://suno.com/s/LwgadsoEOqZGTwPK",
+    "clipIds": [
+      "f36cd380-558e-4ed4-a539-e16ffe77d1ef"
+    ],
+    "source": "Final uploaded MP3 USLT tag; exact wording and line breaks preserved. Song ID matches the supplied final Suno link."
+  },
+  "radio": {
+    "surprise": 85,
+    "laugh": 25,
+    "think": 70,
+    "level-up": 90,
+    "heavy": 45,
+    "old-files": 15
+  },
+  "update": {
+    "id": "release-since-before-youtube",
+    "published": "2026-09-30T12:17:48-06:00",
+    "type": "New release",
+    "songId": "since-before-youtube",
+    "variantId": "final",
+    "title": "since before YouTube",
+    "summary": "“It ain’t brand new—it’s just new to you.” The final recording of since before YouTube, with the full lyrics and a release note from the McDonald’s drive-through.",
+    "href": "/since-before-youtube/",
+    "sharePath": "/updates/release-since-before-youtube/",
+    "cta": "Play the final song",
+    "featured": true,
+    "cover": "/media/songs/2026/09/since-before-youtube/cover.jpg",
+    "cardLines": [
+      "SINCE BEFORE",
+      "YOUTUBE"
+    ],
+    "cardTag": "Final version · September 30, 2026",
+    "cardSummary": "It ain’t brand new—it’s just new to you. The final song, plus a release note from a very slow McDonald’s drive-through line.",
+    "badge": "NEW RELEASE",
+    "intent": "level-up"
+  }
+}
