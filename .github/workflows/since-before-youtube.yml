@@ -1,0 +1,61 @@
+name: Since Before YouTube release
+on:
+  push:
+    branches: [release/since-before-youtube]
+    paths:
+      - '.github/workflows/since-before-youtube.yml'
+      - 'scripts/import-since-before-youtube.py'
+      - 'since-before-youtube/**'
+      - 'content/releases/2026-09-30-since-before-youtube.json'
+      - 'scripts/check-since-before-youtube*'
+      - 'tests/since-before-youtube*'
+permissions:
+  contents: read
+concurrency:
+  group: since-before-youtube-release
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/since-before-youtube
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Read the exact source and import original media
+        run: |
+          if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y ffmpeg; fi
+          if [ ! -f media/songs/2026/09/since-before-youtube/source.json ]; then
+            python3 scripts/import-since-before-youtube.py
+          fi
+          cat media/songs/2026/09/since-before-youtube/source.json
+      - name: Synchronize the release when its manifest is ready
+        run: |
+          if [ -f content/releases/2026-09-30-since-before-youtube.json ]; then
+            node scripts/sync-releases.mjs
+            node scripts/sync-releases.mjs --check
+            node --test tests/*.test.*
+          fi
+      - name: Commit only this release and the canonical generated files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add media/songs/2026/09/since-before-youtube/
+          if [ -f content/releases/2026-09-30-since-before-youtube.json ]; then
+            git add content/releases/2026-09-30-since-before-youtube.json content/song-links.json data/songs.js data/briefing.js data/radio-intents.js data/song-lyrics.js data/song-links.json worker/song-links-data.mjs share.js sitemap.xml updates/
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m 'Import final Since Before YouTube media and synchronize release'
+            git push origin HEAD:release/since-before-youtube
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: since-before-youtube-source
+          path: media/songs/2026/09/since-before-youtube/source.json
+          retention-days: 7
