@@ -16,11 +16,13 @@ const out=process.env.QA_OUTPUT||'/tmp/replay-qa/2010-wows';fs.mkdirSync(out,{re
  const frame=async()=>{for(const f of [...page.frames()].reverse())if(new URL(f.url()).pathname==='/archive/2010-wows/'&&(f===page.mainFrame()||await(await f.frameElement()).isVisible()))return f;throw Error('No visible archive frame')};
  const audible=()=>page.evaluate(()=>[document,...[...document.querySelectorAll('iframe')].map(f=>f.contentDocument)].filter(Boolean).flatMap(d=>[...d.querySelectorAll('audio,video')]).filter(m=>!m.paused&&!m.ended&&!m.muted).length);
  try{
-  await page.goto(base+'/archive/2010-wows/',{waitUntil:'networkidle'});
+  await page.goto(base+'/archive/2010-wows/?version=close-my-eyes-ai-mix',{waitUntil:'networkidle'});
   assert.equal(await page.locator('#releaseAudio').getAttribute('src'),null);check('Page loads silent');
   for(const width of [320,390,1440]){await page.setViewportSize({width,height:width===1440?1000:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:out+'/'+width+'.png',fullPage:true});check('No horizontal overflow at '+width+'px')}
   await page.setViewportSize({width:390,height:844});
   await page.locator('#releasePlay').tap();let s=await wait('close-my-eyes-ai-mix');assert(s.src.endsWith('/close-my-eyes-ai-mix.mp3'));assert(Math.abs(s.duration-181.584)<.1);check('First artwork tap decodes the uploaded MP3 with matching identity');
+  await page.evaluate(()=>window.CMDUniversalPlayer.getMedia().dispatchEvent(new Event('waiting')));
+  await page.waitForFunction(()=>document.getElementById('releaseStatus').textContent.startsWith('Playing'),null,{timeout:5000});check('Buffering status clears when decoded playback continues');
   let f=await frame();await f.locator('[data-cut="special-2026-remix"]').click();s=await wait('special-2026-remix');assert(Math.abs(s.duration-167.832)<.1);check('Earlier remix keeps its own audio and artwork');
   await page.waitForTimeout(600);f=await frame();assert((await f.locator('#releaseShare').getAttribute('data-share-url')).includes('version=special-2026-remix'));check('Sharing follows the selected version');
   await f.locator('[data-cut="special-2026-remix"]').click();await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
