@@ -1,7 +1,7 @@
 (()=>{
   if(window.CMDUniversalPlayer)return;
 
-  const VERSION='1.4.1';
+  const VERSION='1.4.2';
   const CONTACT_URL='https://facebook.com/callmedaddy';
   const FALLBACK_COVER=window.CMD_ARTWORK?.fallbackCover||'/media/site/image-coming-soon.jpg';
   const adapters=new Map();
@@ -140,6 +140,7 @@
       .cmd-listening-options{grid-column:1/-1;font-size:.78rem}.cmd-listening-options summary{min-height:32px;display:flex;align-items:center;cursor:pointer;color:#d7d1c7}.cmd-listening-options[open]{max-height:180px;overflow:auto}.cmd-listening-options p{margin:8px 0;color:#aaa59d}.cmd-listening-options button,.cmd-listening-options .cmd-my-music{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;border:1px solid #555;border-radius:10px;background:#191919;color:#f5f1ea;font:inherit;text-decoration:none}.cmd-listening-options button:focus-visible,.cmd-listening-options summary:focus-visible{outline:2px solid #f2efe8;outline-offset:2px}.cmd-listening-options [hidden]{display:none!important}.cmd-moment-copy{width:100%;box-sizing:border-box;margin:6px 0;padding:10px;background:#111;color:#f5f1ea;border:1px solid #555;border-radius:8px}.cmd-universal-controls button{min-height:44px}.cmd-universal-times{position:static;grid-column:1/-1;grid-row:3;justify-content:flex-end}
       body.cmd-universal-open{padding-bottom:var(--cmd-player-clearance,240px)!important}
       .cmd-universal-controls .cmd-universal-like[aria-pressed="true"]{background:#d6ebc5;color:#172010;border-color:#d6ebc5}
+      .cmd-universal-controls .cmd-universal-share.is-copy-link{font-size:.75rem;line-height:1.15;padding:0 4px}.cmd-copy-song-link{margin-right:6px}
       .cmd-universal-copy,.cmd-universal-art{touch-action:pan-y;user-select:none;-webkit-user-select:none}
       .cmd-universal-times{display:flex;grid-row:auto;color:#b5b1a8;font-size:.66rem}
       @media(max-width:680px){.cmd-universal-controls{grid-template-columns:repeat(5,minmax(0,1fr))}}
@@ -161,6 +162,9 @@
     nodes={art:q('.cmd-universal-art'),image:q('img'),icon:q('.cmd-universal-art span'),context:q('.cmd-universal-context'),title:q('.cmd-universal-title'),detail:q('.cmd-universal-detail'),story:q('.cmd-universal-story'),previous:q('.cmd-universal-prev'),toggle:q('.cmd-universal-toggle'),next:q('.cmd-universal-next'),share:q('.cmd-universal-share'),progress:q('.cmd-universal-progress'),bar:q('.cmd-universal-progress span'),thumb:q('.cmd-universal-thumb'),current:q('.cmd-universal-current'),duration:q('.cmd-universal-duration'),live:q('.cmd-universal-live'),options:q('.cmd-listening-options'),upcoming:q('.cmd-listening-next'),songBreak:q('.cmd-song-break'),breakMessage:q('.cmd-break-message'),undoBreak:q('.cmd-undo-break')};
     nodes.options.addEventListener('toggle',()=>window.CMDPersistentSite?.refreshClearance?.());
     nodes.shareMoment=q('.cmd-share-moment');nodes.momentStatus=q('.cmd-moment-status');nodes.momentCopy=q('.cmd-moment-copy');
+    const copySong=document.createElement('button');copySong.className='cmd-copy-song-link';copySong.type='button';copySong.textContent='Copy song link';
+    nodes.options.insertBefore(copySong,nodes.options.querySelector('.cmd-share-moment'));
+    copySong.addEventListener('click',()=>void shareActive(true));
     nodes.shareMoment?.addEventListener('click',()=>void shareMoment());
     nodes.like=q('.cmd-universal-like');
     nodes.like.addEventListener('click',()=>{
@@ -190,15 +194,19 @@
     let scrubbing=false;const seekFromPointer=event=>{if(!active)return;const duration=active.duration(),rect=nodes.progress.getBoundingClientRect(),x=event.clientX;if(!Number.isFinite(duration)||duration<=0||rect.width<=0||typeof x!=='number')return;active.seek(Math.max(0,Math.min(duration,(x-rect.left)/rect.width*duration)))};nodes.progress.addEventListener('pointerdown',event=>{if(!active||(event.button!=null&&event.button!==0))return;scrubbing=true;nodes.progress.classList.add('is-scrubbing');try{nodes.progress.setPointerCapture(event.pointerId)}catch{}seekFromPointer(event);event.preventDefault()});nodes.progress.addEventListener('pointermove',event=>{if(!scrubbing)return;seekFromPointer(event);event.preventDefault()});const endScrub=event=>{if(!scrubbing)return;scrubbing=false;nodes.progress.classList.remove('is-scrubbing');try{if(event&&event.pointerId!=null)nodes.progress.releasePointerCapture(event.pointerId)}catch{}};nodes.progress.addEventListener('pointerup',endScrub);nodes.progress.addEventListener('pointercancel',endScrub);nodes.progress.addEventListener('click',event=>{if(scrubbing)return;seekFromPointer(event)});nodes.progress.addEventListener('keydown',event=>{if(!active||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const duration=active.duration();if(!Number.isFinite(duration)||duration<=0)return;active.seek(event.key==='Home'?0:event.key==='End'?duration:Math.max(0,Math.min(duration,active.time()+(event.key==='ArrowRight'?5:-5))));event.preventDefault()});
     return root;
   }
-  function defaultShare(track){
+  function defaultShare(track,copyOnly=false){
+    if(window.CMDShare?.shareTrack)return window.CMDShare.shareTrack(track,{copyOnly});
     if(!track)return false;if(window.CMDPlaylistRadio?.share)return window.CMDPlaylistRadio.share(track);
     const url=window.CMDShortLinks?.forTrack(track)||track.shareUrl||track.experience||fallbackRoute(track),detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
     const data={title:`${track.title}${detail}`,text:`Listen to ${track.title}${detail}.`,url:absolute(url)};
     try{if(navigator.share)return navigator.share({title:data.title,text:window.CMDShortLinks?.prepareShare(data).text||[data.text,data.url].filter(Boolean).join('\n')});return navigator.clipboard?.writeText(`${data.text}\n${data.url}`)}catch{return false}
   }
-  function shareActive(){
+  function shareActive(copyOnly=false){
     if(!active)return false;
-    const reported=active.track(),track=activeTrack();
+    const reported=active.track(),track={...activeTrack(),...recordingIdentity()};
+    // Sharing belongs to the visible document, not an older, hidden audio owner.
+    if(window.CMDShare?.shareTrack)return defaultShare(track,copyOnly);
+    if(copyOnly)return loadFeature('CMDShare','/share.js?v=20260930-facebook-1').then(share=>share?.shareTrack(track,{copyOnly:true}));
     const songId=value=>value?.songId||String(value?.id||'').split(':')[0];
     if(trackKey(reported)!==trackKey(track)||songId(reported)!==songId(track)||reported?.title!==track.title)return defaultShare(track);
     return active.share?.();
@@ -253,6 +261,9 @@
     nodes.detail.textContent=detail;const spoken=`${track.title}. ${playing?'Playing':detail}`;if(nodes.live.textContent!==spoken)nodes.live.textContent=spoken;
     nodes.icon.textContent=playing?'❚❚':'▶';nodes.toggle.textContent=playing?'❚❚':'▶';nodes.toggle.setAttribute('aria-label',playing?'Pause':'Play');nodes.art.setAttribute('aria-label',playing?`Pause ${track.title}`:`Play ${track.title}`);
     nodes.previous.disabled=typeof active.previous!=='function';nodes.next.disabled=typeof active.next!=='function';nodes.share.disabled=typeof active.share!=='function';
+    const copyInFacebook=Boolean(window.CMDShare?.isFacebookBrowser?.());
+    nodes.share.classList[copyInFacebook?'add':'remove']('is-copy-link');nodes.share.textContent=copyInFacebook?'Copy link':'↗';
+    nodes.share.setAttribute('aria-label',copyInFacebook?'Copy current song link':'Share current song');
     nodes.bar.style.width=`${ratio*100}%`;nodes.progress.style.setProperty?.('--progress',`${ratio*100}%`);if(nodes.thumb)nodes.thumb.style.left=`${ratio*100}%`;nodes.progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)));nodes.current.textContent=formatTime(time);nodes.duration.textContent=formatTime(duration);
     nodes.progress.setAttribute('aria-valuetext',duration>0?`${formatTime(time)} of ${formatTime(duration)}`:'Duration unavailable');
     nodes.story.classList.remove('is-coming');
@@ -329,6 +340,7 @@
   window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,openCurrentTrack,getActive:()=>active?.handle||null,getTrack:activeTrack,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(action==='share')return shareActive();if(action==='shareMoment')return shareMoment();if(['play','pause','toggle','next','previous','seek'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
   loadFeature('CMDListenerTaste','/listener-taste.js?v=20260926-library-1').then(()=>render());
   loadFeature('CMDSongMoments','/song-moments.js?v=20260926-moments-1').then(()=>render());
+  loadFeature('CMDShare','/share.js?v=20260930-facebook-1').then(()=>render());
   loadFeature('CMDMyMusic','/my-music/library.js?v=20260926-library-1').then(()=>render());
   loadFeature('CMDQuietTip','/quiet-tip.js?v=20260926-tip-1').then(()=>render());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')render()});

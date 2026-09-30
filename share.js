@@ -64,10 +64,71 @@
   const pageText=()=>meta('meta[property="og:description"]')||meta('meta[name="description"]')||'';
   const enc=encodeURIComponent;
 
-  const copyText=async text=>{
-    if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return;}
-    const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();
+  // Detection is a convenience, not a requirement: blocked browser APIs also
+  // reach the same visible fallback. Never copy anything just by opening a page.
+  const isFacebookBrowser=()=>/FBAN\/|FBAV\/|FB_IAB\//i.test(navigator.userAgent||'');
+  const topShare=()=>{
+    try{return window.top!==window&&window.top?.location.origin===location.origin?window.top.CMDShare:null}catch{return null}
   };
+  let copyDialog=null;
+  function showCopyDialog(data,externalStatus){
+    copyDialog?.close?.();copyDialog?.remove();
+    if(!document.getElementById('cmd-share-dialog-style')){
+      const style=document.createElement('style');style.id='cmd-share-dialog-style';
+      style.textContent=`.cmd-share-dialog{position:fixed;inset:0;z-index:2147483647;box-sizing:border-box;width:min(440px,calc(100% - 32px));max-height:calc(100dvh - 32px);margin:auto;padding:24px;border:1px solid #555;border-radius:20px;background:#101010;color:#f4f0e8;box-shadow:0 24px 80px #0009;font:16px/1.45 system-ui,sans-serif;overflow:auto}.cmd-share-dialog::backdrop{background:#0009}.cmd-share-dialog h2{margin:0 0 8px;font-size:1.35rem;color:#f4f0e8}.cmd-share-dialog p{margin:8px 0;overflow-wrap:anywhere}.cmd-share-dialog label{display:block;margin:18px 0 6px;color:#ccc}.cmd-share-dialog input{display:block;box-sizing:border-box;width:100%;padding:12px;border:1px solid #777;border-radius:10px;background:#080808;color:#fff;font:16px/1.4 system-ui,sans-serif;user-select:text;-webkit-user-select:text}.cmd-share-dialog-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.cmd-share-dialog button{min-height:44px;padding:10px 15px;border:1px solid #777;border-radius:999px;background:#262626;color:#f4f0e8;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer}.cmd-share-dialog .cmd-share-copy{background:#f4f0e8;color:#111}.cmd-share-dialog :focus-visible{outline:2px solid #d7b266;outline-offset:3px}.cmd-share-dialog .cmd-share-copy-status{min-height:1.5em;color:#ddd;font-size:14px}`;
+      document.head.appendChild(style);
+    }
+    const previousFocus=document.activeElement;
+    const dialog=document.createElement('dialog');dialog.className='cmd-share-dialog';copyDialog=dialog;
+    dialog.setAttribute('aria-labelledby','cmd-share-dialog-title');
+    dialog.innerHTML='<h2 id="cmd-share-dialog-title">Copy song link</h2><p class="cmd-share-song"></p><p class="cmd-share-help"></p><label for="cmd-share-link">Song link</label><input id="cmd-share-link" class="cmd-share-link" type="text" readonly spellcheck="false" aria-describedby="cmd-share-copy-status"><p id="cmd-share-copy-status" class="cmd-share-copy-status" role="status" aria-live="polite"></p><div class="cmd-share-dialog-actions"><button type="button" class="cmd-share-copy">Copy link</button><button type="button" class="cmd-share-select">Select link</button><button type="button" class="cmd-share-done">Done</button></div>';
+    const field=dialog.querySelector('.cmd-share-link'),status=dialog.querySelector('.cmd-share-copy-status');
+    field.value=data.url;
+    dialog.querySelector('.cmd-share-song').textContent=data.title||'Call Me Daddy';
+    dialog.querySelector('.cmd-share-help').textContent=isFacebookBrowser()?'Paste this link into a Facebook post or message.':'Paste this link into a post or message.';
+    const select=()=>{field.focus();field.select();field.setSelectionRange?.(0,field.value.length)};
+    const report=message=>{if(copyDialog!==dialog)return;status.textContent=message;if(externalStatus)externalStatus.textContent=message};
+    let attempt=0;
+    async function copy(){
+      const current=++attempt;select();report('Copying link…');
+      let copied=false;
+      try{if(typeof navigator.clipboard?.writeText==='function'){await navigator.clipboard.writeText(data.url);copied=true}}catch{}
+      if(copyDialog!==dialog||attempt!==current)return copied;
+      if(!copied){
+        // Some in-app browsers only support the older user-gesture copy path.
+        // Its boolean result matters: a failed command must not say "copied".
+        try{select();copied=document.execCommand?.('copy')===true}catch{}
+      }
+      report(copied?'Song link copied. Paste it into your post or message.':'Press and hold the selected link, then choose Copy.');
+      return copied;
+    }
+    const close=()=>{const current=copyDialog===dialog;if(current)copyDialog=null;dialog.remove();if(current)previousFocus?.focus?.({preventScroll:true})};
+    dialog.addEventListener('close',close);
+    dialog.querySelector('.cmd-share-done').addEventListener('click',()=>{if(typeof dialog.close==='function')dialog.close();else close()});
+    dialog.querySelector('.cmd-share-select').addEventListener('click',()=>{select();report('Press and hold the selected link, then choose Copy.')});
+    dialog.querySelector('.cmd-share-copy').addEventListener('click',()=>void copy());
+    field.addEventListener('click',select);
+    document.body.appendChild(dialog);
+    if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');
+    return copy();
+  }
+  function copyLink(data,status){
+    const parent=topShare();if(parent?.copyLink)return parent.copyLink(data,status);
+    return showCopyDialog(window.CMDShortLinks.prepareShare(data),status);
+  }
+  function shareTrack(track,{copyOnly=false}={}){
+    if(!track)return false;
+    const detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
+    let url=window.CMDShortLinks?.forTrack(track)||window.CMDPlaylistRadio?.shareUrl?.(track);
+    if(!url){
+      const target=new URL(track.shareUrl||track.experience||'/music/',location.origin);
+      if(!track.shareUrl&&!track.experience){target.searchParams.set('song',track.songId||String(track.id||'').split(':')[0]);target.searchParams.set('share','1')}
+      if(track.variantId)target.searchParams.set('version',track.variantId);
+      url=target.href;
+    }
+    const data={title:`${track.title||'Call Me Daddy'}${detail}`,text:`Listen to ${track.title||'this song'}${detail}.`,url};
+    return copyOnly?copyLink(data):nativeShare(data);
+  }
 
   const popup=url=>window.open(url,'_blank','noopener,noreferrer,width=760,height=680');
 
@@ -94,17 +155,21 @@
   };
 
   async function nativeShare(data,status){
+    const parent=topShare();if(parent?.nativeShare)return parent.nativeShare(data,status);
     data=window.CMDShortLinks.prepareShare(data);
+    if(isFacebookBrowser()||typeof navigator.share!=='function')return copyLink(data,status);
     try{
-      if(navigator.share){await navigator.share({title:data.title,text:data.text});if(status)status.textContent='Share sheet opened.';return true;}
-      await copyText(data.text);if(status)status.textContent='Share text + link copied.';return true;
-    }catch(err){if(err?.name!=='AbortError'&&status)status.textContent='Could not open sharing.';return false;}
+      await navigator.share({title:data.title,text:data.text});if(status)status.textContent='Share sheet opened.';return true;
+    }catch(err){
+      if(err?.name==='AbortError'){if(status)status.textContent='';return false;}
+      return copyLink(data,status);
+    }
   }
 
   function mountCompact(el){
     el.classList.add('share-block','share-compact');
     const statusId=`share-status-${Math.random().toString(36).slice(2)}`;
-    const label=el.dataset.shareButton||'↗ Share';
+    const label=isFacebookBrowser()?'Copy link':el.dataset.shareButton||'↗ Share';
     el.innerHTML=`<button class="share-btn share-primary" type="button" data-action="more">${label}</button><span class="share-status" id="${statusId}" aria-live="polite"></span>`;
     const status=el.querySelector('.share-status');
     el.querySelector('.share-btn')?.addEventListener('click',()=>nativeShare(shareData(el),status));
@@ -128,9 +193,9 @@
       const button=e.target.closest('.share-btn');if(!button)return;
       const data=shareData(el);
       const network=button.dataset.network;
-      if(network){popup(links(data)[network]);return;}
+      if(network){if(network==='facebook'&&isFacebookBrowser())await copyLink(data,status);else popup(links(data)[network]);return;}
       if(button.dataset.action==='copy'){
-        try{await copyText(window.CMDShortLinks.prepareShare(data).text);status.textContent='Share text + link copied.';}catch{status.textContent='Could not copy link.';}
+        await copyLink(data,status);
       }
       if(button.dataset.action==='more')await nativeShare(data,status);
     });
@@ -211,7 +276,7 @@
     historyAudio?.addEventListener('ended',()=>{if(activeButton)activeButton.textContent='▶ Play earlier mix'});
   }
 
-  window.CMDShare={mount,nativeShare};
+  window.CMDShare={mount,nativeShare,copyLink,shareTrack,isFacebookBrowser};
   if(shortLinksOnly)return;
   document.querySelectorAll('[data-share]').forEach(mount);
   mountArmandoHistory();

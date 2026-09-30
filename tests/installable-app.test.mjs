@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import { addAppShell } from '../worker/site.mjs';
+import siteWorker, { addAppShell } from '../worker/site.mjs';
 
 const installSource=fs.readFileSync(new URL('../app/install.js',import.meta.url),'utf8');
 const installHtml=fs.readFileSync(new URL('../app/index.html',import.meta.url),'utf8');
@@ -36,6 +36,20 @@ test('installation manifest launches the music site with real square PNG icons',
     const icon=manifest.icons.find(icon=>icon.sizes===`${size}x${size}`);assert.ok(icon);
     const bytes=fs.readFileSync(new URL('..'+icon.src,import.meta.url));
     assert.equal(bytes.subarray(1,4).toString(),'PNG');assert.equal(bytes.readUInt32BE(16),size);assert.equal(bytes.readUInt32BE(20),size);
+  }
+});
+
+test('existing page share scripts refresh without changing their other attributes or song data',()=>{
+  const input='<html><head></head><body><script src="/share.js?v=old" data-short-links-only defer></script><a href="/music/?song=keep-moving&version=trap-mix">Song</a></body></html>';
+  const html=addAppShell(input);
+  assert.match(html,/src="\/share.js\?v=20260930-facebook-1" data-short-links-only defer/);
+  assert.match(html,/song=keep-moving&version=trap-mix/);assert.equal(addAppShell(html),html);
+});
+test('share code revalidates on subsequent page loads',async()=>{
+  const env={ASSETS:{fetch:async()=>new Response('/* share code */',{headers:{'content-type':'text/javascript','cache-control':'public, max-age=86400'}})}};
+  for(const file of ['/share.js?v=old','/universal-player.js?v=old']){
+    const response=await siteWorker.fetch(new Request('https://callmedaddy.musicsubject.com'+file),env);
+    assert.equal(response.headers.get('cache-control'),'no-cache');assert.equal(await response.text(),'/* share code */');
   }
 });
 test('service worker never intercepts media, range requests or scripts',async()=>{

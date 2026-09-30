@@ -32,6 +32,7 @@ class FakeElement extends FakeTarget{
   }
   append(...children){children.forEach(child=>this.appendChild(child))}
   appendChild(child){child.parentNode=this;this.children.push(child);return child}
+  insertBefore(child,before){child.parentNode=this;const index=this.children.indexOf(before);if(index<0)this.children.push(child);else this.children.splice(index,0,child);return child}
   setAttribute(name,value){this.attributes.set(name,String(value))}
   getAttribute(name){return this.attributes.get(name)||null}
   getBoundingClientRect(){return {left:0,width:100,top:0,bottom:32,height:32}}
