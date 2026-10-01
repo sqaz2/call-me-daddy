@@ -22,7 +22,13 @@ const waitForCut=async id=>{
   assert.ok(after.time>before.time+.15,'Real decoder position must advance, not just the Play/Pause icon');
   assert.ok(decodeURI(after.src).endsWith(sourceSuffix(id)));return after;
 };
-const openReleaseFromUpdates=async()=>{await navigate('/updates/');await tap('a[href="/set-a-table-for-two/"]');await page.waitForTimeout(700)};
+const openReleaseFromUpdates=async()=>{
+  await navigate('/updates/');
+  // New releases eventually move this fixture beyond the first feed page.
+  // Find it through the same search control available to listeners.
+  await (await view('#updatesSearch')).locator('#updatesSearch').fill('Set A Table For Two');
+  await tap('a[href="/set-a-table-for-two/"]');await page.waitForTimeout(700);
+};
 try{
   await page.goto(base+'/superstore-effect/',{waitUntil:'networkidle'});
   await tap('.ss-cover-button');

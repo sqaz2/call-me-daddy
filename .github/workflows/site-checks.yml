@@ -123,6 +123,8 @@ jobs:
         run: node --test tests/september-release-pages.test.mjs
       - name: Since Before YouTube final release
         run: node --test tests/since-before-youtube.test.mjs
+      - name: Times Are Coming release and dubstep sharing
+        run: node --test tests/times-are-coming.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs
 
@@ -147,6 +149,7 @@ jobs:
           mkdir -p /tmp/replay-qa /tmp/table-for-two-qa
           node scripts/serve-release-test.mjs >/tmp/replay-qa/server.log 2>&1 &
           sleep 2
+          node scripts/check-since-before-youtube-browser.cjs times-are-coming
           node scripts/check-since-before-youtube-browser.cjs
           node scripts/check-september-releases-browser.cjs
           node scripts/check-2010-wows-browser.cjs
