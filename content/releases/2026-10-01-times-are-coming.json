@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "times-are-coming",
+    "title": "Times Are Coming",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-01",
+    "project": "Times Are Coming",
+    "description": "The weather is turning colder, but something good is coming. A sweet, inspiring dubstep song about finding our way and making it through.",
+    "aliases": [
+      "Something Good Is Coming",
+      "We Can Make It Through"
+    ],
+    "audio": "/media/songs/2026/10/times-are-coming/audio.mp3",
+    "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+    "experience": "/times-are-coming/",
+    "shareUrl": "/times-are-coming/?version=main",
+    "kind": "Dubstep · Hopeful",
+    "shareGenre": "dubstep",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Original version",
+        "audio": "/media/songs/2026/10/times-are-coming/audio.mp3",
+        "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+        "duration": 182.424,
+        "date": "2026-10-01",
+        "experience": "/times-are-coming/?version=main",
+        "shareUrl": "/times-are-coming/?version=main",
+        "sunoUrl": "https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6"
+      }
+    ]
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nTimes are coming.\nIt's not quite how the wind turns.\nStuck in this van,\nBut we're finding our way.\nHow've you been?\nI'm doing better today.\n[Pre-Build]\nTimes are coming!\nTimes are coming!\nWe can make it through.\nTimes are coming!\nTimes are coming!\nSomething good is breaking through.\n[Drop]\nIt's coming! It's coming!\nSomething good is coming!\nIt's coming! It's coming!\nWe are moving through!\n[Bridge]\nThe road bends wide,\nThe rain lets go.\nYou take my hand,\nAnd we both know.\n[Pre-Build]\nTimes are coming!\nTimes are coming!\nWe can make it through.\nTimes are coming!\nTimes are coming!\nSomething good is breaking through.\n[Final Drop]\nIt's coming! It's coming!\nSomething good is coming!\nIt's coming! It's coming!\nWe are moving through!\n[Final Drop]\nIt's coming! It's coming!\nSomething good is coming!\nIt's coming! It's coming!\nWe are moving through!\n[Outro]\nTimes are coming.\nSomething good is coming.",
+    "snippet": "Something good is coming!",
+    "sunoUrl": "https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6",
+    "clipIds": [
+      "228a361c-7ea5-4377-b8e8-f0203a411ae6"
+    ],
+    "source": "Uploaded MP3 USLT tag; exact wording, repeated sections and line breaks preserved. The embedded song ID matches the supplied Suno release."
+  },
+  "radio": {
+    "surprise": 85,
+    "laugh": 10,
+    "think": 60,
+    "level-up": 95,
+    "heavy": 60,
+    "old-files": 10
+  },
+  "update": {
+    "id": "release-times-are-coming",
+    "published": "2026-10-01T09:42:49-06:00",
+    "type": "New release",
+    "songId": "times-are-coming",
+    "variantId": "main",
+    "title": "Times Are Coming",
+    "summary": "The weather is turning colder, but something good is coming. A sweet, inspiring dubstep song about finding our way and making it through.",
+    "href": "/times-are-coming/",
+    "sharePath": "/updates/release-times-are-coming/",
+    "cta": "Hear Times Are Coming",
+    "featured": true,
+    "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+    "cardLines": [
+      "TIMES ARE",
+      "COMING"
+    ],
+    "cardTag": "Dubstep · October 1, 2026",
+    "cardSummary": "Colder days. Good things ahead. A sweet, inspiring dubstep song about finding our way.",
+    "badge": "NEW RELEASE",
+    "intent": "level-up"
+  }
+}

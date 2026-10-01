@@ -1,6 +1,41 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "times-are-coming",
+    "title": "Times Are Coming",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-01",
+    "project": "Times Are Coming",
+    "description": "The weather is turning colder, but something good is coming. A sweet, inspiring dubstep song about finding our way and making it through.",
+    "aliases": [
+      "Something Good Is Coming",
+      "We Can Make It Through"
+    ],
+    "audio": "/media/songs/2026/10/times-are-coming/audio.mp3",
+    "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+    "experience": "/times-are-coming/",
+    "shareUrl": "/times-are-coming/?version=main",
+    "kind": "Dubstep · Hopeful",
+    "shareGenre": "dubstep",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Original version",
+        "audio": "/media/songs/2026/10/times-are-coming/audio.mp3",
+        "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+        "duration": 182.424,
+        "date": "2026-10-01",
+        "experience": "/times-are-coming/?version=main",
+        "shareUrl": "/times-are-coming/?version=main",
+        "sunoUrl": "https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6"
+      }
+    ]
+  },
+  {
     "id": "since-before-youtube",
     "title": "since before YouTube",
     "artist": "MusicSubject × Call Me Daddy",

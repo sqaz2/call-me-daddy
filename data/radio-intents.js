@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "times-are-coming": {
+    "surprise": 85,
+    "laugh": 10,
+    "think": 60,
+    "level-up": 95,
+    "heavy": 60,
+    "old-files": 10
+  },
   "since-before-youtube": {
     "surprise": 85,
     "laugh": 25,

@@ -48,6 +48,7 @@
     'satans-loan':'deep',
 
     // --- light (comedy / satire / fun / forward motion) ---
+    'times-are-coming':'light',
     'since-before-youtube':'light',
     '8-walmart-parking-lot':'light',
     'armando':'light',
