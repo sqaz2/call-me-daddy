@@ -14,7 +14,7 @@ window.CMD_SONGS = [
       "We Can Make It Through"
     ],
     "audio": "/media/songs/2026/10/times-are-coming/mastered.mp3",
-    "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+    "cover": "/media/songs/2026/10/times-are-coming/mastered-cover.png",
     "experience": "/times-are-coming/",
     "shareUrl": "/times-are-coming/?version=mastered",
     "kind": "Dubstep · Hopeful",
@@ -26,7 +26,7 @@ window.CMD_SONGS = [
         "id": "mastered",
         "label": "Mixed & mastered",
         "audio": "/media/songs/2026/10/times-are-coming/mastered.mp3",
-        "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+        "cover": "/media/songs/2026/10/times-are-coming/mastered-cover.png",
         "duration": 184.248,
         "date": "2026-10-01",
         "experience": "/times-are-coming/?version=mastered",

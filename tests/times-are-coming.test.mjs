@@ -19,7 +19,7 @@ test('Times Are Coming preserves the uploaded recording, embedded artwork and co
  const source=bytes('Times Are Coming.mp3'),audio=bytes(original.audio.slice(1));
  assert.equal(hash(audio),hash(source));
  assert(source.includes(Buffer.from('228a361c-7ea5-4377-b8e8-f0203a411ae6')));
- assert(source.includes(bytes(song.cover.slice(1))),'the release uses the original embedded cover');
+ assert(source.includes(bytes(original.cover.slice(1))),'the original recording keeps its embedded cover');
  assert(source.includes(Buffer.from(lyrics.text)),'words and repeated sections match the uploaded lyrics tag');
  assert.equal(original.duration,182.424);
  assert.equal(song.sunoUrl,'https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6');
@@ -35,6 +35,9 @@ test('the new default preserves the mixed and mastered upload and credits the us
  assert.equal(mastered.duration,184.248);
  assert.equal(song.variants[0].id,'mastered');
  assert.equal(song.audio,mastered.audio);
+ assert.equal(song.cover,mastered.cover);
+ assert.equal(update.cover,mastered.cover);
+ assert.notEqual(mastered.cover,original.cover);
  assert.equal(new URL(song.shareUrl,links.origin).searchParams.get('version'),'mastered');
  assert.match(page,/<[^>]+id="production-note"/);
  assert.match(page,/<a\b[^>]*href="https:\/\/generative\.download\/?"[^>]*>generative\.download<\/a>/);
@@ -42,6 +45,7 @@ test('the new default preserves the mixed and mastered upload and credits the us
  assert.match(page,/the DAW I built/);
  const earlier=previousUpdates.find(entry=>entry.id==='release-times-are-coming');
  assert.equal(earlier.variantId,'main');assert.equal(earlier.featured,false);
+ assert.equal(earlier.cover,original.cover);
  assert.equal(earlier.published,'2026-10-01T09:42:49-06:00');
  assert.equal(new URL(earlier.href,links.origin).searchParams.get('version'),'main');
  assert.equal(update.variantId,'mastered');
@@ -59,8 +63,11 @@ test('song discovery, newest-first playback and social previews resolve the new 
  assert.equal(newest.songId,song.id);assert.equal(newest.variantId,'mastered');assert.equal(newest.audio,mastered.audio);
  const firstRelease=window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries,now:Date.parse(previousUpdates[0].published)}).tracks[0];
  assert.equal(firstRelease.songId,song.id);assert.equal(firstRelease.variantId,'main');assert.equal(firstRelease.audio,original.audio);
- const social=resolveSocial(`${links.origin}${song.shareUrl}`,buildSongSocial({write:false}));
+ const socialIndex=buildSongSocial({write:false});
+ const social=resolveSocial(`${links.origin}${song.shareUrl}`,socialIndex);
  assert.equal(new URL(social.image).pathname,song.cover);assert(social.title.includes(song.title));
+ const originalSocial=resolveSocial(`${links.origin}${original.shareUrl}`,socialIndex);
+ assert.equal(new URL(originalSocial.image).pathname,original.cover,'original shares retain their original artwork');
  assert(read('sitemap.xml').includes(song.experience));assert(read('sitemap.xml').includes(update.sharePath));
  assert(page.includes(`rel="icon" href="${song.cover}"`));
 });
