@@ -25,3 +25,7 @@
  .times-refrain{padding:28px 0 32px}
  .times-horizon{width:70%}
 }
+
+.times-production{padding-bottom:32px;scroll-margin-top:90px}
+.times-daw-link{display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;margin:0 0 24px;border:1px solid var(--accent);border-radius:4px;font-size:14px;text-decoration:none;background:#eccd9410}
+.times-daw-link:hover{background:#eccd9424}
