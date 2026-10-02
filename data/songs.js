@@ -8,20 +8,32 @@ window.CMD_SONGS = [
     "month": 10,
     "date": "2026-10-01",
     "project": "Times Are Coming",
-    "description": "The weather is turning colder, but something good is coming. A sweet, inspiring dubstep song about finding our way and making it through.",
+    "description": "The weather is turning colder, but something good is coming. A sweet, inspiring dubstep song, mixed then mastered in generative.download — the DAW I built.",
     "aliases": [
       "Something Good Is Coming",
       "We Can Make It Through"
     ],
-    "audio": "/media/songs/2026/10/times-are-coming/audio.mp3",
+    "audio": "/media/songs/2026/10/times-are-coming/mastered.mp3",
     "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
     "experience": "/times-are-coming/",
-    "shareUrl": "/times-are-coming/?version=main",
+    "shareUrl": "/times-are-coming/?version=mastered",
     "kind": "Dubstep · Hopeful",
     "shareGenre": "dubstep",
     "shareCategory": "music",
     "sunoUrl": "https://suno.com/song/228a361c-7ea5-4377-b8e8-f0203a411ae6",
     "variants": [
+      {
+        "id": "mastered",
+        "label": "Mixed & mastered",
+        "audio": "/media/songs/2026/10/times-are-coming/mastered.mp3",
+        "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+        "duration": 184.248,
+        "date": "2026-10-01",
+        "experience": "/times-are-coming/?version=mastered",
+        "shareUrl": "/times-are-coming/?version=mastered",
+        "shareGenre": "dubstep",
+        "shareCategory": "music"
+      },
       {
         "id": "main",
         "label": "Original version",
