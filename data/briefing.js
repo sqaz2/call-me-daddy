@@ -16,7 +16,7 @@ window.CMD_BRIEFING = {
       "sharePath": "/updates/release-times-are-coming-mastered/",
       "cta": "Hear the mastered version",
       "featured": true,
-      "cover": "/media/songs/2026/10/times-are-coming/cover.jpg",
+      "cover": "/media/songs/2026/10/times-are-coming/mastered-cover.png",
       "cardLines": [
         "TIMES ARE",
         "COMING"

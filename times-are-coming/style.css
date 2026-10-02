@@ -5,7 +5,7 @@
 .times-genre{display:flex;align-items:center;gap:14px;font-size:10px;letter-spacing:.15em;color:var(--muted);margin:0 0 22px}
 .times-genre span{color:var(--accent)}
 .times-release .release-cover{border-color:#766e5b;box-shadow:0 20px 65px #0005,0 0 70px #c8a4620a}
-.times-release .release-play-badge{background:#171c20ed;border-color:#d5bb8770}
+.times-release .release-play-badge{position:static;border:0;border-top:1px solid #d5bb8770;background:#171c20ed;border-color:#d5bb8770}
 .times-release .release-cover:hover .release-play-badge{background:#242820}
 .times-stage-links{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:13px}
 .times-stage-links>[data-share]{margin:0;padding:0;border:0}
