@@ -35,7 +35,7 @@
       bleed:'none',
       keywords:['comedy','satire','funny','diss','armando','anti-ai','cheeky'],
       songIds:[
-        'anti-generative-ai-diss','back-to-sticks','the-musician-police','one-million-dollars',
+        'running-a-monopoly','anti-generative-ai-diss','back-to-sticks','the-musician-police','one-million-dollars',
         'ashes-in-eastwood','side-chick-finder','concrete-under-evergreens','canadian-crop-dusting','superstore-effect','set-a-table-for-two','namaste-hamster',
         'funhouse-meltdown','armando','did-armando-die-after-you-held-his-beer','id-pick-you-first',
         'twas-the-tism-mlord','where-the-bad-girls-at','youtube-W47ebCMfrBI'

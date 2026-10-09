@@ -1,0 +1,59 @@
+.monopoly-release{--paper:#f5eedc;--muted:#b5ae9d;--accent:#e7bc64;--line:#494232;--surface:#25221b;background:radial-gradient(ellipse at 90% 10%,#69512035,transparent 52rem),#141310;color:var(--paper)}
+.monopoly-release .release-shell{width:min(1140px,calc(100% - 64px));padding-top:24px}
+.monopoly-masthead{display:flex;justify-content:space-between;gap:20px;font:10px/1.6 monospace;letter-spacing:.13em;border-top:3px double var(--line);border-bottom:1px solid var(--line);padding:12px 0;color:var(--muted);margin-bottom:45px}
+.monopoly-masthead span:first-child{color:var(--accent)}
+.monopoly-release .release-hero{grid-template-columns:1fr 1fr;gap:50px;padding-bottom:45px}
+.monopoly-release .release-intro h1{font-family:Georgia,'Times New Roman',serif;text-transform:uppercase;font-size:clamp(43px,5.7vw,72px);letter-spacing:-.065em;line-height:1.04;margin-bottom:18px}
+.monopoly-release .release-intro h1 em{font-style:normal;font-weight:700;font-size:1.02em}
+.monopoly-release .release-artist{margin:18px 0 26px}
+.empire-line{font:italic clamp(25px,3vw,38px)/1.12 Georgia,serif;margin:0 0 20px;color:var(--paper)}
+.monopoly-release .release-intro-note{color:var(--muted);font-size:15px}
+.monopoly-release .release-stage{max-width:480px}
+.monopoly-release .release-cover{border-radius:0;border-color:#786137}
+.monopoly-release .release-play-badge{background:#17130ded;border-color:#e7bc6470;color:var(--paper);inset:auto 12px 12px;backdrop-filter:blur(8px)}
+.monopoly-release .release-cover:hover .release-play-badge{background:#4d3419}
+.monopoly-release .release-caption{font-family:monospace;text-transform:uppercase;font-size:12px;letter-spacing:.05em}
+.monopoly-stage-links{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px}
+.empire-strip{display:grid;grid-template-columns:1fr 1fr 1fr;border-block:1px solid var(--line);padding:24px 0;margin-bottom:65px}
+.empire-strip>div{padding:0 24px;border-right:1px solid var(--line)}
+.empire-strip>div:first-child{padding-left:0}.empire-strip>div:last-child{border:0}
+.empire-strip>div>span{display:block;font:10px/1.5 monospace;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}
+.empire-strip strong{font:30px/1.1 Georgia,serif;color:var(--paper)}
+.empire-strip strong span{font-size:20px}
+.incident-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:90px;align-items:start;scroll-margin-top:100px}
+.incident-copy h2{font:clamp(29px,3vw,39px)/1.12 Georgia,serif;letter-spacing:-.04em;margin:0 0 25px}
+.incident-copy>p:not(.eyebrow){color:var(--muted);font-size:15px;max-width:52ch;margin:0 0 20px}
+.incident-copy blockquote{font:italic 27px/1.35 Georgia,serif;margin:28px 0 0;border-left:2px solid var(--accent);padding-left:20px;color:var(--accent)}
+.breakfast-receipt{background:#efe7d3;color:#29261f;padding:30px 27px 24px;box-shadow:8px 9px 0 #0004;position:relative;font-family:monospace;border-bottom:6px dashed #141310}
+.receipt-top{font-size:11px;letter-spacing:.08em;text-align:center;margin:0 0 18px}
+.breakfast-receipt h2{font:34px/1.1 Georgia,serif;text-align:center;margin:0 0 8px;letter-spacing:-.04em}
+.receipt-sub{text-align:center;font-size:11px;padding-bottom:18px;margin:0;border-bottom:1px dashed #817963}
+.breakfast-receipt dl{margin:20px 0}.breakfast-receipt dl>div{display:flex;justify-content:space-between;gap:15px;font-size:12px;padding:8px 0}.breakfast-receipt dd{margin:0;white-space:nowrap}
+.breakfast-receipt .receipt-note{color:#69604f;font-size:11px;padding-top:0}
+.breakfast-receipt .receipt-total{border-block:1px dashed #817963;font-weight:700;margin-top:15px;padding:18px 0;font-size:14px}
+.receipt-stamp{border:3px double #8b3428;color:#8b3428;transform:rotate(-5deg);width:max-content;margin:28px auto;font:bold 20px/1.15 monospace;padding:10px 16px;text-align:center;letter-spacing:.08em}
+.receipt-bottom{font:10px/1.6 monospace;text-align:center;color:#69604f;margin:0}
+.monopoly-quote{text-align:center;padding:65px 10px 50px;margin-top:45px;border-top:1px solid var(--line)}
+.monopoly-quote .eyebrow{margin-bottom:20px}
+.monopoly-quote blockquote{font:italic clamp(24px,3.5vw,39px)/1.25 Georgia,serif;margin:0;color:var(--accent)}
+.monopoly-quote>p:last-child{color:var(--muted);font:12px/1.5 monospace;margin-top:20px}
+.monopoly-release .release-lyrics summary{min-height:60px}.monopoly-release .release-lyrics pre{color:#d8cebb}
+.satire-note{font-size:11px;color:var(--muted);margin:30px 0 0}
+@media(max-width:720px){
+ .monopoly-release .release-shell{width:calc(100% - 32px);padding-top:18px}
+ .monopoly-masthead{font-size:8px;letter-spacing:.07em;gap:10px;margin-bottom:28px}
+ .monopoly-release .release-hero{grid-template-columns:1fr;gap:28px;padding-bottom:30px}
+ .monopoly-release .release-intro h1{font-size:clamp(42px,11.4vw,68px)}
+ .monopoly-release .release-artist{margin:13px 0 18px}
+ .empire-line{font-size:27px;margin-bottom:12px}.empire-line br{display:none}.empire-line br::after{content:' '}
+ .monopoly-release .release-intro-note{font-size:14px}.monopoly-release .release-stage{max-width:440px}
+ .monopoly-release .release-cover{max-width:none}
+ .empire-strip{padding:19px 0;margin-bottom:38px;grid-template-columns:.8fr 1fr 1.2fr}
+ .empire-strip>div{padding:0 10px}.empire-strip>div>span{font-size:8px;letter-spacing:.02em;min-height:24px}
+ .empire-strip strong{font-size:21px}.empire-strip strong span{font-size:15px}
+ .incident-grid{grid-template-columns:1fr;gap:30px}
+ .incident-copy h2{font-size:31px}.incident-copy>p:not(.eyebrow){font-size:14px}.incident-copy blockquote{font-size:24px}
+ .breakfast-receipt{width:min(360px,100%);justify-self:center;padding:25px 23px 22px}
+ .monopoly-quote{margin-top:40px;padding:35px 0}.monopoly-quote blockquote{font-size:25px}
+ .monopoly-release .release-footer-links{gap:18px;font-size:12px}
+}

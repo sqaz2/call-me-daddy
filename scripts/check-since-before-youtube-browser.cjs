@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
+ 'running-a-monopoly':{manifest:'2026-10-08-running-a-monopoly',query:'Big boss on a budget',note:'#song-story',copy:'Then the stomach called an emergency meeting.',short:'https://jokes.win/65'},
  'since-before-youtube':{manifest:'2026-09-30-since-before-youtube',query:'You finding me now',note:'#release-note',copy:"I've been in the McDonald's drive-through while I got this page built. That's how slow the line was moving.",short:'https://dnb.fyi/63'},
  'times-are-coming':{manifest:'2026-10-01-times-are-coming',query:'Something good is coming',note:'#song-story',copy:'the chill in the weather and the hope that something good is on its way.',short:'https://dubstep.bid/64/2'}
 };
@@ -30,7 +31,7 @@ const links=require('../data/song-links.json');
  const assertShare=async(target=variant)=>{
   await page.evaluate(()=>window.CMDShortLinks.ready);await page.locator('.cmd-universal-share').click();
   const row=links.rows.find(r=>r.songId===song.id&&r.version===target.id);
-  const expected=`https://${links.domains[row.genre]}/${row.number}${row.slot===1?'':`/${row.slot}`}`;
+  const expected=`https://${links.domains[row.shareCategory==='jokes'?'jokes':row.genre]}/${row.number}${row.slot===1?'':`/${row.slot}`}`;
   if(target.id===variant.id)assert.equal(expected,config.short);
   assert.equal(await page.locator('.cmd-share-link').inputValue(),expected);assert.equal(await page.evaluate(()=>window.__copies.at(-1)),expected);
   await page.getByRole('button',{name:'Done',exact:true}).click();

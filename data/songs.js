@@ -1,6 +1,37 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "running-a-monopoly",
+    "title": "Running a Monopoly",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-08",
+    "project": "Running a Monopoly",
+    "description": "A five-dollar breakfast empire. A Monopoly app. A stomach staging a hostile takeover. Satirical hip-hop freestyle by Call Me Daddy.",
+    "audio": "/media/songs/2026/10/running-a-monopoly/audio.mp3",
+    "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
+    "experience": "/running-a-monopoly/",
+    "shareUrl": "/running-a-monopoly/?version=main",
+    "kind": "Satire · Hip-hop freestyle",
+    "shareGenre": "hiphop",
+    "shareCategory": "jokes",
+    "sunoUrl": "https://suno.com/song/3e85dc33-7cfa-4504-87c2-f24d84926b9f",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full freestyle",
+        "audio": "/media/songs/2026/10/running-a-monopoly/audio.mp3",
+        "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
+        "duration": 230.04,
+        "date": "2026-10-08",
+        "experience": "/running-a-monopoly/?version=main",
+        "shareUrl": "/running-a-monopoly/?version=main",
+        "sunoUrl": "https://suno.com/song/3e85dc33-7cfa-4504-87c2-f24d84926b9f"
+      }
+    ]
+  },
+  {
     "id": "times-are-coming",
     "title": "Times Are Coming",
     "artist": "MusicSubject × Call Me Daddy",

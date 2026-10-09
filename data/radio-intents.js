@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "running-a-monopoly": {
+    "surprise": 85,
+    "laugh": 100,
+    "think": 20,
+    "level-up": 15,
+    "heavy": 35,
+    "old-files": 0
+  },
   "times-are-coming": {
     "surprise": 85,
     "laugh": 10,
