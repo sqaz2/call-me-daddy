@@ -21,7 +21,7 @@
       bleed:'full',
       keywords:['heavy','melancholy','sad','numb','locked','heartbreak','grunge'],
       songIds:[
-        'will-to-live','locked-in-these-walls','seven-days-locked','under-watch',
+        'turning-invisible','will-to-live','locked-in-these-walls','seven-days-locked','under-watch',
         'never-come-back-down','numbness-as-a-trap','i-need-love','everybody-else-less',
         'couple-friends-couple-calls','the-loudest-one-in-my-head','mind-at-war',
         'shooting-star','september-26th-heartbreak','heartbreak-you-water-me','cloudlife',
@@ -67,7 +67,7 @@
       bleed:'full',
       keywords:['heartbreak','wild-ways','wifi','magical','perfume','archive'],
       songIds:[
-        'shooting-star','september-26th-heartbreak','heartbreak-you-water-me','wild-ways',
+        'turning-invisible','shooting-star','september-26th-heartbreak','heartbreak-you-water-me','wild-ways',
         'the-tune-of-magical-song','i-wont-let-the-wifi-go','her-perfume-rides-shotgun','2010-wows'
       ]
     },

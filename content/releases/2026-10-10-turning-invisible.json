@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "turning-invisible",
+    "title": "Turning Invisible",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-10",
+    "project": "Old Files / New Tools",
+    "description": "An instrumental from 2009. Lyrics recovered from a 2015 email. Two pieces of the past, brought together in a 2026 AI mix. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/turning-invisible/audio.mp3",
+    "cover": "/media/songs/2026/10/turning-invisible/cover.jpg",
+    "experience": "/turning-invisible/",
+    "shareUrl": "/turning-invisible/?version=main",
+    "kind": "Rock · AI mix",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/song/4172d191-b336-4917-a0d6-e640199866ad",
+    "variants": [
+      {
+        "id": "main",
+        "label": "2026 AI mix",
+        "audio": "/media/songs/2026/10/turning-invisible/audio.mp3",
+        "cover": "/media/songs/2026/10/turning-invisible/cover.jpg",
+        "duration": 182.04,
+        "date": "2026-10-10",
+        "experience": "/turning-invisible/?version=main",
+        "shareUrl": "/turning-invisible/?version=main",
+        "sunoUrl": "https://suno.com/song/4172d191-b336-4917-a0d6-e640199866ad"
+      }
+    ]
+  },
+  "lyrics": {
+    "text": "[Intro]\nWorked for twenty-seven seconds\nThen the room went quiet again\n[Verse 1]\nYou held your memories out in both hands\nHe let them fall like coins in the sand\nYou gave him patience, he gave you the ache\nNow every old picture starts losing its shape\n[Chorus]\nYou’re turning invisible\nThe sight of it’s miserable\nYou’re fading away\nFrom his memories\nYour tears changed who you was\nSo you could feel okay\nAnd how you felt about him starts to fade\n[Verse 2 — Featured Artist]\nI saw your name on the back of a receipt\nFolded in the pocket of your old blue jeans\nYou said, “I’m getting better,” then you looked away\nSome goodbyes take a little longer than they say\nLet the past keep talking; you don’t have to stay\nYou can leave the door shut and still be okay\n[Chorus]\nYou’re turning invisible\nThe sight of it’s miserable\nYou’re fading away\nFrom his memories\nYour tears changed who you was\nSo you could feel okay\nAnd how you felt about him starts to fade\n[Outro]\nStarts to fade\nStarts to fade",
+    "snippet": "Let the past keep talking; you don’t have to stay",
+    "sunoUrl": "https://suno.com/song/4172d191-b336-4917-a0d6-e640199866ad",
+    "clipIds": [
+      "4172d191-b336-4917-a0d6-e640199866ad"
+    ],
+    "source": "Exact released lyrics from the uploaded Turning Invisible (1).mp3 lyrics-eng tag; spelling and phrasing preserved."
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 0,
+    "think": 95,
+    "level-up": 35,
+    "heavy": 65,
+    "old-files": 100
+  },
+  "update": {
+    "id": "release-turning-invisible",
+    "published": "2026-10-10T16:26:57-06:00",
+    "type": "New release",
+    "songId": "turning-invisible",
+    "variantId": "main",
+    "title": "Turning Invisible — the remixed email",
+    "summary": "An instrumental from 2009. Lyrics recovered from a 2015 email. Two pieces of the past, brought together in a 2026 AI mix. MusicSubject × Call Me Daddy.",
+    "href": "/turning-invisible/",
+    "sharePath": "/updates/release-turning-invisible/",
+    "cta": "Listen to the AI mix",
+    "featured": true,
+    "cover": "/media/songs/2026/10/turning-invisible/cover.jpg",
+    "cardLines": [
+      "TURNING",
+      "INVISIBLE"
+    ],
+    "cardTag": "2009 → 2026 · AI mix",
+    "cardSummary": "Yes, you read that correctly. This is a remixed email you’re listening to.",
+    "badge": "NEW AI MIX",
+    "intent": "old-files"
+  }
+}

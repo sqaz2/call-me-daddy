@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "turning-invisible": {
+    "surprise": 80,
+    "laugh": 0,
+    "think": 95,
+    "level-up": 35,
+    "heavy": 65,
+    "old-files": 100
+  },
   "running-a-monopoly": {
     "surprise": 85,
     "laugh": 100,

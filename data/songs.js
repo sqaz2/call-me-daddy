@@ -1,6 +1,37 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "turning-invisible",
+    "title": "Turning Invisible",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-10",
+    "project": "Old Files / New Tools",
+    "description": "An instrumental from 2009. Lyrics recovered from a 2015 email. Two pieces of the past, brought together in a 2026 AI mix. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/turning-invisible/audio.mp3",
+    "cover": "/media/songs/2026/10/turning-invisible/cover.jpg",
+    "experience": "/turning-invisible/",
+    "shareUrl": "/turning-invisible/?version=main",
+    "kind": "Rock · AI mix",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/song/4172d191-b336-4917-a0d6-e640199866ad",
+    "variants": [
+      {
+        "id": "main",
+        "label": "2026 AI mix",
+        "audio": "/media/songs/2026/10/turning-invisible/audio.mp3",
+        "cover": "/media/songs/2026/10/turning-invisible/cover.jpg",
+        "duration": 182.04,
+        "date": "2026-10-10",
+        "experience": "/turning-invisible/?version=main",
+        "shareUrl": "/turning-invisible/?version=main",
+        "sunoUrl": "https://suno.com/song/4172d191-b336-4917-a0d6-e640199866ad"
+      }
+    ]
+  },
+  {
     "id": "running-a-monopoly",
     "title": "Running a Monopoly",
     "artist": "MusicSubject × Call Me Daddy",
