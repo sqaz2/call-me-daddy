@@ -21,6 +21,7 @@
     'numbness-as-a-trap':'raw',
 
     // --- deep (melancholy / heartbreak / heavy but not ambush) ---
+    'turning-invisible':'deep',
     'nobody-wants-to-listen':'deep',
     'cheap-to-inform':'deep',
     'the-games-she-hates':'deep',
