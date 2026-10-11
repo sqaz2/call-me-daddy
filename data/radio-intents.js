@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "keep-building-your-future": {
+    "surprise": 80,
+    "laugh": 30,
+    "think": 65,
+    "level-up": 100,
+    "heavy": 30,
+    "old-files": 0
+  },
   "turning-invisible": {
     "surprise": 80,
     "laugh": 0,

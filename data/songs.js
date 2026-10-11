@@ -1,6 +1,37 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "keep-building-your-future",
+    "title": "Keep Building Your Future",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-11",
+    "project": "",
+    "description": "Keep building your future. Hold on to your purpose. A song about making room for your dreams and creating on your own terms. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/keep-building-your-future/audio.mp3",
+    "cover": "/media/songs/2026/10/keep-building-your-future/cover.png",
+    "experience": "/keep-building-your-future/",
+    "shareUrl": "/keep-building-your-future/?version=main",
+    "kind": "Song",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/Pv8RWUmOcGEkfSVT",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full song",
+        "audio": "/media/songs/2026/10/keep-building-your-future/audio.mp3",
+        "cover": "/media/songs/2026/10/keep-building-your-future/cover.png",
+        "date": "2026-10-11",
+        "experience": "/keep-building-your-future/?version=main",
+        "shareUrl": "/keep-building-your-future/?version=main",
+        "sunoUrl": "https://suno.com/s/Pv8RWUmOcGEkfSVT",
+        "duration": 135.624
+      }
+    ]
+  },
+  {
     "id": "turning-invisible",
     "title": "Turning Invisible",
     "artist": "MusicSubject × Call Me Daddy",
