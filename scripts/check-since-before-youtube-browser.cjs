@@ -47,16 +47,26 @@ const links=require('../data/song-links.json');
   }
   check('Silent load and layouts at 320, 390 and 1440px');
   if(releaseId==='keep-building-your-future'){
-   assert(await page.locator('#futureVisual').evaluate(v=>v.paused&&v.muted&&v.loop&&v.playsInline));
-   await page.locator('#visualToggle').click();
    await page.waitForFunction(()=>{const v=document.getElementById('futureVisual');return !v.paused&&v.currentTime>.1&&v.videoWidth>0},null,{timeout:20000});
-   const visual=await page.locator('#futureVisual').evaluate(v=>({duration:v.duration,width:v.videoWidth,height:v.videoHeight,muted:v.muted}));
-   console.log('VISUAL_METADATA',JSON.stringify(visual));
-   assert(visual.muted);assert.equal(await ownerCount(),0);
+   assert(await page.locator('#futureVisual').evaluate(v=>v.muted&&v.loop&&v.playsInline&&!v.controls));
+   assert.equal(await page.getByRole('link',{name:/Open video|Watch the visual/}).count(),0);
+   assert.equal(await page.locator('.visual-section').count(),0);
+   for(const width of [320,390,1440]){
+    await page.setViewportSize({width,height:844});
+    await page.evaluate(()=>window.scrollTo({top:700,behavior:'instant'}));
+    assert(await page.locator('.release-background').evaluate(el=>{const r=el.getBoundingClientRect();return getComputedStyle(el).position==='fixed'&&r.top===0&&r.left===0&&r.width===innerWidth&&r.height===innerHeight}));
+   }
+   assert.equal(await ownerCount(),0);
    await page.locator('#visualToggle').click();
    assert(await page.locator('#futureVisual').evaluate(v=>v.paused));
+   await page.locator('#visualToggle').click();
+   await page.waitForFunction(()=>!document.getElementById('futureVisual').paused);
+   await page.emulateMedia({reducedMotion:'reduce'});
+   await page.waitForFunction(()=>document.getElementById('futureVisual').paused);
+   await page.emulateMedia({reducedMotion:'no-preference'});
+   await page.waitForFunction(()=>!document.getElementById('futureVisual').paused);
    assert.equal(await page.locator('#releaseAudio').getAttribute('src'),null);
-   check('Uploaded short video decodes, loops muted and pauses without taking audio ownership');
+   check('Video autoplays as a fixed muted background, covers phone and desktop viewports, pauses and respects reduced motion without claiming audio');
   }
   await page.setViewportSize({width:320,height:844});await page.locator('#releaseLyricsLabel').click();
   assert.equal(await page.locator('#releaseLyrics').textContent(),lyrics.text);
