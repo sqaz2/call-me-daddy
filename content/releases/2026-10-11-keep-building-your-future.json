@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "keep-building-your-future",
+    "title": "Keep Building Your Future",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-11",
+    "project": "",
+    "description": "Keep building your future. Hold on to your purpose. A song about making room for your dreams and creating on your own terms. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/keep-building-your-future/audio.mp3",
+    "cover": "/media/songs/2026/10/keep-building-your-future/cover.png",
+    "experience": "/keep-building-your-future/",
+    "shareUrl": "/keep-building-your-future/?version=main",
+    "kind": "Song",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/Pv8RWUmOcGEkfSVT",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full song",
+        "audio": "/media/songs/2026/10/keep-building-your-future/audio.mp3",
+        "cover": "/media/songs/2026/10/keep-building-your-future/cover.png",
+        "date": "2026-10-11",
+        "experience": "/keep-building-your-future/?version=main",
+        "shareUrl": "/keep-building-your-future/?version=main",
+        "sunoUrl": "https://suno.com/s/Pv8RWUmOcGEkfSVT"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 30,
+    "think": 65,
+    "level-up": 100,
+    "heavy": 30,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-keep-building-your-future",
+    "published": "2026-10-11T10:36:00-06:00",
+    "type": "New release",
+    "songId": "keep-building-your-future",
+    "variantId": "main",
+    "title": "Keep Building Your Future",
+    "summary": "Keep building your future. Hold on to your purpose. A song about making room for your dreams and creating on your own terms. MusicSubject × Call Me Daddy.",
+    "href": "/keep-building-your-future/",
+    "sharePath": "/updates/release-keep-building-your-future/",
+    "cta": "Listen + watch",
+    "featured": true,
+    "cover": "/media/songs/2026/10/keep-building-your-future/cover.png",
+    "cardLines": [
+      "KEEP BUILDING",
+      "YOUR FUTURE"
+    ],
+    "cardTag": "Hold on to your purpose",
+    "cardSummary": "The full song, the artwork, and a short looping visual. Keep being you.",
+    "badge": "NEW RELEASE",
+    "intent": "level-up"
+  }
+}
