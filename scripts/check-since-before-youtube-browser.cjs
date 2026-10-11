@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
+ 'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
  'running-a-monopoly':{manifest:'2026-10-08-running-a-monopoly',query:'Big boss on a budget',note:'#song-story',copy:'Then the stomach called an emergency meeting.',short:'https://jokes.win/65'},
  'since-before-youtube':{manifest:'2026-09-30-since-before-youtube',query:'You finding me now',note:'#release-note',copy:"I've been in the McDonald's drive-through while I got this page built. That's how slow the line was moving.",short:'https://dnb.fyi/63'},
  'times-are-coming':{manifest:'2026-10-01-times-are-coming',query:'Something good is coming',note:'#song-story',copy:'the chill in the weather and the hope that something good is on its way.',short:'https://dubstep.bid/64/2'}
@@ -45,6 +46,18 @@ const links=require('../data/song-links.json');
    await page.screenshot({path:`${out}/${width}.png`,fullPage:true});
   }
   check('Silent load and layouts at 320, 390 and 1440px');
+  if(releaseId==='keep-building-your-future'){
+   assert(await page.locator('#futureVisual').evaluate(v=>v.paused&&v.muted&&v.loop&&v.playsInline));
+   await page.locator('#visualToggle').click();
+   await page.waitForFunction(()=>{const v=document.getElementById('futureVisual');return !v.paused&&v.currentTime>.1&&v.videoWidth>0},null,{timeout:20000});
+   const visual=await page.locator('#futureVisual').evaluate(v=>({duration:v.duration,width:v.videoWidth,height:v.videoHeight,muted:v.muted}));
+   console.log('VISUAL_METADATA',JSON.stringify(visual));
+   assert(visual.muted);assert.equal(await ownerCount(),0);
+   await page.locator('#visualToggle').click();
+   assert(await page.locator('#futureVisual').evaluate(v=>v.paused));
+   assert.equal(await page.locator('#releaseAudio').getAttribute('src'),null);
+   check('Uploaded short video decodes, loops muted and pauses without taking audio ownership');
+  }
   await page.setViewportSize({width:320,height:844});await page.locator('#releaseLyricsLabel').click();
   assert.equal(await page.locator('#releaseLyrics').textContent(),lyrics.text);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));

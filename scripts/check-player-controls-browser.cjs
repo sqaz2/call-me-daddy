@@ -80,7 +80,9 @@ const {chromium}=require('playwright');
   await page.setViewportSize({width:320,height:720});
   const browsed=page.frames().find(f=>f.parentFrame()&&new URL(f.url()).pathname==='/');
   await browsed.waitForFunction(()=>parseFloat(getComputedStyle(document.body).paddingBottom)>250);
-  await browsed.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
+  // Measure the final layout, not a frame during the site's smooth-scroll animation.
+  await browsed.evaluate(()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
+  await browsed.waitForFunction(()=>Math.abs(document.documentElement.scrollHeight-innerHeight-scrollY)<2);
   const panel=await dock.boundingBox(),footer=await browsed.locator('footer').boundingBox();
   assert.ok(panel.y>=0&&panel.y+panel.height<=720,'Expanded dock stays inside a narrow viewport');
   assert.ok(footer.y+footer.height<=panel.y,'The footer remains above the expanded player');
