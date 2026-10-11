@@ -49,6 +49,7 @@
     'satans-loan':'deep',
 
     // --- light (comedy / satire / fun / forward motion) ---
+    'keep-building-your-future':'light',
     'running-a-monopoly':'light',
     'times-are-coming':'light',
     'since-before-youtube':'light',
