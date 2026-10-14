@@ -2,7 +2,7 @@
 
 Installable Android music app with a local listening interface and an Android Media3 playback service. The app reads the production MusicSubject catalogue on launch, on Refresh, and when returning after two minutes. Publishing through the existing song workflow updates the app without rebuilding it.
 
-## Included in 0.1.0
+## Included in 0.1.1
 
 - Artwork-first playback, song search, genre filters, local saved songs and exact version selection.
 - Newest-first queue and Surprise Me using the website's existing catalogue radio engine, preserving its protected story sequences.
@@ -30,7 +30,7 @@ For the signed app (`com.musicsubject.player`), restore the private MusicSubject
 - `MUSICSUBJECT_STORE_PASSWORD`: private store password
 - `MUSICSUBJECT_KEY_PASSWORD`: private key password
 
-Alias: `musicsubject`. Then run `./gradlew assembleRelease lintRelease`. Preserve this signing key for every update and increment `versionCode`. Never commit the keystore or passwords. The first signed installer and the private signing backup are retained separately from the source repository.
+Alias: `musicsubject`. Then run `./gradlew assembleRelease bundleRelease lintRelease`. Preserve this signing key for every update and increment `versionCode`. Never commit the keystore or passwords. The first signed installer and the private signing backup are retained separately from the source repository.
 
 ## Validation
 
@@ -54,3 +54,7 @@ Before calling the app device-verified, install the signed APK on a phone and ch
 7. Close/reopen the activity while playing, and stop/restart the process to check paused restoration.
 
 A compiled APK, lint, and mocked browser tests do not substitute for this phone test. No physical-device or Android-emulator playback test was available during the initial build.
+
+## Beta distribution
+
+Version 0.1.1 (code 2) has a custom adaptive launcher icon and uses the original release certificate, allowing updates over 0.1.0. The signed APK is published under `/app/downloads/`; see `/app/` for installation guidance and `play-store/` for the draft Play listing. Keep release APK and source version in sync. The owner has reported successful installation and basic use; the complete physical-device checklist above is still pending.
