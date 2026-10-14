@@ -10,13 +10,13 @@ function installHarness(profile={}){
   const events={},registered=[],buttonEvents={};
   const node=()=>({textContent:'',hidden:false,open:false,focused:false,focus(){this.focused=true;}});
   const button={...node(),addEventListener:(name,fn)=>buttonEvents[name]=fn};
-  const status=node(),recommendation=node(),help=node();
-  const guides=Object.fromEntries([...installHtml.matchAll(/<details\s+id="([^"]+)"/g)].map(([,id])=>[id,node()]));
-  const window={isSecureContext:true,matchMedia:()=>({matches:false}),addEventListener:(name,fn)=>events[name]=fn};window.top=window;window.self=window;
-  const document={readyState:'complete',querySelector:selector=>({'[data-install-app]':button,'[data-install-status]':status,'[data-device-recommendation]':recommendation}[selector]||null),getElementById:id=>id==='install-help'?help:guides[id]};
+  const status=node(),recommendation=node(),androidStatus=node(),help=node();
+  const guides=Object.fromEntries([...installHtml.matchAll(/<details[^>]*\sid="([^"]+)"/g)].map(([,id])=>[id,node()]));
+  const window={isSecureContext:true,matchMedia:()=>({matches:profile.standalone===true}),addEventListener:(name,fn)=>events[name]=fn};window.top=window;window.self=window;
+  const document={readyState:'complete',querySelector:selector=>({'[data-install-app]':button,'[data-install-status]':status,'[data-device-recommendation]':recommendation,'[data-android-status]':androidStatus}[selector]||null),getElementById:id=>id==='install-help'?help:guides[id]};
   const navigator={serviceWorker:{register:(...args)=>{registered.push(args);return Promise.resolve()}},...profile};
   vm.runInNewContext(installSource,{window,document,navigator});
-  return {events,registered,window,button,status,recommendation,help,guides,click:()=>buttonEvents.click()};
+  return {events,registered,window,button,status,recommendation,androidStatus,help,guides,click:()=>buttonEvents.click()};
 }
 
 test('app shell is idempotent and preserves song identity and page body',()=>{
@@ -66,7 +66,7 @@ test('installation requires a click, consumes each browser prompt once, and neve
   const {events,registered,window,button,help,click}=installHarness();
   let prompts=0,prevented=0;events.beforeinstallprompt({preventDefault(){prevented++;},prompt:async()=>prompts++,userChoice:Promise.resolve({outcome:'dismissed'})});
   assert.equal(prevented,1);assert.equal(prompts,0);assert.equal(window.CMDInstall.available(),true);
-  assert.match(button.textContent,/Install MusicSubject/);
+  assert.match(button.textContent,/Add website to this device/);
   await click();assert.equal(prompts,1);assert.equal(window.CMDInstall.available(),false);
   await click();assert.equal(prompts,1);assert.equal(help.focused,true);
   assert.equal(window.CMDInstall.installed(),false);
@@ -75,7 +75,6 @@ test('installation requires a click, consumes each browser prompt once, and neve
 
 test('device suggestions select usable manual instructions, including iPad desktop mode and ChromeOS',async t=>{
   const profiles=[
-    ['Android',{userAgent:'Mozilla/5.0 (Linux; Android 16; Pixel 9 Pro) AppleWebKit/537.36 Chrome/141.0.0.0 Mobile Safari/537.36'},'android'],
     ['iPad with desktop Safari',{userAgent:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 Version/18.0 Safari/605.1.15',platform:'MacIntel',maxTouchPoints:5},'ios'],
     ['Mac without touch',{userAgent:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 Version/18.0 Safari/605.1.15',platform:'MacIntel',maxTouchPoints:0},'mac'],
     ['Chromebook reporting a Linux platform',{userAgent:'Mozilla/5.0 (X11; CrOS x86_64 16093.68.0) AppleWebKit/537.36 Chrome/130.0.0.0 Safari/537.36',platform:'Linux x86_64'},'chromeos'],
@@ -89,7 +88,7 @@ test('device suggestions select usable manual instructions, including iPad deskt
     assert.ok(guides[expected],`installation page must contain ${expected} instructions`);
     assert.equal(guides[expected].open,true);assert.equal(guides[expected].focused,true);
     assert.equal(help.focused,false);
-    assert.deepEqual(Object.keys(guides).filter(id=>guides[id].open),[expected]);
+    assert.deepEqual(Object.keys(guides).filter(id=>guides[id].open&&id!=='browser-options'),[expected]);
   });
 });
 
@@ -102,23 +101,57 @@ test('Fire and TV devices use the compatibility fallback instead of ordinary And
   for(const [name,userAgent]of profiles)await t.test(name,async()=>{
     const {guides,help,click}=installHarness({userAgent});
     await click();assert.equal(help.focused,true);
-    assert.deepEqual(Object.keys(guides).filter(id=>guides[id].open),[]);
+    assert.deepEqual(Object.keys(guides).filter(id=>guides[id].open&&id!=='browser-options'),[]);
   });
 });
 
-test('embedded browsers explain the browser handoff without suppressing device instructions',async t=>{
+test('Android always offers the real app, including an existing home-screen shortcut',async t=>{
+  const userAgent='Mozilla/5.0 (Linux; Android 16; Pixel 9 Pro) AppleWebKit/537.36 Chrome/141.0.0.0 Mobile Safari/537.36';
+  for(const standalone of [false,true])await t.test(`standalone=${standalone}`,async()=>{
+    const {events,window,button,recommendation}=installHarness({userAgent,standalone});
+    let prompts=0,prevented=0;
+    events.beforeinstallprompt({preventDefault(){prevented++},prompt:async()=>prompts++,userChoice:Promise.resolve()});
+    assert.equal(prevented,1);
+    assert.equal(window.CMDInstall.available(),false);
+    assert.equal(await window.CMDInstall.install(),false);
+    assert.equal(prompts,0);
+    assert.equal(button.hidden,true);
+    assert.match(recommendation.textContent,/Download Android app/);
+  });
+  const download=installHtml.match(/<a class="download-apk"[^>]*>/)[0];
+  assert.match(download,/href="\/app\/downloads\/MusicSubject-0\.1\.2\.apk"/);
+  assert.match(download,/ download>/);
+  assert.ok(installHtml.indexOf('class="download-apk"')<installHtml.indexOf('id="browser-options"'));
+  assert.doesNotMatch(installHtml,/<details id="android"/);
+});
+
+test('Android in-app browsers explain how to reach the APK download',async t=>{
   for(const [name,userAgent]of [
     ['Facebook','Mozilla/5.0 (Linux; Android 16; Pixel 9 Pro) AppleWebKit/537.36 [FBAN/FB4A;FBAV/535.0.0.0]'],
     ['Android WebView','Mozilla/5.0 (Linux; Android 16; Pixel 9 Pro Build/BP2A; wv) AppleWebKit/537.36 Version/4.0 Chrome/141.0.0.0 Mobile Safari/537.36'],
   ])await t.test(name,async()=>{
-    const {recommendation,status,guides,click}=installHarness({userAgent});
-    assert.match(recommendation.textContent,/another app/);
-    await click();assert.match(status.textContent,/browser first/);assert.equal(guides.android.open,true);
+    const {androidStatus,button}=installHarness({userAgent});
+    assert.match(androidStatus.textContent,/inside another app/);
+    assert.match(androidStatus.textContent,/Download Android app/);
+    assert.equal(button.hidden,true);
   });
 });
 
-test('a rejected native prompt opens manual installation help',async()=>{
-  const {events,guides,window,click}=installHarness({userAgent:'Mozilla/5.0 (Linux; Android 16; Pixel 9 Pro)'});
+test('iOS in-app browsers offer Safari steps without Android download instructions',async t=>{
+  for(const app of ['[FBAN/FBIOS;FBAV/535.0]','Instagram 350.0'])await t.test(app,async()=>{
+    const {androidStatus,recommendation,button,guides,status,click}=installHarness({userAgent:`Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 ${app}`});
+    assert.doesNotMatch(androidStatus.textContent,/Download Android app/);
+    assert.match(recommendation.textContent,/another app/);
+    assert.equal(button.hidden,false);
+    await click();
+    assert.equal(guides.ios.open,true);
+    assert.equal(guides['browser-options'].open,true);
+    assert.match(status.textContent,/browser first/);
+  });
+});
+
+test('a rejected desktop browser prompt opens manual installation help',async()=>{
+  const {events,guides,window,click}=installHarness({userAgent:'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'});
   events.beforeinstallprompt({preventDefault(){},prompt:async()=>{throw Error('prompt unavailable')},userChoice:Promise.resolve()});
-  await click();assert.equal(guides.android.open,true);assert.equal(window.CMDInstall.available(),false);
+  await click();assert.equal(guides.windows.open,true);assert.equal(guides['browser-options'].open,true);assert.equal(window.CMDInstall.available(),false);
 });
