@@ -3,7 +3,7 @@ import { resolveSocial, SOCIAL_VERSION } from './song-social.mjs';
 // Only the top-level tab owns its favicon. Hidden playback-owner frames must not overwrite it.
 if (window === window.top && !window.CMDSongFavicon) {
   let serial = 0, index;
-  const original = document.querySelector('link[rel~="icon"]')?.href || '/favicon.svg';
+  const original = '/app/brand-icon-192.png';
   const getIndex = () => index ||= fetch(`/data/song-social.json?v=${SOCIAL_VERSION}`, { cache: 'no-cache' })
     .then(r => { if (!r.ok) throw new Error('Artwork index unavailable'); return r.json(); })
     .catch(error => { index = null; throw error; });

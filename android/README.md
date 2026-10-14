@@ -58,3 +58,7 @@ A compiled APK, lint, and mocked browser tests do not substitute for this phone 
 ## Beta distribution
 
 Version 0.1.1 (code 2) has a custom adaptive launcher icon and uses the original release certificate, allowing updates over 0.1.0. The signed APK is published under `/app/downloads/`; see `/app/` for installation guidance and `play-store/` for the draft Play listing. Keep release APK and source version in sync. The owner has reported successful installation and basic use; the complete physical-device checklist above is still pending.
+
+## Branding update prepared for 0.1.2
+
+Source version 0.1.2 (code 3) uses the full MusicSubject × Call Me Daddy wordmark for launcher and fallback artwork. The public signed download remains 0.1.1 until a release is rebuilt with the original private signing backup. Do not replace it with the separately signed preview artifact. Run the release build and certificate verification described above, then publish its versioned APK/checksum and update the download page together.
