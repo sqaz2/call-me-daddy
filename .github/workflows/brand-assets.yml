@@ -1,0 +1,33 @@
+name: Prepare full-name brand icons
+on:
+  push:
+    branches: [brand/full-name-logo]
+    paths: ['media/brand/musicsubject-callmedaddy-logo.png', 'scripts/build-brand-icons.py', '.github/workflows/brand-assets.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  icons:
+    if: github.ref == 'refs/heads/brand/full-name-logo'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: brand/full-name-logo
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python -m pip install Pillow==11.3.0
+      - run: python scripts/build-brand-icons.py
+      - name: Validate install icons and preserve song artwork behavior
+        run: node --test tests/installable-app.test.mjs tests/song-social-unit.test.mjs android/tests/catalog.test.cjs
+      - name: Commit generated logo sizes
+        run: |
+          git add favicon.svg app/icon-*.png app/brand-icon-*.png app/android-icon-192.png media/brand/call-me-daddy-musicsubject.jpg android/app/src/main/assets/icon.png android/app/src/main/res/drawable-nodpi/ic_launcher_foreground.png android/app/src/main/res/mipmap-*/ic_launcher.png android/play-store/icon-512.png android/play-store/feature-graphic-1024x500.png
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Generate full-name MusicSubject and Call Me Daddy icons"
+          git push origin HEAD:brand/full-name-logo
