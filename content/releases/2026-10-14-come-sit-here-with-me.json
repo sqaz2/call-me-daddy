@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "come-sit-here-with-me",
+    "title": "Come Sit Here With Me",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-14",
+    "project": "",
+    "description": "Still building despite everything. Still a little hope. A personal song about wanting someone close and making room for them. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/come-sit-here-with-me/audio.mp3",
+    "cover": "/media/songs/2026/10/come-sit-here-with-me/cover.png",
+    "experience": "/come-sit-here-with-me/",
+    "shareUrl": "/come-sit-here-with-me/?version=main",
+    "kind": "Song",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/2OOviRYnC93pp7Ts",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full song",
+        "audio": "/media/songs/2026/10/come-sit-here-with-me/audio.mp3",
+        "cover": "/media/songs/2026/10/come-sit-here-with-me/cover.png",
+        "date": "2026-10-14",
+        "experience": "/come-sit-here-with-me/?version=main",
+        "shareUrl": "/come-sit-here-with-me/?version=main",
+        "sunoUrl": "https://suno.com/s/2OOviRYnC93pp7Ts",
+        "duration": 122.112
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 5,
+    "think": 100,
+    "level-up": 55,
+    "heavy": 15,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-come-sit-here-with-me",
+    "published": "2026-10-14T10:07:00-06:00",
+    "type": "New release",
+    "songId": "come-sit-here-with-me",
+    "variantId": "main",
+    "title": "Come Sit Here With Me",
+    "summary": "Still building despite everything. Still a little hope. A personal song about wanting someone close and making room for them. MusicSubject × Call Me Daddy.",
+    "href": "/come-sit-here-with-me/",
+    "sharePath": "/updates/release-come-sit-here-with-me/",
+    "cta": "Listen + read the lyrics",
+    "featured": true,
+    "cover": "/media/songs/2026/10/come-sit-here-with-me/cover.png",
+    "cardLines": [
+      "COME SIT HERE",
+      "WITH ME"
+    ],
+    "cardTag": "Still building. Making room for you.",
+    "cardSummary": "I've made so many things alone. I'd like to make some room for you.",
+    "badge": "NEW RELEASE",
+    "intent": "think"
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nAnother page\nAnother song\nLook up again\nThe evening's gone\nThere's something here I want to show\nSomeone I haven't met, I suppose\nI made a joke\nI' made a beat\nThere's always something left in me\nBut some nights I leave it all for someone asking, \"Can I call?\"\n[Verse 2]\nI'm still building despite everything\nStill a little hope\nStill something to sing\nBut I want someone close with nowhere else to be\nYou don't have to know where this goes, come sit here with me\nI could tell you what I'm making, probably talk about it all night\nThen ask what you've been thinking, watch your face come alive\nWe could put our phones down, let the unfinished things stay\nI'd like to hear about your morning, even if nothing happened that day\n[Verse 3]\nI'm still building despite everything, still got a little hope\nStill got something to sing, but I want someone close\nWith nowhere else to be, you don't have to know\nWhere this goes, come sit here with me\nMaybe I'll lose my place\nMaybe you'll laugh and I will too\nI've made so many things alone\nI'd like to make some room for you\n[Verse 4]\nI'm still building\nAnd there's more I want to do\nTonight I want someone close\nI want to hear them singing too",
+    "snippet": "I'd like to make some room for you",
+    "sunoUrl": "https://suno.com/s/2OOviRYnC93pp7Ts",
+    "clipIds": [
+      "63b22d29-5d2d-461e-8595-6373093b51fa"
+    ],
+    "source": "Exact embedded lyrics from the user-uploaded MP3, matching the lyrics supplied by the artist."
+  }
+}
