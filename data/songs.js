@@ -1,6 +1,37 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "come-sit-here-with-me",
+    "title": "Come Sit Here With Me",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-14",
+    "project": "",
+    "description": "Still building despite everything. Still a little hope. A personal song about wanting someone close and making room for them. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/come-sit-here-with-me/audio.mp3",
+    "cover": "/media/songs/2026/10/come-sit-here-with-me/cover.png",
+    "experience": "/come-sit-here-with-me/",
+    "shareUrl": "/come-sit-here-with-me/?version=main",
+    "kind": "Song",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/2OOviRYnC93pp7Ts",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full song",
+        "audio": "/media/songs/2026/10/come-sit-here-with-me/audio.mp3",
+        "cover": "/media/songs/2026/10/come-sit-here-with-me/cover.png",
+        "date": "2026-10-14",
+        "experience": "/come-sit-here-with-me/?version=main",
+        "shareUrl": "/come-sit-here-with-me/?version=main",
+        "sunoUrl": "https://suno.com/s/2OOviRYnC93pp7Ts",
+        "duration": 122.112
+      }
+    ]
+  },
+  {
     "id": "keep-building-your-future",
     "title": "Keep Building Your Future",
     "artist": "MusicSubject × Call Me Daddy",

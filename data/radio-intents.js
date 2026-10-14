@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "come-sit-here-with-me": {
+    "surprise": 80,
+    "laugh": 5,
+    "think": 100,
+    "level-up": 55,
+    "heavy": 15,
+    "old-files": 0
+  },
   "keep-building-your-future": {
     "surprise": 80,
     "laugh": 30,
