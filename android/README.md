@@ -2,7 +2,7 @@
 
 Installable Android music app with a local listening interface and an Android Media3 playback service. The app reads the production MusicSubject catalogue on launch, on Refresh, and when returning after two minutes. Publishing through the existing song workflow updates the app without rebuilding it.
 
-## Included in 0.1.1
+## Included in 0.1.2
 
 - Artwork-first playback, song search, genre filters, local saved songs and exact version selection.
 - Newest-first queue and Surprise Me using the website's existing catalogue radio engine, preserving its protected story sequences.
@@ -57,8 +57,8 @@ A compiled APK, lint, and mocked browser tests do not substitute for this phone 
 
 ## Beta distribution
 
-Version 0.1.1 (code 2) has a custom adaptive launcher icon and uses the original release certificate, allowing updates over 0.1.0. The signed APK is published under `/app/downloads/`; see `/app/` for installation guidance and `play-store/` for the draft Play listing. Keep release APK and source version in sync. The owner has reported successful installation and basic use; the complete physical-device checklist above is still pending.
+Version 0.1.2 (code 3) uses the full MusicSubject × Call Me Daddy wordmark for the launcher and fallback artwork. The signed APK is published under `/app/downloads/MusicSubject-0.1.2.apk`, with its SHA-256 checksum beside it. The original release certificate is preserved, allowing updates over 0.1.0 and 0.1.1 without clearing saved songs.
 
-## Branding update prepared for 0.1.2
+The install page makes the dedicated Android app the primary download. Browser shortcuts remain available for iPhone, iPad and computers. Android browser shortcuts and the native app have separate saved-song storage.
 
-Source version 0.1.2 (code 3) uses the full MusicSubject × Call Me Daddy wordmark for launcher and fallback artwork. The public signed download remains 0.1.1 until a release is rebuilt with the original private signing backup. Do not replace it with the separately signed preview artifact. Run the release build and certificate verification described above, then publish its versioned APK/checksum and update the download page together.
+The release APK and AAB passed signature verification; the APK contains the approved full-name artwork. The release build and lint passed (0 errors), along with the catalogue and site tests. The owner previously reported successful installation and basic use of the earlier app; the complete physical-device checklist above remains pending for this release.
