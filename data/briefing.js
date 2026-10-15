@@ -1,9 +1,32 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-10-14T10:07:00-06:00",
+  updated: "2026-10-14T22:33:48-06:00",
   entries: [
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-this-is-my-story",
+      "published": "2026-10-14T22:33:48-06:00",
+      "type": "New release",
+      "songId": "this-is-my-story",
+      "variantId": "main",
+      "title": "This Is My Story — an old song, a new life",
+      "summary": "Started in 2009. A rough recording emailed to Andrew on May 22, 2010. Rediscovered and resurrected through AI as two special 2026 remixes, including a gospel version.",
+      "href": "/this-is-my-story/",
+      "sharePath": "/updates/release-this-is-my-story/",
+      "cta": "Hear both 2026 remixes",
+      "featured": true,
+      "cover": "/media/songs/2026/10/this-is-my-story/cover.jpg",
+      "cardLines": [
+        "THIS IS",
+        "MY STORY"
+      ],
+      "cardTag": "2009 → 2010 → 2026 · Two AI remixes",
+      "cardSummary": "A song started in 2009. A recording saved in a 2010 email. Two new lives in 2026.",
+      "badge": "TWO NEW REMIXES",
+      "intent": "old-files",
+      "featuredOrder": 0.0032467532467532465
+    },
     {
       "id": "release-come-sit-here-with-me",
       "published": "2026-10-14T10:07:00-06:00",
@@ -25,7 +48,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "I've made so many things alone. I'd like to make some room for you.",
       "badge": "NEW RELEASE",
       "intent": "think",
-      "featuredOrder": 0.003401360544217687
+      "featuredOrder": 0.006493506493506493
     },
     {
       "id": "release-keep-building-your-future",
@@ -48,7 +71,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The full song, the artwork, and a short looping visual. Keep being you.",
       "badge": "NEW RELEASE",
       "intent": "level-up",
-      "featuredOrder": 0.006802721088435374
+      "featuredOrder": 0.00974025974025974
     },
     {
       "id": "release-turning-invisible",
@@ -71,7 +94,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Yes, you read that correctly. This is a remixed email you’re listening to.",
       "badge": "NEW AI MIX",
       "intent": "old-files",
-      "featuredOrder": 0.01020408163265306
+      "featuredOrder": 0.012987012987012986
     },
     {
       "id": "release-running-a-monopoly",
@@ -94,7 +117,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Five dollars. Two potato patties. One hostile takeover from within.",
       "badge": "NEW RELEASE",
       "intent": "laugh",
-      "featuredOrder": 0.013605442176870748
+      "featuredOrder": 0.016233766233766232
     },
     {
       "id": "release-times-are-coming-mastered",
@@ -117,7 +140,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Mixed, then mastered in generative.download — the DAW I built. Hear the new version and the original.",
       "badge": "NEW VERSION",
       "intent": "level-up",
-      "featuredOrder": 0.017006802721088433
+      "featuredOrder": 0.01948051948051948
     },
     {
       "id": "release-times-are-coming",
@@ -162,7 +185,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "It ain’t brand new—it’s just new to you. The final song, plus a release note from a very slow McDonald’s drive-through line.",
       "badge": "NEW RELEASE",
       "intent": "level-up",
-      "featuredOrder": 0.023809523809523808
+      "featuredOrder": 0.025974025974025972
     },
     {
       "id": "release-8-walmart-parking-lot",
@@ -184,7 +207,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eight twelve in the morning after an all-night DAW build. Burger King breakfast, the van, and a Walmart parking lot. Hear the remastered recording.",
       "badge": "NEW RELEASE",
       "intent": "surprise",
-      "featuredOrder": 0.027210884353741496
+      "featuredOrder": 0.029220779220779217
     },
     {
       "id": "release-nobody-wants-to-listen",
@@ -206,7 +229,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "I can make music, but nobody wants to listen. The main track and four alternate cuts, including I Can Make Music — Chant and both Music with the Devil versions.",
       "badge": "NEW RELEASE",
       "intent": "think",
-      "featuredOrder": 0.03061224489795918
+      "featuredOrder": 0.032467532467532464
     },
     {
       "id": "2010-wows-gangster-remix",
@@ -229,7 +252,7 @@ window.CMD_BRIEFING = {
       "cardTag": "2010 WOWS · Another version",
       "cardSummary": "Gangster as Fuck Remix joins the existing 2010 WOWS versions.",
       "badge": "NEW MIX",
-      "featuredOrder": 0.03401360544217687
+      "featuredOrder": 0.03571428571428571
     },
     {
       "id": "2010-wows-close-my-eyes",
@@ -273,7 +296,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "A fourteen-year-old poem. Three versions. One bonus.",
       "badge": "New release",
       "intent": "think",
-      "featuredOrder": 0.04081632653061224
+      "featuredOrder": 0.0422077922077922
     },
     {
       "id": "release-make-me-an-animal-v6",
@@ -294,7 +317,7 @@ window.CMD_BRIEFING = {
       "cardTag": "New version · Suno v6",
       "cardSummary": "The new v6 recording. One Animal family, with the three earlier recordings preserved.",
       "badge": "NEW · v6",
-      "featuredOrder": 0.044217687074829926
+      "featuredOrder": 0.045454545454545456
     },
     {
       "id": "release-cheap-to-inform",
@@ -316,7 +339,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Two open wounds. Two sold-out rooms. An imagined scene about family hurt and the audience around it—not an autobiography.",
       "badge": "Scene study",
       "intent": "think",
-      "featuredOrder": 0.047619047619047616
+      "featuredOrder": 0.0487012987012987
     },
     {
       "id": "release-canadian-crop-dusting",
@@ -338,7 +361,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
       "badge": "New remix",
       "intent": "laugh",
-      "featuredOrder": 0.05102040816326531
+      "featuredOrder": 0.051948051948051945
     },
     {
       "id": "release-everybody-else-less",
@@ -360,7 +383,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
       "badge": "New song page",
       "intent": "think",
-      "featuredOrder": 0.05442176870748299
+      "featuredOrder": 0.05519480519480519
     },
     {
       "id": "release-set-a-table-for-two",
@@ -382,7 +405,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.057823129251700675
+      "featuredOrder": 0.05844155844155843
     },
     {
       "id": "release-satans-loan",
@@ -404,7 +427,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.06122448979591836
+      "featuredOrder": 0.06168831168831168
     },
     {
       "id": "release-superstore-effect",
@@ -426,7 +449,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.06462585034013604
+      "featuredOrder": 0.06493506493506493
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -448,7 +471,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.06802721088435373
+      "featuredOrder": 0.06818181818181818
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-still-building",published:"2026-09-10T10:30:00Z",type:"Two-song V6 release",songId:"stomp-clamp",title:"Still Building — Two Survival Songs",summary:"I Need That Sound and Survival Mode: two personal songs rebuilt in Suno V6 while I work toward a life beyond survival mode.",href:"/still-building/",sharePath:"/updates/release-still-building/",cta:"Play both V6 remixes",featured:true,featuredOrder:0.07142857142857142,cover:"/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg",cardLines:["STILL","BUILDING"],cardTag:"Two survival songs · Suno V6",cardSummary:"Working. Building. Trying to turn the van into a chapter instead of the ending.",badge:"New V6 remixes",intent:"think"},

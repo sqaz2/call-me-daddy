@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
+ 'this-is-my-story':{manifest:'2026-10-14-this-is-my-story',query:'With rhythm and rhyme',note:'#song-story',copy:'The file was called tims.wav',short:'https://suno.fyi/69'},
  'come-sit-here-with-me':{manifest:'2026-10-14-come-sit-here-with-me',query:'make some room for you',note:'#song-story',copy:'A personal song about continuing to create through everything',short:'https://suno.fyi/68'},
  'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
  'running-a-monopoly':{manifest:'2026-10-08-running-a-monopoly',query:'Big boss on a budget',note:'#song-story',copy:'Then the stomach called an emergency meeting.',short:'https://jokes.win/65'},

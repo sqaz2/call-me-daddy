@@ -1,0 +1,126 @@
+.story-release {
+  --paper: #f3e9d6;
+  --muted: #b9b5aa;
+  --accent: #e1b775;
+  --line: #384143;
+  --surface: #1a2428;
+  --cyan: #88cad7;
+  --rose: #dc9caa;
+  background: radial-gradient(ellipse at 93% 16%, #1c637332, transparent 48rem), radial-gradient(ellipse at 0 38%, #70492225, transparent 40rem), #111719;
+}
+.story-release .topbar { background: #111719cc; }
+.archive-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 34px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: .15em;
+}
+.story-release .release-hero { grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
+.story-release .release-intro { padding-top: 20px; }
+.story-release .release-intro h1 { font-size: clamp(68px, 8vw, 100px); letter-spacing: -.055em; line-height: .97; }
+.story-release .release-intro h1 em { font-weight: 400; }
+.story-release .release-intro-note { color: #d9d4c9; line-height: 1.75; margin-bottom: 29px; }
+.story-release .release-artist { margin-top: 26px; }
+.story-versions { margin: 0 0 23px; }
+.story-versions h2 { font-size: 13px; line-height: 1.5; font-weight: 400; color: var(--muted); margin: 0 0 13px; }
+.story-version-card { --version-accent: var(--cyan); background: #18232870; border: 1px solid var(--line); border-radius: 6px; margin-top: 12px; overflow: hidden; }
+.story-version-card.version-gospel { --version-accent: var(--rose); background: #3a242b40; }
+.story-version-card > button { display: flex; align-items: center; gap: 15px; width: 100%; min-height: 96px; padding: 12px; border: 0; border-bottom: 1px solid transparent; text-align: left; background: transparent; color: var(--paper); cursor: pointer; }
+.story-version-card > button:hover { background: #ffffff08; }
+.story-version-card > button[aria-pressed=true] { background: #ffffff08; border-bottom-color: var(--version-accent); }
+.story-version-card > button[aria-pressed=true] .cut-icon { box-shadow: 0 0 0 1px var(--version-accent); }
+.story-version-card > button:focus-visible { outline-offset: -4px; }
+.story-version-card img { width: 42px; height: 72px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
+.version-copy { min-width: 0; flex: 1; }
+.version-number { color: var(--version-accent); display: block; font-size: 9px; letter-spacing: .12em; margin-bottom: 5px; }
+.version-copy strong { display: block; font-weight: 500; font-size: 16px; line-height: 1.4; }
+.story-version-card .cut-icon { display: grid; place-items: center; width: 33px; height: 33px; margin: 0 3px; border: 1px solid var(--line); border-radius: 50%; color: var(--version-accent); font-size: 12px; flex-shrink: 0; }
+.version-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 2px 12px 10px; }
+.version-links > a { font-size: 11px; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; min-height: 40px; }
+.version-links > a:hover { color: var(--paper); text-decoration: underline; }
+.story-release .version-links .share-btn { background: transparent; color: var(--version-accent); border: 0; padding: 4px 0; font-size: 11px; min-height: 40px; }
+.story-release .release-stage { max-width: 360px; }
+.story-release .release-cover { border-color: #63777d6e; border-radius: 3px; }
+.story-release .release-cover img { height: auto; aspect-ratio: 9 / 16; object-fit: contain; }
+.story-release .release-play-badge { inset: auto 12px 12px; background: #0d1619f2; font-size: 12px; border-color: #8bb5bd6e; }
+.story-release .release-caption { font-size: 13px; }
+.story-release .release-status { min-height: 2.8em; }
+.story-release #releaseShare .share-btn { font-size: 11px; }
+.time-capsule { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; padding: 30px 0; margin: 0; border-block: 1px solid var(--line); gap: 28px; }
+.time-capsule li + li { border-left: 1px solid var(--line); padding-left: 28px; }
+.time-capsule span { display: block; font-size: 10px; color: var(--accent); letter-spacing: .13em; }
+.time-capsule li:last-child span { color: var(--cyan); }
+.time-capsule strong { display: block; font: 54px / 1.2 Georgia, serif; margin: 9px 0; }
+.time-capsule p { font-size: 13px; line-height: 1.7; color: var(--muted); margin: 0; }
+.email-story { display: grid; grid-template-columns: .85fr 1.15fr; gap: 80px; padding: 72px 0 48px; scroll-margin-top: 90px; }
+.email-story h2 { font: 48px / 1.1 Georgia, serif; letter-spacing: -.04em; margin: 0 0 30px; }
+.story-copy { padding-top: 6px; }
+.story-copy p { font-size: 16px; line-height: 1.9; margin: 0 0 22px; color: #dbd8cf; }
+.story-copy strong { font-weight: 500; color: var(--paper); }
+.story-copy blockquote { font: italic 27px / 1.45 Georgia, serif; border-left: 2px solid var(--accent); padding-left: 24px; margin: 32px 0; color: var(--accent); }
+.story-copy p.story-signature { font: italic 22px / 1.5 Georgia, serif; color: var(--accent); }
+.archive-note { width: min(100%, 310px); padding: 24px; background: #e8dcc3; color: #342c25; border-top: 4px solid #b89260; transform: rotate(-1.3deg); box-shadow: 0 15px 25px #0002; }
+.archive-note-label { font-size: 10px; letter-spacing: .12em; font-weight: 700; }
+.archive-note dl { border-block: 1px solid #9e8f786b; padding: 13px 0; margin: 15px 0; }
+.archive-note dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 6px 0; font-size: 12px; }
+.archive-note dt { color: #75634e; }
+.archive-note dd { margin: 0; font-family: ui-monospace, monospace; font-size: 11px; text-align: right; }
+.archive-note p { font: italic 16px / 1.5 Georgia, serif; margin: 0; }
+.lyric-keepsake { border-top: 1px solid var(--line); text-align: center; padding: 44px 16px; }
+.lyric-keepsake blockquote { font: italic clamp(27px, 4vw, 43px) / 1.4 Georgia, serif; color: var(--accent); margin: 0; }
+.lyric-keepsake > p:last-child { font-size: 11px; color: var(--muted); margin: 22px 0 0; }
+.lyrics-note { font-size: 12px; color: var(--muted); margin-bottom: 13px; }
+.story-release .release-lyrics pre { max-width: 76ch; padding-top: 12px; line-height: 1.9; }
+@media (max-width: 900px) and (min-width: 721px) {
+  .story-release .release-hero { gap: 30px; }
+  .story-release .release-intro h1 { font-size: 78px; }
+  .version-copy strong { font-size: 14px; }
+  .story-version-card > button { gap: 11px; }
+  .email-story { gap: 40px; }
+}
+@media (max-width: 720px) {
+  .archive-heading { font-size: 8px; letter-spacing: .09em; padding-bottom: 18px; margin-bottom: 25px; }
+  .story-release .release-hero { grid-template-columns: 1fr; gap: 30px; padding-bottom: 35px; }
+  .story-release .release-intro { padding-top: 0; }
+  .story-release .release-intro h1 { font-size: clamp(66px, 17vw, 92px); }
+  .story-release .release-intro h1 br { display: none; }
+  .story-release .release-intro h1 em { display: inline-block; }
+  .story-release .release-artist { margin: 18px 0 13px; }
+  .story-release .release-intro-note { font-size: 14px; margin-bottom: 24px; }
+  .story-versions { margin-bottom: 18px; }
+  .story-version-card { margin-top: 10px; }
+  .story-version-card > button { min-height: 78px; gap: 12px; padding: 10px 12px; }
+  .story-version-card img { width: 32px; height: 56px; }
+  .version-copy strong { font-size: 14px; }
+  .version-number { font-size: 8px; margin-bottom: 3px; }
+  .version-links { padding-bottom: 6px; }
+  .story-release .release-stage { max-width: 340px; justify-self: center; }
+  .story-release .release-cover { max-width: none; }
+  .time-capsule { gap: 12px; padding: 25px 0; }
+  .time-capsule li + li { padding-left: 12px; }
+  .time-capsule span { font-size: 8px; letter-spacing: .05em; }
+  .time-capsule strong { font-size: 36px; margin: 9px 0; }
+  .time-capsule p { font-size: 11px; }
+  .email-story { grid-template-columns: 1fr; gap: 30px; padding: 42px 0 32px; }
+  .email-story h2 { font-size: 38px; margin-bottom: 26px; }
+  .email-story h2 br { display: none; }
+  .archive-note { width: 100%; max-width: 360px; padding: 22px; transform: rotate(-.7deg); }
+  .archive-note dl > div { font-size: 13px; }
+  .archive-note dd { font-size: 12px; }
+  .story-copy { padding-top: 0; }
+  .story-copy p { font-size: 15px; line-height: 1.85; }
+  .story-copy blockquote { font-size: 25px; margin: 28px 0; }
+  .lyric-keepsake { padding: 34px 0; }
+  .story-release .release-lyrics pre { font-size: 14px; }
+}
+@media (max-width: 350px) {
+  .story-release .release-intro h1 { font-size: 60px; }
+  .story-version-card .cut-icon { width: 28px; height: 28px; margin: 0; }
+  .story-version-card > button { gap: 10px; }
+  .version-copy strong { font-size: 13px; }
+}
