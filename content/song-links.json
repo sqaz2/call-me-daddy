@@ -511,6 +511,14 @@
       "versions": [
         "main"
       ]
+    },
+    {
+      "number": 69,
+      "songId": "this-is-my-story",
+      "versions": [
+        "main",
+        "gospel"
+      ]
     }
   ]
 }

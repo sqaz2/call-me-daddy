@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "this-is-my-story",
+    "title": "This Is My Story",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-14",
+    "project": "Old Files / New Tools",
+    "description": "Started in 2009. A rough recording emailed to Andrew on May 22, 2010. Rediscovered and resurrected through AI as two special 2026 remixes, including a gospel version.",
+    "aliases": [
+      "TIMS",
+      "tims.wav",
+      "This Is My Story 2009 Special 2026 Remix",
+      "This Is My Story 2009 Special 2026 Gospel"
+    ],
+    "audio": "/media/songs/2026/10/this-is-my-story/remix.mp3",
+    "cover": "/media/songs/2026/10/this-is-my-story/cover.jpg",
+    "experience": "/this-is-my-story/",
+    "shareUrl": "/this-is-my-story/?version=main",
+    "kind": "AI remix · Gospel version",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/zgypvxXkNGmVxuLA",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Special 2026 remix",
+        "audio": "/media/songs/2026/10/this-is-my-story/remix.mp3",
+        "cover": "/media/songs/2026/10/this-is-my-story/cover.jpg",
+        "duration": 196.032,
+        "date": "2026-10-14",
+        "experience": "/this-is-my-story/?version=main",
+        "shareUrl": "/this-is-my-story/?version=main",
+        "sunoUrl": "https://suno.com/s/zgypvxXkNGmVxuLA",
+        "shareGenre": "other"
+      },
+      {
+        "id": "gospel",
+        "label": "Special 2026 gospel remix",
+        "audio": "/media/songs/2026/10/this-is-my-story/gospel.mp3",
+        "cover": "/media/songs/2026/10/this-is-my-story/gospel-cover.jpg",
+        "duration": 196.032,
+        "date": "2026-10-14",
+        "experience": "/this-is-my-story/?version=gospel",
+        "shareUrl": "/this-is-my-story/?version=gospel",
+        "sunoUrl": "https://suno.com/s/rfbjhkfBMpfbsH8g",
+        "shareGenre": "other"
+      }
+    ]
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nYeah\nThis is my story this is my story my rules no games\nMy life or my death i see both as the same\nMy right or your life I see what games you're playing so my right for your life feels like a fair exchange\n\nIt's time to step it up step it up and get mine\nTime to blow up let's go up cause time keeps flying\nWe grow up to know of many failed trying many pass by for their last try\nWith rhythm and rhyme\n\n it's my mission as a musician to go long with growing competition\nA composition needs be as strong as any other song\nTo be the best may need to exceed your best\nTest be impressed with being blessed\nor an early death \n\nget right get good get into it at last\nCause what's life if you always letting opportunity pass\nin my sight might as well take a knife make your veins two halves\nFeel the pain of passing off on the fast lane for death\n\n[Chorus]\nThis is my story this is my story my rules no games\nMy life or my death i see both as the same\nMy right or your life I see what games youre playing, so\nYour life for my right feels like a fair exchange \nIt's time to step it up step it up and get mine\nTime to blow up let's go up cause time keeps flying\nWe grow up to know of many failed trying\nmany pass by for their last try\nWith rhythm and rhyme\n\n[Verse 2]\nI learned to not give a fuck\nduring my early teenage\nBeing stuck in a rut for so long\nMakes you think what can make my luck change\nAnd that made my luck change for a while i couldn't feel pain\nThen the pain piled as psychosis resided in my brain\nI couldn't fight it any attempt to hide it\nTwitched my eyelid always felt violent\nif I felt youve done me wrong \n my conscience kept it quiet\nhustling was too easy so easy i'd wished it wasn't\nEven though i didn't mean it sub-consciously persued that wish and away my dreams were scent\nFor all you who see technical points of view to be too deep\nUsed to give a little got a lot then i stopped\nTry to keep it all for me \n\nas all could see results were unfavourably\ntossed my cards my new hand had turned the table on me\nBut even before i had a good handle for a while\nIt's always been my destiny to be out of reach for higher tomorrow\nAlways get up something fucks up this cycle continues to bore me\nThis is my life \nthis is my world\nthis is my...\n[Chorus]\nThis is my story this is my story my rules no games\nMy life and or death i see both as the same\nMy right or your life guess which card i'm playing\nYour life for no life no heart i'm saving\nIt's time to step it up step it up and get mine\nTime to blow up let's go up cause time keeps flying\nWe grow up to know of many failed trying and many pass by for their last try\nWith rhythm and rhyme",
+    "snippet": "This is my story this is my story my rules no games",
+    "sunoUrl": "https://suno.com/s/zgypvxXkNGmVxuLA",
+    "clipIds": [
+      "2a396c69-602f-43d6-85e3-74c554b5c307",
+      "dce179e7-f3ac-4362-a1ff-913caaf95f7b"
+    ],
+    "source": "Lyrics supplied by William Crowell; wording matches both uploaded MP3 lyrics tags. Original phrasing preserved."
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 0,
+    "think": 95,
+    "level-up": 50,
+    "heavy": 60,
+    "old-files": 100
+  },
+  "update": {
+    "id": "release-this-is-my-story",
+    "published": "2026-10-14T22:33:48-06:00",
+    "type": "New release",
+    "songId": "this-is-my-story",
+    "variantId": "main",
+    "title": "This Is My Story — an old song, a new life",
+    "summary": "Started in 2009. A rough recording emailed to Andrew on May 22, 2010. Rediscovered and resurrected through AI as two special 2026 remixes, including a gospel version.",
+    "href": "/this-is-my-story/",
+    "sharePath": "/updates/release-this-is-my-story/",
+    "cta": "Hear both 2026 remixes",
+    "featured": true,
+    "cover": "/media/songs/2026/10/this-is-my-story/cover.jpg",
+    "cardLines": [
+      "THIS IS",
+      "MY STORY"
+    ],
+    "cardTag": "2009 → 2010 → 2026 · Two AI remixes",
+    "cardSummary": "A song started in 2009. A recording saved in a 2010 email. Two new lives in 2026.",
+    "badge": "TWO NEW REMIXES",
+    "intent": "old-files"
+  }
+}

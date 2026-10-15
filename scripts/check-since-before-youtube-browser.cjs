@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
+ 'this-is-my-story':{manifest:'2026-10-14-this-is-my-story',query:'With rhythm and rhyme',note:'#song-story',copy:'The file was called tims.wav',short:'https://suno.fyi/69'},
  'come-sit-here-with-me':{manifest:'2026-10-14-come-sit-here-with-me',query:'make some room for you',note:'#song-story',copy:'A personal song about continuing to create through everything',short:'https://suno.fyi/68'},
  'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
  'running-a-monopoly':{manifest:'2026-10-08-running-a-monopoly',query:'Big boss on a budget',note:'#song-story',copy:'Then the stomach called an emergency meeting.',short:'https://jokes.win/65'},
@@ -119,7 +120,15 @@ const links=require('../data/song-links.json');
   check('Homepage lyric search opens the new release');
   await page.goto(base+'/updates/',{waitUntil:'networkidle'});assert(await page.locator(`a[href="${update.href}"]`).count()>0);
   // Fix the clock at this publication so later releases do not invalidate this check.
-  const newest=await page.evaluate(now=>window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries,now}).tracks[0],Date.parse(update.published));
+  const newest=await page.evaluate(({now,id})=>{
+   const build=()=>window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries,now});
+   // Explicit songs respect the listener's existing intensity preference.
+   if(window.CMDContentIntensity?.isRaw(id)){
+    if(build().tracks.some(track=>track.songId===id))throw Error('Raw release entered the default lighter queue');
+    window.CMDContentIntensity.setIncludeHeavy(true);
+   }
+   return build().tracks[0];
+  },{now:Date.parse(update.published),id:song.id});
   assert.equal(newest.songId,song.id);assert.equal(newest.variantId,variant.id);check('What’s New links the page and queues this recording first at publication');
   assert.deepEqual(errors,[]);check('No browser JavaScript errors');
  }finally{fs.writeFileSync(out+'/report.json',JSON.stringify({checks,errors},null,2));await browser.close()}

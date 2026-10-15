@@ -1,6 +1,56 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "this-is-my-story",
+    "title": "This Is My Story",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-14",
+    "project": "Old Files / New Tools",
+    "description": "Started in 2009. A rough recording emailed to Andrew on May 22, 2010. Rediscovered and resurrected through AI as two special 2026 remixes, including a gospel version.",
+    "aliases": [
+      "TIMS",
+      "tims.wav",
+      "This Is My Story 2009 Special 2026 Remix",
+      "This Is My Story 2009 Special 2026 Gospel"
+    ],
+    "audio": "/media/songs/2026/10/this-is-my-story/remix.mp3",
+    "cover": "/media/songs/2026/10/this-is-my-story/cover.jpg",
+    "experience": "/this-is-my-story/",
+    "shareUrl": "/this-is-my-story/?version=main",
+    "kind": "AI remix · Gospel version",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/s/zgypvxXkNGmVxuLA",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Special 2026 remix",
+        "audio": "/media/songs/2026/10/this-is-my-story/remix.mp3",
+        "cover": "/media/songs/2026/10/this-is-my-story/cover.jpg",
+        "duration": 196.032,
+        "date": "2026-10-14",
+        "experience": "/this-is-my-story/?version=main",
+        "shareUrl": "/this-is-my-story/?version=main",
+        "sunoUrl": "https://suno.com/s/zgypvxXkNGmVxuLA",
+        "shareGenre": "other"
+      },
+      {
+        "id": "gospel",
+        "label": "Special 2026 gospel remix",
+        "audio": "/media/songs/2026/10/this-is-my-story/gospel.mp3",
+        "cover": "/media/songs/2026/10/this-is-my-story/gospel-cover.jpg",
+        "duration": 196.032,
+        "date": "2026-10-14",
+        "experience": "/this-is-my-story/?version=gospel",
+        "shareUrl": "/this-is-my-story/?version=gospel",
+        "sunoUrl": "https://suno.com/s/rfbjhkfBMpfbsH8g",
+        "shareGenre": "other"
+      }
+    ]
+  },
+  {
     "id": "come-sit-here-with-me",
     "title": "Come Sit Here With Me",
     "artist": "MusicSubject × Call Me Daddy",

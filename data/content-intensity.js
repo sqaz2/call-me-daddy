@@ -13,6 +13,7 @@
    */
   const INTENSITY={
     // --- raw (minimum + clearly crisis / locked-in despair) ---
+    'this-is-my-story':'raw',
     'will-to-live':'raw',
     'locked-in-these-walls':'raw',
     'seven-days-locked':'raw',
