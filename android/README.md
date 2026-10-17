@@ -2,8 +2,10 @@
 
 Installable Android music app with a local listening interface and an Android Media3 playback service. The app reads the production MusicSubject catalogue on launch, on Refresh, and when returning after two minutes. Publishing through the existing song workflow updates the app without rebuilding it.
 
-## Included in 0.1.2
+## Included in 0.1.3
 
+- Browser **Play in app** links open the exact catalogue song/version and carry its playback position. Update the installed app once to enable this.
+- Link requests wait for both the native player and catalogue to be ready, including when the app is already open. Unknown versions show an error instead of playing a different recording.
 - Artwork-first playback, song search, genre filters, local saved songs and exact version selection.
 - Newest-first queue and Surprise Me using the website's existing catalogue radio engine, preserving its protected story sequences.
 - Android-owned queue, foreground playback, media notification, lock-screen/headset controls, audio focus handling and headphone-disconnect pause.
@@ -36,6 +38,7 @@ Alias: `musicsubject`. Then run `./gradlew assembleRelease bundleRelease lintRel
 
 ```sh
 node --test android/tests/catalog.test.cjs
+node --test tests/open-in-app.test.cjs
 node --test tests/playback-sync.test.js
 node --test tests/*.test.js tests/*.test.mjs
 node scripts/sync-releases.mjs --check
@@ -52,13 +55,14 @@ Before calling the app device-verified, install the signed APK on a phone and ch
 5. Unplug headphones, receive an audio interruption, and verify pause/focus handling.
 6. Interrupt the network and retry, then refresh the catalogue while music is playing.
 7. Close/reopen the activity while playing, and stop/restart the process to check paused restoration.
+8. From Chrome, tap Play in app while a non-default version is playing. Check the recording and position after both a cold app launch and a warm return; confirm browser audio pauses. Repeat after navigating within the persistent site player.
 
 A compiled APK, lint, and mocked browser tests do not substitute for this phone test. No physical-device or Android-emulator playback test was available during the initial build.
 
 ## Beta distribution
 
-Version 0.1.2 (code 3) uses the full MusicSubject × Call Me Daddy wordmark for the launcher and fallback artwork. The signed APK is published under `/app/downloads/MusicSubject-0.1.2.apk`, with its SHA-256 checksum beside it. The original release certificate is preserved, allowing updates over 0.1.0 and 0.1.1 without clearing saved songs.
+Version 0.1.3 (code 4) adds browser-to-app song links and keeps the full MusicSubject × Call Me Daddy wordmark. The signed APK is published under `/app/downloads/MusicSubject-0.1.3.apk`, with its SHA-256 checksum beside it. The original release certificate is preserved, allowing updates over earlier versions without clearing saved songs.
 
 The install page makes the dedicated Android app the primary download. Browser shortcuts remain available for iPhone, iPad and computers. Android browser shortcuts and the native app have separate saved-song storage.
 
-The release APK and AAB passed signature verification; the APK contains the approved full-name artwork. The release build and lint passed (0 errors), along with the catalogue and site tests. The owner previously reported successful installation and basic use of the earlier app; the complete physical-device checklist above remains pending for this release.
+The 0.1.3 release APK and AAB passed signature verification; the APK certificate matches 0.1.2. The release build and lint passed (0 errors), along with 428 Node tests and all Site checks syntax checks. DOM simulations also covered Android-only controls, persistent-frame playback ownership, cold/warm app launches, exact version/position and waiting for the controller/catalogue. The owner previously reported successful installation and basic use of the earlier app; the complete physical-device checklist above remains pending for this release.

@@ -35,12 +35,16 @@ public class MainActivity extends ComponentActivity {
     private ListenableFuture<MediaController> future;
     private final Handler handler=new Handler(Looper.getMainLooper());
     private boolean visible=false;
+    private boolean webReady=false,dispatchingLink=false;
+    private JSONObject pendingLink=null;
     private final Player.Listener listener=new Player.Listener() {
         @Override public void onEvents(Player p,Player.Events e) { publish(); }
     };
     private final Runnable tick=new Runnable() { public void run() { if(visible) { publish(); handler.postDelayed(this,500); } } };
     @Override public void onCreate(Bundle saved) {
         super.onCreate(saved);
+        if(saved==null) readPlayIntent(getIntent());
+        else try { String pending=saved.getString("pendingPlayLink"); if(pending!=null) pendingLink=new JSONObject(pending); } catch(Exception ignored) {}
         if(!WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
             TextView text=new TextView(this); text.setText("Please update Android System WebView in Google Play, then reopen MusicSubject.");
             text.setTextColor(Color.WHITE); text.setPadding(28,64,28,28); setContentView(text); return;
@@ -59,6 +63,7 @@ public class MainActivity extends ComponentActivity {
         settings.setAllowFileAccess(false); settings.setAllowContentAccess(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setMediaPlaybackRequiresUserGesture(true);
+        settings.setUserAgentString(settings.getUserAgentString()+" MusicSubjectAndroid/0.1.3");
         var assets=new WebViewAssetLoader.Builder().addPathHandler("/assets/",new WebViewAssetLoader.AssetsPathHandler(this)).build();
         web.setWebViewClient(new WebViewClient() {
             @Override public WebResourceResponse shouldInterceptRequest(WebView view,WebResourceRequest request) { return assets.shouldInterceptRequest(request.getUrl()); }
@@ -78,7 +83,7 @@ public class MainActivity extends ComponentActivity {
             });
         future=new MediaController.Builder(this,new SessionToken(this,new ComponentName(this,PlaybackService.class))).buildAsync();
         future.addListener(()->{
-            try { controller=future.get(); controller.addListener(listener); publish(); }
+            try { controller=future.get(); controller.addListener(listener); publish(); dispatchPlayLink(); }
             catch(Exception e) { error("The music player could not start. Close and reopen the app."); }
         },command -> handler.post(command));
         web.loadUrl("https://appassets.androidplatform.net/assets/index.html");
@@ -87,6 +92,7 @@ public class MainActivity extends ComponentActivity {
         try {
             JSONObject msg=new JSONObject(value);
             String type=msg.optString("type");
+            if(type.equals("ready")) { webReady=true; publish(); dispatchPlayLink(); return; }
             if(type.equals("open")) { openLink(msg.optString("url")); return; }
             if(type.equals("share")) {
                 String url=msg.optString("url"); if(!TrackCodec.siteUrl(url)) return;
@@ -101,7 +107,9 @@ public class MainActivity extends ComponentActivity {
                     var items=TrackCodec.decode(msg.getJSONArray("queue"));
                     int index=msg.optInt("index",0);
                     if(index<0 || index>=items.size()) throw new IllegalArgumentException();
-                    controller.setMediaItems(items,index,0); controller.prepare(); controller.play(); break;
+                    double position=msg.optDouble("position",0);
+                    long positionMs=Double.isFinite(position)?(long)(Math.max(0,Math.min(86400,position))*1000):0;
+                    controller.setMediaItems(items,index,positionMs); controller.prepare(); controller.play(); break;
                 }
                 case "toggle":
                     if(controller.getPlayWhenReady() && controller.getPlayerError()==null && controller.getPlaybackState()!=Player.STATE_ENDED) controller.pause();
@@ -119,6 +127,39 @@ public class MainActivity extends ComponentActivity {
             }
             publish();
         } catch(Exception e) { error("That recording could not be loaded. Refresh the songs and try again."); }
+    }
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent); setIntent(intent); readPlayIntent(intent); dispatchPlayLink();
+    }
+    @Override protected void onSaveInstanceState(Bundle out) {
+        if(pendingLink!=null) out.putString("pendingPlayLink",pendingLink.toString());
+        super.onSaveInstanceState(out);
+    }
+    private void readPlayIntent(Intent intent) {
+        if(intent==null || !Intent.ACTION_VIEW.equals(intent.getAction())) return;
+        Uri uri=intent.getData();
+        if(uri==null || uri.toString().length()>2048 || !"musicsubject".equals(uri.getScheme()) || !"play".equals(uri.getHost()) || uri.getUserInfo()!=null || uri.getPort()!=-1) return;
+        String song=uri.getQueryParameter("song"),version=uri.getQueryParameter("version");
+        // The link supplies catalogue identifiers, never media URLs or JavaScript.
+        if(song==null || !song.matches("[a-zA-Z0-9][a-zA-Z0-9._-]{0,199}")) return;
+        if(version==null) version="main";
+        if(!version.matches("[a-zA-Z0-9][a-zA-Z0-9._-]{0,199}")) return;
+        try {
+            double position=0;
+            try { position=Double.parseDouble(uri.getQueryParameter("t")); } catch(Exception ignored) {}
+            if(!Double.isFinite(position)) position=0;
+            pendingLink=new JSONObject().put("song",song).put("version",version).put("t",Math.max(0,Math.min(86400,position)));
+            intent.setData(null);
+        } catch(Exception ignored) {}
+    }
+    private void dispatchPlayLink() {
+        if(!webReady || web==null || controller==null || pendingLink==null || dispatchingLink) return;
+        JSONObject request=pendingLink; dispatchingLink=true;
+        web.evaluateJavascript("window.openRequestedSong?.("+request+")",result->{
+            dispatchingLink=false;
+            if("true".equals(result) && pendingLink==request) pendingLink=null;
+            if(pendingLink!=null && pendingLink!=request) dispatchPlayLink();
+        });
     }
     private void openLink(String value) {
         Uri url=Uri.parse(value);
