@@ -3,6 +3,7 @@
   let songs=[],filter='all',state={queue:[],track:{}},loader=null,pendingLoader=null,lastRefresh=0,loading=false,lastAudio='',queueKey='',seeking=false;
   const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}};
   let saved=new Set(read('saved-songs',[]));
+  let pendingLink=null;
   const send=(type,data={})=>{if(window.MusicSubjectNative)MusicSubjectNative.postMessage(JSON.stringify({type,...data}));else window.showError('This preview needs the Android app to play music.')};
   const time=value=>{const s=Math.max(0,Math.floor(Number(value)||0));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
   window.showError=message=>{$('notice').querySelector('span').textContent=message;$('notice').hidden=false};
@@ -29,6 +30,18 @@
   }
   function playQueue(queue){if(!queue.length){window.showError('No recordings are available yet. Refresh the catalogue.');return}send('play',{queue:queue.slice(0,500),index:0})}
   function playSong(song,variant){playQueue(M.selectedQueue(songs,song.id,variant?.id))}
+  function playRequestedSong(){
+    if(!pendingLink||!state.connected)return;
+    const queue=M.requestedQueue(songs,pendingLink);
+    if(!queue.length){
+      if(!pendingLink.refreshRequested){pendingLink.refreshRequested=true;refresh();return;}
+      if(!loading){pendingLink=null;window.showError('That song version is not available in the catalogue. Choose another version.');}
+      return;
+    }
+    const request=pendingLink;pendingLink=null;
+    send('play',{queue:queue.slice(0,500),index:0,position:Math.max(0,Math.min(86400,Number(request.t)||0))});
+  }
+  window.openRequestedSong=request=>{pendingLink={...request,refreshRequested:false};playRequestedSong();return true};
   function showVersions(song){
     $('versionList').replaceChildren();
     for(const variant of M.variants(song)){const button=document.createElement('button');button.textContent=`▶ ${variant.label||variant.id||'Original'}`;button.onclick=()=>{playSong(song,variant);$('versionPicker').close()};$('versionList').append(button)}
@@ -42,6 +55,7 @@
     render();$('catalogStatus').textContent=cached?'Saved catalogue · reconnect to check for new songs':`${songs.length} songs · updated just now`;
     $('playLatest').disabled=!songs.length;
     if(!cached){try{localStorage.setItem('catalog',JSON.stringify(list))}catch{}}
+    playRequestedSong();
   }
   function refresh(){
     if(loading)return;loading=true;$('refresh').disabled=true;$('radio').disabled=true;$('catalogStatus').textContent='Checking for new songs…';
@@ -68,7 +82,7 @@
   $('website').onclick=()=>send('open',{url:M.SITE});$('showQueue').onclick=()=>{$('queue').hidden=!$('queue').hidden};
   window.closePanel=()=>{if($('versionPicker').open){$('versionPicker').close();return true}if($('player').open){$('player').close();return true}return false};
   window.receivePlayback=next=>{
-    state=next;const track=state.track||{};$('dock').hidden=!track.audio;if(!track.audio)return;
+    state=next;playRequestedSong();const track=state.track||{};$('dock').hidden=!track.audio;if(!track.audio)return;
     if(track.audio!==lastAudio){lastAudio=track.audio;putImage($('miniCover'),track.cover);putImage($('cover'),track.cover);
       $('miniTitle').textContent=track.title;$('title').textContent=track.title;$('artist').textContent=track.artist;$('version').textContent=track.label;
       $('saveTrack').textContent=saved.has(track.songId)?'♥':'♡';render();try{loader?.contentWindow.CMDCatalogCycle?.remember(track)}catch{}

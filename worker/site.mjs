@@ -8,6 +8,7 @@ export function addAppShell(html) {
   if (!/<link\b[^>]*rel=["']manifest["']/i.test(html)) head += '<link rel="manifest" href="/manifest.webmanifest">';
   if (!/<meta\b[^>]*name=["']theme-color["']/i.test(html)) head += '<meta name="theme-color" content="#080808">';
   if (!/<script\b[^>]*src=["']\/app\/install\.js/i.test(html)) head += '<script src="/app/install.js?v=20261014-native-first-1" defer></script>';
+  if (!/<script\b[^>]*src=["']\/app\/open-in-app\.js/i.test(html)) head += '<script src="/app/open-in-app.js?v=20261017-1" defer></script>';
   return html.replace(/<\/head>/i, head + '</head>');
 }
 
@@ -44,7 +45,7 @@ export async function decorateSongHTML(request, response, env) {
 export default { async fetch(request, env) {
   const response = await handleRequest(request, env);
   // Revalidate playback code and the service worker on subsequent visits.
-  if (/^\/(?:continuous-playback\.js|universal-player\.js|persistent-site-browser\.js|share\.js|listener-taste\.js|song-moments\.js|quiet-tip(?:-ui)?\.js|sw\.js|app\/install\.js|my-music\/(?:library|page)\.js|music\/(?:music|listening)\.js)$/.test(new URL(request.url).pathname)) {
+  if (/^\/(?:continuous-playback\.js|universal-player\.js|persistent-site-browser\.js|share\.js|listener-taste\.js|song-moments\.js|quiet-tip(?:-ui)?\.js|sw\.js|app\/(?:install|open-in-app)\.js|my-music\/(?:library|page)\.js|music\/(?:music|listening)\.js)$/.test(new URL(request.url).pathname)) {
     const headers = new Headers(response.headers);
     headers.set('cache-control', 'no-cache');
     return new Response(response.body, {status:response.status, statusText:response.statusText, headers});

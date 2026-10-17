@@ -33,6 +33,7 @@ jobs:
           node --check share.js
           node --check persistent-site-browser.js
           node --check app/install.js
+          node --check app/open-in-app.js
           node --check my-music/library.js
           node --check my-music/page.js
           node --check song-moments.js
@@ -103,6 +104,8 @@ jobs:
         run: node --test tests/playlist-continuity.test.js
       - name: Background playback recovery tests
         run: node --test tests/continuous-playback.test.js tests/installable-app.test.mjs
+      - name: Android song handoff
+        run: node --test tests/open-in-app.test.cjs android/tests/catalog.test.cjs
       - name: Personal library and exact song moments
         run: node --test tests/my-music.test.mjs tests/song-moments.test.js
       - name: Quiet listener support
