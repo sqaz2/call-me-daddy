@@ -12,7 +12,7 @@
   const navigationWasReload=()=>{try{return performance.getEntriesByType('navigation')[0]?.type==='reload'}catch{return false}};
   const serializeTrack=track=>{
     if(!track)return null;
-    return ['id','songId','variantId','variantCount','title','artist','project','album','label','variantLabel','audio','cover','experience','shareUrl','radioIntent','radioSeed'].reduce((copy,key)=>{
+    return ['id','songId','variantId','variantCount','title','artist','project','album','label','variantLabel','audio','cover','experience','shareUrl','radioIntent','radioSeed','rotation'].reduce((copy,key)=>{
       if(track[key]!==undefined)copy[key]=track[key];
       return copy;
     },{});
@@ -56,6 +56,7 @@
     let controller=null;
     let preloadLink=null;
     let rememberedSource='';
+    let rotationRevision=window.CMDCatalogCycle?.rotationSignature?.();
     const cleanup=[];
     const lifecycleTarget={addEventListener:(...args)=>addEventListener(...args),removeEventListener:(...args)=>{if(typeof removeEventListener==='function')removeEventListener(...args)}};
     const listen=(target,type,callback)=>{
@@ -64,6 +65,7 @@
       cleanup.push(()=>target.removeEventListener?.(type,handler));
     };
     const onBreak=track=>window.CMDCatalogCycle?.isOnBreak?.(track?.songId||track?.id);
+    const unavailableInRotation=track=>onBreak(track)||(!options.allowOptInQueue&&window.CMDCatalogCycle?.isRotationAllowed?.(track)===false);
 
     const status=(kind,detail)=>options.onStatus?.(kind,detail,current);
     const currentTrack=()=>queue[index]||current;
@@ -120,15 +122,21 @@
       preloadLink.href=href;
     };
     const ensureNext=()=>{
-      if(preparedIndex>=0&&onBreak(queue[preparedIndex]))preparedIndex=-1;
+      const revision=window.CMDCatalogCycle?.rotationSignature?.();
+      if(revision!==rotationRevision){
+        rotationRevision=revision;
+        queue.splice(Math.max(index+1,Number(options.localCount??options.tracks?.length??queue.length)));
+        preparedIndex=-1;
+      }
+      if(preparedIndex>=0&&unavailableInRotation(queue[preparedIndex]))preparedIndex=-1;
       if(preparedIndex>=0){primeNext(queue[preparedIndex]);return preparedIndex;}
       for(let nextIndex=index+1;nextIndex<queue.length;nextIndex+=1){
-        if(onBreak(queue[nextIndex]))continue;
+        if(unavailableInRotation(queue[nextIndex]))continue;
         preparedIndex=nextIndex;primeNext(queue[preparedIndex]);return preparedIndex;
       }
       const track=radio?.next?.();
-      if(track?.audio){queue.push(track);preparedIndex=queue.length-1;primeNext(track);return preparedIndex;}
-      if(options.loopLocal&&queue.length){preparedIndex=0;primeNext(queue[0]);return preparedIndex;}
+      if(track?.audio&&!unavailableInRotation(track)){queue.push(track);preparedIndex=queue.length-1;primeNext(track);return preparedIndex;}
+      if(options.loopLocal&&queue.length){const first=queue.findIndex(track=>!unavailableInRotation(track));if(first>=0){preparedIndex=first;primeNext(queue[first]);return preparedIndex;}}
       return -1;
     };
     const play=()=>{
@@ -254,7 +262,7 @@
       setPositionState();
       options.onReady?.(currentTrack());
     });
-    listen(audio,'timeupdate',()=>{persist();setPositionState();options.onTime?.(audio.currentTime,audio.duration,currentTrack());announce('time')});
+    listen(audio,'timeupdate',()=>{ensureNext();persist();setPositionState();options.onTime?.(audio.currentTime,audio.duration,currentTrack());announce('time')});
     listen(audio,'waiting',()=>{status('waiting');announce('status',{status:'waiting'})});
     listen(audio,'stalled',()=>{status('stalled');announce('status',{status:'stalled'})});
     listen(audio,'error',()=>{
@@ -293,7 +301,7 @@
     controller={
       play,pause,toggle,next,previous,load,
       current:currentTrack,
-      peekNext:()=>preparedIndex>=0?queue[preparedIndex]||null:null,
+      peekNext:()=>{ensureNext();return preparedIndex>=0?queue[preparedIndex]||null:null;},
       getQueue:()=>queue.map(track=>({...track})),
       getState:()=>({id,index,wantsPlayback,hasPlayed,current:currentTrack(),length:queue.length}),
       destroy:()=>{destroyed=true;cleanup.forEach(remove=>remove());audio.__cmdContinuousPlayback=false;audio.__cmdContinuousPlaybackController=null;pendingPageFollow=null;window.CMDPersistentSite?.cancelFollow?.();if(preloadLink){preloadLink.remove?.();preloadLink=null}}

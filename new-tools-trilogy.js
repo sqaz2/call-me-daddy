@@ -34,6 +34,7 @@
   const audio=document.getElementById('trilogyAudio'),youtubeMount=document.getElementById('trilogyYoutube'),cover=document.getElementById('trilogyNowCover'),label=document.getElementById('trilogyNowLabel'),title=document.getElementById('trilogyNowTitle'),status=document.getElementById('trilogyStatus'),play=document.getElementById('trilogyPlay'),prev=document.getElementById('trilogyPrev'),next=document.getElementById('trilogyNext'),share=document.getElementById('trilogyShare'),timeline=document.getElementById('trilogyTimeline'),progress=document.getElementById('trilogyProgress'),tactileMount=document.getElementById('trilogyTactile');
   let currentKey='',wantsPlay=false,youtubePlayer=null,youtubeReady=false,youtubeRequested=false,youtubeState=-1,youtubeTime=0,youtubeDuration=0,tactile=null;
   let radioMode=false,radioCycle=[],radioIndex=-1,radioCycleNumber=0,radioSeed='',currentRadioTrack=null;
+  let radioRotationRevision=window.CMDCatalogCycle?.rotationSignature?.();
   const usesYoutube=()=>!radioMode&&currentKey==='police';
   const usesLocalAudio=()=>radioMode||Boolean(tracks[currentKey]?.src);
   const currentDuration=()=>usesYoutube()?youtubeDuration:(Number(audio.duration)||0),currentTime=()=>usesYoutube()?youtubeTime:(Number(audio.currentTime)||0);
@@ -58,6 +59,7 @@
   }
   function buildRadioCycle(){
     const engine=window.CMDCatalogCycle;
+    radioRotationRevision=engine?.rotationSignature?.();
     const songs=Array.isArray(window.CMD_SONGS)?window.CMD_SONGS.filter(song=>engine?.variants(song).length):[];
     if(!engine||!songs.length)return false;
     radioCycleNumber+=1;
@@ -73,8 +75,15 @@
     if(autoplay)playLocal();else setPlaying(false,'Ready · Play the site');
   }
   function nextRadioTrack(){
-    if(!radioCycle.length||radioIndex>=radioCycle.length-1){if(!buildRadioCycle()){wantsPlay=false;setPlaying(false,'Radio unavailable · open Music');title.textContent='Open Play the site';title.href='/music/?intent=surprise';return}}
-    radioIndex+=1;loadRadioTrack(radioIndex,true);
+    const engine=window.CMDCatalogCycle;
+    if(engine?.rotationSignature?.()!==radioRotationRevision){radioCycle=[];radioIndex=-1;}
+    for(let attempt=0;attempt<=(window.CMD_SONGS||[]).length;attempt++){
+      if(!radioCycle.length||radioIndex>=radioCycle.length-1){if(!buildRadioCycle()){wantsPlay=false;setPlaying(false,'Radio unavailable · open Music');title.textContent='Open Play the site';title.href='/music/?intent=surprise';return}}
+      radioIndex+=1;
+      if(engine?.isRotationAllowed?.(radioCycle[radioIndex])===false)continue;
+      loadRadioTrack(radioIndex,true);return;
+    }
+    wantsPlay=false;audio.pause();setPlaying(false,'Radio unavailable · open Music');
   }
   function previousRadioTrack(){
     if(audio.currentTime>5){audio.currentTime=0;if(audio.paused)playLocal();return}

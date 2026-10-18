@@ -22,6 +22,8 @@
     'numbness-as-a-trap':'raw',
 
     // --- deep (melancholy / heartbreak / heavy but not ambush) ---
+    // Sqaz has an independent opt-in gate; selecting a heavy lane cannot enable it.
+    'sqaz-kill-you':'deep',
     'come-sit-here-with-me':'deep',
     'turning-invisible':'deep',
     'nobody-wants-to-listen':'deep',

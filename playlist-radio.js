@@ -20,6 +20,7 @@
     let index=-1;
     let cycleNumber=0;
     let current=null;
+    let rotationRevision=engine?.rotationSignature?.();
 
     function build(){
       if(!engine||!playable.length)return false;
@@ -37,12 +38,14 @@
     }
 
     function next(){
+      const revision=engine?.rotationSignature?.();
+      if(revision!==rotationRevision){rotationRevision=revision;cycle=[];index=-1;}
       for(let attempts=0;attempts<=playable.length;attempts+=1){
         if(!cycle.length||index>=cycle.length-1){
           if(!build())return null;
         }
         const candidate=cycle[++index]||null;
-        if(!candidate||engine?.isOnBreak?.(candidate.songId)||window.CMDListenerTaste?.isKilled?.(candidate.songId,candidate.variantId))continue;
+        if(!candidate||engine?.isRotationAllowed?.(candidate)===false||engine?.isOnBreak?.(candidate.songId)||window.CMDListenerTaste?.isKilled?.(candidate.songId,candidate.variantId))continue;
         current=candidate;
         return current;
       }

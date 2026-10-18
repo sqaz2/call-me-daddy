@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "sqaz-kill-you",
+    "title": "Kill You",
+    "artist": "Sqaz",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-17",
+    "project": "Sqaz archive",
+    "description": "A 2007 high-school recording returned as a special 2026 AI remix. The story of making it, the friends who shared it, and why it survived. Explicit archive; add it to your rotation on the Sqaz page.",
+    "aliases": [
+      "Kill you Special 2026 version remix from 2007",
+      "Sqaz Kill You"
+    ],
+    "audio": "/media/songs/2026/10/sqaz-kill-you/remix.mp3",
+    "cover": "/media/songs/2026/10/sqaz-kill-you/cover.jpg",
+    "experience": "/sqaz/",
+    "shareUrl": "/sqaz/?version=main",
+    "kind": "Explicit archive · 2026 AI remix",
+    "rotation": "opt-in",
+    "explicit": true,
+    "shareGenre": "hiphop",
+    "spotifyUrl": "https://open.spotify.com/track/3i7CCHKfbOYfR4hXUJmCFo",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Special 2026 remix",
+        "audio": "/media/songs/2026/10/sqaz-kill-you/remix.mp3",
+        "cover": "/media/songs/2026/10/sqaz-kill-you/cover.jpg",
+        "duration": 305.352
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 40,
+    "laugh": 0,
+    "think": 65,
+    "level-up": 10,
+    "heavy": 95,
+    "old-files": 100
+  },
+  "update": {
+    "id": "sqaz-archive-kill-you",
+    "published": "2026-10-17T19:52:40-06:00",
+    "type": "Archive rework",
+    "songId": "sqaz-kill-you",
+    "variantId": "main",
+    "title": "Sqaz — the story behind Kill You",
+    "summary": "The 2007 recording, the people who kept it around, and its 2026 return. Both Kill You and Twokill now have their own release links. Kill You joins your automatic rotation only if you choose to add it.",
+    "href": "/sqaz/",
+    "sharePath": "/updates/sqaz-archive-kill-you/",
+    "cta": "Open the Sqaz archive",
+    "featured": true,
+    "cover": "/media/songs/2026/10/sqaz-kill-you/cover.jpg",
+    "cardLines": [
+      "SQAZ",
+      "KILL YOU"
+    ],
+    "cardTag": "Explicit archive · 2007 → 2026",
+    "cardSummary": "The recording, the people who shared it, and why it survived.",
+    "badge": "ARCHIVE STORY",
+    "intent": "old-files"
+  }
+}

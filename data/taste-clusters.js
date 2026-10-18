@@ -9,6 +9,13 @@
    */
   const CLUSTERS=[
     {
+      id:'sqaz-archive',
+      label:'Sqaz Archive',
+      bleed:'none',
+      keywords:['sqaz','archive','explicit','rap'],
+      songIds:['sqaz-kill-you']
+    },
+    {
       id:'cinematic-perspectives',
       label:'Cinematic Perspectives',
       bleed:'light',
