@@ -43,7 +43,10 @@ const out=process.env.QA_OUTPUT||'/tmp/replay-qa/2010-wows';fs.mkdirSync(out,{re
   await page.goto(base+'/updates/',{waitUntil:'networkidle'});
   const tracks=await page.evaluate(()=>window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries}).tracks.map(t=>({id:t.songId,version:t.variantId})));
   assert(tracks.some(track=>track.id==='2010-wows'&&track.version==='gangster-as-fuck-remix'));check('What’s New includes the newest exact 2010 remix');
-  const newCard=page.locator('a[href*="/archive/2010-wows/"][href*="close-my-eyes-ai-mix"]');assert(await newCard.count()>0);check('What’s New links to the existing song page');
+  const newCard=page.locator('a[href*="/archive/2010-wows/"][href*="close-my-eyes-ai-mix"]');
+  // New releases move older announcements beyond the first page of the feed.
+  while(await newCard.count()===0&&await page.locator('#updatesMore').isVisible())await page.locator('#updatesMore').click();
+  assert(await newCard.count()>0);check('What’s New links to the existing song page, including older releases');
   assert.deepEqual(errors,[]);check('No browser JavaScript errors');
  }finally{fs.writeFileSync(out+'/report.json',JSON.stringify({checks,errors},null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

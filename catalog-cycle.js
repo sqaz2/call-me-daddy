@@ -4,6 +4,40 @@
   const HISTORY_STORAGE='cmd-radio-history-v1';
   const LAST_STORAGE='cmd-radio-last-track-v1';
   const BREAK_STORAGE='cmd-song-breaks-v1';
+  const ROTATION_STORAGE='cmd-optional-rotation-v1';
+  // Optional archive recordings require their own deliberate choice. Likes,
+  // listening intentions and playing a shared link never enable them implicitly.
+  const rotationHost=()=>{try{if(window.top&&window.top.location?.origin===location.origin)return window.top}catch{}return window;};
+  const rotationSong=value=>{
+    const id=typeof value==='string'?value:value?.songId||value?.id;
+    return (window.CMD_SONGS||[]).find(song=>song.id===id)||(typeof value==='object'?value:null);
+  };
+  function rotationChoices(){
+    if(rotationHost().__cmdOptionalRotationOnly)return rotationHost().__cmdOptionalRotation||{};
+    try{
+      const value=JSON.parse(localStorage.getItem(ROTATION_STORAGE)||'{}');
+      return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+    }catch{return rotationHost().__cmdOptionalRotation||{};}
+  }
+  function isRotationAllowed(value){
+    const song=rotationSong(value);
+    return song?.rotation!=='opt-in'||rotationChoices()[song.songId||song.id]===true;
+  }
+  const rotationSignature=()=>{const choices=rotationChoices();return JSON.stringify(Object.keys(choices).filter(id=>choices[id]===true).sort());};
+  function setRotationEnabled(value,enabled){
+    const song=rotationSong(value);
+    if(song?.rotation!=='opt-in')return {enabled:false,persistent:false};
+    const id=song.songId||song.id,choices={...rotationChoices()};
+    if(enabled)choices[id]=true;else delete choices[id];
+    rotationHost().__cmdOptionalRotation=choices;
+    let persistent=true;
+    try{localStorage.setItem(ROTATION_STORAGE,JSON.stringify(choices))}catch{persistent=false;rotationHost().__cmdOptionalRotationOnly=true;}
+    const result={songId:id,enabled:!!enabled,persistent};
+    for(const target of new Set([window,rotationHost()])){
+      try{target.dispatchEvent(new CustomEvent('cmd:rotation-change',{detail:result}))}catch{}
+    }
+    return result;
+  }
   let memoryHistory=[],memoryBreaks={};
   function readBreaks(){try{return JSON.parse(localStorage.getItem(BREAK_STORAGE)||'{}')||{}}catch{return memoryBreaks}}
   function isOnBreak(songId){return Number(readBreaks()[songId])>Date.now()}
@@ -329,7 +363,7 @@
     const cycleNumber=Math.max(1,Number(options.cycleNumber)||1);
     const excluded=new Set(options.excludeIds||[]);
     try{window.CMDContentIntensity?.syncTasteUnlock?.()}catch{}
-    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&(!isOnBreak(song.id)||options.explicitPick||(!sharedConsumed&&sharedRequest?.songId===song.id))&&variants(song).length&&!songFullyKilled(song)&&vibeAllowed(song.id,intent,options));
+    const playable=(songs||[]).filter(song=>song&&!excluded.has(song.id)&&(isRotationAllowed(song)||options.explicitPick||(!sharedConsumed&&sharedRequest?.songId===song.id))&&(!isOnBreak(song.id)||options.explicitPick||(!sharedConsumed&&sharedRequest?.songId===song.id))&&variants(song).length&&!songFullyKilled(song)&&vibeAllowed(song.id,intent,options));
     const rng=randomFrom(`${seed}|${intent}|${cycleNumber}`);
     const history=options.ignoreHistory?[]:readHistory();
     const newestTimestamp=Math.max(0,...playable.map(timestamp));
@@ -382,6 +416,7 @@
     remember,
     readHistory,
     isOnBreak,takeBreak,undoBreak,
+    isRotationAllowed,setRotationEnabled,rotationSignature,rotationStorageKey:ROTATION_STORAGE,
     createSeed,
     cleanSeed,
     normalizeIntent,
@@ -391,4 +426,10 @@
     lastTrackKey:LAST_STORAGE,
     intents:intentList.map(intent=>({...intent}))
   };
+  // Already-installed native clients fetch this engine before copying the
+  // catalogue into their bundled newest-first player. Keep optional recordings
+  // out of that older client too; website choices belong to the website origin.
+  if(location.origin==='https://appassets.androidplatform.net'){
+    window.CMD_SONGS=(window.CMD_SONGS||[]).filter(isRotationAllowed);
+  }
 })();

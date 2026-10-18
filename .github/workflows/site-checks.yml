@@ -77,6 +77,8 @@ jobs:
         run: node --test tests/media-audit.test.mjs
       - name: Radio engine tests
         run: node --test tests/radio-cycle.test.js
+      - name: Optional archive rotation and Sqaz playback
+        run: node --test tests/optional-rotation.test.js
       - name: August 29 upload tests
         run: node --test tests/aug29-uploads.test.js
       - name: Artwork fallback tests

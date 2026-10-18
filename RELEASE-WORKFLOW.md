@@ -43,6 +43,13 @@ Remove `song.experience`. Set both `song.shareUrl` and `update.href` to an exact
 - Never invent a story, platform link or listener claim to fill a blank field.
 - Commit the manifest and every generated file together. CI rejects drift.
 
+Optional archive recordings can set `song.rotation` to `opt-in`. They stay out of
+automatic radio and newest-first queues until the listener explicitly adds them
+through `CMDCatalogCycle.setRotationEnabled(songId, true)`. A direct play, like,
+shared link or heavy intention does not grant that preference. The Sqaz page
+provides the add/remove control, saved in the current browser. Intentional personal
+playlists can still include a recording independently of its radio preference.
+
 For another version of an existing song, keep its manifest and add the recording
 to `song.variants`. Move its earlier `update` into `previousUpdates` (an optional
 array), then write the new `update` with an exact `variantId`. Earlier announcements

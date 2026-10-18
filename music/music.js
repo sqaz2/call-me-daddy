@@ -64,6 +64,7 @@
   let cycleIndex=-1;
   let cycleNumber=0;
   let lastSongId=null;
+  let rotationRevision=cycleEngine?.rotationSignature?.();
 
   const activeIntentInfo=()=>intentById.get(activeIntent)||intents[0]||{id:'surprise',label:'Play the site',kicker:'Controlled chaos',description:'The catalog decides what happens next.',shareText:'Press play and let Call Me Daddy decide what happens next.'};
 
@@ -377,7 +378,7 @@
   const buildCycle=()=>{
     cycleNumber+=1;
     const guard=window.CMDContentIntensity?.readPolicy?.({intent:activeIntent})||{};
-    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute,includeHeavy:guard.includeHeavy,unlockedByTaste:guard.unlockedByTaste}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
+    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute,includeHeavy:guard.includeHeavy,unlockedByTaste:guard.unlockedByTaste}):playableSongs.filter(song=>song.rotation!=='opt-in').map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
     cycleIndex=-1;
   };
 
@@ -851,11 +852,14 @@
   }
 
   function nextTrack(){
+    const revision=cycleEngine?.rotationSignature?.();
+    if(revision!==rotationRevision){rotationRevision=revision;cycle=[];cycleIndex=-1;}
     ensureCycle();
     for(let attempts=0;attempts<=playableSongs.length;attempts+=1){
       if(cycleIndex>=cycle.length-1)buildCycle();
       const track=cycle[++cycleIndex];
       if(!track){audio.pause();return;}
+      if(cycleEngine?.isRotationAllowed?.(track)===false)continue;
       if(cycleEngine?.isOnBreak?.(track.songId||track.id))continue;
       loadTrack(track,true);
       return;
@@ -1303,7 +1307,7 @@
     if(audio.duration)bar.style.width=`${(audio.currentTime/audio.duration)*100}%`;
     const remaining=Number.isFinite(audio.duration)?audio.duration-audio.currentTime:Infinity;
     if(current&&!audio.paused&&remaining>0&&remaining<=5){
-      const upcoming=cycle[cycleIndex+1];
+      const upcoming=cycle.slice(cycleIndex+1).find(track=>cycleEngine?.isRotationAllowed?.(track)!==false&&!cycleEngine?.isOnBreak?.(track.songId||track.id));
       status.textContent=`Up next in ${Math.max(1,Math.ceil(remaining))} · ${upcoming?.title||'a new route'}`;
     }
     if('mediaSession' in navigator&&audio.duration&&Number.isFinite(audio.duration)){
@@ -1353,7 +1357,7 @@
     getCurrent:()=>current,
     getQueue:()=>cycle.slice(),
     getQueueIndex:()=>cycleIndex,
-    peekNext:()=>cycle.slice(cycleIndex+1).find(track=>!cycleEngine?.isOnBreak?.(track.songId||track.id))||null,
+    peekNext:()=>cycle.slice(cycleIndex+1).find(track=>cycleEngine?.isRotationAllowed?.(track)!==false&&!cycleEngine?.isOnBreak?.(track.songId||track.id))||null,
     next:nextTrack,
     previous
   };

@@ -1,6 +1,38 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "sqaz-kill-you",
+    "title": "Kill You",
+    "artist": "Sqaz",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-17",
+    "project": "Sqaz archive",
+    "description": "A 2007 high-school recording returned as a special 2026 AI remix. The story of making it, the friends who shared it, and why it survived. Explicit archive; add it to your rotation on the Sqaz page.",
+    "aliases": [
+      "Kill you Special 2026 version remix from 2007",
+      "Sqaz Kill You"
+    ],
+    "audio": "/media/songs/2026/10/sqaz-kill-you/remix.mp3",
+    "cover": "/media/songs/2026/10/sqaz-kill-you/cover.jpg",
+    "experience": "/sqaz/",
+    "shareUrl": "/sqaz/?version=main",
+    "kind": "Explicit archive · 2026 AI remix",
+    "rotation": "opt-in",
+    "explicit": true,
+    "shareGenre": "hiphop",
+    "spotifyUrl": "https://open.spotify.com/track/3i7CCHKfbOYfR4hXUJmCFo",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Special 2026 remix",
+        "audio": "/media/songs/2026/10/sqaz-kill-you/remix.mp3",
+        "cover": "/media/songs/2026/10/sqaz-kill-you/cover.jpg",
+        "duration": 305.352
+      }
+    ]
+  },
+  {
     "id": "this-is-my-story",
     "title": "This Is My Story",
     "artist": "MusicSubject × Call Me Daddy",

@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "sqaz-kill-you": {
+    "surprise": 40,
+    "laugh": 0,
+    "think": 65,
+    "level-up": 10,
+    "heavy": 95,
+    "old-files": 100
+  },
   "this-is-my-story": {
     "surprise": 80,
     "laugh": 0,

@@ -28,7 +28,7 @@
     owner()?.control?.('pause');
     if(controller){controller.pause();controller.destroy();controller=null;}
     controller=window.CMDContinuousPlayback.create({
-      id:'my-music',audio,tracks,startIndex:index,radio:{next:()=>null},followPages:false,
+      id:'my-music',audio,tracks,startIndex:index,radio:{next:()=>null},followPages:false,allowOptInQueue:true,
       onNeedsTap:()=>message('Playback needs a tap. Use Play on the player below.'),
       onStatus:kind=>{if(kind==='unavailable')message('You’ve reached the end of this queue.');if(kind==='failed')message('These recordings could not load. Check your connection and try another song.');}
     });
