@@ -2,6 +2,7 @@ window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
   updated: "2026-10-17T19:52:40-06:00",
   entries: [
+    {id:"live-it-right-in-progress",published:"2026-10-18",type:"Song in progress",title:"Live It Right — the idea behind the song",summary:"A song about waiting for instructions while your life keeps happening. Read the story, see the artwork and explore the words taking shape.",href:"/live-it-right/",sharePath:"/updates/live-it-right-in-progress/",cta:"Read the song notes",badge:"Song in progress",cardImage:"/media/projects/2026/10/live-it-right/cover.webp"},
     {id:"understanding-ai-audio",published:"2026-10-18T01:55:00-06:00",type:"Article",title:"What AI audio detectors can actually tell you",summary:"Does editing a recording make it AI-generated? A plain-language guide to recorded sound, generated audio, and the limits of a detector score.",href:"/reading/ai-audio-detectors/",sharePath:"/reading/ai-audio-detectors/",cta:"Read the article",badge:"8 min read"},
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
