@@ -79,16 +79,28 @@ const {chromium}=require('playwright');
   await dock.getByText('Up next & listening options',{exact:true}).click();
   await page.setViewportSize({width:320,height:720});
   const browsed=page.frames().find(f=>f.parentFrame()&&new URL(f.url()).pathname==='/');
-  await browsed.waitForFunction(()=>parseFloat(getComputedStyle(document.body).paddingBottom)>250);
-  // Measure the final layout, not a frame during the site's smooth-scroll animation.
-  await browsed.evaluate(()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
-  await browsed.waitForFunction(()=>Math.abs(document.documentElement.scrollHeight-innerHeight-scrollY)<2);
+  // Resizing and expanding the dock update iframe clearance on the next animation
+  // frame. A fixed padding threshold can match the previous viewport's layout.
+  await browsed.waitForFunction(()=>{
+   const panel=parent.document.querySelector('.cmd-universal-player').getBoundingClientRect();
+   return parseFloat(getComputedStyle(document.body).paddingBottom)>=parent.innerHeight-panel.top;
+  });
+  fs.mkdirSync('/tmp/replay-qa',{recursive:true});
+  try{
+   await browsed.waitForFunction(()=>{
+    window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'});
+    const panel=parent.document.querySelector('.cmd-universal-player').getBoundingClientRect();
+    const footer=document.querySelector('footer').getBoundingClientRect();
+    return Math.abs(document.documentElement.scrollHeight-innerHeight-scrollY)<2&&footer.bottom+frameElement.getBoundingClientRect().top<=panel.top;
+   },null,{timeout:5000});
+  }finally{
+   console.log('Expanded player layout',JSON.stringify({panel:await dock.boundingBox(),footer:await browsed.locator('footer').boundingBox(),frame:await browsed.evaluate(()=>({padding:getComputedStyle(document.body).paddingBottom,scrollY,scrollHeight:document.documentElement.scrollHeight,innerHeight}))}));
+   await page.screenshot({path:'/tmp/replay-qa/player-swipe-likes-mobile.png'});
+  }
   const panel=await dock.boundingBox(),footer=await browsed.locator('footer').boundingBox();
   assert.ok(panel.y>=0&&panel.y+panel.height<=720,'Expanded dock stays inside a narrow viewport');
   assert.ok(footer.y+footer.height<=panel.y,'The footer remains above the expanded player');
   assert.equal(await browsed.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-  fs.mkdirSync('/tmp/replay-qa',{recursive:true});
-  await page.screenshot({path:'/tmp/replay-qa/player-swipe-likes-mobile.png'});
   assert.deepEqual(errors,[]);
   console.log(JSON.stringify({exactVersionLike:true,homeLikesUpdate:true,likesPersist:true,returnToSong:true,swipeNextPrevious:true,verticalAndSeekSafe:true,oneAudioOwner:true,narrowPlayerAndFooterFit:true,errors}));
  }finally{await browser.close()}
