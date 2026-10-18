@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <title>What AI Audio Detectors Can Actually Tell You — MusicSubject</title>
+  <meta name="description" content="Does editing a recording make it AI-generated? A plain-language guide to audio detectors, spectrograms, neural vocoders, and what their results really mean.">
+  <link rel="canonical" href="https://callmedaddy.musicsubject.com/reading/ai-audio-detectors/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="MusicSubject × Call Me Daddy">
+  <meta property="og:title" content="What AI audio detectors can actually tell you">
+  <meta property="og:description" content="An edited recording, a generated voice, a detector score. Three different things. Here’s how to understand them.">
+  <meta property="og:url" content="https://callmedaddy.musicsubject.com/reading/ai-audio-detectors/">
+  <meta property="og:image" content="https://callmedaddy.musicsubject.com/media/brand/call-me-daddy-musicsubject.jpg">
+  <meta property="og:image:alt" content="MusicSubject × Call Me Daddy">
+  <meta property="article:published_time" content="2026-10-18T01:55:00-06:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What AI audio detectors can actually tell you">
+  <meta name="twitter:description" content="Recordings, generated audio, and the limits of a detector score. A plain-language reading guide.">
+  <meta name="twitter:image" content="https://callmedaddy.musicsubject.com/media/brand/call-me-daddy-musicsubject.jpg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/mobile-nav.css">
+  <link rel="stylesheet" href="/reading/reading.css?v=20261018-1">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"What AI audio detectors can actually tell you","description":"A plain-language guide to recorded and generated audio, editing, synthesis fingerprints, and detector limitations.","datePublished":"2026-10-18T01:55:00-06:00","dateModified":"2026-10-18","inLanguage":"en","author":{"@type":"Organization","name":"MusicSubject × Call Me Daddy","url":"https://callmedaddy.musicsubject.com/"},"publisher":{"@type":"Organization","name":"MusicSubject × Call Me Daddy"},"image":"https://callmedaddy.musicsubject.com/media/brand/call-me-daddy-musicsubject.jpg","mainEntityOfPage":"https://callmedaddy.musicsubject.com/reading/ai-audio-detectors/"}
+  </script>
+  <script src="/reading/reading.js?v=20261018-1" defer></script>
+</head>
+<body class="reading-page">
+  <a class="reading-skip" href="#article-body">Skip to article</a>
+  <header class="topbar"><div class="shell nav"><a class="brand" href="/"><span class="brand-parent">MUSICSUBJECT</span><span class="brand-slash">×</span><span>CALL ME DADDY</span></a><nav class="navlinks" aria-label="Main navigation"><a href="/">Home</a><a href="/#homeSearchForm">Music</a><a href="/reading/" aria-current="page">Reading</a><a href="/updates/">Latest</a></nav></div></header>
+  <main class="reading-wrap">
+    <article aria-labelledby="article-title">
+      <header class="reading-hero">
+        <a class="reading-back" href="/reading/">← Reading room</a>
+        <p class="reading-kicker">Understanding music · 01</p>
+        <h1 id="article-title">What AI audio detectors can actually tell you.</h1>
+        <p class="reading-deck">A recording can be edited. A voice can be generated. A detector can be wrong. Understanding the difference starts with how the sound was made.</p>
+        <div class="reading-meta"><span>MusicSubject × Call Me Daddy</span><time datetime="2026-10-18">October 18, 2026</time><span>8 min read</span></div>
+      </header>
+      <div class="reading-tools" data-reading-tools hidden>
+        <div class="reading-size" role="group" aria-label="Article text size"><button type="button" data-text-size="normal" aria-pressed="true">A <span>Standard</span></button><button type="button" data-text-size="large" aria-pressed="false">A+ <span>Larger</span></button></div>
+        <button type="button" data-share-article>Share article ↗</button>
+      </div>
+      <p class="reading-status" data-reading-status role="status"></p>
+      <div class="reading-copy" data-reading-copy hidden><label for="article-link">Article link — select and copy</label><input id="article-link" type="url" readonly value="https://callmedaddy.musicsubject.com/reading/ai-audio-detectors/"></div>
+      <details class="reading-contents">
+        <summary>In this article <span>Jump to a section</span></summary>
+        <nav aria-label="Article contents"><a href="#editing">What editing changes</a><a href="#detectors">What detectors measure</a><a href="#generation">How generated audio is made</a><a href="#clues">Four clues, explained</a><a href="#practice">What matters when making music</a><a href="#faq">Common questions</a><a href="#glossary">Plain-language glossary</a><a href="#sources">Sources &amp; further reading</a></nav>
+      </details>
+      <div class="reading-body" id="article-body">
+        <section id="editing" aria-labelledby="editing-title">
+          <h2 id="editing-title">Editing a performance doesn’t change who performed it.</h2>
+          <p>Imagine recording a freestyle on your phone. You cut the silence at the start, fade the ending, balance the loudness, and export an MP3. You have changed the recording, but those steps have not generated a new performance.</p>
+          <p>Trimming selects a portion of the sound. A fade changes its level over time. Loudness normalization adjusts levels toward a target. MP3 encoding stores an approximation of the audio in a smaller file. These are ordinary production operations; none requires a model to invent someone singing or rapping. <a class="source-ref" href="#source-1" aria-label="Source 1: FFmpeg filter documentation">[1]</a></p>
+          <p>That distinction also matters for electronic music. Playing a software synthesizer, sequencing drums, or sampling a recording does not automatically mean using generative AI. “Made on a computer” is a much broader category.</p>
+          <aside class="reading-takeaway"><span>The key distinction</span><p>How a sound was made and how a detector labels it are separate questions.</p></aside>
+          <p>A song may combine a recorded vocal, programmed drums, a generated backing track, and conventional effects. Describing those parts tells a listener more than treating the entire song as one undivided label.</p>
+        </section>
+
+        <section id="detectors" aria-labelledby="detectors-title">
+          <h2 id="detectors-title">A detector learns patterns. It doesn’t watch the session.</h2>
+          <p>Many audio detectors learn from examples labelled as recorded or synthetic. They process the waveform itself, a spectrogram, or other measurements, then look for patterns associated with their training examples.</p>
+          <p>A <strong>spectrogram</strong> shows how frequency content changes over time. It can reveal bands of energy, sharp boundaries, or repeating patterns that are difficult to notice by ear. Research on synthetic voices has shown that artifacts associated with neural vocoders can help a classifier distinguish generated speech. <a class="source-ref" href="#source-2" aria-label="Source 2: neural vocoder artifacts research">[2]</a></p>
+          <p>Music detection research has also explored traces left by neural audio decoders. The difficulty is making sure a detector learns the relevant traces, rather than shortcuts such as a particular genre or export format. Strong results on a research dataset do not guarantee the same performance on unfamiliar generators and edited tracks. <a class="source-ref" href="#source-3" aria-label="Source 3: AI music detection research">[3]</a></p>
+          <h3>Watermark detection asks a different question.</h3>
+          <p>A watermark is a signal deliberately added by a system. Google’s SynthID, for example, embeds an inaudible watermark in supported generated audio, including Lyria output. A compatible detector looks for that mark. This is different from guessing the origin from naturally occurring artifacts. A missing watermark does not establish that a recording is human-made: the source may never have used that watermark. <a class="source-ref" href="#source-4" aria-label="Source 4: Google SynthID documentation">[4]</a></p>
+          <p>A displayed score also needs context. “90% AI” might be a model score rather than a calibrated 90% probability, and it does not necessarily mean 90% of the song was generated. You need the tool’s definition before interpreting the number.</p>
+        </section>
+
+        <section id="generation" aria-labelledby="generation-title">
+          <h2 id="generation-title">The sound-making stage, without the jargon.</h2>
+          <p><strong>Text-to-speech</strong> describes a task: turning words into spoken audio. It is not one single architecture. Some systems build an intermediate representation of speech and use another model to turn it into a waveform.</p>
+          <p>A <strong>neural vocoder</strong> performs that waveform-generation step from acoustic features, often a mel-spectrogram. Think of the spectrogram as a compact description of the sound and the vocoder as the system that produces the individual audio samples. HiFi-GAN is one published example. <a class="source-ref" href="#source-5" aria-label="Source 5: HiFi-GAN paper">[5]</a></p>
+          <p>Some vocoders expand a compact representation through several upsampling stages. Particular architectures can leave recurring artifacts. This explains why researchers investigate the sound-making machinery, not just whether a voice sounds convincing. It does not mean every generated song contains the same visible stripes.</p>
+          <p>A <strong>diffusion model</strong> generates a signal through a learned denoising process, commonly beginning with noise. DiffWave, for instance, can generate waveforms and can operate as a vocoder conditioned on a mel-spectrogram. “Diffusion” and “vocoder” can therefore describe different aspects of the same system. <a class="source-ref" href="#source-6" aria-label="Source 6: DiffWave paper">[6]</a></p>
+          <p>Other systems use neural audio codecs and sequences of compact audio tokens. There is no universal recipe that every music generator follows.</p>
+        </section>
+
+        <section id="clues" aria-labelledby="clues-title">
+          <h2 id="clues-title">Four clues that need context.</h2>
+          <p>The original guide focused on noise, frequency cutoffs, residuals, and phase. They are useful things to understand, but none is a standalone test for AI.</p>
+          <div class="reading-clue" id="noise-floor"><span class="clue-number" aria-hidden="true">01</span><div><h3>The noise floor</h3><p>This is the quiet background beneath the main sound: hiss, room tone, equipment noise. Its statistics describe how that noise behaves across time and frequency.</p><p>A clean recording may have very little background noise, while generated audio may contain convincing noise. Noise reduction and gating also change the background. “Too clean” is an observation, not proof of generation.</p></div></div>
+          <div class="reading-clue" id="hf-cutoffs"><span class="clue-number" aria-hidden="true">02</span><div><h3>A high-frequency cutoff</h3><p>A sharp edge at the top of a spectrogram means there is little energy above that frequency. It can reflect a generator’s output limits, but also filtering, recording equipment, sample rate, or lossy encoding.</p><p>Missing high frequencies do not identify a unique cause. Turning up an EQ cannot recover information that is absent from the source. An exciter may create new harmonics; it does not retrieve the original missing detail.</p></div></div>
+          <div class="reading-clue" id="residuals"><span class="clue-number" aria-hidden="true">03</span><div><h3>Structured residuals</h3><p>A residual is what remains after a defined comparison or estimation process. Calling it “structured” means that the remainder contains a pattern. Without saying how the residual was obtained, the term is incomplete.</p><p>Neural reconstruction can produce patterns, but ordinary recordings can contain electrical hum, codec artifacts, and other repeating features too. A stripe in a spectrogram needs an explanation; it is not an automatic verdict.</p></div></div>
+          <div class="reading-clue" id="phase"><span class="clue-number" aria-hidden="true">04</span><div><h3>Phase relationships</h3><p>Phase concerns the relative position of cycles in a signal. Combining delayed copies of a sound, for example, can make some frequencies reinforce and others cancel.</p><p>Microphones, rooms, filters, stereo processing, and synthesis can all affect these relationships. Phase information may help a trained detector, but “strange phase” is not exclusive to AI. Human recordings can have phase problems as well.</p></div></div>
+        </section>
+
+        <section id="practice" aria-labelledby="practice-title">
+          <h2 id="practice-title">For a musician, the process tells the fuller story.</h2>
+          <p>Keep the original take when you have it. Keep useful project versions, and distinguish the parts you performed, programmed, sampled, generated, or rebuilt. That gives you a concrete account of the work.</p>
+          <p>A phone-recorded vocal remains a human performance after a trim and fade. That fact cannot promise a particular detector result. Speech benchmarks have found that systems can struggle when source datasets or recording conditions change, even when they handle some compression well. A speech benchmark is not a guarantee for a full music mix. <a class="source-ref" href="#source-7" aria-label="Source 7: ASVspoof benchmark research">[7]</a></p>
+          <p>Likewise, adding EQ, noise, or another export to generated audio does not turn it into a microphone recording of a performance. A changed score is not a changed history.</p>
+          <p>Use production tools to make the sound work: clearer words, a stronger groove, a better transition, a mix you enjoy listening to. When you explain the result, describe the actual choices. A listener can understand “my recorded vocal over a generated backing track” much more easily than an unexplained percentage.</p>
+        </section>
+
+        <section id="faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">Common questions</h2>
+          <details class="reading-faq"><summary>Does using a DAW or FFmpeg make a recording AI-generated?</summary><p>Using those tools for ordinary trimming, fades, or level adjustment does not generate a new performance. The operation matters. A DAW can also host generative tools, so the application’s name alone does not describe what happened.</p></details>
+          <details class="reading-faq"><summary>Can a human recording get flagged?</summary><p>Yes. A false positive is a human recording classified as generated. A false negative goes the other way. The useful question is how a detector performs on material like yours, including similar editing and recording conditions.</p></details>
+          <details class="reading-faq"><summary>Do perfect timing or pitch correction prove AI use?</summary><p>No. Sequencers, quantization, tuning, and meticulous performances can all produce precise results. Those qualities do not establish how a track was created.</p></details>
+          <details class="reading-faq"><summary>Is stem separation the same as generating a song?</summary><p>Stem separation estimates parts of existing audio, such as vocals and accompaniment. It can use neural models and can introduce artifacts. That is a different task from generating a new song, although a workflow can include both.</p></details>
+          <details class="reading-faq"><summary>Has this article tested a particular recording?</summary><p>No. This article explains the concepts behind the uploaded guide. It does not report a detector test or certify the origin of any particular audio file.</p></details>
+        </section>
+
+        <section id="glossary" aria-labelledby="glossary-title">
+          <h2 id="glossary-title">A small glossary</h2>
+          <dl class="reading-glossary">
+            <dt>Waveform</dt><dd>A representation of a signal’s amplitude over time.</dd>
+            <dt>Spectrogram</dt><dd>A view of frequency content over time. Brightness or colour usually represents magnitude or power.</dd>
+            <dt>Mel-spectrogram</dt><dd>A spectrogram summarized into frequency bands on a scale inspired by human hearing.</dd>
+            <dt>Neural vocoder</dt><dd>A neural model that generates an audio waveform from acoustic features.</dd>
+            <dt>Audio codec</dt><dd>A method for encoding and decoding audio. Some use conventional signal processing; others use neural models.</dd>
+            <dt>Artifact</dt><dd>A feature introduced by recording, processing, encoding, or generation.</dd>
+            <dt>Generalization</dt><dd>How well a model works on examples different from those it learned from.</dd>
+            <dt>Provenance</dt><dd>The documented origin and production history of a piece of media.</dd>
+          </dl>
+        </section>
+
+        <section id="sources" class="reading-sources" aria-labelledby="sources-title">
+          <h2 id="sources-title">Sources &amp; further reading</h2>
+          <p>Adapted from the uploaded <em>Understanding Music: Recordings vs. Computer-Generated Audio</em> guide. Technical claims were checked against the documentation and research below. The practical advice is editorial interpretation; the papers describe specific systems and experiments.</p>
+          <ol>
+            <li id="source-1"><a href="https://ffmpeg.org/ffmpeg-filters.html">FFmpeg filter documentation</a><span>Reference for trimming, fades, loudness normalization, and audio filtering.</span></li>
+            <li id="source-2"><a href="https://arxiv.org/abs/2302.09198">Exposing AI-Synthesized Human Voices Using Neural Vocoder Artifacts</a><span>Sun and colleagues, 2023. Research on detecting vocoder artifacts in synthetic speech.</span></li>
+            <li id="source-3"><a href="https://arxiv.org/abs/2501.10111">AI-Generated Music Detection and its Challenges</a><span>Afchar, Meseguer-Brocal, and Hennequin, 2025. Music detection, confounding factors, and limits of generalization.</span></li>
+            <li id="source-4"><a href="https://deepmind.google/models/synthid/">Google SynthID</a><span>Google DeepMind’s explanation of watermarking supported generated audio.</span></li>
+            <li id="source-5"><a href="https://arxiv.org/abs/2010.05646">HiFi-GAN: Generative Adversarial Networks for Efficient and High Fidelity Speech Synthesis</a><span>Kong, Kim, and Bae, 2020. An example of a neural vocoder.</span></li>
+            <li id="source-6"><a href="https://arxiv.org/abs/2009.09761">DiffWave: A Versatile Diffusion Model for Audio Synthesis</a><span>Kong and colleagues, 2020. Diffusion-based waveform generation and vocoding.</span></li>
+            <li id="source-7"><a href="https://arxiv.org/abs/2210.02437">ASVspoof 2021: Towards Spoofed and Deepfake Speech Detection in the Wild</a><span>Liu and colleagues, revised 2023. Speech detection under compression and changing conditions.</span></li>
+          </ol>
+        </section>
+      </div>
+      <aside class="reading-next" aria-labelledby="next-title"><p class="reading-kicker">Hear the process</p><h2 id="next-title">The recordings have a story, too.</h2><p>Explore the old recordings, new versions, and production experiments behind the music here.</p><div><a href="/old-files-new-tools/">Old Files / New Tools →</a><a href="/from-sample-to-song/">From Sample to Song →</a></div></aside>
+    </article>
+  </main>
+  <footer class="reading-footer"><a href="/reading/">← More reading</a><a href="/#homeSearchForm">Find a song →</a><span>MusicSubject × Call Me Daddy</span></footer>
+</body>
+</html>

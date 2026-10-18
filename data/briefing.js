@@ -2,6 +2,7 @@ window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
   updated: "2026-10-17T19:52:40-06:00",
   entries: [
+    {id:"understanding-ai-audio",published:"2026-10-18T01:55:00-06:00",type:"Article",title:"What AI audio detectors can actually tell you",summary:"Does editing a recording make it AI-generated? A plain-language guide to recorded sound, generated audio, and the limits of a detector score.",href:"/reading/ai-audio-detectors/",sharePath:"/reading/ai-audio-detectors/",cta:"Read the article",badge:"8 min read"},
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
     {

@@ -46,6 +46,14 @@ The homepage is the single catalog and search entry. Generic `/music/` visits re
 
 `data/briefing.js` is the public feed. Music metadata remains authoritative in `data/songs.js`; song-backed update entries should reference a catalog `songId` instead of duplicating the song metadata.
 
+### Reading
+
+- `/reading/` — **Reading room**, linked from the homepage navigation and article feature
+- `/reading/ai-audio-detectors/` — **What AI audio detectors can actually tell you**, adapted from the uploaded guide with primary sources, a contents menu, text-size controls and article sharing
+- `/updates/understanding-ai-audio/` — article announcement; the feed shares the full article's canonical reading URL directly
+
+Reading pages are static articles and do not initialize another music player. Ordinary article announcements belong outside the generated release-manifest block in `data/briefing.js`.
+
 ### Current release / project experiences
 
 - `/power-pulse-uprising/` — **Did Armando Die After You Held His Beer?**; chosen Armando version plus making-of history
