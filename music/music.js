@@ -378,7 +378,7 @@
   const buildCycle=()=>{
     cycleNumber+=1;
     const guard=window.CMDContentIntensity?.readPolicy?.({intent:activeIntent})||{};
-    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute,includeHeavy:guard.includeHeavy,unlockedByTaste:guard.unlockedByTaste}):playableSongs.map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
+    cycle=cycleEngine?cycleEngine.build(playableSongs,{lastSongId,intent:activeIntent,seed:radioSeed,cycleNumber,ignoreHistory:deterministicRoute,includeHeavy:guard.includeHeavy,unlockedByTaste:guard.unlockedByTaste}):playableSongs.filter(song=>song.rotation!=='opt-in').map(song=>({...song,songId:song.id,variantLabel:song.kind||'Main version',variantCount:1}));
     cycleIndex=-1;
   };
 

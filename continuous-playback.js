@@ -65,7 +65,8 @@
       cleanup.push(()=>target.removeEventListener?.(type,handler));
     };
     const onBreak=track=>window.CMDCatalogCycle?.isOnBreak?.(track?.songId||track?.id);
-    const unavailableInRotation=track=>onBreak(track)||(!options.allowOptInQueue&&window.CMDCatalogCycle?.isRotationAllowed?.(track)===false);
+    const rotationAllowed=track=>window.CMDCatalogCycle?.isRotationAllowed?.(track)??(track?.rotation!=='opt-in');
+    const unavailableInRotation=track=>onBreak(track)||(!options.allowOptInQueue&&!rotationAllowed(track));
 
     const status=(kind,detail)=>options.onStatus?.(kind,detail,current);
     const currentTrack=()=>queue[index]||current;

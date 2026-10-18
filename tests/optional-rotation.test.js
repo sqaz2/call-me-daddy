@@ -95,6 +95,12 @@ test('Sqaz page stays silent and first artwork tap starts its exact recording in
   const plays=audio.playCalls;e.elements.sqazRotation.emit('click');assert.equal(audio.playCalls,plays);assert.equal(e.api.isRotationAllowed(e.song),true);
   assert.equal(e.elements.sqazRotation.textContent,'Remove from my rotation');e.elements.sqazRotation.emit('click');assert.equal(e.api.isRotationAllowed(e.song),false);
 });
+test('shared playback skips optional automatic tracks if the preference engine fails to load',()=>{
+  const e=env(),audio=new Audio();e.window.CMDCatalogCycle=undefined;e.load('continuous-playback.js');
+  const c=e.window.CMDContinuousPlayback.create({audio,tracks:[{id:'first',audio:'/first.mp3'},e.song,{id:'last',audio:'/last.mp3'}],radio:{next:()=>null}});
+  c.play();assert.equal(c.peekNext().id,'last');c.next();assert.equal(audio.src,'/last.mp3');
+  c.load(1,{autoplay:true});assert.equal(audio.src,e.song.audio);
+});
 test('already-installed native catalogue loaders never receive an unenabled optional song',()=>{
   const e=env({origin:'https://appassets.androidplatform.net'});assert.equal(e.window.CMD_SONGS.some(s=>s.id===OPTIONAL),false);
 });
