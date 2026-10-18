@@ -9,7 +9,7 @@
     status.textContent = '';
     if (navigator.share) {
       try {
-        await navigator.share({ title: 'Help test MusicSubject', text: 'Help bring Call Me Daddy’s music to Google Play. Join the Android test when it opens.', url });
+        await navigator.share({ title: 'Help test MusicSubject', text: 'Join the MusicSubject Android tester group and help bring Call Me Daddy’s music to Google Play.', url });
         return;
       } catch (error) {
         if (error.name === 'AbortError') return;
