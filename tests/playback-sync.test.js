@@ -367,3 +367,20 @@ test('a song lookup started before entering WinHamp cannot navigate away after i
   env.api.connect({id:'enter-station',media:audio,track:songs[1]});audio.play();
   env.location.pathname='/winhamp/';resolve(response());await flush();assert.deepEqual(env.navigations,[]);
 });
+
+test('replacing a controller on the same audio element binds metadata and controls to the replacement',()=>{
+  const env=environment();env.context.addEventListener=()=>{};env.context.removeEventListener=()=>{};
+  vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../continuous-playback.js'),'utf8'),env.context);
+  const audio=new Media('/starmuff-a.mp3');
+  const a={id:'star-a:main',songId:'star-a',variantId:'main',title:'StarMuff A',audio:'/starmuff-a.mp3'};
+  const b={id:'star-b:main',songId:'star-b',variantId:'main',title:'StarMuff B',audio:'/starmuff-b.mp3'};
+  const c={id:'star-c:main',songId:'star-c',variantId:'main',title:'StarMuff C',audio:'/starmuff-c.mp3'};
+  const first=env.window.CMDContinuousPlayback.create({id:'winhamp',audio,tracks:[a],radio:{next:()=>null},followPages:false});
+  first.play();first.pause();first.destroy();
+  const second=env.window.CMDContinuousPlayback.create({id:'winhamp',audio,tracks:[b,c],radio:{next:()=>null},followPages:false});
+  second.load(0);
+  assert.equal(env.api.getTrack().songId,'star-b');assert.equal(env.api.getTrack().title,'StarMuff B');
+  assert.equal(env.navigator.mediaSession.metadata.title,'StarMuff B');
+  env.api.control('next');assert.equal(audio.src,'/starmuff-c.mp3');assert.equal(env.api.getTrack().songId,'star-c');
+  audio.currentTime=0;env.api.control('previous');assert.equal(audio.src,'/starmuff-b.mp3');assert.equal(env.api.getTrack().songId,'star-b');
+});

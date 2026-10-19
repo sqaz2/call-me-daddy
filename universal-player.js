@@ -321,7 +321,11 @@
   function connectCore(event){
     const controller=event?.controller;if(!controller)return;
     let handle=coreHandles.get(controller);
-    if(!handle){const localCount=Number(event.options?.localCount??event.options?.tracks?.length??Infinity);
+    if(!handle){
+      // A replacement controller can reuse its audio element. Its adapter must
+      // close over the new controller for metadata, Next and Previous.
+      adapters.get(`core:${event.id}`)?.handle.destroy();
+      const localCount=Number(event.options?.localCount??event.options?.tracks?.length??Infinity);
       handle=connect({id:`core:${event.id}`,audio:event.audio,getTrack:()=>controller.current(),getUpcoming:()=>controller.peekNext?.(),getQueue:()=>controller.getQueue?.()||[controller.current()],getQueueIndex:()=>controller.getState().index,getContext:track=>[track?.variantLabel,controller.getState().index>=localCount?'Play the site':track?.project,track?.artist].filter(Boolean).slice(0,2).join(' · '),play:()=>controller.play(),pause:()=>controller.pause(),toggle:()=>controller.toggle(),previous:()=>controller.previous(),next:()=>controller.next('universal-next'),seek:time=>{event.audio.currentTime=time},replaceElement:event.options?.replacePlayer||null,followPages:event.options?.followPages});coreHandles.set(controller,handle)}
     const remaining=Number(event.state?.secondsRemaining),upcoming=event.state?.nextTrack;
     const upNext=event.type==='time'&&upcoming&&remaining>0&&remaining<=5?`Up next in ${Math.max(1,Math.ceil(remaining))} · ${upcoming.title||'another song'}`:'';
