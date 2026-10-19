@@ -263,8 +263,8 @@
     nodes.icon.textContent=playing?'❚❚':'▶';nodes.toggle.textContent=playing?'❚❚':'▶';nodes.toggle.setAttribute('aria-label',playing?'Pause':'Play');nodes.art.setAttribute('aria-label',playing?`Pause ${track.title}`:`Play ${track.title}`);
     nodes.previous.disabled=typeof active.previous!=='function';nodes.next.disabled=typeof active.next!=='function';nodes.share.disabled=typeof active.share!=='function';
     const copyInFacebook=Boolean(window.CMDShare?.isFacebookBrowser?.());
-    nodes.share.classList[copyInFacebook?'add':'remove']('is-copy-link');nodes.share.textContent=copyInFacebook?'Copy link':'↗';
-    nodes.share.setAttribute('aria-label',copyInFacebook?'Copy current song link':'Share current song');
+    nodes.share.classList[copyInFacebook?'add':'remove']('is-copy-link');nodes.share.textContent=copyInFacebook?'Copy post':'↗';
+    nodes.share.setAttribute('aria-label',copyInFacebook?'Copy current song post':'Share current song');
     nodes.bar.style.width=`${ratio*100}%`;nodes.progress.style.setProperty?.('--progress',`${ratio*100}%`);if(nodes.thumb)nodes.thumb.style.left=`${ratio*100}%`;nodes.progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)));nodes.current.textContent=formatTime(time);nodes.duration.textContent=formatTime(duration);
     nodes.progress.setAttribute('aria-valuetext',duration>0?`${formatTime(time)} of ${formatTime(duration)}`:'Duration unavailable');
     nodes.story.classList.remove('is-coming');

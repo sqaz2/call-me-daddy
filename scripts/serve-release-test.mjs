@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import worker from '../worker/index.mjs';
+import worker from '../worker/site.mjs';
 
 const root=process.cwd();
 const port=Number(process.env.PORT||8765);

@@ -191,7 +191,7 @@ test('the visible dock copies the actual version after an owner-frame source cha
   child.window.top=top.window;const frame=new Element('iframe');frame.contentWindow=child.window;top.document.body.append(frame);
   child.api.connect({id:'share-owner',media:audio,track:{...catalog[0],songId:'keep-moving',variantId:'v2'},share:()=>assert.fail('hidden legacy share callback must not be used')});audio.play();
   const button=top.root().querySelector('.cmd-universal-share');
-  assert.equal(button.textContent,'Copy link');assert.equal(button.getAttribute('aria-label'),'Copy current song link');
+  assert.equal(button.textContent,'Copy post');assert.equal(button.getAttribute('aria-label'),'Copy current song post');
   button.emit('click');assert.equal(shared[0].track.variantId,'v2');
   audio.src='/trap.mp3';audio.emit('timeupdate');
   top.root().querySelector('.cmd-copy-song-link').emit('click');
