@@ -95,15 +95,16 @@
     return available?`${target.pathname}${target.search}${target.hash}`:fallback;
   }
   function cancelFollow(){followGeneration+=1;followKey='';followPending=null}
+  const stationView=()=>{try{return /^\/winhamp\/?$/.test((window.top&&window.top.location.origin===location.origin?window.top.location:location).pathname)}catch{return false}};
   async function followTrack(track){
-    if(document.visibilityState==='hidden'||!track||!(track.songId||track.id)||!active?.playing()||active.followPages===false)return false;
+    if(stationView()||document.visibilityState==='hidden'||!track||!(track.songId||track.id)||!active?.playing()||active.followPages===false)return false;
     const key=trackKey(track);
     if(!key||key===followKey||followPending?.key===key)return false;
     const generation=++followGeneration;
     followPending={key,generation};
     try{
       const route=await resolveRoute(track);
-      if(document.visibilityState==='hidden'||generation!==followGeneration||!active?.playing()||trackKey(activeTrack())!==key)return false;
+      if(stationView()||document.visibilityState==='hidden'||generation!==followGeneration||!active?.playing()||trackKey(activeTrack())!==key)return false;
       if(!samePage(route)){
         if(!window.CMDPersistentSite?.open)return false;
         window.CMDPersistentSite.open(route);

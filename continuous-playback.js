@@ -186,6 +186,7 @@
     };
     const next=(reason='next')=>{
       if(destroyed)return false;
+      if(reason==='ended'&&options.repeatOne)return load(index,{autoplay:true,reason:'repeat-one'});
       const target=ensureNext();
       if(target<0){wantsPlayback=false;status('unavailable');persist(true);return false;}
       preparedIndex=-1;
@@ -301,6 +302,19 @@
 
     controller={
       play,pause,toggle,next,previous,load,
+      configureQueue:({tracks,loopLocal,repeatOne}={})=>{
+        if(destroyed)return false;
+        if(Array.isArray(tracks)){
+          const playedSources=new Set(queue.slice(0,index+1).map(track=>absolute(track.audio)));
+          queue.splice(index+1,queue.length,...tracks.filter(track=>track?.audio&&!playedSources.has(absolute(track.audio))));
+        }
+        if(typeof loopLocal==='boolean')options.loopLocal=loopLocal;
+        if(typeof repeatOne==='boolean')options.repeatOne=repeatOne;
+        preparedIndex=-1;
+        ensureNext();
+        announce('queue');
+        return true;
+      },
       current:currentTrack,
       peekNext:()=>{ensureNext();return preparedIndex>=0?queue[preparedIndex]||null:null;},
       getQueue:()=>queue.map(track=>({...track})),
@@ -310,7 +324,7 @@
     audio.__cmdContinuousPlaybackController=controller;
 
     const snapshot=readSnapshot();
-    const wantsRestore=snapshot?.playerId===id&&snapshot.wantsPlayback&&(
+    const wantsRestore=options.restoreSession!==false&&snapshot?.playerId===id&&snapshot.wantsPlayback&&(
       document.wasDiscarded||navigationWasReload()||new URLSearchParams(location.search).get('cmdResume')==='1'
     );
     if(wantsRestore&&snapshot.track?.audio){

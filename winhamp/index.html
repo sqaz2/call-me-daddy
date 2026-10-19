@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#242735">
+  <title>WinHamp — MusicSubject × Call Me Daddy</title>
+  <meta name="description" content="Old-school player. New music. Listen to MusicSubject × Call Me Daddy in WinHamp: one page, every mix, a live spectrum and a playlist that keeps going.">
+  <link rel="canonical" href="https://callmedaddy.musicsubject.com/winhamp/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MusicSubject × Call Me Daddy">
+  <meta property="og:title" content="WinHamp — old-school player, new music">
+  <meta property="og:description" content="Press play. Find a favourite. Send it to someone. MusicSubject × Call Me Daddy, in a player with a little more personality.">
+  <meta property="og:url" content="https://callmedaddy.musicsubject.com/winhamp/">
+  <meta property="og:image" content="https://callmedaddy.musicsubject.com/media/brand/call-me-daddy-musicsubject.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/winhamp/winhamp.css?v=20261019-1">
+</head>
+<body class="winhamp-page">
+  <header class="masthead"><a class="identity" href="/">MUSICSUBJECT <span>× CALL ME DADDY</span></a><a href="/#homeSearchForm">Back to the site ↗</a></header>
+  <main class="desktop" aria-label="WinHamp music player">
+    <div class="intro"><h1>WinHamp<span>®? Nah.</span></h1><p>Old-school player. New music.</p></div>
+    <section class="window player-window" aria-label="Music player">
+      <div class="titlebar"><span class="bolt" aria-hidden="true">ϟ</span><strong>WINHAMP</strong><span class="titlebar-line"></span><span class="edition">MUSICSUBJECT EDITION</span><button id="skin" class="skin" type="button" aria-label="Switch to amber display" title="Change display colour">◐</button></div>
+      <div class="player-body">
+        <div class="display">
+          <div class="clock"><span id="stateLamp" class="state-lamp">READY</span><output id="elapsed">0:00</output><span id="format">SELECT A TRACK</span></div>
+          <div class="spectrum"><canvas id="spectrum" width="600" height="140" aria-label="Live audio spectrum"></canvas><span class="stereo">L ━━━━━ R <b>STEREO</b></span></div>
+          <button class="artwork" id="artwork" type="button" aria-label="Play selected song"><img id="cover" src="/media/brand/call-me-daddy-musicsubject.jpg" alt="MusicSubject × Call Me Daddy" width="80" height="80"><span aria-hidden="true">▶</span></button>
+        </div>
+        <div class="track-display"><span id="trackNumber">01.</span><div><strong id="trackTitle">Choose your first song</strong><span id="trackVersion">MusicSubject × Call Me Daddy</span></div></div>
+        <div class="seek-row"><input id="seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Song position"><output id="duration">0:00</output></div>
+        <div class="transport" role="group" aria-label="Playback controls">
+          <button id="previous" type="button" aria-label="Previous song" title="Previous song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5 8 12l11 7Z"/></svg></button>
+          <button id="play" class="play-button" type="button" aria-label="Play"><span id="playIcon" aria-hidden="true">▶</span><span id="playText">PLAY</span></button>
+          <button id="stop" type="button" aria-label="Stop" title="Stop"><span aria-hidden="true">■</span></button>
+          <button id="next" type="button" aria-label="Next song" title="Next song"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14M5 5l11 7-11 7Z"/></svg></button>
+          <button id="shareSong" class="share-button" type="button" aria-label="Share this song">SHARE ↗</button>
+        </div>
+        <div class="utilities"><label for="volume">VOL <input id="volume" type="range" min="0" max="100" value="85" aria-label="Volume"><output id="volumeValue">85%</output></label><button id="shuffle" type="button" aria-pressed="false">SHUFFLE</button><button id="repeat" type="button" aria-label="Repeat all; change repeat mode" aria-pressed="true">REPEAT ALL</button></div>
+      </div>
+      <div class="statusbar"><span id="status" role="status">Pick a song. Stay a while.</span><a id="story" href="/" hidden>SONG STORY ↗</a></div>
+    </section>
+    <section class="window playlist-window" aria-labelledby="playlistHeading">
+      <div class="titlebar"><strong id="playlistHeading">PLAYLIST</strong><span class="titlebar-line"></span><span id="trackCount" class="edition">LOADING…</span></div>
+      <div class="library-tools"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Search songs and versions" placeholder="Find a song, a remix, a mood…" autocomplete="off"><kbd>/</kbd></label><label class="version-toggle"><input id="versions" type="checkbox"> All mixes</label></div>
+      <div class="list-heading" aria-hidden="true"><span>#</span><span>TRACK / MIX</span><span>TIME</span></div>
+      <div class="track-list" id="trackList" aria-label="Songs"><p class="empty">Loading your music…</p></div>
+      <div class="playlist-footer"><span id="listCount" aria-live="polite"></span><button id="sharePlayer" type="button">SHARE WINHAMP ↗</button></div>
+    </section>
+    <footer class="signature"><span>CALL ME DADDY <b>×</b> MUSICSUBJECT</span><span>A little nostalgia. A lot to play.</span></footer>
+  </main>
+  <noscript><p>Enable JavaScript to play music here, or <a href="/">browse the songs</a>.</p></noscript>
+  <script src="/data/songs.js"></script>
+  <script src="/data/archive-catalog.js"></script>
+  <script src="/data/2026-08-25-uploads.js"></script>
+  <script src="/data/2026-08-26-uploads.js"></script>
+  <script src="/data/2026-08-27-uploads.js"></script>
+  <script src="/data/2026-08-29-uploads.js"></script>
+  <script src="/data/artwork-fallback.js"></script>
+  <script src="/data/radio-intents.js"></script>
+  <script src="/listener-taste.js"></script>
+  <script src="/catalog-cycle.js"></script>
+  <script src="/playlist-radio.js"></script>
+  <script src="/persistent-site-browser.js"></script>
+  <script src="/universal-player.js"></script>
+  <script src="/continuous-playback.js?v=20261019-winhamp"></script>
+  <script src="/winhamp/model.js?v=20261019-1"></script>
+  <script src="/winhamp/player.js?v=20261019-1"></script>
+</body>
+</html>

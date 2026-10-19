@@ -12,7 +12,7 @@ const {chromium}=require('playwright');
   assert.equal(new URL(page.url()).pathname,'/');
   assert.ok(await page.getByRole('searchbox',{name:'Search songs',exact:true}).isVisible());
   await page.getByRole('link',{name:'All releases →',exact:true}).waitFor();
-  assert.deepEqual(await page.locator('.navlinks a').allTextContents(),['Search songs','My Music','Latest','Reading','Archive','About']);
+  assert.deepEqual(await page.locator('.navlinks a').allTextContents(),['Search songs','WinHamp','My Music','Latest','Reading','Archive','About']);
   assert.equal(await page.locator('.navlinks a').filter({hasText:'My Music'}).getAttribute('href'),'/my-music/');
   await page.locator('.navlinks a[href="/reading/"]').click();
   await page.locator('.reading-card').click();

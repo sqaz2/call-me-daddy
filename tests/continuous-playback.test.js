@@ -205,3 +205,27 @@ test('the next recording starts from ended while hidden without a timer or new e
   env.document.visibilityState='hidden';audio.ended=true;audio.paused=true;audio.emit('ended');
   assert.equal(audio.src,'/second.mp3');assert.equal(audio.paused,false);assert.equal(audio.playCalls,2);
 });
+
+test('changing the upcoming queue preserves source, position and playback ownership',()=>{
+  const env=environment(),audio=new FakeAudio();
+  const tracks=['a','b','c'].map(id=>({id,title:id,audio:`/${id}.mp3`}));
+  const controller=env.window.CMDContinuousPlayback.create({audio,tracks,radio:{next:()=>null},loopLocal:true});
+  controller.load(1);audio.currentTime=42;
+  const loads=audio.loadCalls,plays=audio.playCalls;
+  controller.configureQueue({tracks:[tracks[2],tracks[0]],repeatOne:true});
+  assert.equal(audio.src,'/b.mp3');assert.equal(audio.currentTime,42);
+  assert.equal(audio.loadCalls,loads);assert.equal(audio.playCalls,plays);
+  assert.deepEqual(Array.from(controller.getQueue(),t=>t.id),['a','b','c'],'already-played recordings are not duplicated in a repeat cycle');
+  assert.equal(controller.peekNext().id,'c');
+  audio.ended=true;audio.emit('ended');assert.equal(controller.current().id,'b');
+  controller.next();assert.equal(controller.current().id,'c','manual Next still advances with repeat one');
+});
+
+test('repeat off stops at the end and repeat all can resume the same queue',()=>{
+  const env=environment(),audio=new FakeAudio();
+  const controller=env.window.CMDContinuousPlayback.create({audio,tracks:[{id:'a',audio:'/a.mp3'}],radio:{next:()=>null}});
+  controller.play();audio.ended=true;audio.emit('ended');
+  assert.equal(audio.playCalls,1);assert.equal(controller.getState().wantsPlayback,false);
+  controller.configureQueue({loopLocal:true});controller.next();
+  assert.equal(audio.playCalls,2);assert.equal(controller.current().id,'a');
+});
