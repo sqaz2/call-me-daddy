@@ -33,6 +33,8 @@
     button.setAttribute('aria-pressed',String(playing));
     document.getElementById('audiobookIcon').textContent=playing?'❚❚':'▶';
     document.getElementById('audiobookAction').textContent=playing?'Pause audiobook':'Play audiobook';
+    const songStatus=document.getElementById('releaseStatus');
+    if(current.matches&&songStatus)songStatus.textContent='Audiobook in the dock. Tap Play song to hear the remaster.';
     status.textContent=message||(current.matches?(current.media.ended?'Audiobook finished.':playing?'Playing audiobook.':'Audiobook paused.'):'Optional listening. Tap to play.');
   };
   button.addEventListener('click',()=>{
