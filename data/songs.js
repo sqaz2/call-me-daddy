@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 10,
     "date": "2026-10-19",
     "project": "",
-    "description": "A familiar laugh. A borrowed face. Something has come home. Hear Something I Ate, read the movie script, then listen to Her Story — Remastered.",
+    "description": "A familiar laugh. A borrowed face. Something has come home. Listen to Her Story — Remastered, with an optional spoken opening.",
     "aliases": [
       "Her Story Remastered",
       "Her-Story-Remastered"

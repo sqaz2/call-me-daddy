@@ -13,7 +13,7 @@ window.CMD_BRIEFING = {
       "songId": "her-story",
       "variantId": "main",
       "title": "Her Story — something has come home",
-      "summary": "Hear the opening, read the Something I Ate movie script, then listen to Her Story — Remastered and the original verse.",
+      "summary": "Listen to Her Story — Remastered. A creature borrows a familiar face, but her wife is starting to notice what it got wrong.",
       "href": "/her-story/",
       "sharePath": "/updates/release-her-story/",
       "cta": "Listen + enter the story",

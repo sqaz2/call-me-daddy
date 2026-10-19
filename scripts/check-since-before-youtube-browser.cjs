@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
- 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://suno.fyi/72/2'},
+ 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://suno.fyi/72',initialVersion:'main'},
  'this-is-my-story':{manifest:'2026-10-14-this-is-my-story',query:'With rhythm and rhyme',note:'#song-story',copy:'The file was called tims.wav',short:'https://suno.fyi/69'},
  'come-sit-here-with-me':{manifest:'2026-10-14-come-sit-here-with-me',query:'make some room for you',note:'#song-story',copy:'A personal song about continuing to create through everything',short:'https://suno.fyi/68'},
  'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
@@ -14,7 +14,7 @@ const cases={
 const config=cases[releaseId];assert(config,'Choose a known release fixture');
 const out=`/tmp/replay-qa/${releaseId}`;fs.mkdirSync(out,{recursive:true});
 const {song,lyrics,update}=require(`../content/releases/${config.manifest}.json`);
-const variant=song.variants[0];
+const variant=song.variants.find(v=>v.id===config.initialVersion)||song.variants[0];
 const links=require('../data/song-links.json');
 (async()=>{
  const browser=await chromium.launch({headless:true});
@@ -57,8 +57,10 @@ const links=require('../data/song-links.json');
    await page.locator('.ending-reveal summary').click();
    const remaster=song.variants.find(v=>v.id==='main');
    assert.equal(await page.locator('video').count(),0);
-   assert.equal(await page.locator('.screenplay-pages .script-dialogue').count(),16);
-   assert((await page.locator('.screenplay-pages').innerText()).includes('CUT TO BLACK ON “NEAR.”'));
+   assert.equal(await page.locator('#screenplay, .screenplay-pages').count(),0);
+   assert.equal(await page.locator('#releaseCutLabel').textContent(),'Remastered');
+   assert.equal(await page.locator('.story-play').getAttribute('data-cut'),'main');
+   assert(await page.evaluate(()=>document.documentElement.scrollHeight<2200));
    await page.locator('[data-cut="main"]').click();await playing(remaster);await assertIdentity(remaster);await assertShare(remaster);
    await page.locator('.cmd-universal-toggle').click();
    await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
@@ -106,7 +108,7 @@ const links=require('../data/song-links.json');
   check('First artwork tap plays the selected recording with matching dock and phone metadata');
   await assertShare();check('Facebook copy fallback uses the requested domain and exact recording');
   if(song.variants.length>1){
-   for(const target of [...song.variants.slice(1),variant]){
+   for(const target of [...song.variants.filter(v=>v.id!==variant.id),variant]){
     const currentFrame=await frame();await currentFrame.locator(`[data-cut="${target.id}"]`).tap();await playing(target);
     await assertIdentity(target);await assertShare(target);assert.equal(await ownerCount(),1);
     const visible=await frame();assert.equal(await visible.locator('#releaseLyrics').textContent(),lyrics.text);
@@ -123,6 +125,10 @@ const links=require('../data/song-links.json');
   await page.evaluate(()=>{window.CMDUniversalPlayer.control('next');window.CMDUniversalPlayer.control('seek',0);window.CMDUniversalPlayer.control('previous')});await playing();
   await page.evaluate(()=>{window.CMDUniversalPlayer.control('next');window.CMDUniversalPlayer.control('seek',0);window.CMDUniversalPlayer.control('previous');window.CMDUniversalPlayer.control('next');window.CMDUniversalPlayer.control('seek',0);window.CMDUniversalPlayer.control('previous')});await playing();
   assert.equal(await ownerCount(),1);check('Next, previous and rapid skips return to the correct recording');
+  if(variant.id!==song.variants[0].id){
+   const visible=await frame();await visible.locator(`[data-cut="${song.variants[0].id}"]`).tap();await playing(song.variants[0]);
+   check('The optional opening remains available without replacing the default song');
+  }
   for(const target of song.variants.slice(1)){
    await page.evaluate(()=>{const m=window.CMDUniversalPlayer.getMedia();m.currentTime=m.duration-4.1});
    await page.waitForFunction(()=>document.querySelector('.cmd-universal-detail')?.textContent.includes('Up next'),null,{timeout:5000});
