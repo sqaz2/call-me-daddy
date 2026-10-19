@@ -20,7 +20,7 @@
       label:'Cinematic Perspectives',
       bleed:'light',
       keywords:['cinematic','fictional','scene-study','perspective','rap'],
-      songIds:['cheap-to-inform']
+      songIds:['cheap-to-inform','her-story']
     },
     {
       id:'melancholy-heavy',

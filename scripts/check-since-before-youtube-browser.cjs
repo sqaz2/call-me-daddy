@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
+ 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://hiphop.bid/72'},
  'this-is-my-story':{manifest:'2026-10-14-this-is-my-story',query:'With rhythm and rhyme',note:'#song-story',copy:'The file was called tims.wav',short:'https://suno.fyi/69'},
  'come-sit-here-with-me':{manifest:'2026-10-14-come-sit-here-with-me',query:'make some room for you',note:'#song-story',copy:'A personal song about continuing to create through everything',short:'https://suno.fyi/68'},
  'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
@@ -48,6 +49,19 @@ const links=require('../data/song-links.json');
    await page.screenshot({path:`${out}/${width}.png`,fullPage:true});
   }
   check('Silent load and layouts at 320, 390 and 1440px');
+  if(releaseId==='her-story'){
+   assert.equal(await page.locator('.ending-reveal').getAttribute('open'),null);
+   await page.locator('.ending-reveal summary').click();
+   assert(await page.locator('.ending-copy').isVisible());
+   assert((await page.locator('.ending-copy').innerText()).includes('The voice inside warns her away.'));
+   await page.locator('.ending-reveal summary').click();
+   await page.locator('[data-cut="main"]').click();await playing();await assertIdentity();
+   await page.locator('.cmd-universal-toggle').click();
+   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
+   check('The ending stays hidden until opened and the main play button starts the exact remaster');
+   await page.goto(base+song.experience,{waitUntil:'networkidle'});
+   assert.equal(await page.locator('#releaseAudio').getAttribute('src'),null);
+  }
   if(releaseId==='keep-building-your-future'){
    await page.waitForFunction(()=>{const v=document.getElementById('futureVisual');return !v.paused&&v.currentTime>.1&&v.videoWidth>0},null,{timeout:20000});
    assert(await page.locator('#futureVisual').evaluate(v=>v.muted&&v.loop&&v.playsInline&&!v.controls));
