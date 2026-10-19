@@ -1,4 +1,5 @@
 const assert=require('node:assert/strict');
+const fs=require('node:fs');
 const {chromium}=require('playwright');
 (async()=>{
  const browser=await chromium.launch({headless:true});
@@ -39,6 +40,22 @@ const {chromium}=require('playwright');
   await page.locator('#stop').click();
   assert.equal(await page.evaluate(()=>window.CMDUniversalPlayer.getMedia().paused),true);
   assert.equal(await page.evaluate(()=>window.CMDUniversalPlayer.getMedia().currentTime),0);
+  // A local audio fixture tests playlist UI without depending on the game server.
+  await page.route('**/media/starmuff/*.mp3',route=>route.fulfill({status:200,contentType:'audio/mpeg',body:fs.readFileSync('media/songs/2026/10/live-it-right/audio.mp3')}));
+  await page.locator('#playlistStarMuff').click();
+  assert.equal(await page.locator('#trackList .track-row').count(),50);
+  await page.locator('#trackList .track-row').first().click();
+  await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia()?.currentTime>.2);
+  assert.ok((await page.evaluate(()=>window.CMDUniversalPlayer.getTrack().songId)).startsWith('starmuff-'));
+  await page.locator('#sharePlayer').click();
+  const playlistShare=new URL(await page.evaluate(()=>window.__winhampShares.at(-1).url));
+  assert.equal(playlistShare.searchParams.get('playlist'),'starmuff');assert.equal(playlistShare.searchParams.has('song'),false);
+  await page.locator('#shareSong').click();
+  const starShare=new URL(await page.evaluate(()=>window.__winhampShares.at(-1).url));
+  assert.equal(starShare.searchParams.get('playlist'),'starmuff');assert.ok(starShare.searchParams.get('song').startsWith('starmuff-'));
+  await page.locator('#playlistCallMeDaddy').click();
+  assert.equal(await page.evaluate(()=>window.CMDUniversalPlayer.getMedia().paused),false,'Browsing the other playlist preserves current audio');
+  assert.ok(await page.locator('#trackList .track-row').count()>60);
   assert.deepEqual(errors,[]);
   await context.close();console.log('WinHamp mobile layout, real audio/spectrum, exact sharing and shared playback passed.');
  }finally{await browser.close();}

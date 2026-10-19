@@ -38,3 +38,9 @@ Files can then move one at a time. A missing R2 object automatically falls back 
 `data/anti-ai-collection.js` is the collection source of truth. The first four records belong to the Call Me Daddy run. Future guest records should keep a distinct creator name, original source link, cover permission, and either a hosted `/media/community/...` path or an external listening page.
 
 The public page intentionally does not accept anonymous uploads. Turning submissions on later requires a moderation decision, permission/credit fields, durable metadata, and storage limits before an upload form is safe to publish.
+
+## StarMuff soundtrack
+
+`data/starmuff-playlist.mjs` preserves the original 50-track `/api/winhamp/tracks` catalogue, including source titles and exact upstream paths. WinHamp offers it as a separate library and an explicit All music option. These game cues do not enter ordinary Call Me Daddy radio.
+
+The allowlisted `/media/starmuff/` URLs stream through the `STARMUFF` service binding to the existing StarMuff Worker. GET/HEAD and byte-range responses pass through without buffering the audio or forwarding visitor cookies. This keeps the spectrum and seeking on the music site’s origin while StarMuff retains its original audio files.

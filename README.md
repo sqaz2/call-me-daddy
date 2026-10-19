@@ -8,7 +8,7 @@ See `SITE-MAP.md` for the full information architecture and archive/media map.
 
 - `/` — homepage, daily briefing and current releases
 - `/updates/` — running public history of new music, experiments, archive finds and meaningful site changes
-- `/winhamp/` — one-screen Winamp-inspired player with the live catalogue, spectrum, shuffle, repeat, version search and exact-recording share links
+- `/winhamp/` — one-screen Winamp-inspired player with the live catalogue, spectrum, shuffle, repeat, version search and exact-recording share links. Choose Call Me Daddy, the original 50-track StarMuff playlist, or All music. Share `/winhamp/?playlist=starmuff` to open the game soundtrack directly.
 - `/music/` — growing music catalog and intention-driven continuous player
 - `/anti-generative-ai-diss/` — four-track anti-gatekeeping collection, origin story and invitation-ready guest lane
 - `/level-up/` — Level Up / New Tools Trilogy finale

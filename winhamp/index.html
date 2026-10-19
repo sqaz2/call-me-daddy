@@ -15,7 +15,7 @@
   <meta property="og:image" content="https://callmedaddy.musicsubject.com/media/brand/call-me-daddy-musicsubject.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/winhamp/winhamp.css?v=20261019-1">
+  <link rel="stylesheet" href="/winhamp/winhamp.css?v=20261019-starmuff-1">
 </head>
 <body class="winhamp-page">
   <header class="masthead"><a class="identity" href="/">MUSICSUBJECT <span>× CALL ME DADDY</span></a><a href="/#homeSearchForm">Back to the site ↗</a></header>
@@ -44,6 +44,7 @@
     </section>
     <section class="window playlist-window" aria-labelledby="playlistHeading">
       <div class="titlebar"><strong id="playlistHeading">PLAYLIST</strong><span class="titlebar-line"></span><span id="trackCount" class="edition">LOADING…</span></div>
+      <div class="playlist-picker" role="group" aria-label="Choose music playlist"><button id="playlistCallMeDaddy" type="button" aria-pressed="true">CALL ME DADDY</button><button id="playlistStarMuff" type="button" aria-pressed="false">STARMUFF</button><button id="playlistAll" type="button" aria-pressed="false">ALL MUSIC</button></div>
       <div class="library-tools"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Search songs and versions" placeholder="Find a song, a remix, a mood…" autocomplete="off"><kbd>/</kbd></label><label class="version-toggle"><input id="versions" type="checkbox"> All mixes</label></div>
       <div class="list-heading" aria-hidden="true"><span>#</span><span>TRACK / MIX</span><span>TIME</span></div>
       <div class="track-list" id="trackList" aria-label="Songs"><p class="empty">Loading your music…</p></div>
@@ -66,7 +67,7 @@
   <script src="/persistent-site-browser.js"></script>
   <script src="/universal-player.js"></script>
   <script src="/continuous-playback.js?v=20261019-winhamp"></script>
-  <script src="/winhamp/model.js?v=20261019-1"></script>
-  <script src="/winhamp/player.js?v=20261019-1"></script>
+  <script src="/winhamp/model.js?v=20261019-starmuff-1"></script>
+  <script type="module" src="/winhamp/start.mjs?v=20261019-starmuff-1"></script>
 </body>
 </html>
