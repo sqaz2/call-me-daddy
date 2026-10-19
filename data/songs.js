@@ -18,7 +18,7 @@ window.CMD_SONGS = [
     "experience": "/her-story/",
     "shareUrl": "/her-story/?version=main",
     "kind": "horrorcore song",
-    "shareGenre": "hiphop",
+    "shareGenre": "other",
     "shareCategory": "music",
     "variants": [
       {
