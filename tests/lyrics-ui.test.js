@@ -26,9 +26,13 @@ test('song-lyrics entries expose lyrics + sunoUrl helpers',()=>{
   ids.forEach(id=>{
     const entry=window.CMD_SONG_LYRICS[id];
     assert.ok(entry&&typeof entry.lyrics==='string',`${id} missing lyrics`);
-    assert.ok(entry.sunoUrl&&entry.sunoUrl.includes('suno.com'),`${id} missing sunoUrl`);
+    if(entry.source==='artist-supplied'&&!entry.sunoUrl){
+      assert.equal(window.CMDSongLyrics.sunoUrl(id),'',`${id} must not invent a source link`);
+    }else{
+      assert.match(entry.sunoUrl||'',/^https:\/\/suno\.com\/(song|s)\//,`${id} missing valid sunoUrl`);
+    }
     assert.equal(window.CMDSongLyrics.lyrics(id),entry.lyrics);
-    assert.equal(window.CMDSongLyrics.sunoUrl(id),entry.sunoUrl);
+    assert.equal(window.CMDSongLyrics.sunoUrl(id),entry.sunoUrl||'');
     if(entry.lyrics.trim()&&entry.sunoUrl)withBoth+=1;
   });
   assert.ok(withBoth>=40,'expected most songs to have on-site lyrics and Suno links');

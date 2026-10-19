@@ -101,7 +101,10 @@ function validateManifest(manifest, relative) {
   }
   if (manifest.lyrics !== undefined) {
     if (!String(manifest.lyrics?.text || '').trim()) report(`${relative} lyrics.text must contain the exact released words`);
-    if (!/^https:\/\/suno\.com\/(song|s)\//.test(manifest.lyrics?.sunoUrl || '')) report(`${relative} lyrics.sunoUrl needs a Suno source`);
+    const sunoUrl = manifest.lyrics?.sunoUrl;
+    const artistSupplied = manifest.lyrics?.source === 'artist-supplied';
+    if (sunoUrl && !/^https:\/\/suno\.com\/(song|s)\//.test(sunoUrl)) report(`${relative} lyrics.sunoUrl needs a valid Suno source`);
+    if (!sunoUrl && !artistSupplied) report(`${relative} lyrics needs a Suno source or source: artist-supplied`);
   }
   requireLocalPage(song.experience, `${relative} song.experience`);
   requireLocalPage(song.shareUrl, `${relative} song.shareUrl`);
@@ -190,7 +193,7 @@ const updates = announcements.map(({ update: announcement }, index) => {
 const songsBody = releases.map(release => `${indentedJson(release.song)},`).join('\n');
 const lyricsBody = releases.filter(release => release.lyrics).map(release => {
   const entry = release.lyrics;
-  const value = { search: entry.text.replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim(), snippet: entry.snippet || '', lyrics: entry.text, sunoUrl: entry.sunoUrl, clipIds: entry.clipIds || [] };
+  const value = { search: entry.text.replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim(), snippet: entry.snippet || '', lyrics: entry.text, sunoUrl: entry.sunoUrl, clipIds: entry.clipIds || [], ...(entry.source === 'artist-supplied' ? { source: entry.source } : {}) };
   return `    ${JSON.stringify(release.song.id)}: ${JSON.stringify(value)},`;
 }).join('\n');
 const lyricsExpected = replaceBlock(lyricsBase, markers.lyrics, lyricsBody);

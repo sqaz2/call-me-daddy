@@ -1,6 +1,40 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "her-story",
+    "title": "Her Story",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-19",
+    "project": "",
+    "description": "A familiar laugh. A borrowed face. Something has come home. A remastered horrorcore story about an impostor, a wife who senses something wrong, and a voice that refuses to disappear.",
+    "aliases": [
+      "Her Story Remastered",
+      "Her-Story-Remastered"
+    ],
+    "audio": "/media/songs/2026/10/her-story/audio.mp3",
+    "cover": "/media/songs/2026/10/her-story/cover.png",
+    "experience": "/her-story/",
+    "shareUrl": "/her-story/?version=main",
+    "kind": "horrorcore song",
+    "shareGenre": "hiphop",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/10/her-story/audio.mp3",
+        "cover": "/media/songs/2026/10/her-story/cover.png",
+        "socialImage": "/media/songs/2026/10/her-story/cover.png",
+        "duration": 108.264,
+        "date": "2026-10-19",
+        "experience": "/her-story/?version=main",
+        "shareUrl": "/her-story/?version=main"
+      }
+    ]
+  },
+  {
     "id": "live-it-right",
     "title": "Live It Right",
     "artist": "MusicSubject × Call Me Daddy",

@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "her-story": {
+    "surprise": 70,
+    "laugh": 0,
+    "think": 75,
+    "level-up": 0,
+    "heavy": 100,
+    "old-files": 0
+  },
   "live-it-right": {
     "surprise": 80,
     "laugh": 0,
