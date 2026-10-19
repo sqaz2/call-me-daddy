@@ -59,7 +59,8 @@
     if(duration)duration.textContent=formatTime(track.duration);
     if(share){share.dataset.shareTitle=`${track.title} — ${track.variantLabel}`;share.dataset.shareUrl=new URL(`${song.experience}?version=${encodeURIComponent(track.variantId)}`,location.origin).href;share.dataset.shareText=`Listen to ${track.title} — ${track.variantLabel}.`}
     const words=byId('releaseLyrics'),lyricsLabel=byId('releaseLyricsLabel');
-    if(words&&words.dataset.version!==track.variantId){words.textContent=lyrics[track.variantId]||'';words.dataset.version=track.variantId;if(lyricsLabel)lyricsLabel.textContent=`${track.variantLabel} · lyrics`}
+    const lyricVersion=words?.dataset.lyricsVersion||track.variantId;
+    if(words&&words.dataset.version!==lyricVersion){words.textContent=lyrics[lyricVersion]||'';words.dataset.version=lyricVersion;if(lyricsLabel)lyricsLabel.textContent=`${variants.find(v=>v.id===lyricVersion)?.label||track.variantLabel} · lyrics`}
     document.querySelectorAll('[data-cut]').forEach(button=>{const active=button.dataset.cut===track.variantId;button.setAttribute('aria-pressed',String(active));const icon=button.querySelector('.cut-icon');if(icon)icon.textContent=active&&playing?'❚❚':'▶';});
     if(status){
       if(message)status.textContent=message;

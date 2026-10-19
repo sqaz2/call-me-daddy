@@ -102,6 +102,25 @@ test('numbers and version slots survive reorder, deletion, additions and default
   assert.throws(() => allocate([], { schemaVersion: 1, songs: [initial.songs[0], initial.songs[0]] }), /Duplicate/);
 });
 
+test('ordered release pages keep exact permanent links when an opening is added', () => {
+  const rows = data.rows.filter(row => row.songId === 'her-story');
+  assert.equal(rows.length, 2);
+  assert.deepEqual(rows.map(row => [row.number, row.slot, row.version, row.target]), [
+    [72, 1, 'main', '/her-story/?version=main'],
+    [72, 2, 'opening', '/her-story/?version=opening']
+  ]);
+  assert(rows.every(row => row.genre === 'other' && row.shareCategory === 'music'));
+  const song = loadCatalog().find(song => song.id === 'her-story');
+  assert.deepEqual(song.variants.map(variant => variant.id), ['opening', 'main']);
+  const context = vm.createContext({ window: { CMD_SONGS: [song] }, location: { search: '' }, URLSearchParams });
+  vm.runInContext(fs.readFileSync(new URL('../catalog-cycle.js', import.meta.url), 'utf8'), context);
+  for (const seed of ['one', 'two', 'three']) {
+    const queue = context.window.CMDCatalogCycle.build([song], { seed, ignoreHistory: true });
+    assert.equal(queue[0].variantId, 'main', 'automatic music rotation keeps the remaster');
+    assert.equal(queue[0].audio, song.audio);
+  }
+});
+
 test('genre sharing respects the recording, while uncertain genres stay universal', async () => {
   const links = await browser();
   assert.equal(links.forTrack({ songId: 'survival-mode', variantId: 'suno-v6-remix' }), 'https://hiphop.bid/1');

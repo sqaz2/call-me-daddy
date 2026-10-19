@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
- 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://suno.fyi/72'},
+ 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://suno.fyi/72/2'},
  'this-is-my-story':{manifest:'2026-10-14-this-is-my-story',query:'With rhythm and rhyme',note:'#song-story',copy:'The file was called tims.wav',short:'https://suno.fyi/69'},
  'come-sit-here-with-me':{manifest:'2026-10-14-come-sit-here-with-me',query:'make some room for you',note:'#song-story',copy:'A personal song about continuing to create through everything',short:'https://suno.fyi/68'},
  'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
@@ -55,7 +55,11 @@ const links=require('../data/song-links.json');
    assert(await page.locator('.ending-copy').isVisible());
    assert((await page.locator('.ending-copy').innerText()).includes('The voice inside warns her away.'));
    await page.locator('.ending-reveal summary').click();
-   await page.locator('[data-cut="main"]').click();await playing();await assertIdentity();
+   const remaster=song.variants.find(v=>v.id==='main');
+   assert.equal(await page.locator('video').count(),0);
+   assert.equal(await page.locator('.screenplay-pages .script-dialogue').count(),16);
+   assert((await page.locator('.screenplay-pages').innerText()).includes('CUT TO BLACK ON “NEAR.”'));
+   await page.locator('[data-cut="main"]').click();await playing(remaster);await assertIdentity(remaster);await assertShare(remaster);
    await page.locator('.cmd-universal-toggle').click();
    await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
    check('The ending stays hidden until opened and the main play button starts the exact remaster');
@@ -99,7 +103,7 @@ const links=require('../data/song-links.json');
   await page.locator('#releaseLyricsLabel').click();await page.setViewportSize({width:390,height:844});
   await page.locator('#releasePlay').tap();await playing();
   await assertIdentity();
-  check('First artwork tap plays the uploaded MP3 with matching dock and phone metadata');
+  check('First artwork tap plays the selected recording with matching dock and phone metadata');
   await assertShare();check('Facebook copy fallback uses the requested domain and exact recording');
   if(song.variants.length>1){
    for(const target of [...song.variants.slice(1),variant]){
@@ -143,7 +147,7 @@ const links=require('../data/song-links.json');
    }
    return build().tracks[0];
   },{now:Date.parse(update.published),id:song.id});
-  assert.equal(newest.songId,song.id);assert.equal(newest.variantId,variant.id);check('What’s New links the page and queues this recording first at publication');
+  assert.equal(newest.songId,song.id);assert.equal(newest.variantId,update.variantId||variant.id);check('What’s New links the page and queues this recording first at publication');
   assert.deepEqual(errors,[]);check('No browser JavaScript errors');
  }finally{fs.writeFileSync(out+'/report.json',JSON.stringify({checks,errors},null,2));await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
