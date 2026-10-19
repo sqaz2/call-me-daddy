@@ -65,6 +65,8 @@ A song does not need to be re-uploaded as an MP3 if it already lives on YouTube.
 
 ## Every song page gets sharing
 
+First write reviewed story/joke-led share copy in `content/song-share-copy.json` as described in RELEASE-WORKFLOW.md. The shared controls automatically use that copy for the exact song/version, including link previews.
+
 Any dedicated song or release page must include the reusable share controls so visitors can send it directly to Facebook, X, WhatsApp, Bluesky, Reddit, Telegram, copy the link, or use their device share sheet.
 
 In the page `<head>` include:

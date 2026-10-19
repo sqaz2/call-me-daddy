@@ -42,7 +42,7 @@ test('installation manifest launches the music site with real square PNG icons',
 test('existing page share scripts refresh without changing their other attributes or song data',()=>{
   const input='<html><head></head><body><script src="/share.js?v=old" data-short-links-only defer></script><a href="/music/?song=keep-moving&version=trap-mix">Song</a></body></html>';
   const html=addAppShell(input);
-  assert.match(html,/src="\/share.js\?v=20260930-facebook-1" data-short-links-only defer/);
+  assert.match(html,/src="\/share.js\?v=20261019-story-share-1" data-short-links-only defer/);
   assert.match(html,/song=keep-moving&version=trap-mix/);assert.equal(addAppShell(html),html);
 });
 test('share code revalidates on subsequent page loads',async()=>{

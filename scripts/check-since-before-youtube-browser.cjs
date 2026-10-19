@@ -37,7 +37,7 @@ const links=require('../data/song-links.json');
   const row=links.rows.find(r=>r.songId===song.id&&r.version===target.id);
   const expected=`https://${links.domains[row.shareCategory==='jokes'?'jokes':row.genre]}/${row.number}${row.slot===1?'':`/${row.slot}`}`;
   if(target.id===variant.id)assert.equal(expected,config.short);
-  assert.equal(await page.locator('.cmd-share-link').inputValue(),expected);assert.equal(await page.evaluate(()=>window.__copies.at(-1)),expected);
+  assert.equal(await page.locator('.cmd-share-link').inputValue(),expected);assert.equal(await page.evaluate(()=>window.__copies.at(-1)),row.share.text+'\n'+expected);
   await page.getByRole('button',{name:'Done',exact:true}).click();
  };
  try{

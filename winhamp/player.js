@@ -187,9 +187,11 @@
   async function share(track) {
     const sharedCollection = track && collection !== 'all' ? track.playlist || 'callmedaddy' : collection;
     const url = model.shareUrl(track, location.origin, sharedCollection), data = { title: track ? `${track.title} — WinHamp` : `WinHamp — ${collection === 'starmuff' ? 'StarMuff playlist' : 'MusicSubject × Call Me Daddy'}`, text: track ? `Give ${track.title} a listen in WinHamp.` : collection === 'starmuff' ? 'The original StarMuff game soundtrack. Press play.' : 'Old-school player. New music.', url };
+    const copy=track&&window.CMDShortLinks?.rowForTrack(track)?.share;
+    if(copy){data.title=copy.title;data.text=copy.text;}
     try {
       if (navigator.share) { await navigator.share(data); return; }
-      await navigator.clipboard.writeText(url); announce('Link copied. Pass it around.');
+      await navigator.clipboard.writeText([data.text,url].filter(Boolean).join('\n')); announce('Post copied. Pass it around.');
     } catch (error) {
       if (error.name === 'AbortError') return;
       // Keep a copyable link available on browsers without clipboard permission.

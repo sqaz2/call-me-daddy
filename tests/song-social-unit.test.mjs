@@ -27,7 +27,8 @@ test('social artwork overrides preserve playback covers and other recordings kee
     id: 'legacy-artwork-fixture', title: 'Legacy artwork fixture', audio: '/legacy.mp3', cover: '/legacy-portrait.jpg'
   }];
   const playbackCatalog = structuredClone(catalog);
-  const built = buildSongSocial({ catalog, write: false });
+  const copies = Object.fromEntries(catalog.map(song => [song.id, {headline: 'The story behind the artwork', text: 'Open the page.', description: 'A fixture story.'}]));
+  const built = buildSongSocial({ catalog, copies, write: false });
   const preview = version => resolveSocial(`/music/?song=social-artwork-fixture&version=${version}`, built);
 
   assert.equal(preview('main').image, ORIGIN + '/main-landscape.jpg');

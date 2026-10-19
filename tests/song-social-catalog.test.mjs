@@ -24,7 +24,9 @@ test('Animal v6 is lion artwork; all three older Animal recordings remain distin
   const original = data.pages['/updates/release-make-me-an-animal/'];
   assert.equal(original.version, 'edm-switch-up-mix');
   assert.equal(original.image, song.versions['edm-switch-up-mix'].image);
-  assert.match(original.title, /2025 Song Family/);
+  assert.equal(original.title, song.versions['edm-switch-up-mix'].title);
+  assert.match(original.description, /began in 2025/);
+  assert.doesNotMatch(original.description, /ME AN/);
   for (const [id, earlier] of Object.entries(song.versions)) if (id !== 'suno-v6') assert.notEqual(earlier.image, record.image);
 });
 test('every numbered recording with artwork has correct raw HTML, canonical and favicon', async () => {
@@ -33,6 +35,8 @@ test('every numbered recording with artwork has correct raw HTML, canonical and 
     const url = `${ORIGIN}/music/?song=${encodeURIComponent(row.songId)}&version=${encodeURIComponent(row.version)}&share=1`;
     const record = resolveSocial(url, data);
     assert.ok(record, `${row.songId}/${row.version} metadata missing`);
+    assert.equal(record.title, row.share.title);
+    assert.equal(record.description, row.share.description);
     if (!record.image) continue;
     const response = await decorateSongHTML(new Request(url, { headers: { 'user-agent': 'facebookexternalhit/1.1' } }), source(music), { ASSETS: binding });
     const html = await response.text(), parsed = readHead(html);

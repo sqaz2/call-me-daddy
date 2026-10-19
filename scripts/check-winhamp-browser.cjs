@@ -28,6 +28,7 @@ const {chromium}=require('playwright');
   await page.locator('#shareSong').click();
   const share=new URL(await page.evaluate(()=>window.__winhampShares.at(-1).url));
   assert.equal(share.pathname,'/winhamp/');assert.equal(share.searchParams.get('version'),'gospel');
+  assert.equal(await page.evaluate(()=>window.__winhampShares.at(-1).text),require('../data/song-links.json').rows.find(row=>row.songId==='this-is-my-story'&&row.version==='gospel').share.text);
   await page.locator('#next').click();
   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia()?.currentTime>.2);
   assert.equal(new URL(page.url()).pathname,'/winhamp/','Next does not open the song story');

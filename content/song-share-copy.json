@@ -1,0 +1,706 @@
+{
+  "schemaVersion": 1,
+  "songs": {
+    "power-moves-only": {
+      "headline": "Waiting for the perfect mood can become a full-time job.",
+      "text": "Waiting for the perfect mood can become a full-time job.\n\nPower Moves Only starts at the desk, with the pen, and the next decision. Open it when you want a push toward the thing you keep circling.",
+      "description": "The pen, the desk, the next decision. Power Moves Only turns the urge to stop waiting into a recording you can open right now.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-power-moves-only/index.html",
+        "media/songs/2026/08/power-moves-only/main.mp3"
+      ]
+    },
+    "pull-me-like-that": {
+      "headline": "The late-night text is doing a lot of work.",
+      "text": "The late-night text is doing a lot of work. So is that glance.\n\nPull Me Like That stretches out the spark between confidence and nerves, with the rhythm handling the pickup line. Open the chopped version and step into the tension.",
+      "description": "Late texts, lingering looks, and letting the rhythm do the flirting. Open the surviving chopped version of Pull Me Like That.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/archive-pull-me-like-that/index.html",
+        "media/songs/2026/08/pull-me-like-that/may-2026-chopped.mp3"
+      ]
+    },
+    "fractured-face": {
+      "headline": "What if the mask has started to feel like your face?",
+      "text": "How do you let someone see you when the mask has started to feel like your face?\n\nFractured Face follows that fear: hiding the hurt, wanting love, and not knowing how to take the mask off. Open the May 2026 remaster.",
+      "description": "Hiding the hurt can also hide the person who wants to be loved. Step into the fear behind Fractured Face, preserved here in its May 2026 remaster.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-fractured-face/index.html",
+        "media/songs/2026/08/fractured-face/may-2026-remastered.mp3"
+      ]
+    },
+    "cloudlife": {
+      "headline": "A cloud gives itself away. We call it bad weather.",
+      "text": "A cloud spends its whole life giving itself away. Then we call it bad weather.\n\nA rainy stretch in Red Deer became Cloudlife—a little tale about carrying too much, letting go, and changing form. Open it and follow the water.",
+      "description": "A rainy stretch in Red Deer became a cloud’s tale of giving, letting go, and returning in another form. Follow Cloudlife through the sky.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-cloudlife/index.html",
+        "media/songs/2026/08/cloudlife/life-of-a-cloud.mp3",
+        "media/songs/2026/08/cloudlife/r-and-b-mix.mp3"
+      ]
+    },
+    "her-perfume-rides-shotgun": {
+      "headline": "The tank is nearly empty. The passenger seat feels like home.",
+      "text": "The tank is nearly empty. The passenger seat still feels like home.\n\nHer Perfume Rides Shotgun puts the big promises in small things: dawn coffee, shared miles, somebody staying. Open it and take the drive.",
+      "description": "Dawn coffee, shared miles, and a passenger seat that feels like home. Take the drive inside Her Perfume Rides Shotgun.",
+      "sources": [
+        "data/song-lyrics.js",
+        "data/2026-08-29-uploads.js",
+        "media/songs/2026/08/her-perfume-rides-shotgun/power-ballad-dubstep-drop.mp3",
+        "media/songs/2026/08/her-perfume-rides-shotgun/v2-remastered.mp3"
+      ]
+    },
+    "keep-moving": {
+      "headline": "What if the person you were trying to become never arrives?",
+      "text": "Everyone says keep going. Nobody tells you what to do when you no longer believe in the person you were trying to become.\n\nKeep Moving sits inside that question—and keeps going anyway. Open it if that sounds familiar.",
+      "description": "The plan keeps changing. The promised future self feels further away. Keep Moving gives that uncertainty a voice without pretending the route is clear.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-keep-moving/index.html",
+        "media/songs/2026/08/keep-moving/v2.mp3",
+        "media/songs/2026/08/keep-moving/trap-mix.mp3"
+      ]
+    },
+    "thirty-six": {
+      "headline": "How many versions of yourself can fit into one life?",
+      "text": "Getting good at something takes years. You still only get one lifetime.\n\nThirty Six turns a chess-game train of thought into a harder question: how many versions of yourself can you actually live? Open it. Bring the plan you had at twenty.",
+      "description": "Chess, music, work, love—and only one lifetime. Thirty Six asks what happens when every possible version of yourself needs the same years.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-thirty-six/index.html",
+        "media/songs/2026/08/thirty-six/main.mp3"
+      ]
+    },
+    "wild-ways": {
+      "headline": "The production changed. The invitation to be yourself stayed.",
+      "text": "A keyboard practice from Nova Scotia in 2019 became three versions of the same song.\n\nThe point survived every rebuild: you shouldn’t have to edit yourself to be loved. Open Wild Ways and follow the old voice into its new sounds.",
+      "description": "A 2019 Nova Scotia keyboard practice became an AI-built version using my voice and two dance remixes. Follow Wild Ways from its source into its new sounds.",
+      "sources": [
+        "archive/wild-ways/index.html",
+        "data/song-lyrics.js",
+        "media/archive/wild-ways/2026/ai-voice-version.mp3",
+        "media/archive/wild-ways/2026/edm-remix.mp3",
+        "media/archive/wild-ways/2026/crowd-drop-remix.mp3"
+      ]
+    },
+    "what-is-my-opponent-threatening-right-now": {
+      "headline": "Before you make your brilliant move, is your queen about to die?",
+      "text": "Before you make your brilliant move, is your queen about to die?\n\nI turned the question every impulsive chess player skips into seven minutes of reminders. Open Can I Get Mated? before your next masterpiece becomes their free rook.",
+      "description": "The blunder check got a soundtrack: look at their threats before touching a piece. Open Can I Get Mated? and give your next move a second thought.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-what-is-my-opponent-threatening-right-now/index.html",
+        "media/songs/2026/08/what-is-my-opponent-threatening-right-now/can-i-get-mated.mp3"
+      ]
+    },
+    "september-26th-heartbreak": {
+      "headline": "The love song isn’t finished. She’s already gone.",
+      "text": "The love song isn’t finished. She’s already gone.\n\nSeptember 26th Heartbreak began as a 2019 piano-and-voice rehearsal in Nova Scotia. Open the 2026 remix of a love song that had to change its plans.",
+      "description": "A love song changes course before it is even finished. Open September 26th Heartbreak, rebuilt from a dated 2019 Nova Scotia piano-and-voice rehearsal.",
+      "sources": [
+        "data/song-lyrics.js",
+        "archive/2019-heartbreak-rehearsals/index.html",
+        "media/archive/2019-heartbreak-rehearsals/september-26th-heartbreak-2026-remix.mp3"
+      ]
+    },
+    "heartbreak-you-water-me": {
+      "headline": "Would you choose love if the hurt came in the same package?",
+      "text": "Would you choose love if the hurt came in the same package?\n\nHeartbreak, Heartbreak, You Water Me says yes, even with the loss still fresh. Open the 2026 remix of a piano-and-voice rehearsal made in Nova Scotia before the move west.",
+      "description": "A heartbreak song that still chooses love. Open the 2026 remix of a Nova Scotia piano-and-voice rehearsal from before the move to Alberta.",
+      "sources": [
+        "data/song-lyrics.js",
+        "archive/2019-heartbreak-rehearsals/index.html",
+        "media/archive/2019-heartbreak-rehearsals/heartbreak-you-water-me-2026-remix.mp3"
+      ]
+    },
+    "concrete-under-evergreens": {
+      "headline": "Two wheelbarrows of concrete. Naturally, a 5:44 ballad.",
+      "text": "Two wheelbarrows of concrete. One community post. Naturally, I made a 5:44 ballad.\n\nThe trees deserved care. The situation apparently also required a chorus. Open the story, read the lyrics, and consider the terrifying possibility of wheelbarrow number three.",
+      "description": "Two small wheelbarrows at Big Dipper Park inspired one very dramatic musical response. Read the story and lyrics of Concrete Under Evergreens.",
+      "sources": [
+        "concrete-under-evergreens/index.html",
+        "media/songs/2026/08/concrete-under-evergreens/audio.mp3"
+      ]
+    },
+    "anti-generative-ai-diss": {
+      "headline": "A flyer-app recommendation became a diss track and a counter-group.",
+      "text": "Someone wanted a flyer app with no AI. I somehow ended up with a diss track and a group called Artists Against Artists Against Generative AI.\n\nA very normal response to a software recommendation. Open the backstory and meet the resistance to the resistance.",
+      "description": "One request for flyer software without AI became a dubstep diss and a deliberately ridiculous counter-group. Open the origin story.",
+      "sources": [
+        "anti-generative-ai-diss/index.html",
+        "data/song-lyrics.js",
+        "media/songs/2026/08/anti-generative-ai-diss/audio.mp3"
+      ]
+    },
+    "where-the-teeth-are-kept": {
+      "headline": "The danger doesn’t introduce itself as danger.",
+      "text": "Little Red Riding Hood follows a warm voice off the safe path. The danger doesn’t introduce itself as danger.\n\nWhere the Teeth Are Kept turns the fairytale into an adult warning about attraction. Open the recording and follow the turn into the woods.",
+      "description": "A warm voice draws Little Red Riding Hood off the safe path. Open Where the Teeth Are Kept, an adult fairytale reimagining made with Google Gemini.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-where-the-teeth-are-kept/index.html"
+      ]
+    },
+    "one-million-dollars": {
+      "headline": "One million dollars. Evil laugh sold separately.",
+      "text": "One million dollars. Evil laugh sold separately.\n\nOne Million Dollars takes the ridiculous confidence of Dr. Evil’s money demand and gives it a bass-heavy outing. Open the satire and practise your completely reasonable ransom voice.",
+      "description": "Dr. Evil-style villain confidence meets a very questionable money demand. Open the absurd dubstep satire of One Million Dollars.",
+      "sources": [
+        "updates/release-one-million-dollars/index.html",
+        "data/2026-08-25-uploads.js"
+      ]
+    },
+    "where-the-bad-girls-at": {
+      "headline": "The boots are stomping. Nobody asked permission.",
+      "text": "The boots are stomping, the barstools are falling, and nobody asked permission.\n\nWhere the Bad Girls At? puts the same swagger in two different voices. Open this version and see what changes when the singer does.",
+      "description": "Concrete Heels and Bad Girls at War put the same writing in two different voices. Open the version you were sent and step into the club.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-where-the-bad-girls-at/index.html"
+      ],
+      "variants": {
+        "concrete-heels-female": {
+          "text": "The boots are stomping, the barstools are falling, and nobody asked permission.\n\nConcrete Heels puts the bad-girl swagger in a female chant. Open this take on Where the Bad Girls At? and meet the ones still dancing after the quiet crowd leaves.",
+          "description": "The female-chant Concrete Heels version of Where the Bad Girls At? Boots, falling barstools, and the crowd still dancing after midnight."
+        },
+        "bad-girls-at-war-male": {
+          "text": "Same swagger. A different voice at the microphone.\n\nBad Girls at War puts a male vocal on the writing behind Concrete Heels, changing the angle of the invitation. Open this version of Where the Bad Girls At? and step into the club.",
+          "description": "Bad Girls at War puts a male vocal on the writing behind Concrete Heels. Open this version of Where the Bad Girls At? and hear the shift in perspective."
+        }
+      }
+    },
+    "the-loudest-one-in-my-head": {
+      "headline": "An unanswered message becomes a whole case against yourself.",
+      "text": "An unanswered message becomes a whole case against yourself.\n\nThe Loudest One in My Head follows that lonely spiral—and the possibility that silence isn’t proof nobody wants you. Open it if you’ve ever reread a chat looking for what you did wrong.",
+      "description": "When every unanswered message feels like evidence against you, the loudest thought may still be a thought. Open The Loudest One in My Head.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-the-loudest-one-in-my-head/index.html"
+      ]
+    },
+    "mind-at-war": {
+      "headline": "What if the fight is happening inside your own head?",
+      "text": "What does it sound like when the fight is happening inside your own head?\n\nMind at War moves through fear, distance from yourself, and the struggle to find calm. Open the recording for the moment that fight finally gives way.",
+      "description": "Fear, distance from yourself, and the struggle to find calm. Open Mind at War for a fight that happens on the inside.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-mind-at-war/index.html"
+      ]
+    },
+    "ashes-in-eastwood": {
+      "headline": "One burned car. One spectacularly bad fictional explanation.",
+      "text": "A burned car in Red Deer needed an explanation. I supplied a spectacularly bad fictional one.\n\nIt involves a wife, her sister, and a man with absolutely no survival instincts. Open Ashes in Eastwood for the consequences. Bring marshmallows.",
+      "description": "A real burned car sparked a deliberately trashy fictional disaster involving a wife, her sister, and a terrible decision. Open Ashes in Eastwood.",
+      "sources": [
+        "updates/release-ashes-in-eastwood/index.html",
+        "data/2026-08-25-uploads.js"
+      ]
+    },
+    "shooting-star": {
+      "headline": "Getting the number was the easy part.",
+      "text": "Getting the number was the easy part. Getting more than a heart and a hello was another matter.\n\nShooting Star came out of heartbreak in Nova Scotia in 2019, before the move to Edmonton. Open the recording from before those 4,000 kilometres.",
+      "description": "A number, a heart, a hello—and wanting more. Open Shooting Star, written in Nova Scotia before the 2019 move roughly 4,000 km west to Edmonton.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/archive-shooting-star/index.html"
+      ]
+    },
+    "where-monsters-are": {
+      "headline": "The monster finds a castle. Someone inside understands.",
+      "text": "The monster finds a ruined castle. The woman inside knows a thing or two about hiding the parts people fear.\n\nWhere Monsters Are is a fairytale about being seen—and staying after you see. Open the recording and step into their torchlight.",
+      "description": "A wandering monster and a guarded maiden find somewhere they can be seen. Step into the ruined castle of Where Monsters Are.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-where-monsters-are/index.html",
+        "updates/where-monsters-are-monster-and-maiden/index.html",
+        "updates/where-monsters-are-monster-and-maiden-alt/index.html",
+        "media/songs/2026/08/where-monsters-are/monster-and-maiden.mp3",
+        "media/songs/2026/08/where-monsters-are/monster-and-maiden-alt.mp3"
+      ]
+    },
+    "hard-earned-light": {
+      "headline": "Some mornings, being here is already the hard part.",
+      "text": "Some mornings, being here is already the hard part.\n\nHard-Earned Light starts with the nights that make you question your worth and reaches for a reason to keep building. Open it when you want that struggle given a voice.",
+      "description": "The nights that make you question your worth, and the effort of reaching another morning. Open Hard-Earned Light for words about keeping going.",
+      "sources": [
+        "updates/release-hard-earned-light/index.html",
+        "data/2026-08-25-uploads.js"
+      ]
+    },
+    "survival-mode": {
+      "headline": "Surviving takes all day. When do you get to build a life?",
+      "text": "Surviving takes all day. When do you get to build a life?\n\nSurvival Mode comes from working, making things, and trying to turn the van into a chapter instead of the ending. Open it for words written while the way forward was still being worked out.",
+      "description": "The van, the bills, the work, and still wanting more from life. Survival Mode was made inside the struggle, while the way forward was still being built.",
+      "sources": [
+        "still-building/index.html",
+        "data/song-lyrics.js",
+        "media/songs/2026/09/survival-mode/suno-v6-remix.mp3"
+      ]
+    },
+    "the-tune-of-magical-song": {
+      "headline": "I recorded this more than a decade ago. The questions stayed.",
+      "text": "I recorded this more than a decade ago. The voice is still trying to figure out where the old self went—and how to feel close to somebody again.\n\nOpen The Tune of Magical Song, brought back as the Deep Dark Dubstep Drop remaster.",
+      "description": "An old recording asks where the old self went and reaches for connection. Open The Tune of Magical Song in its Deep Dark Dubstep Drop remaster.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-the-tune-of-magical-song/index.html"
+      ]
+    },
+    "side-chick-finder": {
+      "headline": "She went looking for the side chick. She found a community resource.",
+      "text": "She went looking for the side chick. She found a community resource.\n\nThe group chat has receipts, his mother is about to hear about it, and exclusivity has left the building. Open Side Chick Finder and meet the boyfriend everybody apparently shares.",
+      "description": "The side-chick search uncovers a whole-town situation. Open Side Chick Finder and meet the community boyfriend. Somebody should probably call his mother.",
+      "sources": [
+        "data/song-lyrics.js",
+        "updates/release-side-chick-finder/index.html"
+      ]
+    },
+    "one-brick": {
+      "headline": "What if they see the blueprint before the house is done?",
+      "text": "“I'm afraid you'll see the blueprint / Before the house is done.”\n\nOne Brick puts words to wanting someone close while you're still building a life you could share.\n\nOpen One Brick and spend a moment with that thought.",
+      "description": "Wanting someone close while you're still building a life you could share. One Brick asks what happens when they see the blueprint before the house is done.",
+      "sources": [
+        "data/song-lyrics.js",
+        "data/2026-08-25-uploads.js"
+      ]
+    },
+    "big-dick-willy": {
+      "headline": "AI asked my name. That was its first mistake.",
+      "text": "AI asked my name. I said “Big Dick Willy.”\n\nIt took me seriously. That was its first mistake.\n\nCome meet Willy—the backstory, the videos, and the rogue Kleenex.",
+      "description": "A picture prompt asked for my name. I typed “Big Dick Willy.” Meet the resulting country chaos, the hands-on mix rebuild, and one rogue Kleenex.",
+      "sources": [
+        "big-dick-willy/index.html",
+        "content/releases/2026-10-19-big-dick-willy.json"
+      ]
+    },
+    "her-story": {
+      "headline": "It learned her laugh. Then it went home to her wife.",
+      "text": "It learned her laugh from the clips on her phone.\n\nThen it went home to her wife.\n\nStep inside Her Story. There’s a short horror audiobook read by me.",
+      "description": "A familiar laugh. A borrowed face. Her wife is starting to notice what it got wrong. Step inside Her Story, with an optional horror audiobook read by me.",
+      "sources": [
+        "her-story/index.html",
+        "content/releases/2026-10-19-her-story.json"
+      ]
+    },
+    "live-it-right": {
+      "headline": "I spent fifteen years carrying a song about waiting for permission.",
+      "text": "I carried this hook unfinished for over fifteen years. AI helped me bring it to life in one day.\n\nThe strange part? It's about waiting for somebody else to tell you how to live.\n\nRead the story behind Live It Right—and the question I finally finished asking.",
+      "description": "Over fifteen years unfinished. One day to bring it to life with AI. Read how a song about waiting for permission finally got made.",
+      "sources": [
+        "live-it-right/index.html"
+      ]
+    },
+    "sqaz-kill-you": {
+      "headline": "I deleted the song. My friends helped it survive.",
+      "text": "I recorded Kill You at seventeen with a broken USB microphone. Later, I deleted it because I didn't want that identity following me.\n\nFriends had shared the file and remembered the words.\n\nRead the Sqaz story: the 2007 recording, the people who kept it around, and its return in 2026.",
+      "description": "A broken microphone, a high-school recording, and friends who remembered the words. Read the story behind Sqaz's Kill You and its 2026 return.",
+      "sources": [
+        "sqaz/index.html"
+      ]
+    },
+    "this-is-my-story": {
+      "headline": "The sent folder kept a song for sixteen years.",
+      "text": "An email I sent in 2010 still had my voice attached.\n\nSixteen years later, I found it again and used AI to bring that old recording back.\n\nRead how This Is My Story survived in my sent folder.",
+      "description": "A 2010 email still had tims.wav attached. Sixteen years later, that rough recording became two new AI remixes. Read how This Is My Story came back.",
+      "sources": [
+        "this-is-my-story/index.html",
+        "content/releases/2026-10-14-this-is-my-story.json"
+      ]
+    },
+    "come-sit-here-with-me": {
+      "headline": "I'd like to hear about your morning, even if nothing happened.",
+      "text": "Another page. Another song. The evening's gone.\n\nSometimes what I want most is someone to tell me about their morning—even if nothing happened.\n\nRead Come Sit Here With Me. It's about making room for someone while there's still so much left to make.",
+      "description": "Putting the phones down. Letting unfinished things wait. Read the words behind Come Sit Here With Me, about making room for someone close.",
+      "sources": [
+        "come-sit-here-with-me/index.html"
+      ]
+    },
+    "keep-building-your-future": {
+      "headline": "He's been fighting with his printer since 2009.",
+      "text": "Grandpa says AI is killing creativity. He's been fighting with his printer since 2009.\n\nThat joke became a reminder: you don't need everyone to understand what you're making before you begin.\n\nRead Keep Building Your Future. Grandpa gets an update at the end.",
+      "description": "A printer joke became a reminder to make room for your dreams. Read Keep Building Your Future—and find out whether Grandpa finally gets it printing.",
+      "sources": [
+        "keep-building-your-future/index.html"
+      ]
+    },
+    "turning-invisible": {
+      "headline": "I just remixed an email.",
+      "text": "I asked ChatGPT to find my old poetry. It found lyrics in a 2015 email attachment.\n\nThen I paired them with an instrumental I made in 2009—for a completely different song.\n\nRead how those two pieces of my past became Turning Invisible.",
+      "description": "Words recovered from a 2015 email. An instrumental from a different song in 2009. Read how two pieces of the past became Turning Invisible.",
+      "sources": [
+        "turning-invisible/index.html"
+      ]
+    },
+    "running-a-monopoly": {
+      "headline": "Five dollars built the empire. My stomach wants a hostile takeover.",
+      "text": "I built a breakfast empire for five dollars. My stomach immediately demanded a hostile takeover.\n\nOne van. A Monopoly app. An urgent need to diversify into bathrooms.\n\nOpen Running a Monopoly and read the parking-lot incident report.",
+      "description": "A five-dollar McDonald's deal, a Monopoly app, and a stomach calling an emergency meeting. Read the Running a Monopoly incident report.",
+      "sources": [
+        "running-a-monopoly/index.html"
+      ]
+    },
+    "times-are-coming": {
+      "headline": "“How've you been? I'm doing better today.”",
+      "text": "“How've you been? I'm doing better today.”\n\nSometimes that's enough of a place to start. Colder weather, life in the van, and the thought that something good could still be coming.\n\nRead the words behind Times Are Coming, and how I finished it in the DAW I built.",
+      "description": "Colder days and a little hope. Read the words behind Times Are Coming and how I mixed and mastered it in the DAW I built.",
+      "sources": [
+        "times-are-coming/index.html"
+      ]
+    },
+    "since-before-youtube": {
+      "headline": "The drive-through was so slow I built the release page in it.",
+      "text": "“You finding me now don’t mean I just got here.”\n\nI built this release page while waiting in the McDonald’s drive-through. That’s how slow the line was moving.\n\nOpen since before YouTube for the words—and the note from the queue.",
+      "description": "“It ain’t brand new—it’s just new to you.” Read the lyrics and the release note written while the McDonald's drive-through barely moved.",
+      "sources": [
+        "since-before-youtube/index.html"
+      ]
+    },
+    "8-walmart-parking-lot": {
+      "headline": "Everybody's starting their day. Mine never stopped.",
+      "text": "8:12 a.m. Everybody's heading to work. I've been up all night building my own music software.\n\nBurger King breakfast. A van for a bedroom, studio and office. A Walmart parking lot.\n\nOpen 8 and read the morning as it happened, one timestamp at a time.",
+      "description": "An all-night software build, Burger King breakfast, and a van in a Walmart parking lot. Read the morning behind 8, one timestamp at a time.",
+      "sources": [
+        "8-walmart-parking-lot/index.html"
+      ]
+    },
+    "nobody-wants-to-listen": {
+      "headline": "What do you make when it feels like nobody's listening?",
+      "text": "What do you make when it feels like nobody's listening?\n\nApparently, something about nobody listening. The frustration became the hook.\n\nOpen Nobody Wants to Listen for the words, the comeback note, and the five recordings that grew around that thought.",
+      "description": "Feeling unheard became the hook. Read the comeback note and explore the five recordings of Nobody Wants to Listen, including Music with the Devil.",
+      "sources": [
+        "nobody-wants-to-listen/index.html"
+      ]
+    },
+    "2010-wows": {
+      "headline": "A song from 2010 came back from memory. Then I reversed its mood.",
+      "text": "A song I wrote in 2010 came back from long-term memory. I rebuilt it in 2026—then asked Suno to turn the same negative song into something positive.\n\nThe moment it resurfaced is on video.\n\nOpen 2010 WOWS and follow the writing through its different lives.",
+      "description": "A 2010 song resurfaced from memory, became new recordings, and even got a positive rewrite. Watch the source moment and follow its history.",
+      "sources": [
+        "archive/2010-wows/index.html"
+      ]
+    },
+    "the-games-she-hates": {
+      "headline": "Fourteen years later, the poem kept its words and found a voice.",
+      "text": "I wrote The Games She Hates on September 25, 2012. Fourteen years to the day later, it became music.\n\nThe original words stayed intact: hurt, mixed signals, and the wish to stop playing games.\n\nRead the poem and see what fourteen years changed around it.",
+      "description": "A poem written September 25, 2012 became music fourteen years to the day later. Read the original words and explore its three recordings.",
+      "sources": [
+        "the-games-she-hates/index.html",
+        "the-games-she-hates/poem.txt"
+      ],
+      "variants": {
+        "end-this-cycle": {
+          "headline": "Two sets of lyrics ended up in one recording.",
+          "text": "Two sets of lyrics ended up in one recording. I don't think they worked as one song, but there could be two songs in there.\n\nI kept the experiment.\n\nOpen End This Cycle, the explicit bonus beside The Games She Hates, and hear where the writing crossed over.",
+          "description": "An experiment that mixed two sets of lyrics into one recording. Open End This Cycle, the explicit bonus beside the 2012 poem The Games She Hates.",
+          "sources": [
+            "the-games-she-hates/index.html"
+          ]
+        }
+      }
+    },
+    "make-me-an-animal": {
+      "headline": "What happens to a song when the tools that made it keep changing?",
+      "text": "What happens to a song when the tools that made it keep changing?\n\nMake Me an Animal began in 2025. Its earlier forms are still here beside the newer v6 recording.\n\nOpen the page and follow the Animal through four versions.",
+      "description": "Make Me an Animal began in 2025. Explore four recordings that keep its earlier forms alongside the new Suno v6 version.",
+      "sources": [
+        "make-me-an-animal-v6/index.html",
+        "updates/release-make-me-an-animal/index.html",
+        "content/sources/make-me-an-animal-v6.json"
+      ],
+      "variants": {
+        "suno-v6": {
+          "headline": "Look again at “ME AN” on the cover.",
+          "text": "Look again at “ME AN” on the cover.\n\nThe lion isn't the only thing looking mean.\n\nStep into Make Me an Animal v6 for the artwork in motion, with the three earlier Animal recordings kept on the page.",
+          "description": "“ME AN” reads another way on this snarling lion cover. Step inside Make Me an Animal v6 for the moving artwork and the earlier Animal recordings.",
+          "sources": [
+            "make-me-an-animal-v6/index.html"
+          ]
+        }
+      }
+    },
+    "cheap-to-inform": {
+      "headline": "Who buys a ticket when we sit and fix it?",
+      "text": "A parent. An adult child. A crowd cheering on each side.\n\nIn this imagined movie scene, the argument changes when they start talking to their audiences instead of each other.\n\nRead Cheap to Inform—and the question about why we keep watching the fight.",
+      "description": "An imagined movie scene about a family argument and the audiences around it. Read Cheap to Inform: fictional perspectives, not the writer's family history.",
+      "sources": [
+        "cheap-to-inform/index.html"
+      ]
+    },
+    "canadian-crop-dusting": {
+      "headline": "No confession. No discussion. The suspect is three aisles over.",
+      "text": "A grocery aisle. A mysterious change in atmosphere. A suspect who has already moved on to buying flour.\n\nCanadian politeness has apparently extended to refusing to discuss the evidence.\n\nOpen Canadian Crop Dusting for the joke, the lyrics, and the beat's unlikely backstory.",
+      "description": "Grocery-aisle comments became a crop-dusting mystery. Read the joke and follow the beat back through a homemade DAW and a sample of Satan's Loan.",
+      "sources": [
+        "canadian-crop-dusting/index.html"
+      ]
+    },
+    "everybody-else-less": {
+      "headline": "“You don't like me? I don't like me.”",
+      "text": "“You don't like me? I don't like me.”\n\nThen the feeling gets handed to somebody else in a comment or a joke that cuts too deep.\n\nRead Everybody Else Less, a fictional narrator's spiral from self-dislike into spite—and the hurt underneath it.",
+      "description": "A fictional narrator turns self-dislike outward. Read Everybody Else Less for the hurt under the jokes, the comments, and the spite.",
+      "sources": [
+        "sad-music/everybody-else-less/index.html"
+      ]
+    },
+    "set-a-table-for-two": {
+      "headline": "“Any objections?” Everybody stood.",
+      "text": "“Any objections?” Everybody stood.\n\n“That’s everybody we expected would.”\n\nSomehow there’s a love story underneath this fictional wedding disaster. Open Fuck Everybody But You for the terrible relatives, the lyrics, and the reason you shouldn’t eat those Pringles.",
+      "description": "A fictional wedding disaster with an actual love story underneath. Read Fuck Everybody But You—and please don't eat those Pringles.",
+      "sources": [
+        "set-a-table-for-two/index.html",
+        "set-a-table-for-two/lyrics.txt"
+      ],
+      "variants": {
+        "voice-clone": {
+          "headline": "I cloned my own voice. The wedding planner has questions.",
+          "text": "I tried cloning my own voice. To me, it came out somewhere between Mike Tyson and Eric Cartman.\n\nNaturally, I gave it a fictional wedding disaster to perform.\n\nOpen the voice-clone cut of Fuck Everybody But You for the story, the words, and a very questionable first dance.",
+          "description": "My first voice-clone attempt meets a fictional wedding disaster. Read the story behind the voice-clone cut of Fuck Everybody But You.",
+          "sources": [
+            "set-a-table-for-two/index.html"
+          ]
+        }
+      }
+    },
+    "satans-loan": {
+      "headline": "Nothing leaves the way it came.",
+      "text": "In 2012, I wrote a poem about a flower, the wind, and where the seeds go next.\n\nFourteen years later, it grew into Satan's Loan: borrowed blood, borrowed bones, and nothing leaving the way it came.\n\nRead the original poem and follow it into the music video.",
+      "description": "A 2012 poem about a flower and the wind became Satan's Loan fourteen years later. Read the original and follow its journey to the full music video.",
+      "sources": [
+        "satans-loan/index.html"
+      ]
+    },
+    "superstore-effect": {
+      "headline": "Red Deer wanted groceries. It got a chorus.",
+      "text": "A Red Deer Facebook post said Superstore was down to eighty shopping carts. The comments supplied wheel locks, magnets, and civic grief.\n\nNaturally, I made it a song.\n\nOpen the superstore effect for the post that started it and the grocery trip that became satire.",
+      "description": "A Facebook post claimed eighty shopping carts remained. Read how a Red Deer grocery complaint and its comments became the superstore effect.",
+      "sources": [
+        "superstore-effect/index.html"
+      ]
+    },
+    "twas-the-tism-mlord": {
+      "headline": "I missed a hint. The castle called it witchcraft.",
+      "text": "Miss one hint and suddenly the peasants are yelling “witchcraft.”\n\nThe castle has overreacted. The bass is making it worse.\n\nEnter ’Twas the Tism, M’Lord for the court transcript and how a medieval meme became an ending that glitches itself out of existence.",
+      "description": "An ordinary missed hint becomes a medieval overreaction. Read the court transcript and follow the meme to a hand-edited ending that glitches apart.",
+      "sources": [
+        "twas-the-tism-mlord/index.html"
+      ]
+    },
+    "armando": {
+      "headline": "Before Armando became a question, he was a laugh that got out of hand.",
+      "text": "I noticed my laugh in a reaction recording, isolated it, and kept following it until Armando had his own song. This is the earlier mix, before the final question gave the joke its payoff. Open it and meet the laugh that started the trouble.",
+      "description": "A laugh pulled from a reaction recording became Armando. This earlier mix preserves a step on the way to the chosen version.",
+      "sources": [
+        "power-pulse-uprising/index.html"
+      ]
+    },
+    "id-pick-you-first": {
+      "headline": "Would you still love me if I was a booger?",
+      "text": "The relationship test went from caterpillar to booger, and somehow the grossest answer was the most affectionate. Open I’d Pick You First for the ridiculous question, the worse answer, and the reason it actually works as a love song.",
+      "description": "An impossible little relationship test gets a gross answer that still means: I choose you. Read how the joke became I’d Pick You First.",
+      "sources": [
+        "id-pick-you-first/index.html",
+        "data/song-lyrics.js"
+      ]
+    },
+    "did-armando-die-after-you-held-his-beer": {
+      "headline": "Everybody says “hold my beer.” Who checks on Armando afterward?",
+      "text": "You held the beer. Armando made a decision. Now there are follow-up questions. A laugh from a reaction recording became this increasingly unreasonable joke. Open the chosen version and decide whether “hold my beer” needed a follow-up form.",
+      "description": "A reaction, a laugh, a sample—and the question after “hold my beer.” Meet the chosen Armando version.",
+      "sources": [
+        "power-pulse-uprising/index.html"
+      ]
+    },
+    "level-up": {
+      "headline": "The tool can give you options. It cannot give you a reason.",
+      "text": "After the caveman jokes and the imaginary music police, there’s a useful question left: what are you going to learn next? Level Up is about learning new controls while keeping your own judgment. Open the page and read the final movement of the New Tools Trilogy.",
+      "description": "Learn the controls. Keep your judgment. Bring a reason. Level Up closes the New Tools Trilogy with a question about what comes next.",
+      "sources": [
+        "level-up/index.html"
+      ]
+    },
+    "back-to-sticks": {
+      "headline": "If new tools don’t count, Gary’s loud rock remains undefeated.",
+      "text": "Someone has rejected every new instrument and is now defending a rock. Back to Sticks turns AI-music gatekeeping into a caveman field study—with an actual guide to the listening, editing and judgment behind the joke. Open the field guide. Bring your emergency stick.",
+      "description": "The rocks have entered the chat. A caveman roast doubles as a guide to the decisions behind AI-assisted music.",
+      "sources": [
+        "back-to-sticks/index.html"
+      ]
+    },
+    "the-musician-police": {
+      "headline": "You made something people enjoyed. Where is your suffering permit?",
+      "text": "The Musician Police have arrived. Your offences: using a new tool, failing to suffer visibly, and making a song somebody might enjoy. Open the case file for the imaginary rules of “real music.” Your application to have fun is still pending.",
+      "description": "New-tool violation. Insufficient visible suffering. Unlicensed enjoyment. Open the Musician Police case file.",
+      "sources": [
+        "the-musician-police/index.html",
+        "data/song-lyrics.js"
+      ]
+    },
+    "funhouse-meltdown": {
+      "headline": "One mouth-made beat. One list of the world’s problems. Bad combination.",
+      "text": "I recorded myself going “unce, unce, unce,” then recorded a humorous rush through the world’s problems. Those two clips became Funhouse Meltdown. Open the page to see where my voice ends and Suno’s production begins—and how the overload became the point.",
+      "description": "Two recordings of my voice—one beat, one overloaded list—became Funhouse Meltdown. Read how the source clips shaped the production.",
+      "sources": [
+        "funhouse-meltdown/index.html"
+      ]
+    },
+    "youtube-W47ebCMfrBI": {
+      "headline": "The video and its original Suno release, together.",
+      "text": "Prefer the video, or want to go straight to the original Suno release? Both routes are together here. Open the page, check out the video, and follow its source without hunting through a second catalog.",
+      "description": "One Call Me Daddy release, with the YouTube video and original Suno link together on the page.",
+      "sources": [
+        "youtube/W47ebCMfrBI/index.html"
+      ]
+    },
+    "namaste-hamster": {
+      "headline": "Your meditation teacher has tiny paws and unreasonable bass.",
+      "text": "The sound bath started peacefully. Then the hamster reached enlightenment and apparently requested more sub-bass. Enter the tiny temple of Namaste, Hamster: part meditation, part bass experiment, and a joke that committed to the whole session.",
+      "description": "A peaceful sound bath takes a strange turn. Tiny spiritual guide, very non-tiny low end. Enter the temple of Namaste, Hamster.",
+      "sources": [
+        "namaste-hamster/index.html"
+      ]
+    },
+    "i-wont-let-the-wifi-go": {
+      "headline": "The Wi-Fi is down. Please don’t make me talk to real people.",
+      "text": "YouTube froze. The modem is getting another chance. Human interaction remains a last resort. I Won’t Let the Wi-Fi Go puts an absurd little internet crisis through ’80s inspiration and half-time dubstep. Open the page for this early AI-music experiment.",
+      "description": "A frozen stream, a restarted modem, and the terrible possibility of talking to people. Explore an early ’80s-inspired AI-music experiment.",
+      "sources": [
+        "i-wont-let-the-wifi-go/index.html",
+        "data/song-lyrics.js"
+      ]
+    },
+    "find-your-people": {
+      "headline": "What if you kept the boundary and left the bitterness behind?",
+      "text": "One song was trying to be two: resentment on one side, something worth keeping on the other. Find Your People is the part I kept—finding people who don’t need you smaller. Open this side of Cut From the Same Fabric and start with what’s worth carrying forward.",
+      "description": "The part worth keeping after one song split in two: boundaries, growth, and people who do not need you smaller.",
+      "sources": [
+        "cut-from-the-same-fabric/index.html"
+      ]
+    },
+    "hell-has-people-too": {
+      "headline": "Some people call it support. Why does it come with a scoreboard?",
+      "text": "The smiles when you fall. The silence when you grow. HELL HAS PEOPLE TOO takes the jealousy and resentment cut out of another song and gives them somewhere to speak. Open the darker side of Cut From the Same Fabric and hear what got left behind.",
+      "description": "Jealousy, comparison and support that keeps score. This is the bitter cut from a song that was trying to say two different things.",
+      "sources": [
+        "cut-from-the-same-fabric/index.html",
+        "data/song-lyrics.js"
+      ]
+    },
+    "cut-from-the-same-fabric-instrumental": {
+      "headline": "The words picked sides. What happens when you take them away?",
+      "text": "One song split into two arguments: bitterness, and the part worth keeping. This is the space between them—the related musical fabric with the words removed. Open the instrumental from Cut From the Same Fabric and hear what remains when neither side is talking.",
+      "description": "Between Find Your People and HELL HAS PEOPLE TOO, the instrumental leaves the words out of the argument.",
+      "sources": [
+        "cut-from-the-same-fabric/index.html",
+        "data/song-lyrics.js"
+      ]
+    },
+    "locked-in-these-walls": {
+      "headline": "Sometimes a hard week leaves you remembering a Monday dinner.",
+      "text": "Inside Locked in These Walls, a salmon dinner becomes a small, unlikely comfort in a locked ward. The song belongs to the first van-life stretch in 2025. Open this version for that strange, human detail in the middle of a difficult time.",
+      "description": "A Monday salmon dinner becomes a small comfort during confinement. One of the songs from the first van-life stretch in 2025.",
+      "sources": [
+        "data/sad-music.js",
+        "data/song-lyrics.js",
+        "sad-music/locked-in-these-walls/index.html"
+      ]
+    },
+    "under-watch": {
+      "headline": "Feeling calm under watch is not the same as feeling ready to leave.",
+      "text": "Under Watch follows the search for help and the uneasy safety of guarded doors. Its question is quieter than the title: what happens when the place holding you together is also the place you’re expected to leave? Open the page for that perspective from 2025.",
+      "description": "A search for help, guarded doors, and the difference between appearing calm and feeling ready to leave.",
+      "sources": [
+        "data/sad-music.js",
+        "data/song-lyrics.js",
+        "sad-music/under-watch/index.html"
+      ]
+    },
+    "seven-days-locked": {
+      "headline": "A paper gown. A hard week. Still trying to steady the room.",
+      "text": "Seven Days Locked holds an uncomfortable contrast: being harsh with yourself while trying to be gentle with everyone else. Hospital lights, small moments of humour, and the effort of keeping a room calm. Open this version for a week seen from inside it.",
+      "description": "A difficult week in hospital, told through the contrast between inner struggle and trying to keep the people around you steady.",
+      "sources": [
+        "data/sad-music.js",
+        "data/song-lyrics.js",
+        "sad-music/seven-days-locked/index.html"
+      ]
+    },
+    "stomp-clamp": {
+      "headline": "The bills are still here. The ending isn’t written. This is when support matters.",
+      "text": "It’s easy to cheer after the win becomes obvious. I Need That Sound was written while the money was thin and the work was still unfinished. Open this song from Still Building for the part of the climb that happens before there’s a success story to tell.",
+      "description": "Originally Stomp Clamp, this is a request for support during the climb—while the bills, work and unfinished plans are still there.",
+      "sources": [
+        "still-building/index.html",
+        "data/sad-music.js"
+      ]
+    },
+    "broke-my-mug-not-my-song": {
+      "headline": "I got through an Alberta winter. Then my favourite mug broke.",
+      "text": "The mug had followed me through car-sales jobs. After my first Alberta winter outside, it fell in the van around the time the person who gave it to me left my life. Open Broke My Mug Not My Song for the small object that carried more than coffee.",
+      "description": "A favourite mug, several jobs, a winter outside, and the person who gave it to me. Read what was lost when it broke.",
+      "sources": [
+        "data/sad-music.js",
+        "sad-music/broke-my-mug-not-my-song/index.html"
+      ]
+    },
+    "friction-the-what": {
+      "headline": "Was there a shortcut you missed—or a long road you’re still making sense of?",
+      "text": "“You didn’t need acid” is the line at the centre of Friction the What. The writing looks back at cold van nights, loss and contradiction, asking what actually changed its narrator. Open the page and follow that question through the song.",
+      "description": "Cold van nights, loss, contradiction—and the question of whether a missed shortcut would really have changed anything.",
+      "sources": [
+        "data/sad-music.js",
+        "data/song-lyrics.js",
+        "sad-music/friction-the-what/index.html"
+      ]
+    },
+    "couple-friends-couple-calls": {
+      "headline": "Same two jokes. One beat on a loop. That can be a whole evening.",
+      "text": "A couple of friends, late-night calls, and messy ideas turning into sound. Couple Friends Couple Calls finds its moment in the small stuff: showing up, laughing again, pressing record. Open the page and drop into that room for a while.",
+      "description": "Late-night calls, familiar jokes and a beat on a loop. A small scene about making something with the people who show up.",
+      "sources": [
+        "data/song-lyrics.js",
+        "data/sad-music.js",
+        "sad-music/couple-friends-couple-calls/index.html"
+      ]
+    },
+    "i-need-love": {
+      "headline": "The song changed clothes. The need underneath it stayed.",
+      "text": "These words were recorded years before the AI versions existed. They returned as We Fall in Love Too Quickly in 2024, then became busker, ska-punk and dubstep interpretations of I Need Love. Open this version of a song that keeps finding another way to ask for connection.",
+      "description": "Older writing returns through a 2024 reimagining and several 2026 interpretations. The same need for connection keeps finding another sound.",
+      "sources": [
+        "archive/i-need-love/index.html",
+        "data/song-lyrics.js"
+      ]
+    },
+    "numbness-as-a-trap": {
+      "headline": "Relief can feel like somewhere to stay. That is the uneasy part.",
+      "text": "Numbness as a Trap explores the pull of ketamine through a difficult idea: feeling less can seem like relief and still become its own trap. Open this version for a song about that tension, and the distance between a pause in pain and being able to move forward.",
+      "description": "A song about ketamine, numbness, and the uneasy possibility that what feels like relief can also keep you stuck.",
+      "sources": [
+        "data/sad-music.js",
+        "sad-music/numbness-as-a-trap/index.html"
+      ]
+    },
+    "never-come-back-down": {
+      "headline": "The sunset is bright. The feeling inside doesn’t match.",
+      "text": "Birds are singing, the world is moving, and the narrator still can’t find a place in it. Never Come Back Down came from a defeated, unlovable headspace. Open the page for a song that lets the beautiful scene and the difficult feeling exist together.",
+      "description": "A bright sunset outside and a sense of being lost inside it. Written from a defeated headspace earlier in 2026.",
+      "sources": [
+        "data/sad-music.js",
+        "data/song-lyrics.js",
+        "sad-music/never-come-back-down/index.html"
+      ]
+    },
+    "will-to-live": {
+      "headline": "I made this from a low place because I needed something to answer back.",
+      "text": "Will to Live was made from a very low place as something that could push back and encourage me to keep going. That’s why it closes this collection. Open this version for the moment the writing starts answering the feeling it came from.",
+      "description": "Made from a low place to push against it. Will to Live closes the collection by turning the writing toward keeping going.",
+      "sources": [
+        "data/sad-music.js",
+        "sad-music/will-to-live/index.html"
+      ]
+    }
+  }
+}

@@ -15,6 +15,9 @@ Read README.md, RELEASE-WORKFLOW.md and ADDING-SONGS.md before publishing music.
 
 ## Concurrent work and release checks
 
+- Every catalog song needs reviewed copy in `content/song-share-copy.json`. Read its real writing, story and source evidence, then lead shares with a specific joke, detail, question or highlight and an honest invitation to open the page. Avoid default “Listen to…” sales copy, invented biography, unsupported quotations and promises of missing articles or videos. For jokes.win, look for a joke worth sharing. Preserve sensitive personal context; do not turn despair into a gag.
+- The same reviewed headline/description powers link previews; the post text powers normal sharing and Copy post. Use variant overrides when the writing or perspective differs. Keep exact recording identity, artwork and numbered URLs. New releases must include this editorial step before synchronization; this is the continuing sharing standard for the entire catalog.
+
 - Fetch the latest main before editing. Work on a focused branch; do not merge an older page rewrite over newer lyrics or artwork edits.
 - Preserve the user's exact lyrics, slang, grammar and phrasing unless the user asks for lyric changes. A player repair is not permission to rewrite lyrics or replace media.
 - Run node --test tests/playback-sync.test.js plus the existing Site checks. Add regressions for source/metadata mismatch, next/previous, missing pages, rapid skips and iframe ownership.

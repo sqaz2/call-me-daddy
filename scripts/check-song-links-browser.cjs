@@ -53,7 +53,7 @@ const data=require('../data/song-links.json');
     const expected=active?`https://${data.domains[row.genre]}/${row.number}${row.slot===1?'':`/${row.slot}`}`:new URL(row.target,process.env.BASE_URL || 'http://127.0.0.1:8765').href;
     assert.ok(shared.text.endsWith(expected),shared.text);assert.equal(shared.url,undefined);
     assert.equal((shared.text.match(/https?:\/\//g)||[]).length,1);assert.equal(shared.activeGesture,true);
-    assert.ok(shared.text.includes(row.label));assert.deepEqual(errors,[]);
+    assert.equal(shared.text,row.share.text+"\n"+expected);assert.ok(shared.title.includes(row.label));assert.deepEqual(errors,[]);
     console.log(JSON.stringify({active,dnbRecording:version,share:shared.text,gesture:shared.activeGesture,playback:true,errors}));
    }
    await context.close();
