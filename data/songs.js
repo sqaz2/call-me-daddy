@@ -1,6 +1,48 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "big-dick-willy",
+    "title": "Big Dick Willy",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-19",
+    "project": "",
+    "description": "A picture prompt, a ridiculous name, and a song that kept getting better. Two country-flavoured versions, with a hands-on mix rebuild in Generative.download along the way.",
+    "audio": "/media/songs/2026/10/big-dick-willy/hot-country.mp3",
+    "cover": "/media/songs/2026/10/big-dick-willy/hot-country.jpg",
+    "experience": "/big-dick-willy/",
+    "shareUrl": "/big-dick-willy/?version=main",
+    "shareToExperience": true,
+    "kind": "Country · Novelty",
+    "shareGenre": "other",
+    "shareCategory": "jokes",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Hot country",
+        "audio": "/media/songs/2026/10/big-dick-willy/hot-country.mp3",
+        "cover": "/media/songs/2026/10/big-dick-willy/hot-country.jpg",
+        "duration": 72.432,
+        "date": "2026-10-19",
+        "experience": "/big-dick-willy/?version=main",
+        "shareUrl": "/big-dick-willy/?version=main",
+        "shareGenre": "other"
+      },
+      {
+        "id": "retro",
+        "label": "Retro country-pop",
+        "audio": "/media/songs/2026/10/big-dick-willy/retro-country-pop.mp3",
+        "cover": "/media/songs/2026/10/big-dick-willy/retro-country-pop.jpg",
+        "duration": 94.104,
+        "date": "2026-10-19",
+        "experience": "/big-dick-willy/?version=retro",
+        "shareUrl": "/big-dick-willy/?version=retro",
+        "shareGenre": "other"
+      }
+    ]
+  },
+  {
     "id": "her-story",
     "title": "Her Story",
     "artist": "MusicSubject × Call Me Daddy",

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "big-dick-willy",
+    "title": "Big Dick Willy",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-19",
+    "project": "",
+    "description": "A picture prompt, a ridiculous name, and a song that kept getting better. Two country-flavoured versions, with a hands-on mix rebuild in Generative.download along the way.",
+    "audio": "/media/songs/2026/10/big-dick-willy/hot-country.mp3",
+    "cover": "/media/songs/2026/10/big-dick-willy/hot-country.jpg",
+    "experience": "/big-dick-willy/",
+    "shareUrl": "/big-dick-willy/?version=main",
+    "shareToExperience": true,
+    "kind": "Country · Novelty",
+    "shareGenre": "other",
+    "shareCategory": "jokes",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Hot country",
+        "audio": "/media/songs/2026/10/big-dick-willy/hot-country.mp3",
+        "cover": "/media/songs/2026/10/big-dick-willy/hot-country.jpg",
+        "duration": 72.432,
+        "date": "2026-10-19",
+        "experience": "/big-dick-willy/?version=main",
+        "shareUrl": "/big-dick-willy/?version=main",
+        "shareGenre": "other"
+      },
+      {
+        "id": "retro",
+        "label": "Retro country-pop",
+        "audio": "/media/songs/2026/10/big-dick-willy/retro-country-pop.mp3",
+        "cover": "/media/songs/2026/10/big-dick-willy/retro-country-pop.jpg",
+        "duration": 94.104,
+        "date": "2026-10-19",
+        "experience": "/big-dick-willy/?version=retro",
+        "shareUrl": "/big-dick-willy/?version=retro",
+        "shareGenre": "other"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 85,
+    "laugh": 95,
+    "think": 0,
+    "level-up": 15,
+    "heavy": 0,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-big-dick-willy",
+    "published": "2026-10-19T15:00:00-06:00",
+    "type": "New release",
+    "songId": "big-dick-willy",
+    "variantId": "main",
+    "title": "Big Dick Willy — two ways to roll on in",
+    "summary": "A picture prompt, a ridiculous name, and a song that kept getting better. Two country-flavoured versions, with a hands-on mix rebuild in Generative.download along the way.",
+    "href": "/big-dick-willy/",
+    "sharePath": "/updates/release-big-dick-willy/",
+    "cta": "Hear both versions",
+    "featured": true,
+    "cover": "/media/songs/2026/10/big-dick-willy/hot-country.jpg",
+    "cardLines": [
+      "BIG DICK",
+      "WILLY"
+    ],
+    "cardTag": "Hot country / Retro country-pop",
+    "cardSummary": "Started with a picture. Turned into a song I couldn’t leave alone.",
+    "badge": "TWO VERSIONS",
+    "intent": "laugh"
+  }
+}
