@@ -20,6 +20,7 @@ test('the service forwards byte ranges and validators without visitor credential
  let seen;
  const env={STARMUFF:{fetch:async r=>{seen=r;return new Response(new Uint8Array([1,2,3,4]),{status:206,headers:{'content-type':'audio/mpeg','content-range':'bytes 10-13/100','content-length':'4','set-cookie':'session=private'}});}}};
  const response=await handleRequest(request({headers:{range:'bytes=10-13','if-range':'"v1"',cookie:'visitor=secret',authorization:'Bearer private'}}),env);
+ assert.equal(seen.redirect,'manual','Cloudflare workerd supports manual/follow, not error redirect mode');
  assert.equal(seen.url,'https://starmuff.com'+track.sourcePath);assert.equal(seen.headers.get('range'),'bytes=10-13');assert.equal(seen.headers.get('if-range'),'"v1"');
  assert.equal(seen.headers.has('cookie'),false);assert.equal(seen.headers.has('authorization'),false);
  assert.equal(response.status,206);assert.equal(response.headers.get('content-range'),'bytes 10-13/100');assert.equal(response.headers.has('set-cookie'),false);

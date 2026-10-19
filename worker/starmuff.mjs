@@ -35,7 +35,7 @@ export async function handleStarMuffMedia(request, env) {
   }
   try {
     const upstream = await env.STARMUFF.fetch(new Request(new URL(source, 'https://starmuff.com'), {
-      method: request.method, headers, redirect: 'error'
+      method: request.method, headers, redirect: 'manual'
     }));
     const responseHeaders = new Headers({ 'x-content-type-options': 'nosniff', 'accept-ranges': 'bytes' });
     if (upstream.status === 416 || upstream.status === 304) {
