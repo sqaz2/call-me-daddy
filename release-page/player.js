@@ -42,7 +42,8 @@
     return {owner,media,track,index:indexFor(source),playing:Boolean(media&&!media.paused&&!media.ended)};
   };
   const requested=new URLSearchParams(location.search).get('version');
-  let selected=Math.max(0,tracks.findIndex(track=>track.variantId===requested));
+  const initialVersion=tracks.some(track=>track.variantId===requested)?requested:document.body.dataset.defaultVersion;
+  let selected=Math.max(0,tracks.findIndex(track=>track.variantId===initialVersion));
   let controller=null,timer=null;
   let message='';
   const draw=()=>{
