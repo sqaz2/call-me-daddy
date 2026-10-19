@@ -8,7 +8,7 @@ import worker from '../worker/index.mjs';
 
 const root=process.cwd();
 const port=Number(process.env.PORT||8765);
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.mp3':'audio/mpeg','.mp4':'video/mp4','.wav':'audio/wav','.ico':'image/x-icon','.txt':'text/plain; charset=utf-8'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.mp3':'audio/mpeg','.m4a':'audio/mp4','.mp4':'video/mp4','.wav':'audio/wav','.ico':'image/x-icon','.txt':'text/plain; charset=utf-8'};
 const assets={async fetch(request){
   try{
     const pathname=decodeURIComponent(new URL(request.url).pathname);

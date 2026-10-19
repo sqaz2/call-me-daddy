@@ -23,6 +23,13 @@ provide a conservative default; unidentified music uses `suno.fyi`.
 DnB, D&B and drum-and-bass labels select `dnb.fyi`. In multi-version songs,
 classification uses the individual recording's label, so older versions retain
 their own genres and share domains.
+For a dedicated release page that accepts exact `?version=` links through the
+shared release player, `song.shareToExperience: true` sends each numbered link
+directly to that page and recording. Use this for ordered listening experiences;
+existing permanent recording slots remain unchanged. The variants' order is the
+page's listening order; an editorial `openerPolicy` can keep a bonus opening out
+of automatic music rotation. A page may pin its song lyric panel with
+`data-lyrics-version="main"` when an opening has a separate screenplay.
 For satire and joke songs, set `song.shareCategory` to `jokes` (or a variant's
 `shareCategory` for one recording). This selects `jokes.win` before the genre
 domain. `music` opts out; variant metadata takes priority. Existing reviewed

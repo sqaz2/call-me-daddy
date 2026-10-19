@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 10,
     "date": "2026-10-19",
     "project": "",
-    "description": "A familiar laugh. A borrowed face. Something has come home. A remastered horrorcore story about an impostor, a wife who senses something wrong, and a voice that refuses to disappear.",
+    "description": "A familiar laugh. A borrowed face. Something has come home. Hear Something I Ate, read the movie script, then listen to Her Story — Remastered.",
     "aliases": [
       "Her Story Remastered",
       "Her-Story-Remastered"
@@ -22,6 +22,18 @@ window.CMD_SONGS = [
     "shareCategory": "music",
     "variants": [
       {
+        "id": "opening",
+        "label": "Opening",
+        "audio": "/media/songs/2026/10/her-story/opening.m4a",
+        "cover": "/media/songs/2026/10/her-story/cover.png",
+        "socialImage": "/media/songs/2026/10/her-story/cover.png",
+        "duration": 207.377415,
+        "date": "2026-10-19",
+        "experience": "/her-story/?version=opening",
+        "shareUrl": "/her-story/?version=opening",
+        "bonus": true
+      },
+      {
         "id": "main",
         "label": "Remastered",
         "audio": "/media/songs/2026/10/her-story/audio.mp3",
@@ -32,7 +44,15 @@ window.CMD_SONGS = [
         "experience": "/her-story/?version=main",
         "shareUrl": "/her-story/?version=main"
       }
-    ]
+    ],
+    "shareToExperience": true,
+    "openerPolicy": {
+      "mode": "editorial",
+      "defaultVersion": "main",
+      "eligibleVersions": [
+        "main"
+      ]
+    }
   },
   {
     "id": "live-it-right",

@@ -78,8 +78,9 @@ export function buildLinks(catalog, registry) {
       if (!variant) continue;
       const page = song.experience || '';
       const samePageSongs = catalog.filter(item => item.experience && new URL(item.experience, origin).pathname === new URL(page || '/music/', origin).pathname);
-      const direct = page && !page.startsWith('/updates/') && available.length === 1 && samePageSongs.length === 1;
+      const direct = page && !page.startsWith('/updates/') && (available.length === 1 || song.shareToExperience === true) && samePageSongs.length === 1;
       let target = direct ? new URL(page, origin) : new URL('/music/', origin);
+      if (direct && available.length > 1) target.searchParams.set('version', id);
       if (!direct) {
         target.searchParams.set('song', song.id);
         target.searchParams.set('version', id);
