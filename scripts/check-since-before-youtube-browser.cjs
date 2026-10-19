@@ -43,6 +43,7 @@ const links=require('../data/song-links.json');
  try{
   await page.goto(base+song.experience,{waitUntil:'networkidle'});
   assert.equal(await page.locator('#releaseAudio').getAttribute('src'),null);
+  if(releaseId==='her-story')assert.equal(await page.locator('#audiobookAudio').getAttribute('src'),null);
   for(const width of [320,390,1440]){
    await page.setViewportSize({width,height:width===1440?1000:844});
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -65,8 +66,37 @@ const links=require('../data/song-links.json');
    await page.locator('.cmd-universal-toggle').click();
    await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
    check('The ending stays hidden until opened and the main play button starts the exact remaster');
+   const book={id:'audiobook',audio:'/media/songs/2026/10/her-story/audiobook.m4a',duration:347.4};
+   await page.locator('#audiobookPlay').click();await playing(book);await assertIdentity(book);
+   assert.equal(await ownerCount(),1);
+   assert.equal(await page.locator('.cmd-universal-title').innerText(),'Her Story — Audiobook');
+   assert(await page.evaluate(()=>window.CMDUniversalPlayer.getMedia().__cmdContinuousPlaybackController.peekNext()===null));
+   await page.locator('.cmd-universal-share').click();
+   assert.equal(await page.locator('.cmd-share-link').inputValue(),base+'/her-story/?version=audiobook#audiobook');
+   await page.getByRole('button',{name:'Done',exact:true}).click();
+   await page.evaluate(()=>{window.__bookOwner=window.CMDUniversalPlayer.getMedia();window.CMDPersistentSite.open('/updates/')});
+   await page.waitForTimeout(900);
+   await page.evaluate(()=>window.CMDPersistentSite.open('/her-story/?version=audiobook#audiobook'));
+   await page.waitForTimeout(900);
+   let bookFrame=await frame();
+   assert.equal(await bookFrame.locator('#audiobookAudio').getAttribute('src'),null);
+   assert(await page.evaluate(()=>window.__bookOwner===window.CMDUniversalPlayer.getMedia()));
+   await bookFrame.locator('#audiobookPlay').click();
+   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().paused);
+   await bookFrame.locator('#audiobookPlay').click();await playing(book);
+   await bookFrame.locator('[data-cut="main"]').click();await playing(remaster);assert.equal(await ownerCount(),1);
+   bookFrame=await frame();await bookFrame.locator('#audiobookPlay').click();await playing(book);assert.equal(await ownerCount(),1);
+   await page.evaluate(()=>{const m=window.CMDUniversalPlayer.getMedia();m.currentTime=m.duration-1});
+   await page.waitForFunction(()=>window.CMDUniversalPlayer.getMedia().ended,null,{timeout:10000});
+   await page.waitForTimeout(1000);
+   assert.equal(await ownerCount(),0);await assertIdentity(book);
+   assert.equal(await page.evaluate(()=>window.CMDUniversalPlayer.getMedia().__cmdContinuousPlaybackController.getState().wantsPlayback),false);
+   await page.locator('.cmd-universal-next').click();assert.equal(await ownerCount(),0);
+   bookFrame=await frame();await bookFrame.locator('#audiobookPlay').click();await playing(book);assert.equal(await ownerCount(),1);
+   check('The page-only audiobook uses the exact upload, shares its own manual-play link, survives navigation, switches cleanly with the song, and stops without a music tail');
    await page.goto(base+song.experience,{waitUntil:'networkidle'});
    assert.equal(await page.locator('#releaseAudio').getAttribute('src'),null);
+   assert.equal(await page.locator('#audiobookAudio').getAttribute('src'),null);
   }
   if(releaseId==='keep-building-your-future'){
    await page.waitForFunction(()=>{const v=document.getElementById('futureVisual');return !v.paused&&v.currentTime>.1&&v.videoWidth>0},null,{timeout:20000});
