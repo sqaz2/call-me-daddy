@@ -28,7 +28,7 @@
       bleed:'full',
       keywords:['heavy','melancholy','sad','numb','locked','heartbreak','grunge'],
       songIds:[
-        'this-is-my-story','come-sit-here-with-me','turning-invisible','will-to-live','locked-in-these-walls','seven-days-locked','under-watch',
+        'live-it-right','this-is-my-story','come-sit-here-with-me','turning-invisible','will-to-live','locked-in-these-walls','seven-days-locked','under-watch',
         'never-come-back-down','numbness-as-a-trap','i-need-love','everybody-else-less',
         'couple-friends-couple-calls','the-loudest-one-in-my-head','mind-at-war',
         'shooting-star','september-26th-heartbreak','heartbreak-you-water-me','cloudlife',

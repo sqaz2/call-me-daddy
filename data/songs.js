@@ -1,6 +1,40 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "live-it-right",
+    "title": "Live It Right",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-18",
+    "project": "",
+    "description": "Over fifteen years unfinished. Brought to life with AI in a day. A song about waiting for permission—with a hook ready to get stuck in yours.",
+    "aliases": [
+      "Live Your Life",
+      "live your life (Remastered)"
+    ],
+    "audio": "/media/songs/2026/10/live-it-right/audio.mp3",
+    "cover": "/media/songs/2026/10/live-it-right/cover.webp",
+    "experience": "/live-it-right/",
+    "shareUrl": "/live-it-right/?version=main",
+    "kind": "AI-assisted song",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/10/live-it-right/audio.mp3",
+        "cover": "/media/songs/2026/10/live-it-right/cover.webp",
+        "socialImage": "/media/songs/2026/10/live-it-right/share.jpg",
+        "duration": 168.024,
+        "date": "2026-10-18",
+        "experience": "/live-it-right/?version=main",
+        "shareUrl": "/live-it-right/?version=main"
+      }
+    ]
+  },
+  {
     "id": "sqaz-kill-you",
     "title": "Kill You",
     "artist": "Sqaz",

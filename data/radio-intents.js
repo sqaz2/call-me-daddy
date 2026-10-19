@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "live-it-right": {
+    "surprise": 80,
+    "laugh": 0,
+    "think": 100,
+    "level-up": 65,
+    "heavy": 20,
+    "old-files": 0
+  },
   "sqaz-kill-you": {
     "surprise": 40,
     "laugh": 0,
