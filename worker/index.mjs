@@ -1,4 +1,5 @@
 import { handleShortLink } from './short-links.mjs';
+import { handleStarMuffMedia } from './starmuff.mjs';
 
 const RANGEABLE_MEDIA = /\.(?:aac|flac|m4a|mp3|mp4|ogg|wav|webm)$/i;
 
@@ -170,6 +171,8 @@ export async function handleRequest(request, env) {
   // The /music* route also matches /musical. Leave those unrelated paths at
   // their existing origin instead of serving this site's assets on satans.loan.
   if (url.hostname === 'satans.loan') return fetch(request);
+  const starMuff = await handleStarMuffMedia(request, env);
+  if (starMuff) return starMuff;
   if (/^\/music\/?$/.test(url.pathname) && ['GET','HEAD'].includes(request.method) &&
       !['song','intent','seed'].some(key => url.searchParams.has(key))) {
     const home = new URL('/', url);

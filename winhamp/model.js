@@ -37,10 +37,12 @@
   }
   const matches = (track, query) => [track.title, track.artist, track.variantLabel, track.project,
     ...(track.aliases || [])].join(' ').toLocaleLowerCase().includes(query.trim().toLocaleLowerCase());
-  function shareUrl(track, origin = location.origin) {
+  const collectionTracks = (tracks, collection = 'callmedaddy') => tracks.filter(track => collection === 'all' || (track.playlist || 'callmedaddy') === collection);
+  function shareUrl(track, origin = location.origin, collection = track?.playlist || 'callmedaddy') {
     const url = new URL('/winhamp/', origin);
+    url.searchParams.set('playlist', collection);
     if (track) { url.searchParams.set('song', track.songId || track.id); url.searchParams.set('version', track.variantId || 'main'); }
     return url.href;
   }
-  window.CMDWinHampModel = { build, key, allowed, upcoming, matches, shareUrl };
+  window.CMDWinHampModel = { build, key, allowed, upcoming, matches, shareUrl, collectionTracks };
 })();

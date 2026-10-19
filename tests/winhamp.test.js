@@ -31,7 +31,7 @@ class Audio extends Element{
  play(){this.playCalls++;this.paused=false;this.ended=false;this.emit('play');this.emit('playing');return Promise.resolve();}
  pause(){this.paused=true;this.emit('pause');}
 }
-function environment({search='',external=false,snapshot=null,reload=false}={}){
+function environment({search='',external=false,snapshot=null,reload=false,starmuff=[]}={}){
  const elements=Object.fromEntries([...read('winhamp/index.html').matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
  elements.volume.value='85';elements.search.tagName='INPUT';
  const document=new Element();document.body=new Element('body');document.head=new Element('head');document.visibilityState='visible';document.getElementById=id=>elements[id];document.createElement=tag=>tag==='audio'?new Audio():new Element(tag);document.createDocumentFragment=()=>new Element('fragment');document.querySelector=()=>null;
@@ -40,7 +40,7 @@ function environment({search='',external=false,snapshot=null,reload=false}={}){
  const nativeEvents=new Element();let active=external?{audio:new Audio(),track:{songId:'old',variantId:'main',title:'Already playing',audio:'/old.mp3'}}:null;
  if(active){active.audio.src='/old.mp3';active.audio.paused=false;}
  const owner={getMedia:()=>active?.audio,getTrack:()=>active?.track,control:(action,value)=>{if(!active)return;if(action==='seek')active.audio.currentTime=value;else if(action==='pause')active.controller?.pause?.()??active.audio.pause();else if(action==='toggle')active.controller?.toggle?.()??(active.audio.paused?active.audio.play():active.audio.pause());else if(action==='next')active.controller?.next();else if(action==='previous')active.controller?.previous();}};
- const window={location,document,CMD_SONGS:songs,CMDUniversalPlayer:owner,CMDPersistentSite:{setSession(){},refreshClearance(){},cancelFollow(){}}};window.top=window;window.self=window;
+ const window={location,document,CMD_SONGS:songs,CMD_STARMUFF_SONGS:starmuff,CMDUniversalPlayer:owner,CMDPersistentSite:{setSession(){},refreshClearance(){},cancelFollow(){}}};window.top=window;window.self=window;
  let frame;const copied=[];
  const context=vm.createContext({window,document,location,navigator:{clipboard:{writeText:async t=>copied.push(t)}},sessionStorage:storage,localStorage:storage,performance:{getEntriesByType:()=>[{type:reload?'reload':'navigate'}]},requestAnimationFrame:fn=>{frame=fn;},addEventListener:nativeEvents.addEventListener.bind(nativeEvents),removeEventListener:nativeEvents.removeEventListener.bind(nativeEvents),URL,URLSearchParams,Date,Math,JSON,Uint8Array,Promise,Number,String,Error});
  vm.runInContext(read('continuous-playback.js'),context);
@@ -100,4 +100,39 @@ test('discard/reload restoration preserves the saved time without a second load'
  const snapshot={playerId:'winhamp',track:{id:'first:main',songId:'first',variantId:'main',audio:'/first.mp3'},currentTime:61,wantsPlayback:true,updatedAt:Date.now()};
  const env=environment({snapshot,reload:true});const active=env.active();
  assert.ok(active);assert.equal(active.audio.loadCalls,1);active.audio.emit('loadedmetadata');assert.equal(active.audio.currentTime,61);assert.equal(active.audio.playCalls,1);
+});
+
+const starSongs=[{id:'starmuff-one',title:'Casino StarMuff 2',artist:'MusicSubject',project:'StarMuff',playlist:'starmuff',audio:'/media/starmuff/one.mp3'},
+{id:'starmuff-two',title:'Space Exploration',artist:'MusicSubject',project:'StarMuff',playlist:'starmuff',audio:'/media/starmuff/two.mp3'}];
+test('StarMuff playlist links open the game library silently and Play starts its first recording',()=>{
+ const env=environment({search:'?playlist=starmuff',starmuff:starSongs});
+ assert.equal(env.active(),null);assert.equal(env.elements.trackList.children.length,2);
+ assert.equal(env.elements.playlistStarMuff.getAttribute('aria-pressed'),'true');
+ env.elements.play.emit('click');assert.equal(env.active().audio.src,'/media/starmuff/one.mp3');
+ env.active().controller.next();assert.equal(env.active().audio.src,'/media/starmuff/two.mp3');
+ env.active().controller.next();assert.equal(env.active().audio.src,'/media/starmuff/one.mp3','repeat stays inside the chosen StarMuff playlist');
+});
+test('browsing another library preserves playback; selecting its track starts the right queue',()=>{
+ const env=environment({starmuff:starSongs});env.elements.play.emit('click');
+ const original=env.active().audio;env.elements.playlistStarMuff.emit('click');
+ assert.equal(original.paused,false);assert.equal(env.active().track.songId,'first');assert.equal(env.elements.trackList.children.length,2);
+ env.elements.trackList.children[1].emit('click');env.paint();
+ assert.equal(env.active().audio.src,'/media/starmuff/two.mp3');assert.equal(env.elements.trackTitle.textContent,'Space Exploration');
+ env.elements.shuffle.emit('click');env.active().controller.next();assert.ok(env.active().track.songId.startsWith('starmuff-'));
+});
+test('Call Me Daddy and All music keep explicit library boundaries',()=>{
+ const env=environment({starmuff:starSongs});env.elements.play.emit('click');
+ assert.equal(env.active().controller.getQueue().some(t=>t.songId.startsWith('starmuff-')),false);
+ env.elements.playlistAll.emit('click');assert.equal(env.elements.trackList.children.length,5);
+ env.elements.trackList.children.find(r=>r.dataset.key==='starmuff-one:main').emit('click');
+ assert.ok(env.active().controller.getQueue().some(t=>t.songId==='first'));
+ assert.equal(env.active().controller.getQueue().some(t=>t.songId==='optional'),false);
+});
+test('StarMuff player and recording shares retain the selected library and exact song',async()=>{
+ const env=environment({search:'?playlist=starmuff&song=starmuff-two&version=main',starmuff:starSongs});
+ assert.equal(env.elements.trackTitle.textContent,'Space Exploration');
+ env.elements.shareSong.emit('click');await Promise.resolve();
+ let url=new URL(env.copied[0]);assert.equal(url.searchParams.get('playlist'),'starmuff');assert.equal(url.searchParams.get('song'),'starmuff-two');
+ env.elements.sharePlayer.emit('click');await Promise.resolve();
+ url=new URL(env.copied[1]);assert.equal(url.searchParams.get('playlist'),'starmuff');assert.equal(url.searchParams.has('song'),false);
 });

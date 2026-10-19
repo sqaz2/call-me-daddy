@@ -12,6 +12,7 @@
     "binding": "ASSETS",
     "run_worker_first": true
   },
+  "services": [{ "binding": "STARMUFF", "service": "starmuff" }],
   "routes": [
     { "pattern": "callmedaddy.musicsubject.com", "custom_domain": true },
     { "pattern": "hiphop.bid", "custom_domain": true },

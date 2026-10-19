@@ -2,8 +2,11 @@
   'use strict';
   const $ = id => document.getElementById(id), model = window.CMDWinHampModel;
   if (!model || !window.CMDContinuousPlayback) { $('status').textContent = 'The player did not load. Refresh to try again.'; return; }
-  const tracks = model.build(window.CMD_SONGS || []);
-  const params = new URLSearchParams(location.search), requested = tracks.find(t => t.songId === params.get('song') && (!params.get('version') || t.variantId === params.get('version')));
+  const allTracks = [...model.build(window.CMD_SONGS || []), ...model.build(window.CMD_STARMUFF_SONGS || [])];
+  const params = new URLSearchParams(location.search), requested = allTracks.find(t => t.songId === params.get('song') && (!params.get('version') || t.variantId === params.get('version')));
+  let collection = ['callmedaddy', 'starmuff', 'all'].includes(params.get('playlist')) ? params.get('playlist') : requested?.playlist || 'callmedaddy';
+  if (requested && collection !== 'all') collection = requested.playlist || 'callmedaddy';
+  let tracks = model.collectionTracks(allTracks, collection), playbackCollection = collection;
   let selected = requested || tracks.find(model.allowed) || tracks[0], controller = null, audio = null;
   let shuffle = false, repeat = 'all', graph = null, currentKey = '', lastMedia = null, lastPaint = 0, noticeUntil = 0, seekHeld = false;
   let allMixes = Boolean(requested && tracks.find(t => t.songId === requested.songId) !== requested);
@@ -43,7 +46,7 @@
       const copy = document.createElement('span'); copy.className = 'row-copy';
       const name = document.createElement('span'); name.className = 'row-name'; name.textContent = track.title;
       const version = document.createElement('span'); version.className = 'row-version';
-      version.textContent = [track.variantLabel, track.artist === 'Sqaz' ? 'Sqaz' : '', track.rotation === 'opt-in' && !model.allowed(track) ? 'Explicit · play on request' : ''].filter(Boolean).join(' · ');
+      version.textContent = [track.playlist === 'starmuff' ? 'StarMuff soundtrack' : track.variantLabel, track.artist === 'Sqaz' ? 'Sqaz' : '', track.rotation === 'opt-in' && !model.allowed(track) ? 'Explicit · play on request' : ''].filter(Boolean).join(' · ');
       const duration = document.createElement('span'); duration.className = 'row-duration'; duration.textContent = track.duration ? format(track.duration) : '—';
       copy.append(name, version); row.append(number, copy, duration); row.addEventListener('click', () => start(track));
       rows.set(model.key(track), row); fragment.append(row);
@@ -51,8 +54,22 @@
     if (!visible.length) { const message = document.createElement('p'); message.className = 'empty'; message.textContent = 'No matches. Try another title or mix.'; fragment.append(message); }
     $('trackList').replaceChildren(fragment);
     const songs = new Set(tracks.map(t => t.songId)).size;
+    $('playlistHeading').textContent = collection === 'starmuff' ? 'STARMUFF PLAYLIST' : collection === 'all' ? 'ALL MUSIC' : 'CALL ME DADDY';
+    $('playlistCallMeDaddy').setAttribute('aria-pressed', String(collection === 'callmedaddy'));
+    $('playlistStarMuff').setAttribute('aria-pressed', String(collection === 'starmuff'));
+    $('playlistAll').setAttribute('aria-pressed', String(collection === 'all'));
     $('trackCount').textContent = `${songs} SONGS · ${tracks.length} MIXES`;
-    $('listCount').textContent = query ? `${visible.length} matches` : `${visible.length} ${allMixes ? 'mixes' : 'songs'} · newest first`;
+    $('listCount').textContent = query ? `${visible.length} matches` : `${visible.length} ${allMixes ? 'mixes' : 'songs'} · ${collection === 'starmuff' ? 'original game playlist' : collection === 'all' ? 'two libraries' : 'newest first'}`;
+  }
+
+  function chooseCollection(value) {
+    collection = value; tracks = model.collectionTracks(allTracks, collection);
+    selected = tracks.find(model.allowed) || tracks[0];
+    $('search').value = '';
+    renderList();
+    if (!media()) paintTrack(selected);
+    try { const host = topWindow(); host.history?.replaceState(host.history.state, '', model.shareUrl(null, location.origin, collection)); } catch {}
+    announce(`${collection === 'starmuff' ? 'StarMuff' : collection === 'all' ? 'All music' : 'Call Me Daddy'} selected. Pick a track to start this playlist.`);
   }
 
   function setupSpectrum(element) {
@@ -77,7 +94,7 @@
     $('repeat').setAttribute('aria-pressed', String(repeat !== 'off'));
     $('repeat').textContent = repeat === 'all' ? 'REPEAT ALL' : repeat === 'one' ? 'REPEAT ONE' : 'REPEAT OFF';
     $('repeat').setAttribute('aria-label', `Repeat ${repeat}; change repeat mode`);
-    if (isLocal() && controller) controller.configureQueue({ tracks: model.upcoming(tracks, controller.current(), shuffle), loopLocal: repeat === 'all', repeatOne: repeat === 'one' });
+    if (isLocal() && controller) controller.configureQueue({ tracks: model.upcoming(model.collectionTracks(allTracks, playbackCollection), controller.current(), shuffle), loopLocal: repeat === 'all', repeatOne: repeat === 'one' });
   }
   function start(track, restoring = false) {
     if (!track) return;
@@ -85,11 +102,11 @@
     if (active?.getMedia?.()) active.control('pause');
     controller?.pause(); controller?.destroy();
     if (!audio) { audio = document.createElement('audio'); audio.id = 'winhampAudio'; audio.preload = 'metadata'; audio.hidden = true; document.body.append(audio); }
-    selected = track; audio.volume = Number($('volume').value) / 100;
+    selected = track; playbackCollection = collection; audio.volume = Number($('volume').value) / 100;
     setupSpectrum(audio);
     if (graph?.context.state === 'suspended') void graph.context.resume().catch(() => {});
     const queue = [track, ...model.upcoming(tracks, track, shuffle)];
-    controller = window.CMDContinuousPlayback.create({ id: 'winhamp', route: '/winhamp/', audio,
+    controller = window.CMDContinuousPlayback.create({ id: 'winhamp', route: model.shareUrl(null, location.origin, playbackCollection), audio,
       tracks: queue, localCount: queue.length, radio: { next: () => null }, loopLocal: repeat === 'all', repeatOne: repeat === 'one', followPages: false, restoreSession: restoring,
       onTrack: next => { selected = next; paintTrack(next); },
       onStatus: kind => { if (kind === 'blocked' || kind === 'failed') announce('Press Play to continue.'); else if (kind === 'error') announce('Track unavailable. Trying the next one…'); },
@@ -114,7 +131,7 @@
     $('artwork').setAttribute('aria-label', `Play or pause ${track.title}`);
     const ext = (track.audio || '').split('?')[0].split('.').at(-1);
     $('format').textContent = /^(mp3|wav|m4a|ogg|aac|flac)$/i.test(ext || '') ? ext.toUpperCase() : 'AUDIO';
-    $('story').hidden = !track.experience;
+    $('story').hidden = track.playlist === 'starmuff' || !track.experience;
     $('story').href = track.experience || model.shareUrl(track);
     if (track.experience && track.variantId) { const url = new URL(track.experience, location.origin); url.searchParams.set('version', track.variantId); $('story').href = url.href; }
     document.title = `${track.title} — WinHamp · Call Me Daddy`;
@@ -168,7 +185,8 @@
     draw(element);
   }
   async function share(track) {
-    const url = model.shareUrl(track), data = { title: track ? `${track.title} — WinHamp` : 'WinHamp — MusicSubject × Call Me Daddy', text: track ? `Give ${track.title} a listen in WinHamp.` : 'Old-school player. New music.', url };
+    const sharedCollection = track && collection !== 'all' ? track.playlist || 'callmedaddy' : collection;
+    const url = model.shareUrl(track, location.origin, sharedCollection), data = { title: track ? `${track.title} — WinHamp` : `WinHamp — ${collection === 'starmuff' ? 'StarMuff playlist' : 'MusicSubject × Call Me Daddy'}`, text: track ? `Give ${track.title} a listen in WinHamp.` : collection === 'starmuff' ? 'The original StarMuff game soundtrack. Press play.' : 'Old-school player. New music.', url };
     try {
       if (navigator.share) { await navigator.share(data); return; }
       await navigator.clipboard.writeText(url); announce('Link copied. Pass it around.');
@@ -191,6 +209,9 @@
   $('skin').addEventListener('click', () => { document.body.classList.toggle('amber'); save(); updateSkinLabel(); });
   $('search').addEventListener('input', renderList);
   $('versions').checked = allMixes; $('versions').addEventListener('change', () => { allMixes = $('versions').checked; renderList(); });
+  $('playlistCallMeDaddy').addEventListener('click', () => chooseCollection('callmedaddy'));
+  $('playlistStarMuff').addEventListener('click', () => chooseCollection('starmuff'));
+  $('playlistAll').addEventListener('click', () => chooseCollection('all'));
   $('shareSong').addEventListener('click', () => share(playingTrack())); $('sharePlayer').addEventListener('click', () => share(null));
   $('cover').addEventListener('error', () => { if (!$('cover').src.endsWith('/media/brand/call-me-daddy-musicsubject.jpg')) $('cover').src = '/media/brand/call-me-daddy-musicsubject.jpg'; });
   document.addEventListener('keydown', event => {
@@ -206,7 +227,8 @@
   if (requested) { rows.get(model.key(requested))?.scrollIntoView({ block: 'nearest' }); if (media()) announce('Shared song ready. Tap its row to play.'); }
   const snapshot = window.CMDContinuousPlayback.readSnapshot?.();
   const reload = document.wasDiscarded || performance.getEntriesByType('navigation')[0]?.type === 'reload' || params.get('cmdResume') === '1';
-  if (!requested && reload && snapshot?.playerId === 'winhamp' && snapshot.wantsPlayback && !media()) {
-    const restore = tracks.find(t => t.audio === snapshot.track?.audio); if (restore) start(restore, true);
+  if (reload && snapshot?.playerId === 'winhamp' && snapshot.wantsPlayback && !media() && (!requested || requested.audio === snapshot.track?.audio)) {
+    const restore = allTracks.find(t => t.audio === snapshot.track?.audio);
+    if (restore) { if (!tracks.includes(restore)) chooseCollection(restore.playlist || 'callmedaddy'); start(restore, true); }
   }
 })();

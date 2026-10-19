@@ -1,4 +1,5 @@
 import { handleRequest } from './index.mjs';
+import { starMuffSocial } from './starmuff.mjs';
 import { resolveSocial, rewriteHead, readHead, SOCIAL_VERSION } from '../song-social.mjs';
 
 export function addAppShell(html) {
@@ -29,7 +30,7 @@ export async function decorateSongHTML(request, response, env) {
   try { data = await socialIndex(env.ASSETS, request); }
   catch (error) { console.error('Song artwork metadata:', error.message); }
   const html = await response.text();
-  const selected = resolveSocial(request.url, data);
+  const selected = starMuffSocial(request.url) || resolveSocial(request.url, data);
   // Dedicated pages still receive artwork icons if a metadata asset is temporarily unavailable.
   const fallback = readHead(html);
   const record = selected || fallback;
