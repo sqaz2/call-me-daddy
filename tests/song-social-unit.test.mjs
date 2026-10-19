@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { buildSongSocial } from '../scripts/build-song-social.mjs';
 import { resolveSocial, rewriteHead, readHead, routePath, imageURL, ORIGIN } from '../song-social.mjs';
 const old = { title: 'Animal — earlier mix', description: 'Earlier recording', image: ORIGIN + '/old.jpg', type: 'music.song' };
 const latest = { title: 'Make Me an Animal v6', description: 'MusicSubject & Call Me Daddy', image: ORIGIN + '/lion.png?art=123', width: 928, height: 1648, imageType: 'image/png', type: 'music.song' };
@@ -13,6 +14,28 @@ test('exact version selects artwork and canonical does not collapse to /music/',
   assert.notEqual(record.canonical, resolveSocial('/music/?song=animal&version=old', data).canonical);
 });
 test('earlier versions retain their original cover', () => assert.equal(resolveSocial('/music/?song=animal&version=old', data).image, old.image));
+test('social artwork overrides preserve playback covers and other recordings keep their own artwork', () => {
+  const catalog = [{
+    id: 'social-artwork-fixture', title: 'Social artwork fixture', audio: '/main.mp3',
+    cover: '/family-portrait.jpg', socialImage: '/family-landscape.jpg',
+    variants: [
+      { id: 'main', audio: '/main.mp3', cover: '/main-portrait.jpg', socialImage: '/main-landscape.jpg' },
+      { id: 'alternate', audio: '/alternate.mp3', cover: '/alternate-portrait.jpg' },
+      { id: 'family', audio: '/family.mp3' }
+    ]
+  }, {
+    id: 'legacy-artwork-fixture', title: 'Legacy artwork fixture', audio: '/legacy.mp3', cover: '/legacy-portrait.jpg'
+  }];
+  const playbackCatalog = structuredClone(catalog);
+  const built = buildSongSocial({ catalog, write: false });
+  const preview = version => resolveSocial(`/music/?song=social-artwork-fixture&version=${version}`, built);
+
+  assert.equal(preview('main').image, ORIGIN + '/main-landscape.jpg');
+  assert.equal(preview('alternate').image, ORIGIN + '/alternate-portrait.jpg', 'a recording with its own cover must not inherit the main or family social image');
+  assert.equal(preview('family').image, ORIGIN + '/family-landscape.jpg');
+  assert.equal(resolveSocial('/music/?song=legacy-artwork-fixture&version=main', built).image, ORIGIN + '/legacy-portrait.jpg');
+  assert.deepEqual(catalog, playbackCatalog, 'building social metadata must preserve the portrait covers and audio used by playback');
+});
 test('dedicated pages and version selectors resolve without changing playback', () => {
   assert.equal(resolveSocial('/animal-v6/index.html', data).image, latest.image);
   assert.equal(resolveSocial('/animal-v6/?version=old', data).image, old.image);

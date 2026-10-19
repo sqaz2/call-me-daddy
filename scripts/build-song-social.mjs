@@ -70,7 +70,7 @@ export function buildSongSocial({ catalog = loadCatalog(), write = true } = {}) 
       const suffix = label && !/^(main(?: version)?|song|original)$/i.test(label) && !song.title.toLowerCase().includes(label.toLowerCase()) ? ` — ${label}` : '';
       const title = `${song.title}${suffix} — ${song.artist || 'MusicSubject × Call Me Daddy'}`;
       versions[variant.id] = { title, description: variant.description || song.description || `Listen to ${song.title}.`,
-        ...artwork(variant.cover || song.cover), imageAlt: `${song.title}${suffix} artwork`, type: 'music.song' };
+        ...artwork(variant.socialImage || variant.cover || song.socialImage || song.cover), imageAlt: `${song.title}${suffix} artwork`, type: 'music.song' };
       associate(variant.experience, song.id, variant.id);
       associate(variant.shareUrl, song.id, variant.id);
     }

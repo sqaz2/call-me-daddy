@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "live-it-right",
+    "title": "Live It Right",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-18",
+    "project": "",
+    "description": "Over fifteen years unfinished. Brought to life with AI in a day. A song about waiting for permission—with a hook ready to get stuck in yours.",
+    "aliases": [
+      "Live Your Life",
+      "live your life (Remastered)"
+    ],
+    "audio": "/media/songs/2026/10/live-it-right/audio.mp3",
+    "cover": "/media/songs/2026/10/live-it-right/cover.webp",
+    "experience": "/live-it-right/",
+    "shareUrl": "/live-it-right/?version=main",
+    "kind": "AI-assisted song",
+    "shareGenre": "other",
+    "shareCategory": "music",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/10/live-it-right/audio.mp3",
+        "cover": "/media/songs/2026/10/live-it-right/cover.webp",
+        "socialImage": "/media/songs/2026/10/live-it-right/share.jpg",
+        "duration": 168.024,
+        "date": "2026-10-18",
+        "experience": "/live-it-right/?version=main",
+        "shareUrl": "/live-it-right/?version=main"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 0,
+    "think": 100,
+    "level-up": 65,
+    "heavy": 20,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-live-it-right",
+    "published": "2026-10-18T20:39:40-06:00",
+    "type": "New release",
+    "songId": "live-it-right",
+    "variantId": "main",
+    "title": "Live It Right — fifteen years in my head",
+    "summary": "Over fifteen years unfinished. Brought to life with AI in a day. A song about waiting for permission—with a hook ready to get stuck in yours.",
+    "href": "/live-it-right/",
+    "sharePath": "/updates/release-live-it-right/",
+    "cta": "Listen + read the story",
+    "featured": true,
+    "cover": "/media/songs/2026/10/live-it-right/cover.webp",
+    "cardLines": [
+      "LIVE IT",
+      "RIGHT"
+    ],
+    "cardTag": "15+ years in my head · One day to bring it to life",
+    "cardSummary": "Fifteen years in my head. One day to bring it to life with AI. Now let it get stuck in yours.",
+    "badge": "NEW SONG",
+    "intent": "think"
+  }
+}
