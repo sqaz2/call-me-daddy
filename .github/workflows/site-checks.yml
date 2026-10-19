@@ -74,6 +74,7 @@ jobs:
           node --check worker/index.mjs
           node --check canadian-crop-dusting/player.js
           node --check the-games-she-hates/player.js
+          node --check her-story/audiobook.js
           node --check scripts/check-games-she-hates-browser.cjs
       - name: Release manifest synchronization
         run: node scripts/sync-releases.mjs --check
@@ -133,6 +134,8 @@ jobs:
         run: node --test tests/september-release-pages.test.mjs
       - name: Since Before YouTube final release
         run: node --test tests/since-before-youtube.test.mjs
+      - name: Her Story page-only audiobook
+        run: node --test tests/her-story-audiobook.test.mjs
       - name: Times Are Coming release and dubstep sharing
         run: node --test tests/times-are-coming.test.mjs
       - name: Streaming delivery tests
