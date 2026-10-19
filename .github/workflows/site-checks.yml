@@ -29,6 +29,9 @@ jobs:
           node --check catalog-cycle.js
           node --check playlist-radio.js
           node --check continuous-playback.js
+          node --check winhamp/model.js
+          node --check winhamp/player.js
+          node --check scripts/check-winhamp-browser.cjs
           node --check universal-player.js
           node --check share.js
           node --check persistent-site-browser.js
@@ -109,6 +112,8 @@ jobs:
         run: node --test tests/my-music.test.mjs tests/song-moments.test.js
       - name: Quiet listener support
         run: node --test tests/quiet-tip.test.js
+      - name: WinHamp alternate player
+        run: node --test tests/winhamp.test.js
       - name: Universal player tests
         run: node --test tests/universal-player.test.js
       - name: Public feed tests
@@ -166,6 +171,7 @@ jobs:
           node scripts/check-home-discovery-browser.cjs
           node scripts/check-listening-variety-browser.cjs
           node scripts/check-navigation-browser.cjs
+          node scripts/check-winhamp-browser.cjs
           node scripts/check-player-controls-browser.cjs
           node scripts/check-player-source-browser.cjs
           node scripts/check-table-for-two-browser.mjs

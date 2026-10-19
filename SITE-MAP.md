@@ -214,3 +214,7 @@ Historical material belongs under:
 ## Structural rule
 
 `/archive/` is the visual doorway into historical material. Keep **Sqaz**, **Old Files / New Tools**, and song-lineage pages canonical at their existing URLs rather than duplicating their content inside the directory page.
+
+## WinHamp
+
+`/winhamp/` is an alternate one-screen listening view over the existing catalogue. It uses CMDContinuousPlayback, keeps song stories optional, supports exact song/version links, and never adds optional archive tracks to automatic rotation. New catalogue entries appear without a second upload.

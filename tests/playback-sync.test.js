@@ -353,3 +353,17 @@ test('switching playback owner clears the old controller intent even while hidde
   env.site.claimPlayback(frame.contentWindow);
   assert.ok(calls>0);assert.equal(wants,false);assert.equal(env.site.ownsPlayback(),false);assert.equal(env.site.ownsPlayback(frame.contentWindow),true);
 });
+
+test('WinHamp keeps the current owner on one screen while explicit song-story navigation still works',async()=>{
+  const env=environment({fetch:async()=>response()}),audio=new Media('/armando.mp3');
+  env.location.pathname='/winhamp/';env.api.connect({id:'existing-owner',media:audio,track:songs[1]});
+  audio.play();await flush();assert.deepEqual(env.navigations,[]);
+  assert.equal(env.api.getTrack().title,'Armando');
+  await env.api.openCurrentTrack();assert.deepEqual(env.navigations,['/armando/']);
+});
+
+test('a song lookup started before entering WinHamp cannot navigate away after it resolves',async()=>{
+  let resolve;const env=environment({fetch:()=>new Promise(r=>resolve=r)}),audio=new Media('/armando.mp3');
+  env.api.connect({id:'enter-station',media:audio,track:songs[1]});audio.play();
+  env.location.pathname='/winhamp/';resolve(response());await flush();assert.deepEqual(env.navigations,[]);
+});
