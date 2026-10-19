@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs');
 const base=process.env.SITE_BASE||'http://127.0.0.1:8765';
 const releaseId=process.argv[2]||'since-before-youtube';
 const cases={
- 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://hiphop.bid/72'},
+ 'her-story':{manifest:'2026-10-19-her-story',query:'I learned her laugh',note:'#song-story',copy:'It knows enough to get inside.',short:'https://suno.fyi/72'},
  'this-is-my-story':{manifest:'2026-10-14-this-is-my-story',query:'With rhythm and rhyme',note:'#song-story',copy:'The file was called tims.wav',short:'https://suno.fyi/69'},
  'come-sit-here-with-me':{manifest:'2026-10-14-come-sit-here-with-me',query:'make some room for you',note:'#song-story',copy:'A personal song about continuing to create through everything',short:'https://suno.fyi/68'},
  'keep-building-your-future':{manifest:'2026-10-11-keep-building-your-future',query:'fighting with his printer',note:'#song-story',copy:'This started with a message about keeping your dreams alive',short:'https://suno.fyi/67'},
