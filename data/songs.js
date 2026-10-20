@@ -16,7 +16,7 @@ window.CMD_SONGS = [
     "shareToExperience": true,
     "kind": "Rap · Satire",
     "shareGenre": "hiphop",
-    "shareCategory": "jokes",
+    "shareCategory": "music",
     "aliases": [
       "Let It Play"
     ],
