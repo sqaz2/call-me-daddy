@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "everybody-thinks-theyre-hot",
+    "title": "Everybody Thinks They’re Hot",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-20",
+    "project": "",
+    "description": "Everybody’s pitching. Nobody’s listening. A rap roast of self-promotion, inflated egos and a comment section full of competition — in three mixes.",
+    "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.mp3",
+    "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.jpg",
+    "experience": "/everybody-thinks-theyre-hot/",
+    "shareUrl": "/everybody-thinks-theyre-hot/?version=main",
+    "shareToExperience": true,
+    "kind": "Rap · Satire",
+    "shareGenre": "hiphop",
+    "shareCategory": "jokes",
+    "aliases": [
+      "Let It Play"
+    ],
+    "variants": [
+      {
+        "id": "main",
+        "label": "Celtic Hook Mix",
+        "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.mp3",
+        "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.jpg",
+        "duration": 88.68,
+        "date": "2026-10-20",
+        "experience": "/everybody-thinks-theyre-hot/?version=main",
+        "shareUrl": "/everybody-thinks-theyre-hot/?version=main",
+        "shareGenre": "hiphop"
+      },
+      {
+        "id": "full-gear",
+        "label": "Full Gear Mix",
+        "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/full-gear.mp3",
+        "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/full-gear.jpg",
+        "duration": 92.424,
+        "date": "2026-10-20",
+        "experience": "/everybody-thinks-theyre-hot/?version=full-gear",
+        "shareUrl": "/everybody-thinks-theyre-hot/?version=full-gear",
+        "shareGenre": "hiphop"
+      },
+      {
+        "id": "everybody-thinks-theyre-hot",
+        "label": "Everybody Thinks They’re Hot",
+        "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/everybody-thinks-theyre-hot.mp3",
+        "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/everybody-thinks-theyre-hot.jpg",
+        "duration": 85.632,
+        "date": "2026-10-20",
+        "experience": "/everybody-thinks-theyre-hot/?version=everybody-thinks-theyre-hot",
+        "shareUrl": "/everybody-thinks-theyre-hot/?version=everybody-thinks-theyre-hot",
+        "shareGenre": "hiphop"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 80,
+    "laugh": 85,
+    "think": 40,
+    "level-up": 20,
+    "heavy": 65,
+    "old-files": 0
+  },
+  "lyrics": {
+    "source": "artist-supplied",
+    "text": "[Verse]\nEverybody thinks they're hot\nAsk 'em\nEveryone's what you're not\nAsk 'em\nThe whole room thinks they're top three\nI look around, count the lies\nBrush off the debris\nEverybody thinks they're hot\nOkay, okay, let it play, let it play\nEverybody thinks they're hot\nOkay, okay, let it play, let it play\n[Verse 2]\nSelf-appointed, self-annointed, nah, scratch that introduction\nYou self-employed and selling bullshit, CEO of interruption\nLoud commotion, empty ocean, promotion, I bet you just don't know shit\nIt counts beneath the post and all of them are getting powerhouse\nPress kit and million-air rent, drew hundred-air\nNumbers ain't everything until those fucking numbers there\nBig announcements, big account and count the people clappin'\nUnderrated and discovered, they ain't ready for the vision\nFunny how the whole department fits inside your kitchen\nEverybody's competition, nobody will fucking listen\nNope, to the runny rappers in the comments, every one of them is pitchin'\nThat's why I'm bitching, goddamn man\n[Outro]\nEverybody thinks they're hot\nAsk 'em\nEverybody what you're not\nAsk 'em\nThe whole damn room thinks they're top three\nEverybody thinks they're hot\nOkay, okay, let it play, let it play\n[Verse]\nEverybody thinks they're hot",
+    "snippet": "Everybody thinks they're hot\nAsk 'em"
+  },
+  "update": {
+    "id": "release-everybody-thinks-theyre-hot",
+    "published": "2026-10-20T00:24:00-06:00",
+    "type": "New release",
+    "songId": "everybody-thinks-theyre-hot",
+    "variantId": "main",
+    "title": "Everybody Thinks They’re Hot — three mixes, one crowded comment section",
+    "summary": "Everybody’s pitching. Nobody’s listening. A rap roast of self-promotion, inflated egos and a comment section full of competition — in three mixes.",
+    "href": "/everybody-thinks-theyre-hot/",
+    "sharePath": "/updates/release-everybody-thinks-theyre-hot/",
+    "cta": "Pick your mix",
+    "featured": true,
+    "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.jpg",
+    "cardLines": [
+      "EVERYBODY THINKS",
+      "THEY’RE HOT"
+    ],
+    "cardTag": "Celtic Hook / Full Gear / Everybody Thinks They’re Hot",
+    "cardSummary": "Everybody wants their turn. Who’s actually listening?",
+    "badge": "THREE MIXES",
+    "intent": "laugh"
+  }
+}

@@ -173,7 +173,10 @@ const links=require('../data/song-links.json');
   await page.goto(base+'/',{waitUntil:'networkidle'});await page.getByRole('searchbox',{name:'Search songs'}).fill(config.query);
   assert.equal(await page.locator(`[data-home-song="${song.id}"] .home-song-open`).getAttribute('href'),song.experience);
   check('Homepage lyric search opens the new release');
-  await page.goto(base+'/updates/',{waitUntil:'networkidle'});assert(await page.locator(`a[href="${update.href}"]`).count()>0);
+  await page.goto(base+'/updates/',{waitUntil:'networkidle'});
+  // Older releases move beyond the first twelve cards as the catalog grows.
+  await page.locator('#updatesSearch').fill(song.title);
+  assert(await page.locator(`a[href="${update.href}"]`).count()>0);
   // Fix the clock at this publication so later releases do not invalidate this check.
   const newest=await page.evaluate(({now,id})=>{
    const build=()=>window.CMDLatestReleases.build({songs:window.CMD_SONGS,entries:window.CMD_BRIEFING.entries,now});

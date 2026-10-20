@@ -18,7 +18,7 @@ async function runtime(ready = true) {
 
 test('every recording shares its reviewed hook from either its long or numbered URL', async () => {
   const links = await runtime();
-  assert.equal(new Set(data.rows.map(row=>row.songId)).size,73);
+  assert.deepEqual([...new Set(data.rows.map(row=>row.songId))].sort(), [...new Set(loadCatalog().map(song=>song.id))].sort());
   for (const row of data.rows) {
     const short = links.forTrack({songId:row.songId,variantId:row.version});
     for (const url of [new URL(row.target,data.origin).href,short]) {

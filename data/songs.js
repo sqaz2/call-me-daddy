@@ -1,6 +1,62 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "everybody-thinks-theyre-hot",
+    "title": "Everybody Thinks They’re Hot",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-20",
+    "project": "",
+    "description": "Everybody’s pitching. Nobody’s listening. A rap roast of self-promotion, inflated egos and a comment section full of competition — in three mixes.",
+    "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.mp3",
+    "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.jpg",
+    "experience": "/everybody-thinks-theyre-hot/",
+    "shareUrl": "/everybody-thinks-theyre-hot/?version=main",
+    "shareToExperience": true,
+    "kind": "Rap · Satire",
+    "shareGenre": "hiphop",
+    "shareCategory": "jokes",
+    "aliases": [
+      "Let It Play"
+    ],
+    "variants": [
+      {
+        "id": "main",
+        "label": "Celtic Hook Mix",
+        "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.mp3",
+        "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.jpg",
+        "duration": 88.68,
+        "date": "2026-10-20",
+        "experience": "/everybody-thinks-theyre-hot/?version=main",
+        "shareUrl": "/everybody-thinks-theyre-hot/?version=main",
+        "shareGenre": "hiphop"
+      },
+      {
+        "id": "full-gear",
+        "label": "Full Gear Mix",
+        "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/full-gear.mp3",
+        "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/full-gear.jpg",
+        "duration": 92.424,
+        "date": "2026-10-20",
+        "experience": "/everybody-thinks-theyre-hot/?version=full-gear",
+        "shareUrl": "/everybody-thinks-theyre-hot/?version=full-gear",
+        "shareGenre": "hiphop"
+      },
+      {
+        "id": "everybody-thinks-theyre-hot",
+        "label": "Everybody Thinks They’re Hot",
+        "audio": "/media/songs/2026/10/everybody-thinks-theyre-hot/everybody-thinks-theyre-hot.mp3",
+        "cover": "/media/songs/2026/10/everybody-thinks-theyre-hot/everybody-thinks-theyre-hot.jpg",
+        "duration": 85.632,
+        "date": "2026-10-20",
+        "experience": "/everybody-thinks-theyre-hot/?version=everybody-thinks-theyre-hot",
+        "shareUrl": "/everybody-thinks-theyre-hot/?version=everybody-thinks-theyre-hot",
+        "shareGenre": "hiphop"
+      }
+    ]
+  },
+  {
     "id": "big-dick-willy",
     "title": "Big Dick Willy",
     "artist": "MusicSubject × Call Me Daddy",

@@ -549,6 +549,15 @@
         "main",
         "retro"
       ]
+    },
+    {
+      "number": 74,
+      "songId": "everybody-thinks-theyre-hot",
+      "versions": [
+        "main",
+        "full-gear",
+        "everybody-thinks-theyre-hot"
+      ]
     }
   ]
 }
