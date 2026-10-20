@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { loadCatalog } from './sync-song-links.mjs';
+import { loadShareCopy, shareCopyFor, shareTitle } from './song-share-copy.mjs';
 import { ORIGIN, imageURL, readHead, routePath, attributes } from '../song-social.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const hash = value => createHash('sha256').update(value).digest('hex').slice(0, 16);
@@ -33,7 +34,7 @@ export function imageDimensions(bytes) {
   }
   return {};
 }
-export function buildSongSocial({ catalog = loadCatalog(), write = true } = {}) {
+export function buildSongSocial({ catalog = loadCatalog(), copies = loadShareCopy(catalog), write = true } = {}) {
   const assets = new Map();
   const artwork = value => {
     const original = imageURL(value);
@@ -68,8 +69,9 @@ export function buildSongSocial({ catalog = loadCatalog(), write = true } = {}) 
     for (const variant of variants) {
       const label = variant.label || '';
       const suffix = label && !/^(main(?: version)?|song|original)$/i.test(label) && !song.title.toLowerCase().includes(label.toLowerCase()) ? ` — ${label}` : '';
-      const title = `${song.title}${suffix} — ${song.artist || 'MusicSubject × Call Me Daddy'}`;
-      versions[variant.id] = { title, description: variant.description || song.description || `Listen to ${song.title}.`,
+      const copy = shareCopyFor(copies, song, variant);
+      const title = shareTitle(copy, song, variant);
+      versions[variant.id] = { title, description: copy.description,
         ...artwork(variant.socialImage || variant.cover || song.socialImage || song.cover), imageAlt: `${song.title}${suffix} artwork`, type: 'music.song' };
       associate(variant.experience, song.id, variant.id);
       associate(variant.shareUrl, song.id, variant.id);
@@ -103,8 +105,10 @@ export function buildSongSocial({ catalog = loadCatalog(), write = true } = {}) 
         const preferred = primary?.searchParams.get('version') || candidates.find(r => r.version === song.defaultVersion)?.version || candidates[0].version;
         const version = (matching.find(([id]) => id === preferred) || matching[0])?.[0] || preferred;
         const selected = song.versions[version] || song.versions[song.defaultVersion];
-        // Keep a dedicated page's authored wording when its photo matches the recording.
+        // Preserve authored artwork and the recording association; use reviewed sharing copy.
         record = { ...selected, ...(matching.length ? record : !raw.image ? { title: raw.title || selected.title, description: raw.description || selected.description } : {}), canonical: new URL(route, ORIGIN).href, songId, version };
+        record.title = selected.title;
+        record.description = selected.description;
       }
       if (record.image) pages[route] = record;
     }

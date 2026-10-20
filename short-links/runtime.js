@@ -24,6 +24,10 @@
   }
   function rowForUrl(value) {
     const url = parse(value);
+    if (url && Object.values(data.domains).includes(url.hostname)) {
+      const match = url.pathname.match(/^\/([1-9]\d*)(?:\/([1-9]\d*))?\/?$/);
+      return match ? data.rows.find(row => row.number === Number(match[1]) && row.slot === Number(match[2] || 1)) || null : null;
+    }
     if (!url || url.origin !== data.origin && url.origin !== location.origin) return null;
     const songId = url.searchParams.get('song');
     const version = url.searchParams.get('version');
@@ -33,7 +37,13 @@
     return candidates.find(row => version ? row.version === version : row.slot === 1) || null;
   }
   const forTrack = track => urlFor(rowForTrack(track));
-  const forUrl = value => urlFor(rowForUrl(value)) || value;
+  const specialRoute = value => { const url = parse(value); return url && (url.searchParams.has('t') || pathname(url.href) === '/winhamp'); };
+  const forUrl = value => specialRoute(value) ? value : urlFor(rowForUrl(value)) || value;
+  const editorialShare = (input, track) => {
+    if (input?.preserveShareText || specialRoute(input?.url)) return input;
+    const row = track ? rowForTrack(track) : rowForUrl(input?.url);
+    return row?.share ? { ...input, title: row.share.title, text: row.share.text, preserveShareText: true } : { ...input, preserveShareText: true };
+  };
   const prepareShare = input => {
     const original = input?.url || '';
     const url = original ? forUrl(original) : '';
@@ -51,5 +61,5 @@
       if (status.service === 'musicsubject-song-links' && status.revision === data.revision) ready.add(domain);
     } catch { /* Preserve existing working URLs until this exact registry is deployed. */ }
   })) : Promise.resolve();
-  window.CMDShortLinks = { forTrack, forUrl, rowForTrack, rowForUrl, prepareShare, ready: checking };
+  window.CMDShortLinks = { forTrack, forUrl, rowForTrack, rowForUrl, editorialShare, prepareShare, ready: checking };
 })();

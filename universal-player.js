@@ -207,7 +207,7 @@
     const reported=active.track(),track={...activeTrack(),...recordingIdentity()};
     // Sharing belongs to the visible document, not an older, hidden audio owner.
     if(window.CMDShare?.shareTrack)return defaultShare(track,copyOnly);
-    if(copyOnly)return loadFeature('CMDShare','/share.js?v=20260930-facebook-1').then(share=>share?.shareTrack(track,{copyOnly:true}));
+    if(copyOnly)return loadFeature('CMDShare','/share.js?v=20261019-story-share-1').then(share=>share?.shareTrack(track,{copyOnly:true}));
     const songId=value=>value?.songId||String(value?.id||'').split(':')[0];
     if(trackKey(reported)!==trackKey(track)||songId(reported)!==songId(track)||reported?.title!==track.title)return defaultShare(track);
     return active.share?.();
@@ -263,8 +263,8 @@
     nodes.icon.textContent=playing?'❚❚':'▶';nodes.toggle.textContent=playing?'❚❚':'▶';nodes.toggle.setAttribute('aria-label',playing?'Pause':'Play');nodes.art.setAttribute('aria-label',playing?`Pause ${track.title}`:`Play ${track.title}`);
     nodes.previous.disabled=typeof active.previous!=='function';nodes.next.disabled=typeof active.next!=='function';nodes.share.disabled=typeof active.share!=='function';
     const copyInFacebook=Boolean(window.CMDShare?.isFacebookBrowser?.());
-    nodes.share.classList[copyInFacebook?'add':'remove']('is-copy-link');nodes.share.textContent=copyInFacebook?'Copy link':'↗';
-    nodes.share.setAttribute('aria-label',copyInFacebook?'Copy current song link':'Share current song');
+    nodes.share.classList[copyInFacebook?'add':'remove']('is-copy-link');nodes.share.textContent=copyInFacebook?'Copy post':'↗';
+    nodes.share.setAttribute('aria-label',copyInFacebook?'Copy current song post':'Share current song');
     nodes.bar.style.width=`${ratio*100}%`;nodes.progress.style.setProperty?.('--progress',`${ratio*100}%`);if(nodes.thumb)nodes.thumb.style.left=`${ratio*100}%`;nodes.progress.setAttribute('aria-valuenow',String(Math.round(ratio*100)));nodes.current.textContent=formatTime(time);nodes.duration.textContent=formatTime(duration);
     nodes.progress.setAttribute('aria-valuetext',duration>0?`${formatTime(time)} of ${formatTime(duration)}`:'Duration unavailable');
     nodes.story.classList.remove('is-coming');
@@ -345,7 +345,7 @@
   window.CMDUniversalPlayer={version:VERSION,connect,observeContinuous,adopt,followTrack,cancelFollow,resolveRoute,fallbackRoute,openCurrentTrack,getActive:()=>active?.handle||null,getTrack:activeTrack,getMedia:()=>active?.media()||null,control:(action,...args)=>{if(action==='share')return shareActive();if(action==='shareMoment')return shareMoment();if(['play','pause','toggle','next','previous','seek'].includes(action))return active?.[action]?.(...args)},refresh:()=>render(),contactUrl:CONTACT_URL};
   loadFeature('CMDListenerTaste','/listener-taste.js?v=20260926-library-1').then(()=>render());
   loadFeature('CMDSongMoments','/song-moments.js?v=20260926-moments-1').then(()=>render());
-  loadFeature('CMDShare','/share.js?v=20260930-facebook-1').then(()=>render());
+  loadFeature('CMDShare','/share.js?v=20261019-story-share-1').then(()=>render());
   loadFeature('CMDMyMusic','/my-music/library.js?v=20260926-library-1').then(()=>render());
   loadFeature('CMDQuietTip','/quiet-tip.js?v=20260926-tip-1').then(()=>render());
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')render()});

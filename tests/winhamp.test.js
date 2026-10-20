@@ -94,7 +94,7 @@ test('shuffle and repeat changes do not reload, restart or replace the current a
 });
 test('song sharing preserves the WinHamp route and exact recording without autoplay',async()=>{
  const env=environment({search:'?song=first&version=remix'});env.elements.shareSong.emit('click');await Promise.resolve();
- const url=new URL(env.copied[0]);assert.equal(url.pathname,'/winhamp/');assert.equal(url.searchParams.get('version'),'remix');assert.equal(url.searchParams.has('autoplay'),false);
+ const url=new URL(env.copied[0].split('\n').at(-1));assert.equal(url.pathname,'/winhamp/');assert.equal(url.searchParams.get('version'),'remix');assert.equal(url.searchParams.has('autoplay'),false);
 });
 test('discard/reload restoration preserves the saved time without a second load',()=>{
  const snapshot={playerId:'winhamp',track:{id:'first:main',songId:'first',variantId:'main',audio:'/first.mp3'},currentTime:61,wantsPlayback:true,updatedAt:Date.now()};
@@ -132,7 +132,7 @@ test('StarMuff player and recording shares retain the selected library and exact
  const env=environment({search:'?playlist=starmuff&song=starmuff-two&version=main',starmuff:starSongs});
  assert.equal(env.elements.trackTitle.textContent,'Space Exploration');
  env.elements.shareSong.emit('click');await Promise.resolve();
- let url=new URL(env.copied[0]);assert.equal(url.searchParams.get('playlist'),'starmuff');assert.equal(url.searchParams.get('song'),'starmuff-two');
+ let url=new URL(env.copied[0].split('\n').at(-1));assert.equal(url.searchParams.get('playlist'),'starmuff');assert.equal(url.searchParams.get('song'),'starmuff-two');
  env.elements.sharePlayer.emit('click');await Promise.resolve();
- url=new URL(env.copied[1]);assert.equal(url.searchParams.get('playlist'),'starmuff');assert.equal(url.searchParams.has('song'),false);
+ url=new URL(env.copied[1].split('\n').at(-1));assert.equal(url.searchParams.get('playlist'),'starmuff');assert.equal(url.searchParams.has('song'),false);
 });

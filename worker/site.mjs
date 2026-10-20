@@ -4,7 +4,7 @@ import { resolveSocial, rewriteHead, readHead, SOCIAL_VERSION } from '../song-so
 
 export function addAppShell(html) {
   // Refresh already-cached share scripts without rewriting generated releases.
-  html = html.replace(/(<script\b[^>]*\bsrc=["']\/share\.js)(?:\?[^"']*)?(["'])/gi, '$1?v=20260930-facebook-1$2');
+  html = html.replace(/(<script\b[^>]*\bsrc=["']\/share\.js)(?:\?[^"']*)?(["'])/gi, '$1?v=20261019-story-share-1$2');
   let head = '';
   if (!/<link\b[^>]*rel=["']manifest["']/i.test(html)) head += '<link rel="manifest" href="/manifest.webmanifest">';
   if (!/<meta\b[^>]*name=["']theme-color["']/i.test(html)) head += '<meta name="theme-color" content="#080808">';

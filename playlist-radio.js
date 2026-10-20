@@ -86,6 +86,7 @@
 
   async function share(track){
     if(!track)return false;
+    if(window.CMDShare?.shareTrack)return window.CMDShare.shareTrack(track);
     const detail=track.variantCount>1&&track.variantLabel?` — ${track.variantLabel}`:'';
     const data={
       title:`${track.title||'Call Me Daddy'}${detail}`,

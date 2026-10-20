@@ -82,8 +82,8 @@ test('mastered sharing uses dubstep.bid/64/2 while /64 retains the original reco
   assert.equal(window.CMDShortLinks.forUrl(`${links.origin}${variant.shareUrl}`),expected);
   const response=handleShortLink(new Request(expected)),target=new URL(response.headers.get('location'));
   assert.equal(response.status,302);assert.equal(target.origin,links.origin);
-  assert.equal(target.pathname,'/music/');assert.equal(target.searchParams.get('song'),song.id);
-  assert.equal(target.searchParams.get('version'),variant.id);assert.equal(target.searchParams.get('share'),'1');
+  assert.equal(target.pathname,'/times-are-coming/');
+  assert.equal(target.searchParams.get('version'),variant.id);
  }
  assert.equal(window.CMDShortLinks.forUrl(`${links.origin}${song.shareUrl}`),'https://dubstep.bid/64/2');
  assert.deepEqual(JSON.parse(read('content/song-links.json')).songs.find(row=>row.songId===song.id).versions,['main','mastered']);

@@ -8,6 +8,8 @@ const registry=require('../data/song-links.json');
 const origin=registry.origin;
 const data={title:'Keep Moving — Trap Mix',text:'Listen to Keep Moving — Trap Mix.',url:`${origin}/updates/release-keep-moving/?version=trap-mix`};
 const expected=`https://${registry.domains.other}/27/2`;
+const editorial=registry.rows.find(row=>row.songId==='keep-moving'&&row.version==='trap-mix').share;
+const expectedPost=editorial.text+'\n'+expected;
 
 // Minimal DOM for exercising asynchronous failures and visible recovery UI.
 class Element{
@@ -53,7 +55,7 @@ async function environment({navigator={},legacy=false,ready=true,shortOnly=true}
   vm.runInNewContext(source,{window,document,location,navigator,URL,URLSearchParams,AbortSignal,
     fetch:async()=>({ok:ready,json:async()=>({service:'musicsubject-song-links',revision:registry.revision})})});
   await window.CMDShortLinks.ready;
-  return {window,document,commands,api:window.CMDShare,dialog:()=>document.body.querySelector('.cmd-share-dialog'),field:()=>document.body.querySelector('.cmd-share-link'),status:()=>document.body.querySelector('.cmd-share-copy-status')};
+  return {window,document,commands,api:window.CMDShare,dialog:()=>document.body.querySelector('.cmd-share-dialog'),field:()=>document.body.querySelector('.cmd-share-link'),post:()=>document.body.querySelector('.cmd-share-post'),status:()=>document.body.querySelector('.cmd-share-copy-status')};
 }
 
 test('Facebook and Messenger copy the exact version on a tap without opening native sharing',async t=>{
@@ -62,34 +64,34 @@ test('Facebook and Messenger copy the exact version on a tap without opening nat
     const env=await environment({navigator:{userAgent,share:()=>shares++,clipboard:{writeText:async text=>copies.push(text)}}});
     assert.equal(copies.length,0);assert.equal(env.dialog(),null);
     const result=env.api.nativeShare(data);
-    assert.equal(copies[0],expected,'clipboard call starts in the tap, before any asynchronous work');
+    assert.equal(copies[0],expectedPost,'clipboard call starts in the tap, before any asynchronous work');
     assert.equal(await result,true);assert.equal(shares,0);assert.equal(copies.length,1);
-    assert.match(env.status().textContent,/Song link copied/);assert.equal(env.field().value,expected);
-    assert.equal(env.dialog().querySelector('.cmd-share-song').textContent,data.title);
+    assert.match(env.status().textContent,/Post copied/);assert.equal(env.field().value,expected);assert.equal(env.post().value,expectedPost);
+    assert.equal(env.dialog().querySelector('.cmd-share-song').textContent,editorial.title);
   });
 });
 
 test('ordinary native sharing keeps one exact URL and cancellation never copies',async()=>{
   const sent=[],copies=[];const env=await environment({navigator:{userAgent:'Chrome Mobile Safari',share:async value=>sent.push(value),clipboard:{writeText:async value=>copies.push(value)}}});
   const result=env.api.nativeShare(data);assert.equal(sent.length,1);assert.equal(await result,true);
-  assert.equal(sent[0].text,`${data.text}\n${expected}`);assert.equal(copies.length,0);assert.equal(env.dialog(),null);
+  assert.equal(sent[0].text,expectedPost);assert.equal(sent[0].title,editorial.title);assert.equal(copies.length,0);assert.equal(env.dialog(),null);
   const cancelled=await environment({navigator:{share:async()=>{throw Object.assign(Error(),{name:'AbortError'})},clipboard:{writeText:async value=>copies.push(value)}}});
   assert.equal(await cancelled.api.nativeShare(data),false);assert.equal(copies.length,0);assert.equal(cancelled.dialog(),null);
 });
 
 test('native denial falls back even when Facebook detection does not match',async()=>{
   const copies=[];const env=await environment({navigator:{share:async()=>{throw Object.assign(Error(),{name:'NotAllowedError'})},clipboard:{writeText:async value=>copies.push(value)}}});
-  assert.equal(await env.api.nativeShare(data),true);assert.deepEqual(copies,[expected]);assert.ok(env.dialog().open);
+  assert.equal(await env.api.nativeShare(data),true);assert.deepEqual(copies,[expectedPost]);assert.ok(env.dialog().open);
 });
 
 test('missing or rejected clipboard and false legacy copy leave an honest selectable link',async t=>{
   for(const navigator of [{},{clipboard:{writeText:async()=>{throw Error('blocked')}}}])await t.test('blocked copy',async()=>{
     const env=await environment({navigator});const external={textContent:''};
     assert.equal(await env.api.nativeShare(data,external),false);
-    assert.equal(env.field().value,expected);assert.equal(env.field().selected,expected);
+    assert.equal(env.field().value,expected);assert.equal(env.post().selected,expectedPost);
     assert.match(env.status().textContent,/Press and hold/);assert.doesNotMatch(external.textContent,/copied/i);
-    assert.equal(env.commands.length,1);assert.equal(env.commands[0].text,expected);
-    await env.dialog().querySelector('.cmd-share-select').emit('click');assert.equal(env.field().selected,expected);
+    assert.equal(env.commands.length,1);assert.equal(env.commands[0].text,expectedPost);
+    await env.dialog().querySelector('.cmd-share-select').emit('click');assert.equal(env.post().selected,expectedPost);
   });
 });
 
@@ -122,16 +124,32 @@ test('explicit copy works with native sharing available and keeps a selected tra
 test('unavailable short domains preserve exact song and version in a working full URL',async()=>{
   const env=await environment({ready:false});
   await env.api.shareTrack({songId:'keep-moving',variantId:'trap-mix',title:'Keep Moving',experience:'/updates/release-keep-moving/'},{copyOnly:true});
-  assert.equal(env.field().value,data.url);
+  assert.equal(env.field().value,new URL(registry.rows.find(row=>row.songId==='keep-moving'&&row.version==='trap-mix').target,origin).href);
 });
 
 test('Facebook compact and full-page share controls offer copying without popup loops',async()=>{
   const copies=[];const env=await environment({navigator:{userAgent:'[FBAN/FB4A;]',clipboard:{writeText:async value=>copies.push(value)}}});
   env.window.open=()=>assert.fail('Facebook in-app sharing must not open another Facebook popup');
   const compact=env.document.createElement('div');compact.dataset={shareCompact:'1',shareUrl:data.url,shareTitle:data.title};
-  env.api.mount(compact);assert.equal(compact.querySelector('button').textContent,'Copy link');
+  env.api.mount(compact);assert.equal(compact.querySelector('button').textContent,'Copy post');
   await compact.querySelector('button').emit('click');
   const full=env.document.createElement('div');full.dataset={shareUrl:data.url,shareTitle:data.title};env.api.mount(full);
   const facebook=full.querySelectorAll('button').find(button=>button.dataset.network==='facebook');
-  await full.emit('click',{target:facebook});assert.deepEqual(copies,[expected,expected]);
+  await full.emit('click',{target:facebook});assert.deepEqual(copies,[expectedPost,expectedPost]);
+});
+
+
+test('post fallback lets someone copy just the link or select the full post',async()=>{
+  const copies=[];const env=await environment({navigator:{clipboard:{writeText:async text=>copies.push(text)}}});
+  await env.api.nativeShare(data);
+  await env.dialog().querySelector('.cmd-share-copy').emit('click');
+  assert.deepEqual(copies,[expectedPost,expected]);
+  await env.dialog().querySelector('.cmd-share-copy-post').emit('click');
+  assert.equal(copies.at(-1),expectedPost);
+});
+
+test('ordinary share from a retained iframe copies the editorial post in the visible owner',async()=>{
+  const copies=[];const top=await environment({navigator:{clipboard:{writeText:async text=>copies.push(text)}}});
+  const child=await environment({navigator:{clipboard:{writeText(){assert.fail('hidden owner must delegate')}}}});child.window.top=top.window;
+  await child.api.nativeShare(data);assert.deepEqual(copies,[expectedPost]);assert.equal(child.dialog(),null);assert.ok(top.dialog().open);
 });

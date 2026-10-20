@@ -3,6 +3,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { loadShareCopy, shareCopyFor, shareTitle } from './song-share-copy.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const origin = 'https://callmedaddy.musicsubject.com';
@@ -68,6 +69,7 @@ export function allocate(catalog, previous = { schemaVersion: 1, songs: [] }) {
 }
 
 export function buildLinks(catalog, registry) {
+  const copies = loadShareCopy(catalog);
   const rows = [];
   for (const saved of registry.songs) {
     const song = catalog.find(item => item.id === saved.songId);
@@ -78,7 +80,9 @@ export function buildLinks(catalog, registry) {
       if (!variant) continue;
       const page = song.experience || '';
       const samePageSongs = catalog.filter(item => item.experience && new URL(item.experience, origin).pathname === new URL(page || '/music/', origin).pathname);
-      const direct = page && !page.startsWith('/updates/') && (available.length === 1 || song.shareToExperience === true) && samePageSongs.length === 1;
+      // These existing story players honor the exact version query on first play.
+      const versionAware = ['/this-is-my-story/', '/times-are-coming/', '/nobody-wants-to-listen/', '/archive/2010-wows/', '/the-games-she-hates/', '/make-me-an-animal-v6/', '/set-a-table-for-two/'].includes(new URL(page || '/', origin).pathname);
+      const direct = page && !page.startsWith('/updates/') && (available.length === 1 || song.shareToExperience === true || versionAware) && samePageSongs.length === 1;
       let target = direct ? new URL(page, origin) : new URL('/music/', origin);
       if (direct && available.length > 1) target.searchParams.set('version', id);
       if (!direct) {
@@ -87,8 +91,10 @@ export function buildLinks(catalog, registry) {
         target.searchParams.set('share', '1');
       }
       const aliases = [song.experience, song.shareUrl, `/updates/release-${song.id}/`].filter(Boolean);
+      const copy = shareCopyFor(copies, song, variant);
       rows.push({ number: saved.number, slot: index + 1, songId: song.id, version: id,
         title: song.title, label: variant.label || '', genre: genreFor(song, variant), shareCategory: shareCategoryFor(song, variant),
+        share: { ...copy, title: shareTitle(copy, song, variant) },
         audio: variant.audio || '', aliases, target: target.pathname + target.search + target.hash });
     }
   }

@@ -1,6 +1,6 @@
 // Shared by the Worker and the browser: a URL must describe one recording.
 export const ORIGIN = 'https://callmedaddy.musicsubject.com';
-export const SOCIAL_VERSION = '20261014-full-brand-1';
+export const SOCIAL_VERSION = '20261019-story-share-1';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object || {}, key);
 export function routePath(value) {
   const path = new URL(value, ORIGIN).pathname.replace(/\/index\.html$/i, '/');
