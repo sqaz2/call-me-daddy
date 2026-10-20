@@ -701,6 +701,16 @@
         "data/sad-music.js",
         "sad-music/will-to-live/index.html"
       ]
+    },
+    "everybody-thinks-theyre-hot": {
+      "headline": "The whole room thinks they’re top three. Somebody’s maths is off.",
+      "text": "The whole room thinks they’re top three. Somebody’s maths is off.\n\nA comment became a hook, then a roast of everybody trying to be heard at once. Open the story and pick your version: Celtic Hook, Full Gear, or Everybody Thinks They’re Hot.",
+      "description": "Everybody’s pitching. Nobody’s listening. Read how one comment became a rap roast, then choose from three mixes.",
+      "sources": [
+        "everybody-thinks-theyre-hot/index.html",
+        "content/sources/everybody-thinks-theyre-hot.json",
+        "content/releases/2026-10-20-everybody-thinks-theyre-hot.json"
+      ]
     }
   }
 }

@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "everybody-thinks-theyre-hot": {
+    "surprise": 80,
+    "laugh": 85,
+    "think": 40,
+    "level-up": 20,
+    "heavy": 65,
+    "old-files": 0
+  },
   "big-dick-willy": {
     "surprise": 85,
     "laugh": 95,
