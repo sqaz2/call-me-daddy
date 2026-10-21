@@ -12,3 +12,4 @@
 .nomad-release .release-lyrics pre{line-height:1.95}
 .nomad-suno{margin:0;padding:0 5px 26px;font-size:13px}
 @media(max-width:720px){.nomad-release .release-stage{order:-1}.nomad-release .release-heading{font-size:9px;margin-bottom:24px;letter-spacing:.06em;gap:12px}.nomad-release .release-intro h1{font-size:clamp(50px,15vw,76px)}.nomad-hook{font-size:19px;margin:16px 0 10px}.nomad-release .release-stage{max-width:360px}}
+.nomad-kit{margin:14px 0 0;font-size:13px;letter-spacing:.02em}.nomad-kit a{display:inline-flex;gap:6px;align-items:center;padding:8px 14px;border:1px solid currentColor;border-radius:999px;color:inherit;text-decoration:none;opacity:.85}.nomad-kit a:hover,.nomad-kit a:focus-visible{opacity:1}.nomad-kit span{opacity:.7}
