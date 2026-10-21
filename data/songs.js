@@ -1,6 +1,33 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "nomadic-hustla",
+    "title": "Nomadic Hustla (Trap Glitch Overdrive)",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-21",
+    "project": "",
+    "description": "Hustla, hustla. Husss, husss. A roaming trap hook pushed through chopped vocals, filter sweeps and glitch-heavy overdrive.",
+    "audio": "/media/songs/2026/10/nomadic-hustla/audio.mp3",
+    "cover": "/media/songs/2026/10/nomadic-hustla/cover.png",
+    "experience": "/nomadic-hustla/",
+    "shareUrl": "/nomadic-hustla/?version=main",
+    "kind": "AI-assisted trap song",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Trap Glitch Overdrive",
+        "audio": "/media/songs/2026/10/nomadic-hustla/audio.mp3",
+        "cover": "/media/songs/2026/10/nomadic-hustla/cover.png",
+        "duration": 102.4
+      }
+    ],
+    "shareToExperience": true,
+    "shareGenre": "hiphop",
+    "shareCategory": "music"
+  },
+  {
     "id": "everybody-thinks-theyre-hot",
     "title": "Everybody Thinks They’re Hot",
     "artist": "MusicSubject × Call Me Daddy",
