@@ -55,7 +55,7 @@
       keywords:['animal','primal','teeth','stomp','survival','friction'],
       songIds:[
         'make-me-an-animal','pull-me-like-that','where-the-teeth-are-kept','hard-earned-light',
-        'survival-mode','friction-the-what','stomp-clamp'
+        'survival-mode','friction-the-what','stomp-clamp','nomadic-hustla'
       ]
     },
     {

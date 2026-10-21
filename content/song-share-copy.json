@@ -711,6 +711,15 @@
         "content/sources/everybody-thinks-theyre-hot.json",
         "content/releases/2026-10-20-everybody-thinks-theyre-hot.json"
       ]
+    },
+    "nomadic-hustla": {
+      "headline": "Nomad with a pack, I’m a hustla, hustla.",
+      "text": "Nomad with a pack. Chrome tuck in the back. City glare on the glass.\n\nNomadic Hustla is dark trap that keeps glitching itself apart: sub-crushing 808s, ominous bells and stutter edits. Open the page, tap the cover and read the words.",
+      "description": "Dark trap and glitch breakdowns: tap the cover to play Nomadic Hustla (Trap Glitch Overdrive) and read the lyrics.",
+      "sources": [
+        "nomadic-hustla/index.html",
+        "content/releases/2026-10-21-nomadic-hustla.json"
+      ]
     }
   }
 }

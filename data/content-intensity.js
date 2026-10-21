@@ -57,6 +57,7 @@
     // --- light (comedy / satire / fun / forward motion) ---
     'keep-building-your-future':'light',
     'everybody-thinks-theyre-hot':'light',
+    'nomadic-hustla':'light',
     'big-dick-willy':'light',
     'running-a-monopoly':'light',
     'times-are-coming':'light',

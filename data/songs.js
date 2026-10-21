@@ -1,6 +1,42 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "nomadic-hustla",
+    "title": "Nomadic Hustla (Trap Glitch Overdrive)",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-21",
+    "project": "",
+    "description": "Nomad with a pack, demon in the night. Dark trap with sub-crushing 808s, ominous bells and glitch-saturated breakdowns. MusicSubject × Call Me Daddy.",
+    "audio": "/media/songs/2026/10/nomadic-hustla/audio.mp3",
+    "cover": "/media/songs/2026/10/nomadic-hustla/cover.jpg",
+    "experience": "/nomadic-hustla/",
+    "shareUrl": "/nomadic-hustla/?version=main",
+    "kind": "Trap · Glitch",
+    "shareGenre": "hiphop",
+    "shareCategory": "music",
+    "sunoUrl": "https://suno.com/song/7737f870-a1e3-4a2d-822d-cc2026d430b3",
+    "aliases": [
+      "Nomadic Hustla",
+      "Nomadic Hustler",
+      "Trap Glitch Overdrive"
+    ],
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full song",
+        "audio": "/media/songs/2026/10/nomadic-hustla/audio.mp3",
+        "cover": "/media/songs/2026/10/nomadic-hustla/cover.jpg",
+        "date": "2026-10-21",
+        "experience": "/nomadic-hustla/?version=main",
+        "shareUrl": "/nomadic-hustla/?version=main",
+        "sunoUrl": "https://suno.com/song/7737f870-a1e3-4a2d-822d-cc2026d430b3",
+        "duration": 102.43
+      }
+    ]
+  },
+  {
     "id": "everybody-thinks-theyre-hot",
     "title": "Everybody Thinks They’re Hot",
     "artist": "MusicSubject × Call Me Daddy",
