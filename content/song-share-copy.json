@@ -711,6 +711,15 @@
         "content/sources/everybody-thinks-theyre-hot.json",
         "content/releases/2026-10-20-everybody-thinks-theyre-hot.json"
       ]
+    },
+    "nomadic-hustla": {
+      "headline": "I said I was dropping a bombshell. Took it literally.",
+      "text": "I said I was dropping a bombshell. Took it literally. 😎💣🐚\n\nHustla, hustla. Husss, husss. Open Nomadic Hustla for the full trap-glitch track, the 30-second video and the lyrics. Which bit gets stuck first?",
+      "description": "A bomb in a shell. A hook on repeat. Open Nomadic Hustla for the full track, the video clip and the lyrics.",
+      "sources": [
+        "nomadic-hustla/index.html",
+        "content/sources/nomadic-hustla.json"
+      ]
     }
   }
 }

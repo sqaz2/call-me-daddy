@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "nomadic-hustla": {
+    "surprise": 85,
+    "laugh": 15,
+    "think": 20,
+    "level-up": 65,
+    "heavy": 95,
+    "old-files": 0
+  },
   "everybody-thinks-theyre-hot": {
     "surprise": 80,
     "laugh": 85,

@@ -12,6 +12,7 @@
    * When unsure between deep/raw, prefer deep.
    */
   const INTENSITY={
+    'nomadic-hustla':'light',
     // --- raw (minimum + clearly crisis / locked-in despair) ---
     'this-is-my-story':'raw',
     'will-to-live':'raw',

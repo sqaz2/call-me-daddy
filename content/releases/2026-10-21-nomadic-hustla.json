@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "nomadic-hustla",
+    "title": "Nomadic Hustla (Trap Glitch Overdrive)",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-21",
+    "project": "",
+    "description": "Hustla, hustla. Husss, husss. A roaming trap hook pushed through chopped vocals, filter sweeps and glitch-heavy overdrive.",
+    "audio": "/media/songs/2026/10/nomadic-hustla/audio.mp3",
+    "cover": "/media/songs/2026/10/nomadic-hustla/cover.png",
+    "experience": "/nomadic-hustla/",
+    "shareUrl": "/nomadic-hustla/?version=main",
+    "kind": "AI-assisted trap song",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Trap Glitch Overdrive",
+        "audio": "/media/songs/2026/10/nomadic-hustla/audio.mp3",
+        "cover": "/media/songs/2026/10/nomadic-hustla/cover.png",
+        "duration": 102.4
+      }
+    ],
+    "shareToExperience": true,
+    "shareGenre": "hiphop",
+    "shareCategory": "music"
+  },
+  "radio": {
+    "surprise": 85,
+    "laugh": 15,
+    "think": 20,
+    "level-up": 65,
+    "heavy": 95,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-nomadic-hustla",
+    "published": "2026-10-21T06:00:00-06:00",
+    "type": "New release",
+    "songId": "nomadic-hustla",
+    "title": "Nomadic Hustla (Trap Glitch Overdrive)",
+    "summary": "Hustla, hustla. Husss, husss. A roaming trap hook pushed through chopped vocals, filter sweeps and glitch-heavy overdrive.",
+    "href": "/nomadic-hustla/",
+    "sharePath": "/updates/release-nomadic-hustla/",
+    "cta": "Play the song + watch the clip",
+    "featured": true,
+    "cover": "/media/songs/2026/10/nomadic-hustla/cover.png",
+    "cardLines": [
+      "NOMADIC",
+      "HUSTLA"
+    ],
+    "cardTag": "Trap Glitch Overdrive · 1:42",
+    "cardSummary": "Dropping a bombshell. Literally. Tap into the full track, the video clip and the words behind the hook.",
+    "badge": "NEW TRACK",
+    "intent": "heavy"
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nNomad with a pack, I’m a hustla, hustla\nChrome tuck in the back, I’m a hustla, hustla\nCity glare on the glass, I’m a husss, husss\nEvery step that I take, I be huss-sa-ling, I move\n\n[Chorus]\nHustla, hustla, demon in the night (hustla)\nHusss, husss, huntin’ for the price (husss)\nHuss-sa-ling I be, hus-saha (heheheheh)\nAll around the trap, I’m a hustla for life\n\n[Verse 2]\nFrom the block to the hills, I’m a hustla, hustla\nTurn a dream to a bill, I’m a hustla, hustla\nGot the bass in my wheels, I’m a husss, husss\nIn the smoke, on the run, I be huss-sa-ling through\n\n[Chorus]\nHustla, hustla, demon in the night (hustla)\nHusss, husss, huntin’ for the price (husss)\nHuss-sa-ling I be, hus-saha (heheheheh)\nAll around the trap, I’m a hustla for life\n\n[Bridge]\nYeah I roam with a nine, I’m a hustla, hustla\nEvery code, every sign, I’m a hustla, hustla\nHear the click in the time, just a husss, husss\nOn the wind, in the bass, I be huss-sa-ling too\n\n[Chorus]\nHustla, hustla, demon in the night (hustla)\nHusss, husss, huntin’ for the price (husss)\nHuss-sa-ling I be, hus-saha (heheheheh)\nAll around the trap, I’m a hustla for life",
+    "snippet": "Nomad with a pack, I’m a hustla, hustla",
+    "sunoUrl": "https://suno.com/song/7737f870-a1e3-4a2d-822d-cc2026d430b3",
+    "clipIds": [
+      "7737f870-a1e3-4a2d-822d-cc2026d430b3"
+    ]
+  }
+}
