@@ -23,6 +23,12 @@
       .map(t=>({ ...t,audio:url(t.audio),cover:url(t.cover||'/app/icon-512.png'),experience:url(t.experience||`/now-playing/?song=${encodeURIComponent(t.songId||t.id)}&version=${encodeURIComponent(t.variantId||'main')}`),shareUrl:url(t.shareUrl||t.experience||'/music/') }))
       .filter(t=>t.audio).slice(0,500);
   }
-  const api={SITE,url,variants,track,playable,latest,selectedQueue,radio};root.CatalogModel=api;
+  function requestedQueue(songs,request){
+    const song=songs.find(s=>s.id===request?.song);if(!song)return[];
+    const variant=variants(song).find(v=>(v.id||'main')===request.version);
+    // An unavailable version must never silently play a different recording.
+    return variant?selectedQueue(songs,song.id,variant.id||'main'):[];
+  }
+  const api={SITE,url,variants,track,playable,latest,selectedQueue,requestedQueue,radio};root.CatalogModel=api;
   if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

@@ -119,7 +119,7 @@ test('Android always offers the real app, including an existing home-screen shor
     assert.match(recommendation.textContent,/Download Android app/);
   });
   const download=installHtml.match(/<a class="download-apk"[^>]*>/)[0];
-  assert.match(download,/href="\/app\/downloads\/MusicSubject-0\.1\.2\.apk"/);
+  assert.match(download,/href="\/app\/downloads\/MusicSubject-0\.1\.3\.apk"/);
   assert.match(download,/ download>/);
   assert.ok(installHtml.indexOf('class="download-apk"')<installHtml.indexOf('id="browser-options"'));
   assert.doesNotMatch(installHtml,/<details id="android"/);
