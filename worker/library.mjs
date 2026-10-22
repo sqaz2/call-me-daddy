@@ -1,4 +1,5 @@
 import {GROUPS,LIBRARY_ORIGIN,shareURL} from '../library/model.mjs';
+import {ARCHIVE_SONGS,ARCHIVE_VARIANTS} from '../library/archive.mjs';
 import {STARMUFF_TRACKS} from '../data/starmuff-playlist.mjs';
 import {resolveSocial,rewriteHead} from '../song-social.mjs';
 import {handleRequest} from './index.mjs';
@@ -9,10 +10,17 @@ export function librarySocial(url,index){
   const group=GROUPS.find(g=>g.id===url.searchParams.get('group'))||GROUPS[0];
   let record={title:group.id==='all'?'MusicSubject Library':`${group.label} — MusicSubject Library`,description:group.description,image:`${LIBRARY_ORIGIN}/library/share.png`,imageAlt:'MusicSubject Library',type:'music.playlist'};
   const id=url.searchParams.get('song'),version=url.searchParams.get('version');
-  const star=STARMUFF_TRACKS.find(t=>t.id===id);
+  const star=STARMUFF_TRACKS.find(t=>t.id===id),archive=ARCHIVE_SONGS.find(t=>t.id===id),extra=ARCHIVE_VARIANTS[id]?.find(v=>v.id===version);
+  const archiveVersion=archive?.variants.find(v=>v.id===(version||archive.openerPolicy.defaultVersion));
   if(star&&(!version||version==='main'))record={...record,title:`${star.title} — MusicSubject Library`,description:'From the original StarMuff soundtrack. Play this recording in MusicSubject Library.',image:`${LIBRARY_ORIGIN}/library/starmuff-cover`,type:'music.song'};
+  else if(archive&&archiveVersion)record={...record,title:`${archive.title} — ${archiveVersion.label} · MusicSubject Library`,description:archive.description,image:LIBRARY_ORIGIN+(archiveVersion.cover||archive.cover),type:'music.song'};
+  else if(extra)record={...record,title:`I Need Love — ${extra.label} · MusicSubject Library`,description:`An existing archive version, available on ${extra.platform}.`,type:'music.song'};
   else if(id){const selected=resolveSocial(new URL('/?'+url.searchParams,LIBRARY_ORIGIN),index);if(selected){const image=new URL(selected.image);if(image.hostname==='callmedaddy.musicsubject.com')image.hostname=HOST;record={...selected,title:`${selected.title} · MusicSubject Library`,description:`${selected.title}. Open this recording in MusicSubject Library.`,image:image.href};}}
-  record.canonical=shareURL({group:group.id,q:url.searchParams.get('q')||'',track:id?{songId:id,variantId:version||index?.songs?.[id]?.defaultVersion||'main'}:null});
+  const filters=Object.fromEntries(['mood','genre','scene','vocals','length','sort'].map(key=>[key,url.searchParams.get(key)||'']));
+  const picks=url.searchParams.getAll('pick');
+  if(picks.length&&!id)record={...record,title:'Shortlist — MusicSubject Library',description:'A shared selection of exact recordings. Audition the versions and discuss your project.'};
+  else if(!id&&(Object.values(filters).some(Boolean)||url.searchParams.has('q')))record={...record,title:'Music for your scene — MusicSubject Library',description:'Browse this music search by mood, genre and scene. Audition exact versions and build a shortlist.'};
+  record.canonical=shareURL({...filters,picks,group:group.id,q:url.searchParams.get('q')||'',track:id?{songId:id,variantId:version||archive?.openerPolicy.defaultVersion||index?.songs?.[id]?.defaultVersion||'main'}:null});
   return record;
 }
 export async function handleLibrary(request,env){
