@@ -71,6 +71,13 @@ jobs:
           node --check set-a-table-for-two/player.js
           node --check scripts/check-table-for-two-browser.mjs
           node --check scripts/check-replay-return-browser.mjs
+          node --check library/model.mjs
+          node --check library/player.mjs
+          node --check library/discovery.mjs
+          node --check library/catalog.mjs
+          node --check library/archive.mjs
+          node --check worker/library.mjs
+          node --check scripts/measure-library-audio.mjs
           node --check worker/index.mjs
           node --check canadian-crop-dusting/player.js
           node --check the-games-she-hates/player.js
@@ -119,7 +126,7 @@ jobs:
       - name: WinHamp alternate player
         run: node --test tests/winhamp.test.js tests/starmuff-playlist.test.mjs
       - name: Independent MusicSubject Library
-        run: node --test tests/music-library.test.mjs
+        run: node --test tests/music-library.test.mjs tests/music-library-discovery.test.mjs
       - name: Universal player tests
         run: node --test tests/universal-player.test.js tests/playback-sync.test.js
       - name: Public feed tests
