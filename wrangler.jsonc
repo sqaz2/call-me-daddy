@@ -14,6 +14,7 @@
   },
   "services": [{ "binding": "STARMUFF", "service": "starmuff" }],
   "routes": [
+    { "pattern": "library.musicsubject.com", "custom_domain": true },
     { "pattern": "callmedaddy.musicsubject.com", "custom_domain": true },
     { "pattern": "hiphop.bid", "custom_domain": true },
     { "pattern": "dubstep.bid", "custom_domain": true },
