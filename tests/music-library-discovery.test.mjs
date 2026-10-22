@@ -16,7 +16,7 @@ test('every published catalogue entry and exact audio version is discoverable, a
   for(const v of s.variants?.some(v=>v.audio)?s.variants.filter(v=>v.audio):s.audio?[{id:'main',audio:s.audio}]:[])assert.equal(found.tracks.find(t=>t.variantId===v.id)?.audio,v.audio);
  }
  assert.equal(new Set(tracks.map(trackKey)).size,tracks.length);
- assert.equal(catalog.length,128);assert.equal(tracks.filter(t=>t.audio).length,171);assert.equal(tracks.filter(t=>t.external).length,4);
+ assert.equal(catalog.length,128);assert.equal(tracks.filter(t=>t.audio).length,170);assert.equal(tracks.filter(t=>t.external).length,4);
  assert.ok(!tracks.some(t=>t.audio?.includes('audiobook')||t.songId==='unwritten-skies-ambience'));
  assert.ok(catalog.every(s=>s.groups.some(id=>GROUPS.some(g=>g.id===id&&g.kind==='mood'))));
 });

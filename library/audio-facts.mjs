@@ -729,13 +729,6 @@ export const AUDIO_FACTS = {
     "channels": 2,
     "bytes": 2797067
   },
-  "/media/songs/2026/10/calculated-grind/focused-trap.mp3": {
-    "seconds": 148.03,
-    "format": "MP3",
-    "sampleRate": 48000,
-    "channels": 2,
-    "bytes": 3458321
-  },
   "/media/songs/2026/10/come-sit-here-with-me/audio.mp3": {
     "seconds": 122.11,
     "format": "MP3",
