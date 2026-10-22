@@ -23,7 +23,7 @@ for (const row of links.rows) {
   if (expected?.image) cases.set(ORIGIN + row.target, expected);
 }
 for (const [route, record] of Object.entries(data.pages)) if (record.songId) cases.set(ORIGIN + route, record);
-cases.set('https://suno.fyi/30/4', resolveSocial('/music/?song=make-me-an-animal&version=suno-v6', data));
+cases.set('https://suno.fyi/30/4', resolveSocial('/make-me-an-animal-v6/?song=make-me-an-animal&version=suno-v6', data));
 const results = [], queue = [...cases];
 await Promise.all(Array.from({ length: 4 }, async () => {
   while (queue.length) {
