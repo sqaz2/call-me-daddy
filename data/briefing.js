@@ -1,6 +1,6 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-10-22T14:40:00-06:00",
+  updated: "2026-10-22T14:30:00-06:00",
   entries: [
     {"id":"project-starmuff-first-edition","published":"2026-10-21","type":"Project release","title":"StarMuff — I built a place for the music to live.","summary":"I built a place for the music to live. Step inside StarMuff, meet the original space-and-math adventure, and take its soundtrack with you.","href":"/starmuff/","sharePath":"/updates/project-starmuff-first-edition/","cta":"Explore the project","featured":true,"featuredOrder":0.25,"cardLines":["STARMUFF","FIRST EDITION"],"cardTag":"A game. A soundtrack. A world to step into.","cardSummary":"Come for the music. Find out where it lives.","badge":"PROJECT SPOTLIGHT","cover":"https://starmuff.com/og-image.png"},
     {id:"live-it-right-in-progress",published:"2026-10-18",type:"Song in progress",title:"Live It Right — the idea behind the song",summary:"A song about waiting for instructions while your life keeps happening. Read the story, see the artwork and explore the words taking shape.",href:"/live-it-right/",sharePath:"/updates/live-it-right-in-progress/",cta:"Read the song notes",badge:"Song in progress",cardImage:"/media/projects/2026/10/live-it-right/cover.webp"},
@@ -9,7 +9,7 @@ window.CMD_BRIEFING = {
     // RELEASE-MANIFEST:UPDATES:START
     {
       "id": "release-calculated-grind-focused-trap",
-      "published": "2026-10-22T14:40:00-06:00",
+      "published": "2026-10-22T14:30:00-06:00",
       "type": "New version",
       "songId": "calculated-grind",
       "variantId": "focused-trap",
