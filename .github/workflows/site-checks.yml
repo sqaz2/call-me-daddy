@@ -118,6 +118,8 @@ jobs:
         run: node --test tests/quiet-tip.test.js
       - name: WinHamp alternate player
         run: node --test tests/winhamp.test.js tests/starmuff-playlist.test.mjs
+      - name: Independent MusicSubject Library
+        run: node --test tests/music-library.test.mjs
       - name: Universal player tests
         run: node --test tests/universal-player.test.js tests/playback-sync.test.js
       - name: Public feed tests
