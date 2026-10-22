@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "calculated-grind",
+    "title": "Calculated Grind",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-22",
+    "project": "",
+    "description": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
+    "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
+    "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+    "experience": "/calculated-grind/",
+    "shareUrl": "/calculated-grind/?version=main",
+    "shareToExperience": true,
+    "kind": "Trap · Workout",
+    "shareGenre": "hiphop",
+    "shareCategory": "music",
+    "aliases": [
+      "Calculated Grind (2min)",
+      "Calculated Grind (Focused Trap Mix)"
+    ],
+    "variants": [
+      {
+        "id": "main",
+        "label": "Focused Trap Mix",
+        "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
+        "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+        "date": "2026-10-22",
+        "duration": 120.024,
+        "experience": "/calculated-grind/?version=main",
+        "shareUrl": "/calculated-grind/?version=main"
+      }
+    ]
+  },
+  "radio": {
+    "surprise": 70,
+    "laugh": 0,
+    "think": 45,
+    "level-up": 100,
+    "heavy": 75,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-calculated-grind",
+    "published": "2026-10-22T12:30:00-06:00",
+    "type": "New release",
+    "songId": "calculated-grind",
+    "variantId": "main",
+    "title": "Calculated Grind",
+    "summary": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
+    "href": "/calculated-grind/",
+    "sharePath": "/updates/release-calculated-grind/",
+    "cta": "Play + read the lyrics",
+    "featured": true,
+    "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+    "cardLines": [
+      "CALCULATED",
+      "GRIND"
+    ],
+    "cardTag": "Focused trap · 2 minutes",
+    "cardSummary": "Let the numbers back it up. Every rep, every set.",
+    "badge": "NEW RELEASE",
+    "intent": "level-up"
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nIt’s a steady engine, hear it hum inside my mind\nEvery target in the mirror keeps me cold and laser-focused\nWhen I’m pushin’ through the final fuel\nTunnel vision in the silence, see the steel bend when I breathe\nCrowd fades, I feel the calm when the big weight rises\nAll that noise up on the screen\nI’ve been planning with the voices\nI just need you showin’ up, I just need you addin’ up\nLet the numbers back it up, run it up, run it up\nGrind mode every day, every set, let the veins glow\nWhen the weight gets heavy, let your will show\nI’ve been locked all in, this is beast mode\nTurn it up, turn it up, sweat flow\nEvery rep in the pocket, let the strength grow\nWhen it lines up right, let the proof show\nEvery day in the gym is my throne\nLet it ride, let it ride, let it ride, let it ride\nLet it ride, let it ride, let it ride, let it ride\n\n[Verse 2]\nPushing on the muscle while I tighten up my mind\nEvery second on the clock, I’ve been trackin’, I’ve been grindin’\nTurn the struggle to a mantra, hear the order in the timing\nAll the chatter in the background, I reduce it to a hum\nIf it’s not about the progress, let it fade, let it go numb\nEvery curl, every layer, every lift, every press\nGot this method in the training, feel it workin’ in my chest\nI’m not chasin’ any gimmick, I’ve been sculptin’ out my frame\nWhen they mention all the progress, they gon’ recognize the change\nIf they see it in the mirror, they gon’ feel it in their breath\nI’ve been liftin’ with intention, now I’m climbin’ to my best\nRun it up, run it up, grind mode every day, every set\nLet the veins glow when the weight gets heavy, let your will show\nI’ve been locked all in, this is beast mode\nTurn it up, turn it up, sweat flow\nEvery rep in the pocket, let the strength grow\nWhen it lines up right, let the proof show\nEvery day in the gym is my throne",
+    "snippet": "Let the numbers back it up, run it up, run it up",
+    "source": "artist-supplied"
+  }
+}

@@ -720,6 +720,16 @@
         "nomadic-hustla/index.html",
         "content/releases/2026-10-21-nomadic-hustla.json"
       ]
+    },
+    "calculated-grind": {
+      "headline": "Let the numbers back it up.",
+      "text": "Let the numbers back it up.\n\nEvery rep, every set, every time you show up. Calculated Grind puts that focus into two minutes. Open the track, read the words, and get locked in.",
+      "description": "Every rep, every set, every time you show up. Open Calculated Grind: two minutes of focused trap, with the full lyrics.",
+      "sources": [
+        "content/releases/2026-10-22-calculated-grind.json",
+        "calculated-grind/index.html",
+        "media/songs/2026/10/calculated-grind/audio.mp3"
+      ]
     }
   }
 }

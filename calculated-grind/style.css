@@ -1,0 +1,15 @@
+.grind-release{--paper:#eee9df;--muted:#b0aa9f;--accent:#d4b784;--surface:#1e1d1a;--line:#ffffff26;background:#111210;color:var(--paper)}
+.grind-release .topbar{background:#111210}
+.grind-release .release-heading{display:flex;justify-content:space-between;gap:16px;margin-bottom:36px;font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.grind-release .release-intro h1{font-size:clamp(48px,6.6vw,78px);line-height:1;letter-spacing:-.055em;text-transform:uppercase}
+.grind-release .release-intro h1 em{font-family:inherit;font-style:normal;font-weight:800;color:var(--accent)}
+.grind-hook{font-size:22px;line-height:1.35;font-weight:700;margin:22px 0 14px;max-width:23ch}
+.grind-release .release-stage{max-width:460px}
+.grind-release .release-cover{border-radius:2px;box-shadow:0 26px 70px #0008}
+.grind-release .release-play-badge{background:#111210e8;border-color:#d4b78466}
+.grind-release .release-cover:hover .release-play-badge{background:#111210}
+.grind-lyrics-link{font-size:13px;display:inline-block;padding:10px 0}
+.grind-share{margin:0 0 30px}
+.grind-release .release-lyrics{scroll-margin-top:90px}
+.grind-release .release-lyrics pre{line-height:1.95;max-width:80ch}
+@media(max-width:720px){.grind-release .release-stage{order:-1;max-width:390px}.grind-release .release-cover{max-width:none}.grind-release .release-heading{font-size:9px;letter-spacing:.055em;margin-bottom:22px}.grind-release .release-intro h1{font-size:clamp(38px,12vw,70px)}.grind-hook{font-size:20px;margin:16px 0 12px}.grind-release .release-hero{gap:24px}.grind-share{margin-bottom:24px}}
