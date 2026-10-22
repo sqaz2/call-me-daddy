@@ -49,3 +49,25 @@ Archive artwork under these folders is stored as normal WebP binaries. If artwor
 ## Deployment
 
 `wrangler.jsonc` defines the Cloudflare custom domain and serves this repository as static assets.
+
+
+## Independent music discovery
+
+`https://library.musicsubject.com/` is the separate MusicSubject Library. It shares published recordings with this repository without linking listeners back to the Call Me Daddy homepage. `worker/library.mjs` owns its host routing and exact-recording social previews; `library/` owns the interface.
+
+The supervisor finder combines mood, genre, suggested scene, vocal information and recording-length filters. Queries rank by the fraction of documented search criteria that match, with matched and missing terms displayed. This is search relevance, not a quality rating, clearance score or prediction of placement. Unknown information cannot pass a selected filter. Moods and scene suggestions come from existing editorial notes and cue titles, not an audio analysis or a company brief.
+
+Exact versions can be collected in a 30-recording shortlist, shared by URL, exported as CSV, and included in a licensing enquiry using the site's existing public contact address. The email action opens the visitor's email application; it does not send anything automatically. Clearance, source/AI permissions, clean edits, delivery masters and stems remain unconfirmed per recording. BPM and key are not guessed.
+
+The October 22, 2026 coverage audit includes all 75 canonical catalogue entries, the two published Old Files / New Tools archive song families, and the 50 original StarMuff cues: 127 entries, 169 playable recordings and four external listening versions. The library-only additions in `library/archive.mjs` preserve the existing archive pages' exact paths and version labels. Source takes and rough copies remain manual selections, excluded from automatic queues. Two canonical YouTube-only releases and the existing external I Need Love versions are now discoverable. The unnamed YouTube entry retains its source catalogue title until verified.
+
+This is a published-site inventory, not a claim about unpublished music or every external archive. Duplicate uploads, working samples, the page-only Her Story audiobook and the removed synthesized ambience are not new music entries. Genre and vocal information still needing review is labelled accordingly. New release manifests continue to feed the library automatically; update `library/editorial.mjs` with supported mood notes when needed.
+
+Local durations and file facts are measured for the 119 exact local recordings; the 50 streamed StarMuff cues have unknown duration until measured. After replacing or adding local audio, regenerate the facts and run the coverage regressions:
+
+```bash
+node scripts/measure-library-audio.mjs
+node --test tests/music-library.test.mjs tests/music-library-discovery.test.mjs tests/playback-sync.test.js
+```
+
+The coverage tests verify every canonical song and exact audio variant is indexed, the archive additions and external-only versions stay identifiable, genre labels do not leak between alternate versions, filters and scoring are honest, shortlisted versions survive sharing, and measured file sizes still match their audio.
