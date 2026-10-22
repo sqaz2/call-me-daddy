@@ -42,7 +42,7 @@ export function parseBrief(q=''){
  text=text.replace(/\b(?:no|without|not)\s+([\w-]+)/g,(_,v)=>{excluded.push(canonical(v));return '';});
  text=text.replace(/(?:^|\s)-([\w-]+)/g,(_,v)=>{excluded.push(canonical(v));return ' ';});
  const terms=[...new Set((text.match(/[a-z0-9]+(?:-[a-z0-9]+)*/g)||[]).filter(t=>!stop.has(t)).map(canonical))];
- return {terms,excluded,vocals};
+ return {terms,excluded,vocals,phrase:normalize(q).trim()};
 }
 export function matchBrief(song,track,brief){
  const tags=new Set([...track.groups,...(track.scenes||[]),track.vocals]);
@@ -50,6 +50,7 @@ export function matchBrief(song,track,brief){
  const words=new Set(text.match(/[a-z0-9]+(?:-[a-z0-9]+)*/g)||[]);
  const has=t=>concepts.has(t)?tags.has(t):words.has(t);
  if(brief.excluded.some(has)||brief.vocals&&track.vocals!==brief.vocals)return null;
+ if(brief.phrase&&[song.title,...(song.aliases||[])].some(title=>normalize(title).trim()===brief.phrase))return {score:100,matched:['Exact title'],missing:[],exactTitle:true};
  const matched=brief.terms.filter(has),missing=brief.terms.filter(t=>!has(t));
  if(brief.terms.length&&!matched.length)return null;
  return {score:brief.terms.length?Math.round(100*matched.length/brief.terms.length):null,matched,missing};

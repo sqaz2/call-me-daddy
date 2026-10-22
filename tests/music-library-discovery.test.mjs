@@ -59,3 +59,13 @@ test('archived source recordings and their exact social previews keep their iden
 test('measured facts belong to existing unchanged files and all local recording lengths are measured',()=>{
  for(const t of tracks.filter(t=>t.audio&&!t.audio.startsWith('/media/starmuff/'))){assert.ok(t.facts?.seconds>0,trackKey(t));const file=path.resolve(new URL('..',import.meta.url).pathname,'.'+t.audio);assert.equal(fs.statSync(file).size,t.facts.bytes,trackKey(t)+' changed; run measure-library-audio.mjs');}
 });
+
+
+test('exact song titles rank before broader mood matches, even when their words are also concepts',()=>{
+ for(const title of ['I Need Love','Numbness as a Trap','Keep Moving']){
+  const first=filterCatalog(catalog,{q:title})[0];
+  assert.equal(first.title,title);
+  assert.equal(first.match.exactTitle,true);
+  assert.deepEqual(first.match.matched,['Exact title']);
+ }
+});

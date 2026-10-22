@@ -89,7 +89,7 @@ export function filterCatalog(catalog,{group='all',q='',savedOnly=false,saved=[]
   });
   if(sort==='title')found.sort((a,b)=>a.title.localeCompare(b.title));
   else if(sort==='shortest')found.sort((a,b)=>(a.visibleTracks[0].facts?.seconds??Infinity)-(b.visibleTracks[0].facts?.seconds??Infinity));
-  else if(q.trim())found.sort((a,b)=>(b.match.score||0)-(a.match.score||0));
+  else if(q.trim())found.sort((a,b)=>Number(!!b.match.exactTitle)-Number(!!a.match.exactTitle)||(b.match.score||0)-(a.match.score||0));
   return found;
 }
 export function makeQueue(songs,first,shuffle=false,random=Math.random) {
