@@ -29,7 +29,7 @@ test('Still Building page starts both recordings and stays on the shared player'
   const html=read('still-building/index.html'),script=read('still-building/player.js');
   assert.match(html,/data\/2026-08-25-uploads\.js/);
   assert.match(html,/survival-mode-background\.mp4/);
-  assert.match(html,/survival-mode-v6\.jpg/);
+  assert.match(html,/survival-mode-poker-20261022\.jpg/);
   assert.match(html,/data-play="stomp-clamp"/);
   assert.match(html,/data-play="survival-mode"/);
   assert.match(html,/data-version="lofi-warehouse-echo"/);
