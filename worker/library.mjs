@@ -1,4 +1,4 @@
-import {GROUPS,AMBIENCE,LIBRARY_ORIGIN,shareURL} from '../library/model.mjs';
+import {GROUPS,LIBRARY_ORIGIN,shareURL} from '../library/model.mjs';
 import {STARMUFF_TRACKS} from '../data/starmuff-playlist.mjs';
 import {resolveSocial,rewriteHead} from '../song-social.mjs';
 import {handleRequest} from './index.mjs';
@@ -10,10 +10,9 @@ export function librarySocial(url,index){
   let record={title:group.id==='all'?'MusicSubject Library':`${group.label} — MusicSubject Library`,description:group.description,image:`${LIBRARY_ORIGIN}/library/share.png`,imageAlt:'MusicSubject Library',type:'music.playlist'};
   const id=url.searchParams.get('song'),version=url.searchParams.get('version');
   const star=STARMUFF_TRACKS.find(t=>t.id===id);
-  if(id===AMBIENCE.id&&(!version||version==='ambient'))record={...record,title:'Unwritten Skies — MusicSubject Library',description:AMBIENCE.description,image:`${LIBRARY_ORIGIN}/library/skies-share.png`};
-  else if(star&&(!version||version==='main'))record={...record,title:`${star.title} — MusicSubject Library`,description:'From the original StarMuff soundtrack. Play this recording in MusicSubject Library.',image:`${LIBRARY_ORIGIN}/library/starmuff-cover`,type:'music.song'};
+  if(star&&(!version||version==='main'))record={...record,title:`${star.title} — MusicSubject Library`,description:'From the original StarMuff soundtrack. Play this recording in MusicSubject Library.',image:`${LIBRARY_ORIGIN}/library/starmuff-cover`,type:'music.song'};
   else if(id){const selected=resolveSocial(new URL('/?'+url.searchParams,LIBRARY_ORIGIN),index);if(selected){const image=new URL(selected.image);if(image.hostname==='callmedaddy.musicsubject.com')image.hostname=HOST;record={...selected,title:`${selected.title} · MusicSubject Library`,description:`${selected.title}. Open this recording in MusicSubject Library.`,image:image.href};}}
-  record.canonical=shareURL({group:group.id,q:url.searchParams.get('q')||'',track:id?{songId:id,variantId:version||(id===AMBIENCE.id?'ambient':index?.songs?.[id]?.defaultVersion||'main')}:null});
+  record.canonical=shareURL({group:group.id,q:url.searchParams.get('q')||'',track:id?{songId:id,variantId:version||index?.songs?.[id]?.defaultVersion||'main'}:null});
   return record;
 }
 export async function handleLibrary(request,env){
@@ -24,10 +23,11 @@ export async function handleLibrary(request,env){
   if(url.pathname==='/sitemap.xml')return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${GROUPS.map(g=>`<url><loc>${shareURL({group:g.id})}</loc></url>`).join('')}</urlset>`,{headers:{'content-type':'application/xml'}});
   if(['/library','/library/','/index.html'].includes(url.pathname))return Response.redirect(LIBRARY_ORIGIN+'/'+url.search,302);
   if(url.pathname==='/'){
+    if(url.searchParams.get('song')==='unwritten-skies-ambience'||['unwritten-skies','calming'].includes(url.searchParams.get('group')))return Response.redirect(LIBRARY_ORIGIN+'/',302);
     const page=await env.ASSETS.fetch(new Request(new URL('/library/',url),{method:'GET'}));
     if(!page.ok)return new Response('The library is temporarily unavailable.',{status:503});
     let index=null;
-    if(url.searchParams.has('song')&&!STARMUFF_TRACKS.some(t=>t.id===url.searchParams.get('song'))&&url.searchParams.get('song')!==AMBIENCE.id){
+    if(url.searchParams.has('song')&&!STARMUFF_TRACKS.some(t=>t.id===url.searchParams.get('song'))){
       try{const data=await env.ASSETS.fetch(new Request(new URL('/data/song-social.json',url)));if(data.ok)index=await data.json();}catch{}
     }
     const social=librarySocial(url,index);

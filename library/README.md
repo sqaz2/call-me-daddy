@@ -12,12 +12,10 @@ Genres follow individual version labels. Mood groups are editorial selections
 in `model.mjs`. Brief collections stay empty until reviewed.
 
 StarMuff First Edition uses the existing 50-track playlist and range-aware
-service binding. Unwritten Skies uses only the game's ambient drone and chord
-pad synthesis, adapted from `client/public/unwritten-skies.html` at StarMuff
-main. There are no game loops or combat effects. Layer gains, volume and sleep
-timer are local controls; music and ambience never intentionally play together.
+service binding. The library contains existing audio recordings only. It does
+not generate additional songs or soundscapes.
 
 Validation: `node --test tests/music-library.test.mjs tests/playback-sync.test.js`
 plus the existing Site checks. Browser testing covers first-tap playback,
-version/next/previous identity, collection browsing, sharing and ambience
-handoff. A desktop browser does not prove physical-phone background playback.
+version/next/previous identity, collection browsing and sharing. A desktop
+browser does not prove physical-phone background playback.
