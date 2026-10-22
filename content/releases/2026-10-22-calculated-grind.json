@@ -8,7 +8,7 @@
     "month": 10,
     "date": "2026-10-22",
     "project": "",
-    "description": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
+    "description": "Reps, numbers and quiet determination. Choose the 2:00 version or the 2:28 Focused Trap Mix, play Calculated Grind and read the lyrics for each recording.",
     "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
     "cover": "/media/songs/2026/10/calculated-grind/cover.png",
     "experience": "/calculated-grind/",
@@ -24,13 +24,24 @@
     "variants": [
       {
         "id": "main",
-        "label": "Focused Trap Mix",
+        "label": "2-minute version",
         "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
         "cover": "/media/songs/2026/10/calculated-grind/cover.png",
         "date": "2026-10-22",
         "duration": 120.024,
         "experience": "/calculated-grind/?version=main",
         "shareUrl": "/calculated-grind/?version=main"
+      },
+      {
+        "id": "focused-trap",
+        "label": "Focused Trap Mix",
+        "audio": "/media/songs/2026/10/calculated-grind/focused-trap.mp3",
+        "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+        "date": "2026-10-22",
+        "duration": 148.032,
+        "experience": "/calculated-grind/?version=focused-trap",
+        "shareUrl": "/calculated-grind/?version=focused-trap",
+        "shareGenre": "hiphop"
       }
     ]
   },
@@ -43,30 +54,54 @@
     "old-files": 0
   },
   "update": {
-    "id": "release-calculated-grind",
-    "published": "2026-10-22T12:30:00-06:00",
-    "type": "New release",
+    "id": "release-calculated-grind-focused-trap",
+    "published": "2026-10-22T14:40:00-06:00",
+    "type": "New version",
     "songId": "calculated-grind",
-    "variantId": "main",
-    "title": "Calculated Grind",
-    "summary": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
-    "href": "/calculated-grind/",
-    "sharePath": "/updates/release-calculated-grind/",
-    "cta": "Play + read the lyrics",
+    "variantId": "focused-trap",
+    "title": "Calculated Grind — Focused Trap Mix",
+    "summary": "The 2:28 Focused Trap Mix joins the 2-minute version. Choose a recording and read its lyrics on the Calculated Grind page.",
+    "href": "/calculated-grind/?version=focused-trap",
+    "sharePath": "/updates/release-calculated-grind-focused-trap/",
+    "cta": "Choose your version",
     "featured": true,
     "cover": "/media/songs/2026/10/calculated-grind/cover.png",
     "cardLines": [
       "CALCULATED",
       "GRIND"
     ],
-    "cardTag": "Focused trap · 2 minutes",
-    "cardSummary": "Let the numbers back it up. Every rep, every set.",
-    "badge": "NEW RELEASE",
+    "cardTag": "Two versions · 2:00 / 2:28",
+    "cardSummary": "Every day in the gym is my throne. Pick your version.",
+    "badge": "NEW VERSION",
     "intent": "level-up"
   },
   "lyrics": {
     "text": "[Verse 1]\nIt’s a steady engine, hear it hum inside my mind\nEvery target in the mirror keeps me cold and laser-focused\nWhen I’m pushin’ through the final fuel\nTunnel vision in the silence, see the steel bend when I breathe\nCrowd fades, I feel the calm when the big weight rises\nAll that noise up on the screen\nI’ve been planning with the voices\nI just need you showin’ up, I just need you addin’ up\nLet the numbers back it up, run it up, run it up\nGrind mode every day, every set, let the veins glow\nWhen the weight gets heavy, let your will show\nI’ve been locked all in, this is beast mode\nTurn it up, turn it up, sweat flow\nEvery rep in the pocket, let the strength grow\nWhen it lines up right, let the proof show\nEvery day in the gym is my throne\nLet it ride, let it ride, let it ride, let it ride\nLet it ride, let it ride, let it ride, let it ride\n\n[Verse 2]\nPushing on the muscle while I tighten up my mind\nEvery second on the clock, I’ve been trackin’, I’ve been grindin’\nTurn the struggle to a mantra, hear the order in the timing\nAll the chatter in the background, I reduce it to a hum\nIf it’s not about the progress, let it fade, let it go numb\nEvery curl, every layer, every lift, every press\nGot this method in the training, feel it workin’ in my chest\nI’m not chasin’ any gimmick, I’ve been sculptin’ out my frame\nWhen they mention all the progress, they gon’ recognize the change\nIf they see it in the mirror, they gon’ feel it in their breath\nI’ve been liftin’ with intention, now I’m climbin’ to my best\nRun it up, run it up, grind mode every day, every set\nLet the veins glow when the weight gets heavy, let your will show\nI’ve been locked all in, this is beast mode\nTurn it up, turn it up, sweat flow\nEvery rep in the pocket, let the strength grow\nWhen it lines up right, let the proof show\nEvery day in the gym is my throne",
     "snippet": "Let the numbers back it up, run it up, run it up",
     "source": "artist-supplied"
-  }
+  },
+  "previousUpdates": [
+    {
+      "id": "release-calculated-grind",
+      "published": "2026-10-22T12:30:00-06:00",
+      "type": "New release",
+      "songId": "calculated-grind",
+      "variantId": "main",
+      "title": "Calculated Grind",
+      "summary": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
+      "href": "/calculated-grind/",
+      "sharePath": "/updates/release-calculated-grind/",
+      "cta": "Play + read the lyrics",
+      "featured": false,
+      "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+      "cardLines": [
+        "CALCULATED",
+        "GRIND"
+      ],
+      "cardTag": "Focused trap · 2 minutes",
+      "cardSummary": "Let the numbers back it up. Every rep, every set.",
+      "badge": "NEW RELEASE",
+      "intent": "level-up"
+    }
+  ]
 }

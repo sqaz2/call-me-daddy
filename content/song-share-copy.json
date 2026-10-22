@@ -729,7 +729,18 @@
         "content/releases/2026-10-22-calculated-grind.json",
         "calculated-grind/index.html",
         "media/songs/2026/10/calculated-grind/audio.mp3"
-      ]
+      ],
+      "variants": {
+        "focused-trap": {
+          "headline": "Every day in the gym is my throne.",
+          "text": "Every day in the gym is my throne.\n\nReps, numbers, and a mind locked on progress. Open the 2:28 Focused Trap Mix of Calculated Grind, read the words, and let the numbers back it up.",
+          "description": "Every day in the gym is my throne. Open the 2:28 Focused Trap Mix of Calculated Grind and read the lyrics for this recording.",
+          "sources": [
+            "calculated-grind/index.html",
+            "Calculated Grind (Focused Trap Mix) (1).mp3"
+          ]
+        }
+      }
     }
   }
 }

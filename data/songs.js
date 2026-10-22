@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 10,
     "date": "2026-10-22",
     "project": "",
-    "description": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
+    "description": "Reps, numbers and quiet determination. Choose the 2:00 version or the 2:28 Focused Trap Mix, play Calculated Grind and read the lyrics for each recording.",
     "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
     "cover": "/media/songs/2026/10/calculated-grind/cover.png",
     "experience": "/calculated-grind/",
@@ -24,13 +24,24 @@ window.CMD_SONGS = [
     "variants": [
       {
         "id": "main",
-        "label": "Focused Trap Mix",
+        "label": "2-minute version",
         "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
         "cover": "/media/songs/2026/10/calculated-grind/cover.png",
         "date": "2026-10-22",
         "duration": 120.024,
         "experience": "/calculated-grind/?version=main",
         "shareUrl": "/calculated-grind/?version=main"
+      },
+      {
+        "id": "focused-trap",
+        "label": "Focused Trap Mix",
+        "audio": "/media/songs/2026/10/calculated-grind/focused-trap.mp3",
+        "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+        "date": "2026-10-22",
+        "duration": 148.032,
+        "experience": "/calculated-grind/?version=focused-trap",
+        "shareUrl": "/calculated-grind/?version=focused-trap",
+        "shareGenre": "hiphop"
       }
     ]
   },
