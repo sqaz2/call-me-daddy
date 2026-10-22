@@ -1,9 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {buildCatalog,filterCatalog,makeQueue,shareURL,AMBIENCE,LIBRARY_ORIGIN} from '../library/model.mjs';
+import {buildCatalog,filterCatalog,makeQueue,shareURL,LIBRARY_ORIGIN} from '../library/model.mjs';
 import {librarySocial,handleLibrary} from '../worker/library.mjs';
-import {SkiesAmbience} from '../library/ambience.mjs';
 import {STARMUFF_TRACKS} from '../data/starmuff-playlist.mjs';
 import {readHead} from '../song-social.mjs';
 
@@ -15,22 +14,23 @@ test('genre collections select exact versions without inheriting the other mix g
  assert.deepEqual(filterCatalog(catalog,{group:'dnb'})[0].visibleTracks.map(t=>t.variantId),['dnb']);
  assert.deepEqual(filterCatalog(catalog,{group:'hiphop'})[0].visibleTracks.map(t=>t.variantId),['rap']);
 });
-test('a collection rotates from its selected recording, excludes opt-in/opening/ambience and preserves exact share identity',()=>{
+test('a collection rotates from its selected recording, excludes opt-in/opening and preserves exact share identity',()=>{
  const visible=filterCatalog(buildCatalog(songs)),first=visible.find(s=>s.id==='song').tracks[1];
  const queue=makeQueue(visible,first);
  assert.equal(queue[0].variantId,'soul');
- assert.ok(queue.every(t=>!t.manualOnly&&!t.ambience));
+ assert.ok(queue.every(t=>!t.manualOnly));
  assert.equal(new Set(queue.map(t=>t.audio)).size,queue.length);
  assert.deepEqual(queue.slice(0,2).map(t=>t.variantId),['soul','dnb']);
  const url=new URL(shareURL({group:'rnb',track:first}));
  assert.equal(url.origin,LIBRARY_ORIGIN);assert.equal(url.searchParams.get('song'),'song');assert.equal(url.searchParams.get('version'),'soul');
 });
-test('both StarMuff editions have independent collection identities',()=>{
- const catalog=buildCatalog([],STARMUFF_TRACKS);
+test('the library contains only existing audio recordings including the original StarMuff soundtrack',()=>{
+ const catalog=buildCatalog(songs,STARMUFF_TRACKS);
+ assert.equal(catalog.length,songs.length+STARMUFF_TRACKS.length);
  assert.equal(filterCatalog(catalog,{group:'starmuff'}).length,50);
- const skies=filterCatalog(catalog,{group:'unwritten-skies'});
- assert.equal(skies.length,1);assert.equal(skies[0].tracks[0].ambience,true);
- assert.equal(filterCatalog(catalog,{group:'calming'})[0].id,AMBIENCE.id);
+ assert.ok(catalog.flatMap(s=>s.tracks).every(t=>t.audio));
+ assert.equal(filterCatalog(catalog,{group:'unwritten-skies'}).length,0);
+ assert.equal(filterCatalog(catalog,{group:'calming'}).length,0);
 });
 const html=fs.readFileSync(new URL('../library/index.html',import.meta.url),'utf8');
 const index={schemaVersion:1,songs:{song:{defaultVersion:'rap',versions:{rap:{title:'Reviewed headline — One song',description:'Read the original story.',image:'https://callmedaddy.musicsubject.com/rap.jpg'},soul:{title:'Reviewed headline — One song · Soul',description:'Read the original story.',image:'https://callmedaddy.musicsubject.com/soul.jpg'}}}},pages:{}};
@@ -52,8 +52,8 @@ test('existing homepage stays on its own route and unrelated artist pages are un
  assert.equal((await handleLibrary(new Request(LIBRARY_ORIGIN+'/music/'),{})).status,404);
  assert.equal((await handleLibrary(new Request(LIBRARY_ORIGIN+'/',{method:'POST'}),{})).status,405);
 });
-test('both edition previews and collection links keep the library origin',()=>{
- for(const suffix of ['?group=starmuff','?group=country','?song='+STARMUFF_TRACKS[0].id+'&version=main','?song='+AMBIENCE.id+'&version=ambient']){
+test('soundtrack previews and collection links keep the library origin',()=>{
+ for(const suffix of ['?group=starmuff','?group=country','?song='+STARMUFF_TRACKS[0].id+'&version=main']){
   const social=librarySocial(new URL(LIBRARY_ORIGIN+'/'+suffix),index);
   assert.equal(new URL(social.canonical).origin,LIBRARY_ORIGIN);
   assert.equal(new URL(social.image).origin,LIBRARY_ORIGIN);
@@ -64,22 +64,9 @@ test('StarMuff proxy streams the exact recording with its range intact on the li
  const r=await handleLibrary(new Request(LIBRARY_ORIGIN+STARMUFF_TRACKS[0].audio,{headers:{range:'bytes=0-2'}}),{STARMUFF:{fetch:async request=>{seen=request;return new Response(new Uint8Array([1,2,3]),{status:206,headers:{'content-type':'audio/mpeg','content-range':'bytes 0-2/100'}});}}});
  assert.equal(r.status,206);assert.equal(seen.headers.get('range'),'bytes=0-2');assert.equal(new URL(seen.url).pathname,STARMUFF_TRACKS[0].sourcePath);
 });
-const param=()=>({value:0,cancelScheduledValues(){},setTargetAtTime(v){this.value=v;}});
-class FakeContext{
- constructor(){this.currentTime=0;this.sampleRate=10;this.destination={};this.oscillators=[];}
- createGain(){return {gain:param(),connect(){}};}
- createDynamicsCompressor(){return {threshold:param(),knee:param(),ratio:param(),attack:param(),release:param(),connect(){}};}
- createBiquadFilter(){return {frequency:param(),Q:param(),connect(){}};}
- createOscillator(){const o={frequency:param(),connect(){},start(){}};this.oscillators.push(o);return o;}
- createConvolver(){return {connect(){}};}
- createBuffer(ch,len){return {getChannelData(){return new Float32Array(len);}};}
- async resume(){}async suspend(){}async close(){}
-}
-test('ambience starts both original layers, each can be muted, and immediate pause cancels a pending resume',async()=>{
- const a=new SkiesAmbience(FakeContext);assert.equal(await a.play(),true);
- assert.ok(a.drone.gain.value>0&&a.pad.gain.value>0&&a.master.gain.value>0);
- assert.ok(a.context.oscillators.some(o=>o.frequency.value===55));
- assert.ok(a.context.oscillators.some(o=>o.frequency.value===65.41));
- a.set({drone:0,pad:0});assert.equal(a.drone.gain.value,0);assert.equal(a.pad.gain.value,0);
- const pending=a.play();a.pause();assert.equal(await pending,false);assert.equal(a.running,false);assert.equal(a.master.gain.value,0);a.destroy();
+test('removed ambience links return to the library without advertising a recording',async()=>{
+ for(const query of ['?song=unwritten-skies-ambience&version=ambient','?group=unwritten-skies','?group=calming']){
+  const r=await handleLibrary(new Request(LIBRARY_ORIGIN+'/'+query),{});
+  assert.equal(r.status,302);assert.equal(r.headers.get('location'),LIBRARY_ORIGIN+'/');
+ }
 });

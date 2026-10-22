@@ -16,10 +16,8 @@ export const GROUPS = [
   {id:'edm', label:'Electronic & EDM', kind:'genre', description:'Electronic, dance, dubstep, drum & bass and warehouse mixes.'},
   {id:'dubstep', label:'Dubstep', kind:'genre', description:'Wobble, halftime, melodic drops and heavy bass.'},
   {id:'dnb', label:'Drum & bass', kind:'genre', description:'Drum & bass versions from the catalogue.'},
-  {id:'instrumental', label:'Instrumentals', kind:'genre', description:'Recordings explicitly identified as instrumental, plus the Unwritten Skies soundscape.'},
+  {id:'instrumental', label:'Instrumentals', kind:'genre', description:'Recordings explicitly identified as instrumental.'},
   {id:'starmuff', label:'StarMuff · First Edition', kind:'collection', description:'The original 50-track StarMuff playlist: exploration, casino, Iron Frontier and more.'},
-  {id:'unwritten-skies', label:'StarMuff · Unwritten Skies', kind:'collection', description:'The game’s deep-space drone and warm chord pad, playing together as a continuous calming soundscape.'},
-  {id:'calming', label:'Calming & focus', kind:'mood', description:'Unwritten Skies ambience. Set the balance, settle in and let it run.'},
   {id:'commercial', label:'Commercial briefs', kind:'brief', description:'No recordings have been reviewed for a specific commercial brief yet.'},
   {id:'family', label:'Family-friendly briefs', kind:'brief', description:'No recordings have been reviewed and approved for this collection yet.'},
   {id:'holiday', label:'Holiday', kind:'brief', description:'No holiday recordings are tagged yet. New selections will appear here when added.'}
@@ -37,7 +35,6 @@ const MOODS = {
   sports:['what-is-my-opponent-threatening-right-now','level-up']
 };
 const GENRES = {hiphop:/\b(?:hip[ -]?hop|rap|trap|horrorcore|freestyle)\b/i, rnb:/\b(?:r&b|rnb|r-and-b|rhythm.and.blues|soul)\b/i, country:/\bcountry\b/i, rock:/\b(?:rock|punk|grunge)\b/i, pop:/\bpop\b/i, edm:/\b(?:edm|electronic|techno|warehouse|dubstep|dnb|drum.and.bass)\b/i, dubstep:/\bdubstep\b/i, dnb:/\b(?:dnb|d&b|drum.and.bass)\b/i, instrumental:/\binstrumental\b/i};
-export const AMBIENCE = {id:'unwritten-skies-ambience',title:'Unwritten Skies',artist:'MusicSubject',project:'StarMuff · Unwritten Skies',description:'Deep-space drone and warm chord pad from Unwritten Skies, together in an endless soundscape. Adjust both layers while you listen.',cover:'/library/skies.svg',groups:['unwritten-skies','calming','cinematic','instrumental'],tracks:[{songId:'unwritten-skies-ambience',variantId:'ambient',variantLabel:'Continuous soundscape',title:'Unwritten Skies',artist:'MusicSubject',project:'StarMuff · Unwritten Skies',cover:'/library/skies.svg',ambience:true,groups:['unwritten-skies','calming','cinematic','instrumental']}]};
 export const trackKey = t => `${t.songId}:${t.variantId}`;
 export function buildCatalog(songs, starMuff=[]) {
   const result=[];
@@ -56,7 +53,7 @@ export function buildCatalog(songs, starMuff=[]) {
     if(tracks.length)result.push({...song,tracks,groups:[...new Set(tracks.flatMap(t=>t.groups))]});
   }
   result.sort((a,b)=>String(b.tracks[0].date).localeCompare(String(a.tracks[0].date)));
-  return [...result,AMBIENCE];
+  return result;
 }
 export function filterCatalog(catalog,{group='all',q='',savedOnly=false,saved=[]}={}) {
   const query=q.trim().toLowerCase();
@@ -69,7 +66,7 @@ export function filterCatalog(catalog,{group='all',q='',savedOnly=false,saved=[]
 export function makeQueue(songs,first,shuffle=false,random=Math.random) {
   const all=songs.flatMap(s=>s.visibleTracks||s.tracks),at=all.findIndex(t=>trackKey(t)===trackKey(first));
   const ordered=at>=0?[...all.slice(at+1),...all.slice(0,at)]:all;
-  const tracks=ordered.filter(t=>!t.ambience&&!t.manualOnly&&trackKey(t)!==trackKey(first));
+  const tracks=ordered.filter(t=>!t.manualOnly&&trackKey(t)!==trackKey(first));
   if(shuffle)for(let i=tracks.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[tracks[i],tracks[j]]=[tracks[j],tracks[i]];}
   return [first,...tracks];
 }
