@@ -506,5 +506,12 @@ export const EDITORIAL = {
       "reflective"
     ],
     "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+  },
+  "calculated-grind": {
+    "moods": [
+      "motivational",
+      "sports"
+    ],
+    "source": "Artist-supplied lyrics in content/releases/2026-10-22-calculated-grind.json: reps, training, progress and discipline."
   }
 };

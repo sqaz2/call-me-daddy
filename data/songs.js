@@ -1,6 +1,40 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "calculated-grind",
+    "title": "Calculated Grind",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-22",
+    "project": "",
+    "description": "Two minutes of locked-in focus. Calculated Grind turns reps, numbers and quiet determination into a focused trap track. Play the song and read the lyrics.",
+    "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
+    "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+    "experience": "/calculated-grind/",
+    "shareUrl": "/calculated-grind/?version=main",
+    "shareToExperience": true,
+    "kind": "Trap · Workout",
+    "shareGenre": "hiphop",
+    "shareCategory": "music",
+    "aliases": [
+      "Calculated Grind (2min)",
+      "Calculated Grind (Focused Trap Mix)"
+    ],
+    "variants": [
+      {
+        "id": "main",
+        "label": "Focused Trap Mix",
+        "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
+        "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+        "date": "2026-10-22",
+        "duration": 120.024,
+        "experience": "/calculated-grind/?version=main",
+        "shareUrl": "/calculated-grind/?version=main"
+      }
+    ]
+  },
+  {
     "id": "nomadic-hustla",
     "title": "Nomadic Hustla (Trap Glitch Overdrive)",
     "artist": "MusicSubject × Call Me Daddy",

@@ -55,6 +55,7 @@
     'satans-loan':'deep',
 
     // --- light (comedy / satire / fun / forward motion) ---
+    'calculated-grind':'light',
     'keep-building-your-future':'light',
     'everybody-thinks-theyre-hot':'light',
     'nomadic-hustla':'light',

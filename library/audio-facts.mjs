@@ -833,5 +833,12 @@ export const AUDIO_FACTS = {
     "sampleRate": 48000,
     "channels": 2,
     "bytes": 4223593
+  },
+  "/media/songs/2026/10/calculated-grind/audio.mp3": {
+    "seconds": 120.02,
+    "format": "MP3",
+    "sampleRate": 48000,
+    "channels": 2,
+    "bytes": 2797067
   }
 };
