@@ -1,12 +1,35 @@
 window.CMD_BRIEFING = {
   timezone: "America/Edmonton",
-  updated: "2026-10-22T12:30:00-06:00",
+  updated: "2026-10-22T14:30:00-06:00",
   entries: [
     {"id":"project-starmuff-first-edition","published":"2026-10-21","type":"Project release","title":"StarMuff — I built a place for the music to live.","summary":"I built a place for the music to live. Step inside StarMuff, meet the original space-and-math adventure, and take its soundtrack with you.","href":"/starmuff/","sharePath":"/updates/project-starmuff-first-edition/","cta":"Explore the project","featured":true,"featuredOrder":0.25,"cardLines":["STARMUFF","FIRST EDITION"],"cardTag":"A game. A soundtrack. A world to step into.","cardSummary":"Come for the music. Find out where it lives.","badge":"PROJECT SPOTLIGHT","cover":"https://starmuff.com/og-image.png"},
     {id:"live-it-right-in-progress",published:"2026-10-18",type:"Song in progress",title:"Live It Right — the idea behind the song",summary:"A song about waiting for instructions while your life keeps happening. Read the story, see the artwork and explore the words taking shape.",href:"/live-it-right/",sharePath:"/updates/live-it-right-in-progress/",cta:"Read the song notes",badge:"Song in progress",cardImage:"/media/projects/2026/10/live-it-right/cover.webp"},
     {id:"understanding-ai-audio",published:"2026-10-18T01:55:00-06:00",type:"Article",title:"What AI audio detectors can actually tell you",summary:"Does editing a recording make it AI-generated? A plain-language guide to recorded sound, generated audio, and the limits of a detector score.",href:"/reading/ai-audio-detectors/",sharePath:"/reading/ai-audio-detectors/",cta:"Read the article",badge:"8 min read"},
     {id:"project-from-sample-to-song",published:"2026-09-09",type:"Experiment",title:"I built the DAW. Then I made the beat.",summary:"A Satan’s.loan sample went through my own drum machine, a Grok-assisted beat and two Suno versions. Follow the song and the DAW as they develop.",href:"/from-sample-to-song/",sharePath:"/updates/project-from-sample-to-song/",cta:"Open the production diary",badge:"Work in progress"},
     // RELEASE-MANIFEST:UPDATES:START
+    {
+      "id": "release-calculated-grind-focused-trap",
+      "published": "2026-10-22T14:30:00-06:00",
+      "type": "New version",
+      "songId": "calculated-grind",
+      "variantId": "focused-trap",
+      "title": "Calculated Grind — Focused Trap Mix",
+      "summary": "The 2:28 Focused Trap Mix joins the 2-minute version. Choose a recording and read its lyrics on the Calculated Grind page.",
+      "href": "/calculated-grind/?version=focused-trap",
+      "sharePath": "/updates/release-calculated-grind-focused-trap/",
+      "cta": "Choose your version",
+      "featured": true,
+      "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+      "cardLines": [
+        "CALCULATED",
+        "GRIND"
+      ],
+      "cardTag": "Two versions · 2:00 / 2:28",
+      "cardSummary": "Every day in the gym is my throne. Pick your version.",
+      "badge": "NEW VERSION",
+      "intent": "level-up",
+      "featuredOrder": 0.0023809523809523807
+    },
     {
       "id": "release-calculated-grind",
       "published": "2026-10-22T12:30:00-06:00",
@@ -18,7 +41,7 @@ window.CMD_BRIEFING = {
       "href": "/calculated-grind/",
       "sharePath": "/updates/release-calculated-grind/",
       "cta": "Play + read the lyrics",
-      "featured": true,
+      "featured": false,
       "cover": "/media/songs/2026/10/calculated-grind/cover.png",
       "cardLines": [
         "CALCULATED",
@@ -27,8 +50,7 @@ window.CMD_BRIEFING = {
       "cardTag": "Focused trap · 2 minutes",
       "cardSummary": "Let the numbers back it up. Every rep, every set.",
       "badge": "NEW RELEASE",
-      "intent": "level-up",
-      "featuredOrder": 0.0024630541871921183
+      "intent": "level-up"
     },
     {
       "id": "release-nomadic-hustla",
@@ -51,7 +73,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Hustla, hustla, demon in the night.",
       "badge": "NEW RELEASE",
       "intent": "heavy",
-      "featuredOrder": 0.0049261083743842365
+      "featuredOrder": 0.007142857142857143
     },
     {
       "id": "release-everybody-thinks-theyre-hot",
@@ -74,7 +96,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Everybody wants their turn. Who’s actually listening?",
       "badge": "THREE MIXES",
       "intent": "laugh",
-      "featuredOrder": 0.007389162561576354
+      "featuredOrder": 0.009523809523809523
     },
     {
       "id": "release-big-dick-willy",
@@ -97,7 +119,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Started with a picture. Turned into a song I couldn’t leave alone.",
       "badge": "TWO VERSIONS",
       "intent": "laugh",
-      "featuredOrder": 0.009852216748768473
+      "featuredOrder": 0.011904761904761902
     },
     {
       "id": "release-her-story",
@@ -120,7 +142,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "A familiar laugh. A borrowed face. Something has come home.",
       "badge": "NEW SONG",
       "intent": "heavy",
-      "featuredOrder": 0.01231527093596059
+      "featuredOrder": 0.014285714285714285
     },
     {
       "id": "release-live-it-right",
@@ -143,7 +165,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Fifteen years in my head. One day to bring it to life with AI. Now let it get stuck in yours.",
       "badge": "NEW SONG",
       "intent": "think",
-      "featuredOrder": 0.014778325123152709
+      "featuredOrder": 0.016666666666666666
     },
     {
       "id": "sqaz-archive-kill-you",
@@ -166,7 +188,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The recording, the people who shared it, and why it survived.",
       "badge": "ARCHIVE STORY",
       "intent": "old-files",
-      "featuredOrder": 0.017241379310344827
+      "featuredOrder": 0.019047619047619046
     },
     {
       "id": "release-this-is-my-story",
@@ -189,7 +211,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "A song started in 2009. A recording saved in a 2010 email. Two new lives in 2026.",
       "badge": "TWO NEW REMIXES",
       "intent": "old-files",
-      "featuredOrder": 0.019704433497536946
+      "featuredOrder": 0.021428571428571425
     },
     {
       "id": "release-come-sit-here-with-me",
@@ -212,7 +234,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "I've made so many things alone. I'd like to make some room for you.",
       "badge": "NEW RELEASE",
       "intent": "think",
-      "featuredOrder": 0.02216748768472906
+      "featuredOrder": 0.023809523809523805
     },
     {
       "id": "release-keep-building-your-future",
@@ -235,7 +257,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The full song, the artwork, and a short looping visual. Keep being you.",
       "badge": "NEW RELEASE",
       "intent": "level-up",
-      "featuredOrder": 0.02463054187192118
+      "featuredOrder": 0.02619047619047619
     },
     {
       "id": "release-turning-invisible",
@@ -258,7 +280,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Yes, you read that correctly. This is a remixed email you’re listening to.",
       "badge": "NEW AI MIX",
       "intent": "old-files",
-      "featuredOrder": 0.0270935960591133
+      "featuredOrder": 0.02857142857142857
     },
     {
       "id": "release-running-a-monopoly",
@@ -281,7 +303,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Five dollars. Two potato patties. One hostile takeover from within.",
       "badge": "NEW RELEASE",
       "intent": "laugh",
-      "featuredOrder": 0.029556650246305417
+      "featuredOrder": 0.03095238095238095
     },
     {
       "id": "release-times-are-coming-mastered",
@@ -304,7 +326,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Mixed, then mastered in generative.download — the DAW I built. Hear the new version and the original.",
       "badge": "NEW VERSION",
       "intent": "level-up",
-      "featuredOrder": 0.03201970443349753
+      "featuredOrder": 0.03333333333333333
     },
     {
       "id": "release-times-are-coming",
@@ -349,7 +371,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "It ain’t brand new—it’s just new to you. The final song, plus a release note from a very slow McDonald’s drive-through line.",
       "badge": "NEW RELEASE",
       "intent": "level-up",
-      "featuredOrder": 0.03694581280788177
+      "featuredOrder": 0.03809523809523809
     },
     {
       "id": "release-8-walmart-parking-lot",
@@ -371,7 +393,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eight twelve in the morning after an all-night DAW build. Burger King breakfast, the van, and a Walmart parking lot. Hear the remastered recording.",
       "badge": "NEW RELEASE",
       "intent": "surprise",
-      "featuredOrder": 0.03940886699507389
+      "featuredOrder": 0.04047619047619047
     },
     {
       "id": "release-nobody-wants-to-listen",
@@ -393,7 +415,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "I can make music, but nobody wants to listen. The main track and four alternate cuts, including I Can Make Music — Chant and both Music with the Devil versions.",
       "badge": "NEW RELEASE",
       "intent": "think",
-      "featuredOrder": 0.04187192118226601
+      "featuredOrder": 0.04285714285714285
     },
     {
       "id": "2010-wows-gangster-remix",
@@ -416,7 +438,7 @@ window.CMD_BRIEFING = {
       "cardTag": "2010 WOWS · Another version",
       "cardSummary": "Gangster as Fuck Remix joins the existing 2010 WOWS versions.",
       "badge": "NEW MIX",
-      "featuredOrder": 0.04433497536945812
+      "featuredOrder": 0.04523809523809523
     },
     {
       "id": "2010-wows-close-my-eyes",
@@ -460,7 +482,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "A fourteen-year-old poem. Three versions. One bonus.",
       "badge": "New release",
       "intent": "think",
-      "featuredOrder": 0.04926108374384236
+      "featuredOrder": 0.05
     },
     {
       "id": "release-make-me-an-animal-v6",
@@ -481,7 +503,7 @@ window.CMD_BRIEFING = {
       "cardTag": "New version · Suno v6",
       "cardSummary": "The new v6 recording. One Animal family, with the three earlier recordings preserved.",
       "badge": "NEW · v6",
-      "featuredOrder": 0.05172413793103448
+      "featuredOrder": 0.05238095238095238
     },
     {
       "id": "release-cheap-to-inform",
@@ -503,7 +525,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Two open wounds. Two sold-out rooms. An imagined scene about family hurt and the audience around it—not an autobiography.",
       "badge": "Scene study",
       "intent": "think",
-      "featuredOrder": 0.0541871921182266
+      "featuredOrder": 0.05476190476190476
     },
     {
       "id": "release-canadian-crop-dusting",
@@ -525,7 +547,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "No confession. No discussion. Just good ol’ Canadian crop dusting.",
       "badge": "New remix",
       "intent": "laugh",
-      "featuredOrder": 0.05665024630541872
+      "featuredOrder": 0.05714285714285714
     },
     {
       "id": "release-everybody-else-less",
@@ -547,7 +569,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "You feel like shit. Somebody else catches it. The original track, its story, and the lyrics.",
       "badge": "New song page",
       "intent": "think",
-      "featuredOrder": 0.059113300492610835
+      "featuredOrder": 0.05952380952380952
     },
     {
       "id": "release-set-a-table-for-two",
@@ -569,7 +591,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The wedding cut. The voice clone. Same words, very different guests.",
       "badge": "New release",
       "intent": "laugh",
-      "featuredOrder": 0.06157635467980295
+      "featuredOrder": 0.0619047619047619
     },
     {
       "id": "release-satans-loan",
@@ -591,7 +613,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Borrowed time · flower through concrete — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "think",
-      "featuredOrder": 0.06403940886699507
+      "featuredOrder": 0.06428571428571428
     },
     {
       "id": "release-superstore-effect",
@@ -613,7 +635,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "Eighty carts remaining. A Superstore rant became the superstore effect — MusicSubject & Call Me Daddy.",
       "badge": "New today",
       "intent": "laugh",
-      "featuredOrder": 0.06650246305418718
+      "featuredOrder": 0.06666666666666667
     },
     {
       "id": "release-twas-the-tism-mlord",
@@ -635,7 +657,7 @@ window.CMD_BRIEFING = {
       "cardSummary": "The lyrics stayed medieval; the Halloween treatment is visual. The final release is the shorter hand-edited cut with micro-stutters and a glitching outro.",
       "badge": "Final release",
       "intent": "laugh",
-      "featuredOrder": 0.06896551724137931
+      "featuredOrder": 0.06904761904761904
     },
     // RELEASE-MANIFEST:UPDATES:END
     {id:"release-still-building",published:"2026-09-10T10:30:00Z",type:"Two-song V6 release",songId:"stomp-clamp",title:"Still Building — Two Survival Songs",summary:"I Need That Sound and Survival Mode: two personal songs rebuilt in Suno V6 while I work toward a life beyond survival mode.",href:"/still-building/",sharePath:"/updates/release-still-building/",cta:"Play both V6 remixes",featured:true,featuredOrder:0.07142857142857142,cover:"/media/projects/2026/09/still-building/i-need-that-sound-v6.jpg",cardLines:["STILL","BUILDING"],cardTag:"Two survival songs · Suno V6",cardSummary:"Working. Building. Trying to turn the van into a chapter instead of the ending.",badge:"New V6 remixes",intent:"think"},
