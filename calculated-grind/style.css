@@ -13,3 +13,10 @@
 .grind-release .release-lyrics{scroll-margin-top:90px}
 .grind-release .release-lyrics pre{line-height:1.95;max-width:80ch}
 @media(max-width:720px){.grind-release .release-stage{order:-1;max-width:390px}.grind-release .release-cover{max-width:none}.grind-release .release-heading{font-size:9px;letter-spacing:.055em;margin-bottom:22px}.grind-release .release-intro h1{font-size:clamp(38px,12vw,70px)}.grind-hook{font-size:20px;margin:16px 0 12px}.grind-release .release-hero{gap:24px}.grind-share{margin-bottom:24px}}
+
+.grind-version-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.grind-version-picker p{grid-column:1/-1;margin:0;font-size:12px;font-weight:700;color:var(--muted)}
+.grind-version-picker button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:10px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--paper);font-weight:700;cursor:pointer}
+.grind-version-picker button[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:#111210}
+.grind-version-picker button[aria-pressed=true] .cut-icon{color:inherit}
+.grind-version-picker button:hover{border-color:var(--accent)}

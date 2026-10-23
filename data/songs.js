@@ -8,7 +8,7 @@ window.CMD_SONGS = [
     "month": 10,
     "date": "2026-10-22",
     "project": "",
-    "description": "Reps, numbers and quiet determination. Two minutes of focused trap: play Calculated Grind and read the lyrics.",
+    "description": "Reps, numbers and quiet determination. Choose the 2:00 or 1:54 version of Calculated Grind and read the lyrics.",
     "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
     "cover": "/media/songs/2026/10/calculated-grind/cover.png",
     "experience": "/calculated-grind/",
@@ -18,7 +18,8 @@ window.CMD_SONGS = [
     "shareGenre": "hiphop",
     "shareCategory": "music",
     "aliases": [
-      "Calculated Grind (2min)"
+      "Calculated Grind (2min)",
+      "Calculated Grind (1m54)"
     ],
     "variants": [
       {
@@ -30,6 +31,16 @@ window.CMD_SONGS = [
         "duration": 120.024,
         "experience": "/calculated-grind/?version=main",
         "shareUrl": "/calculated-grind/?version=main"
+      },
+      {
+        "id": "short-version",
+        "label": "1:54 version",
+        "audio": "/media/songs/2026/10/calculated-grind/short-version.mp3",
+        "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+        "date": "2026-10-22",
+        "duration": 114.024,
+        "experience": "/calculated-grind/?version=short-version",
+        "shareUrl": "/calculated-grind/?version=short-version"
       }
     ]
   },
