@@ -8,7 +8,7 @@
     "month": 10,
     "date": "2026-10-22",
     "project": "",
-    "description": "Reps, numbers and quiet determination. Two minutes of focused trap: play Calculated Grind and read the lyrics.",
+    "description": "Reps, numbers and quiet determination. Choose the 2:00 or 1:54 version of Calculated Grind and read the lyrics.",
     "audio": "/media/songs/2026/10/calculated-grind/audio.mp3",
     "cover": "/media/songs/2026/10/calculated-grind/cover.png",
     "experience": "/calculated-grind/",
@@ -18,7 +18,8 @@
     "shareGenre": "hiphop",
     "shareCategory": "music",
     "aliases": [
-      "Calculated Grind (2min)"
+      "Calculated Grind (2min)",
+      "Calculated Grind (1m54)"
     ],
     "variants": [
       {
@@ -30,6 +31,16 @@
         "duration": 120.024,
         "experience": "/calculated-grind/?version=main",
         "shareUrl": "/calculated-grind/?version=main"
+      },
+      {
+        "id": "short-version",
+        "label": "1:54 version",
+        "audio": "/media/songs/2026/10/calculated-grind/short-version.mp3",
+        "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+        "date": "2026-10-22",
+        "duration": 114.024,
+        "experience": "/calculated-grind/?version=short-version",
+        "shareUrl": "/calculated-grind/?version=short-version"
       }
     ]
   },
@@ -42,23 +53,23 @@
     "old-files": 0
   },
   "update": {
-    "id": "release-calculated-grind-focused-trap",
-    "published": "2026-10-22T14:30:00-06:00",
+    "id": "release-calculated-grind-short-version",
+    "published": "2026-10-22T18:00:00-06:00",
     "type": "Release update",
     "songId": "calculated-grind",
-    "variantId": "main",
-    "title": "Calculated Grind — two-minute recording",
-    "summary": "Calculated Grind uses the supplied two-minute recording. The longer mix has been removed from the release. Play the track and read the lyrics.",
-    "href": "/calculated-grind/?version=main",
-    "sharePath": "/updates/release-calculated-grind-focused-trap/",
-    "cta": "Play + read the lyrics",
+    "variantId": "short-version",
+    "title": "Calculated Grind — both versions",
+    "summary": "The shorter replacement recording is now available beside the 2:00 version. Choose either version above the artwork; each has its own share link.",
+    "href": "/calculated-grind/?version=short-version",
+    "sharePath": "/updates/release-calculated-grind-short-version/",
+    "cta": "Choose a version",
     "featured": true,
     "cover": "/media/songs/2026/10/calculated-grind/cover.png",
     "cardLines": [
       "CALCULATED",
       "GRIND"
     ],
-    "cardTag": "Focused trap · 2 minutes",
+    "cardTag": "Focused trap · 2 versions",
     "cardSummary": "Let the numbers back it up. Every rep, every set.",
     "badge": "UPDATED",
     "intent": "level-up"
@@ -69,6 +80,28 @@
     "source": "artist-supplied"
   },
   "previousUpdates": [
+    {
+      "id": "release-calculated-grind-focused-trap",
+      "published": "2026-10-22T14:30:00-06:00",
+      "type": "Release update",
+      "songId": "calculated-grind",
+      "variantId": "main",
+      "title": "Calculated Grind — two-minute recording",
+      "summary": "Calculated Grind uses the supplied two-minute recording. The longer mix has been removed from the release. Play the track and read the lyrics.",
+      "href": "/calculated-grind/?version=main",
+      "sharePath": "/updates/release-calculated-grind-focused-trap/",
+      "cta": "Play + read the lyrics",
+      "featured": false,
+      "cover": "/media/songs/2026/10/calculated-grind/cover.png",
+      "cardLines": [
+        "CALCULATED",
+        "GRIND"
+      ],
+      "cardTag": "Focused trap · 2 minutes",
+      "cardSummary": "Let the numbers back it up. Every rep, every set.",
+      "badge": "UPDATED",
+      "intent": "level-up"
+    },
     {
       "id": "release-calculated-grind",
       "published": "2026-10-22T12:30:00-06:00",

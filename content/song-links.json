@@ -571,7 +571,8 @@
       "songId": "calculated-grind",
       "versions": [
         "main",
-        "focused-trap"
+        "focused-trap",
+        "short-version"
       ]
     }
   ]

@@ -728,8 +728,16 @@
       "sources": [
         "content/releases/2026-10-22-calculated-grind.json",
         "calculated-grind/index.html",
-        "media/songs/2026/10/calculated-grind/audio.mp3"
-      ]
+        "media/songs/2026/10/calculated-grind/audio.mp3",
+        "media/songs/2026/10/calculated-grind/short-version.mp3"
+      ],
+      "variants": {
+        "short-version": {
+          "headline": "Let the numbers back it up.",
+          "text": "Every rep, every set, every time you show up.\n\nThe shorter Calculated Grind recording runs 1:54. Open the page and choose your version.",
+          "description": "Calculated Grind in 1:54. Open the shorter recording or switch to the 2:00 version above the artwork."
+        }
+      }
     }
   }
 }

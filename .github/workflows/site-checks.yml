@@ -147,6 +147,8 @@ jobs:
         run: node --test tests/her-story-audiobook.test.mjs
       - name: Times Are Coming release and dubstep sharing
         run: node --test tests/times-are-coming.test.mjs
+      - name: Calculated Grind versions
+        run: node --test tests/calculated-grind.test.mjs
       - name: Streaming delivery tests
         run: node --test tests/media-stream.test.mjs
 
