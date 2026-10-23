@@ -71,3 +71,13 @@ node --test tests/music-library.test.mjs tests/music-library-discovery.test.mjs 
 ```
 
 The coverage tests verify every canonical song and exact audio variant is indexed, the archive additions and external-only versions stay identifiable, genre labels do not leak between alternate versions, filters and scoring are honest, shortlisted versions survive sharing, and measured file sizes still match their audio.
+
+### Library discovery and project enquiries (October 23)
+
+Browse mood/style buttons and the finder dropdowns now share one filter state. Choosing Comedy after Cinematic replaces the old mood; legacy `group` links normalize to the corresponding dropdown, while an explicit collection such as StarMuff remains a separate, visible constraint. Removable filter chips and “Search whole library” expose the scope. Search handles punctuation, former song IDs, aliases and version names; exact titles containing “not” are not parsed as exclusion requests. Complete matches are preferred, with labelled closest matches only when none fit.
+
+Supervisors can ask about a recording from its row, details or playing dock, or send a brief without selecting a song. The enquiry contains exact recording links and the entered brief. Email opens the visitor’s mail app; Copy enquiry and the visible address provide a fallback. Nothing is submitted automatically. A brief is kept only in the current browser session; shortlists retain their existing local-device behavior.
+
+`library/identities.mjs` holds source-backed library display corrections. The formerly generic YouTube entry is published as “@Dubstep” according to YouTube oEmbed (October 23); its old name remains searchable. `library/editorial.mjs` can record explicit genre evidence, including the existing Survival Mode hip-hop classification. Unverified genres stay available in all-music/title/lyric search and in the review collection; do not assign styles from arbitrary title words.
+
+The supervisor-facing copy borrows the direct invitation and try-it-yourself approach of William’s helpoverload.com/ai page: “Press play. Picture your scene.” It does not claim pre-cleared rights, available stems or placement credits.
