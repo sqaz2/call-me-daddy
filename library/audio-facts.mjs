@@ -743,6 +743,20 @@ export const AUDIO_FACTS = {
     "channels": 2,
     "bytes": 2682539
   },
+  "/media/songs/2026/10/eternal-room/alternate.mp3": {
+    "seconds": 126.54,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 1553474
+  },
+  "/media/songs/2026/10/eternal-room/remastered.mp3": {
+    "seconds": 221.78,
+    "format": "MP3",
+    "sampleRate": 48000,
+    "channels": 2,
+    "bytes": 5800394
+  },
   "/media/songs/2026/10/everybody-thinks-theyre-hot/celtic-hook.mp3": {
     "seconds": 88.68,
     "format": "MP3",

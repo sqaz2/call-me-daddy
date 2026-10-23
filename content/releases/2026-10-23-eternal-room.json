@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "eternal-room",
+    "title": "Eternal Room",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "",
+    "description": "A coat on the kitchen chair, a chipped blue mug, and the choice to stay. Two different recordings of Eternal Room, with the full lyrics.",
+    "audio": "/media/songs/2026/10/eternal-room/remastered.mp3",
+    "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+    "experience": "/eternal-room/",
+    "shareUrl": "/eternal-room/?version=main",
+    "kind": "song",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/10/eternal-room/remastered.mp3",
+        "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+        "date": "2026-10-23",
+        "duration": 221.784,
+        "experience": "/eternal-room/?version=main",
+        "shareUrl": "/eternal-room/?version=main"
+      },
+      {
+        "id": "alternate",
+        "label": "Alternate version",
+        "audio": "/media/songs/2026/10/eternal-room/alternate.mp3",
+        "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+        "date": "2026-10-23",
+        "duration": 126.537143,
+        "experience": "/eternal-room/?version=alternate",
+        "shareUrl": "/eternal-room/?version=alternate"
+      }
+    ],
+    "shareToExperience": true,
+    "shareCategory": "music",
+    "shareGenre": "other"
+  },
+  "radio": {
+    "surprise": 65,
+    "laugh": 0,
+    "think": 90,
+    "level-up": 20,
+    "heavy": 10,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-eternal-room",
+    "published": "2026-10-23T12:00:00-06:00",
+    "type": "New release",
+    "songId": "eternal-room",
+    "title": "Eternal Room — two versions",
+    "summary": "Stay when the room goes quiet. Choose the 3:42 remaster or the 2:07 alternate recording and read the full lyrics.",
+    "href": "/eternal-room/",
+    "sharePath": "/updates/release-eternal-room/",
+    "cta": "Choose a version + read the lyrics",
+    "featured": true,
+    "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+    "cardLines": [
+      "ETERNAL",
+      "ROOM"
+    ],
+    "cardTag": "One song · Two versions",
+    "cardSummary": "A chipped blue mug. A coat left on a chair. The choice to stay.",
+    "badge": "NEW RELEASE",
+    "intent": "think",
+    "variantId": "main"
+  },
+  "lyrics": {
+    "text": "[Verse 1]\nYou left your coat on the kitchen chair\nI found the train stub tucked in the sleeve\nThe kettle clicked, but neither of us\nCould say the thing we came to believe\n\nYou traced a crack in the chipped blue mug\nI watched your thumb make circles there\nWe used to fill every quiet space\nNow every answer needs a prayer\n\n[Pre-Chorus]\nIf we keep standing at this door\nWe’ll turn the years into a wall\nSo take my hand, don’t make it easy\nJust don’t let go when the old doubts call\n\n[Chorus]\nStay when the room goes quiet\nStay when the brave words fail\nWe don’t have to know the ending\nWe only have to meet it there\nIf the ground gives way beneath us\nIf the map runs out of lines\nStay—let the truth come slowly\nI’ll be here, you’ll be here, we’ll decide\n\n[Verse 2]\nThe landlord taped a notice up\nRain blurred the date against the glass\nYou laughed and said, “We’ve had worse weeks”\nThen held my coat as the buses passed\n\nI know the look you wear when hurt\nGets dressed as something sharp and clean\nI know I turn a simple question\nInto a courtroom neither needs\n\n[Pre-Chorus]\nIf we keep standing at this door\nWe’ll turn the years into a wall\nSo take my hand, don’t make it easy\nJust don’t let go when the old doubts call\n\n[Chorus]\nStay when the room goes quiet\nStay when the brave words fail\nWe don’t have to know the ending\nWe only have to meet it there\nIf the ground gives way beneath us\nIf the map runs out of lines\nStay—let the truth come slowly\nI’ll be here, you’ll be here, we’ll decide\n\n[Bridge]\nI can’t promise there’ll be no breaking\nI can’t swear we’ll never change\nBut I can put the keys down gently\nAnd say your name without a shield\n\n[Final Chorus]\nStay when the room goes quiet\nStay when the brave words fail\nWe don’t have to know the ending\nWe can meet it as it comes\nIf the ground gives way beneath us\nIf the map runs out of lines\nStay—let the truth come slowly\nI’m still here, you’re still here, we’re alive\n\n[Outro]\nThe kettle clicks, the rain lets up\nYour coat is still beside my chair",
+    "snippet": "Stay when the room goes quiet / Stay when the brave words fail",
+    "source": "artist-supplied"
+  }
+}

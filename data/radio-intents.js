@@ -122,6 +122,14 @@ window.CMD_RADIO_CONFIG = {
 };
 /* RELEASE-MANIFEST:RADIO:START */
 Object.assign(window.CMD_RADIO_CONFIG.profiles, {
+  "eternal-room": {
+    "surprise": 65,
+    "laugh": 0,
+    "think": 90,
+    "level-up": 20,
+    "heavy": 10,
+    "old-files": 0
+  },
   "calculated-grind": {
     "surprise": 70,
     "laugh": 0,

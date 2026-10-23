@@ -1,6 +1,46 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "eternal-room",
+    "title": "Eternal Room",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "",
+    "description": "A coat on the kitchen chair, a chipped blue mug, and the choice to stay. Two different recordings of Eternal Room, with the full lyrics.",
+    "audio": "/media/songs/2026/10/eternal-room/remastered.mp3",
+    "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+    "experience": "/eternal-room/",
+    "shareUrl": "/eternal-room/?version=main",
+    "kind": "song",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Remastered",
+        "audio": "/media/songs/2026/10/eternal-room/remastered.mp3",
+        "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+        "date": "2026-10-23",
+        "duration": 221.784,
+        "experience": "/eternal-room/?version=main",
+        "shareUrl": "/eternal-room/?version=main"
+      },
+      {
+        "id": "alternate",
+        "label": "Alternate version",
+        "audio": "/media/songs/2026/10/eternal-room/alternate.mp3",
+        "cover": "/media/songs/2026/10/eternal-room/cover.jpg",
+        "date": "2026-10-23",
+        "duration": 126.537143,
+        "experience": "/eternal-room/?version=alternate",
+        "shareUrl": "/eternal-room/?version=alternate"
+      }
+    ],
+    "shareToExperience": true,
+    "shareCategory": "music",
+    "shareGenre": "other"
+  },
+  {
     "id": "calculated-grind",
     "title": "Calculated Grind",
     "artist": "MusicSubject × Call Me Daddy",

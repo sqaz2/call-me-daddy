@@ -1,5 +1,6 @@
 // Mood suggestions preserve existing editorial classifications. They are not acoustic measurements.
 export const EDITORIAL = {
+  "eternal-room": {"moods": ["emotional", "reflective", "romantic"], "source": "Artist-supplied lyrics in eternal-room/lyrics.txt; editorial themes, not acoustic measurements"},
   "power-moves-only": {
     "moods": [
       "motivational"
