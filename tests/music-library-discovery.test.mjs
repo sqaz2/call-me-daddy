@@ -69,3 +69,33 @@ test('exact song titles rank before broader mood matches, even when their words 
   assert.deepEqual(first.match.matched,['Exact title']);
  }
 });
+
+test('browse moods and dropdowns share one filter; comedy replaces cinematic',()=>{
+ const broad=filterCatalog(catalog,{mood:'comedy'});
+ assert.equal(broad.length,21);
+ assert.deepEqual(filterCatalog(catalog,{group:'cinematic',mood:'comedy'}).map(s=>s.id),broad.map(s=>s.id));
+ assert.deepEqual(filterCatalog(catalog,{group:'comedy'}).map(s=>s.id),broad.map(s=>s.id));
+ assert.deepEqual(filterCatalog(catalog,{group:'comedy',genre:'country'}).map(s=>s.id).sort(),['ashes-in-eastwood','big-dick-willy']);
+ assert.equal(filterCatalog(catalog,{group:'starmuff',mood:'comedy'}).length,0); // real collections remain explicit
+});
+test('titles, former titles and exact versions survive punctuation and partial searches',()=>{
+ for(const [q,id,version] of [["Twas the Tism M'Lord",'twas-the-tism-mlord'],['five note theme','five-note-theme'],['set a table for two','set-a-table-for-two'],['Need Love','i-need-love'],['Close My Eyes','2010-wows','close-my-eyes-ai-mix'],['Round the Bend','archive-crocodile-shoes'],['YouTube Release','youtube-W47ebCMfrBI']]){
+  const first=filterCatalog(catalog,{q})[0];assert.equal(first?.id,id,q);if(version)assert.equal(first.visibleTracks[0].variantId,version);
+ }
+ for(const song of catalog)assert.equal(filterCatalog(catalog,{q:song.title})[0]?.id,song.id,song.title);
+ assert.deepEqual(filterCatalog(catalog,{q:'gospel'}).map(s=>s.id),filterCatalog(catalog,{genre:'gospel'}).map(s=>s.id));
+ assert.ok(!filterCatalog(catalog,{q:'trap'}).some(s=>s.id==='numbness-as-a-trap'));
+});
+test('verified external title and existing style metadata are indexed without guessing unknown genres',()=>{
+ const external=catalog.find(s=>s.id==='youtube-W47ebCMfrBI');assert.equal(external.title,'@Dubstep');assert.equal(external.tracks[0].externalUrl,'https://youtu.be/W47ebCMfrBI');
+ assert.match(librarySocial(new URL(shareURL({track:external.tracks[0]})),null).title,/@Dubstep/);
+ assert.ok(catalog.find(s=>s.id==='survival-mode').tracks.every(t=>t.genres.includes('hiphop')));
+ assert.ok(catalog.find(s=>s.id==='eternal-room').tracks.every(t=>!t.genreKnown));
+});
+test('project enquiry carries the exact recording, brief and a useful empty-shortlist path',async()=>{
+ const {inquiryText}=await import('../library/discovery.mjs');
+ const t=catalog.find(s=>s.id==='big-dick-willy').tracks[1];
+ const text=inquiryText([t],'Wedding scene; 20 seconds; Friday deadline',t=>shareURL({track:t}));
+ assert.match(text,/Wedding scene; 20 seconds; Friday deadline/);assert.ok(text.includes(t.variantLabel));assert.ok(text.includes('version='+t.variantId));assert.match(text,/availability, pricing/);
+ assert.match(inquiryText([],'',()=>''),/suggestions for the brief above/);
+});

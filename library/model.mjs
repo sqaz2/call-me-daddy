@@ -1,7 +1,8 @@
+import {EDITORIAL} from './editorial.mjs';
 import {enrichTrack,parseBrief,matchBrief} from './discovery.mjs';
 export const LIBRARY_ORIGIN = 'https://library.musicsubject.com';
 export const GROUPS = [
-  {id:'all', label:'All music', kind:'collection', description:'Songs, alternate mixes and game soundtracks. Find a sound, then make it yours.'},
+  {id:'all', label:'All music', kind:'collection', description:'Songs, alternate mixes and game soundtracks. Audition a recording, save the exact version and ask about your project.'},
   {id:'motivational', label:'Motivational', kind:'mood', description:'Keep going, build something, and find your next step.'},
   {id:'high-energy', label:'High energy', kind:'mood', description:'Big drops, forward motion and music with some muscle.'},
   {id:'feel-good', label:'Feel good', kind:'mood', description:'Connection, possibility and a little room to breathe.'},
@@ -54,14 +55,15 @@ export function buildCatalog(songs, starMuff=[], context={}) {
     const variants=song.variants?.some(v=>v.audio)?song.variants.filter(v=>v.audio||v.externalUrl):song.audio?[{id:'main',audio:song.audio,label:song.kind||'Main version'}]:song.youtubeUrl?[{id:'main',label:'YouTube release',externalUrl:song.youtubeUrl,external:true,platform:'YouTube'}]:[];
     const tracks=variants.map((v,i)=>{
       const groups=Object.entries(MOODS).filter(([,ids])=>ids.includes(song.id)).map(([id])=>id);
-      const specific=[v.label,v.kind,v.shareGenre].filter(Boolean).join(' ');
-      const general=[variants.length>1&&/\bversions?\b/i.test(song.kind||'')?'':song.kind,song.shareGenre].filter(Boolean).join(' ');
+      const specific=[v.label,v.kind,v.genre,v.shareGenre].filter(Boolean).join(' ');
+      const general=[variants.length>1&&/\bversions?\b/i.test(song.kind||'')?'':song.kind,song.genre,song.shareGenre].filter(Boolean).join(' ');
       // Only use a description as genre evidence for a single recording; never
       // let one alternate mix's style leak into its siblings.
       const fallback=variants.length===1?[song.description,...(song.title.match(/\([^)]*\)/g)||[])].join(' '):'';
       const evidence=Object.values(GENRES).some(re=>re.test(specific))?specific:Object.values(GENRES).some(re=>re.test(general))?general:fallback;
       for(const [id,re] of Object.entries(GENRES))if(re.test(evidence))groups.push(id);
       if(song.playlist==='starmuff')groups.push('starmuff','cinematic','soundtrack');
+      for(const id of EDITORIAL[song.id]?.genres||[])if(GROUPS.some(g=>g.id===id&&g.kind==='genre'))groups.push(id);
       const id=v.id||String(i);
       const genres=groups.filter(g=>GROUPS.some(x=>x.id===g&&x.kind==='genre'));
       if(!genres.length)groups.push('unclassified');
@@ -73,7 +75,16 @@ export function buildCatalog(songs, starMuff=[], context={}) {
   result.sort((a,b)=>String(b.tracks[0].date).localeCompare(String(a.tracks[0].date)));
   return result;
 }
-export function filterCatalog(catalog,{group='all',q='',savedOnly=false,saved=[],mood='',genre='',scene='',vocals='',length='',sort='relevance',shortlist=null}={}) {
+// Browse buttons and dropdowns use the same state. Legacy group links still work,
+// but an explicit dropdown replaces a group of the same kind instead of hiding it.
+export function normalizeFilters(state={}) {
+ const result={...state},selected=GROUPS.find(g=>g.id===result.group);
+ const key=selected?.kind==='mood'?'mood':selected?.kind==='genre'||selected?.id==='unclassified'?'genre':null;
+ if(key){result[key]=result[key]||selected.id;result.group='all';}
+ return result;
+}
+export function filterCatalog(catalog,options={}) {
+ const {group='all',q='',savedOnly=false,saved=[],mood='',genre='',scene='',vocals='',length='',sort='relevance',shortlist=null}=normalizeFilters(options);
   const brief=parseBrief(q);
   const found=catalog.flatMap(song=>{
     if(savedOnly&&!saved.includes(song.id))return [];
@@ -84,13 +95,14 @@ export function filterCatalog(catalog,{group='all',q='',savedOnly=false,saved=[]
       const match=matchBrief(song,t,brief);return match?[{...t,match}]:[];
     });
     if(!tracks.length)return [];
-    if(q.trim())tracks.sort((a,b)=>(b.match.score||0)-(a.match.score||0));
+    if(q.trim())tracks.sort((a,b)=>Number(!!b.match.versionMatch)-Number(!!a.match.versionMatch)||Number(!!b.match.titleMatch)-Number(!!a.match.titleMatch)||(b.match.score||0)-(a.match.score||0));
     return [{...song,visibleTracks:tracks,match:tracks[0].match}];
   });
   if(sort==='title')found.sort((a,b)=>a.title.localeCompare(b.title));
   else if(sort==='shortest')found.sort((a,b)=>(a.visibleTracks[0].facts?.seconds??Infinity)-(b.visibleTracks[0].facts?.seconds??Infinity));
-  else if(q.trim())found.sort((a,b)=>Number(!!b.match.exactTitle)-Number(!!a.match.exactTitle)||(b.match.score||0)-(a.match.score||0));
-  return found;
+  else if(q.trim())found.sort((a,b)=>Number(!!b.match.exactTitle)-Number(!!a.match.exactTitle)||Number(!!b.match.titleMatch)-Number(!!a.match.titleMatch)||(b.match.score||0)-(a.match.score||0));
+  // Prefer complete matches; show clearly labelled alternatives only when none fit.
+  return q.trim()&&found.some(s=>s.match.score===100)?found.filter(s=>s.match.score===100).map(s=>({...s,visibleTracks:s.visibleTracks.filter(t=>t.match.score===100)})):found;
 }
 export function makeQueue(songs,first,shuffle=false,random=Math.random) {
   if(!first?.audio)return [];

@@ -153,6 +153,8 @@ export const EDITORIAL = {
     "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
   },
   "survival-mode": {
+    "genres": ["hiphop"],
+    "genreSource": "Existing explicit hiphop classification in scripts/sync-song-links.mjs genreFor; applies to both Celtic North recordings",
     "moods": [
       "intense"
     ],

@@ -32,9 +32,10 @@ export function enrichTrack(song,variant,groups,{lyrics={}}={}){
  return {groups:[...new Set(added)],scenes:[...new Set(scenes)],facts:AUDIO_FACTS[variant.audio]||null,vocals,flags,provenance,moodSource:editorial?.source||(song.playlist==='starmuff'?'Soundtrack cue titles and game use':'Catalogue description'),lyricsAvailable:!!songText};
 }
 const synonyms={hopeful:'motivational',hope:'motivational',uplifting:'motivational',inspiring:'motivational',inspirational:'motivational',resilience:'motivational',perseverance:'comeback',happy:'feel-good',upbeat:'feel-good',joyful:'feel-good',sad:'emotional',sadness:'emotional',melancholy:'emotional',melancholic:'emotional',heartbreak:'emotional',funny:'comedy',humorous:'comedy',satire:'comedy',humour:'comedy',humor:'comedy',love:'romantic',longing:'romantic',romance:'romantic',friendship:'connection',friends:'connection',suspense:'tense',suspenseful:'tense',scary:'tense',horror:'tense',aggressive:'intense',defiant:'intense',space:'exploration',adventure:'exploration',wonder:'exploration',discovery:'exploration',calm:'relaxed',calming:'relaxed',chill:'relaxed',quiet:'relaxed',electronic:'edm',hiphop:'hiphop',rap:'hiphop',soul:'rnb',rnb:'rnb',drumandbass:'dnb',drumnbass:'dnb',sports:'sports',instrumentals:'instrumental',instrumental:'instrumental',vocals:'vocal',lyrics:'vocal'};
-const concepts=new Set(['trap',...Object.values(synonyms),'country','dubstep','rock','pop','cinematic','reflective','curious','motivational','high-energy','feel-good','emotional','comedy','sports','intense','romantic','tense','relaxed',...SCENES.map(s=>s.id)]);
+const concepts=new Set(['trap','gospel','spoken','soundtrack',...Object.values(synonyms),'country','dubstep','rock','pop','cinematic','reflective','curious','motivational','high-energy','feel-good','emotional','comedy','sports','intense','romantic','tense','relaxed',...SCENES.map(s=>s.id)]);
 const stop=new Set('i we need want looking find music song songs track tracks recording recordings for a an the and or with that is feels feeling something me to of in by on some please scene film video tv movie but'.split(' '));
 const normalize=s=>String(s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/drum\s*(?:&|and|n)\s*bass/g,'drumandbass').replace(/hip[ -]hop/g,'hiphop').replace(/r\s*&\s*b/g,'rnb').replace(/feel[ -]good/g,'feel-good').replace(/high[ -]energy/g,'high-energy');
+const titleKey=s=>normalize(s).replace(/[’'‘]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 const canonical=s=>synonyms[s]||s;
 export function parseBrief(q=''){
  let text=normalize(q),vocals='';const excluded=[];
@@ -42,15 +43,20 @@ export function parseBrief(q=''){
  text=text.replace(/\b(?:no|without|not)\s+([\w-]+)/g,(_,v)=>{excluded.push(canonical(v));return '';});
  text=text.replace(/(?:^|\s)-([\w-]+)/g,(_,v)=>{excluded.push(canonical(v));return ' ';});
  const terms=[...new Set((text.match(/[a-z0-9]+(?:-[a-z0-9]+)*/g)||[]).filter(t=>!stop.has(t)).map(canonical))];
- return {terms,excluded,vocals,phrase:normalize(q).trim()};
+ return {terms,excluded,vocals,phrase:normalize(q).trim(),titlePhrase:titleKey(q)};
 }
 export function matchBrief(song,track,brief){
  const tags=new Set([...track.groups,...(track.scenes||[]),track.vocals]);
- const text=normalize([song.title,track.variantLabel,song.artist,song.description,...(song.aliases||[]),song.searchLyrics||''].join(' '));
+ const text=normalize([song.title,track.variantLabel,song.artist,song.project,...(track.aliases||[]),song.description,...(song.aliases||[]),song.searchLyrics||''].join(' '));
  const words=new Set(text.match(/[a-z0-9]+(?:-[a-z0-9]+)*/g)||[]);
  const has=t=>concepts.has(t)?tags.has(t):words.has(t);
+ const titles=[song.title,...(song.aliases||[]),song.id?.replace(/-/g,' ')].filter(Boolean).map(titleKey);
+ if(brief.titlePhrase&&titles.includes(brief.titlePhrase))return {score:100,matched:['Exact title'],missing:[],exactTitle:true,titleMatch:true,versionMatch:titleKey(track.variantLabel).includes(brief.titlePhrase)};
  if(brief.excluded.some(has)||brief.vocals&&track.vocals!==brief.vocals)return null;
- if(brief.phrase&&[song.title,...(song.aliases||[])].some(title=>normalize(title).trim()===brief.phrase))return {score:100,matched:['Exact title'],missing:[],exactTitle:true};
+ // Find a remembered title/version without forcing its words through mood synonyms.
+ // Single genre/mood queries still select documented tags, not title subjects.
+ const titleQuery=brief.titlePhrase;
+ if(!brief.excluded.length&&!brief.vocals&&titleQuery?.length>=3&&(titleQuery.includes(' ')||!concepts.has(canonical(titleQuery)))&&[...titles,titleKey(track.variantLabel)].some(title=>title.includes(titleQuery)))return {score:100,matched:['Title / version'],missing:[],titleMatch:true};
  const matched=brief.terms.filter(has),missing=brief.terms.filter(t=>!has(t));
  if(brief.terms.length&&!matched.length)return null;
  return {score:brief.terms.length?Math.round(100*matched.length/brief.terms.length):null,matched,missing};
@@ -66,4 +72,8 @@ export function resolveShortlist(keys,catalog){
 export function shortlistCSV(tracks,makeURL){
  const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
  return [['Title','Artist','Version','Seconds','Genres','Moods / collections','Scene suggestions','Vocals','Text flags','Production notes','Clearance','Exact recording URL'],...tracks.map(t=>[t.title,t.artist,t.variantLabel,t.facts?.seconds||'',t.genres?.join('; ')||'Unverified',t.groups.join('; '),t.scenes?.join('; ')||'',t.vocals,t.flags?.join('; ')||'Not fully reviewed',t.provenance,'Confirm master and publishing rights',makeURL(t)])].map(row=>row.map(cell).join(',')).join('\r\n');
+}
+
+export function inquiryText(tracks,brief,makeURL){
+ return `Hello William,\n\nI’m looking for music for a project.\n\n${brief.trim()||'Scene / story:\nProduction and intended use:\nTerritories and licence term:\nBudget range:\nDeadline:'}\n\n${tracks.length?'Recordings I’m interested in:\n'+tracks.map(t=>`${t.title} — ${t.variantLabel}\n${makeURL(t)}`).join('\n\n'):'I’d appreciate suggestions for the brief above.'}\n\nCould you confirm availability, pricing, master and publishing clearance, and which edits or delivery files are available for this use?`;
 }
