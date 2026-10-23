@@ -201,7 +201,7 @@ function updateCue(song,track){
  intro.querySelector('.lede').textContent=song.description||'';
  intro.querySelector('.cue-credit').textContent=`${track.artist} · ${track.facts?format(Math.round(track.facts.seconds)):'Full recording'}${track.vocals==='instrumental'?' · Instrumental':''}`;
  intro.querySelector('.cue-version').textContent=`${song.tracks.length} ${song.tracks.length===1?'recording':'recordings'} available · ${track.variantLabel}`;
- const img=$('cueArtwork').querySelector('img');img.src=track.cover;img.alt=track.title+' title artwork';
+ const img=$('cueArtwork').querySelector('img');img.src=track.cover;img.alt=track.title+' title artwork';$('cueArtwork').setAttribute('aria-label',(isPlaying()?'Pause ':'Play ')+track.title);
  $('cueVersionLabel').hidden=song.tracks.length<2;
  $('cueVersionSelect').replaceChildren(...song.tracks.filter(t=>t.audio).map(t=>{const o=document.createElement('option');o.value=t.variantId;o.textContent=t.variantLabel;return o;}));$('cueVersionSelect').value=track.variantId;
  $('cueAnalysis').textContent=analysisSummary(track);$('cueAnalysis').hidden=!track.analysis;
