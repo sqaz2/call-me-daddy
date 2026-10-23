@@ -1,0 +1,41 @@
+.eternal-release{--paper:#eee9df;--muted:#b0aa9f;--accent:#9fc3cf;--surface:#1c2a2d;--line:#ffffff26;background:#11191b;color:var(--paper)}
+.eternal-release .topbar{background:#11191b}
+.eternal-release .release-heading{display:flex;justify-content:space-between;gap:16px;margin-bottom:36px;font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.eternal-release .release-intro h1{font-size:clamp(48px,6.6vw,78px);line-height:1;letter-spacing:-.055em;text-transform:uppercase}
+.eternal-release .release-intro h1 em{font-family:inherit;font-style:normal;font-weight:800;color:var(--accent)}
+.eternal-hook{font-size:22px;line-height:1.35;font-weight:700;margin:22px 0 14px;max-width:23ch}
+.eternal-release .release-stage{max-width:460px}
+.eternal-release .release-cover{border-radius:2px;box-shadow:0 26px 70px #0008}
+.eternal-release .release-play-badge{background:#11191be8;border-color:#9fc3cf66}
+.eternal-release .release-cover:hover .release-play-badge{background:#11191b}
+.eternal-lyrics-link{font-size:13px;display:inline-block;padding:10px 0}
+.eternal-share{margin:0 0 30px}
+.eternal-release .release-lyrics{scroll-margin-top:90px}
+.eternal-release .release-lyrics pre{line-height:1.95;max-width:80ch}
+@media(max-width:720px){.eternal-release .release-stage{order:-1;max-width:390px}.eternal-release .release-cover{max-width:none}.eternal-release .release-heading{font-size:9px;letter-spacing:.055em;margin-bottom:22px}.eternal-release .release-intro h1{font-size:clamp(38px,12vw,70px)}.eternal-hook{font-size:20px;margin:16px 0 12px}.eternal-release .release-hero{gap:24px}.eternal-share{margin-bottom:24px}}
+
+.eternal-version-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.eternal-version-picker p{grid-column:1/-1;margin:0;font-size:12px;font-weight:700;color:var(--muted)}
+.eternal-version-picker button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:10px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--paper);font-weight:700;cursor:pointer}
+.eternal-version-picker button[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:#11191b}
+.eternal-version-picker button[aria-pressed=true] .cut-icon{color:inherit}
+.eternal-version-picker button:hover{border-color:var(--accent)}
+
+.eternal-release .release-hero{grid-template-columns:.85fr 1.3fr;gap:40px}.eternal-release .release-stage{max-width:600px}.eternal-release .release-cover img{aspect-ratio:2752/1536;object-fit:contain}.eternal-release .release-intro h1{text-transform:none;font-weight:600;letter-spacing:-.06em}.eternal-release .release-intro h1 em{font-family:Georgia,serif;font-style:italic;font-weight:400}.eternal-release .release-play-badge{position:static;min-height:52px;margin:0;border:0;border-top:1px solid var(--line)}.eternal-release .release-cover{background:#11191b}.eternal-release .release-lyrics pre{line-height:1.9}.eternal-release .release-intro-note{max-width:35ch}
+@media(max-width:720px){.eternal-release .release-hero{grid-template-columns:1fr;gap:24px}.eternal-release .release-stage{order:0;max-width:600px}.eternal-release .release-intro h1{font-size:52px}.eternal-release .release-intro h1 br{display:none}.eternal-release .release-intro h1 em:before{content:" "}.eternal-release .release-heading{gap:10px;flex-wrap:wrap}.eternal-release .eyebrow{margin-bottom:12px}.eternal-hook{font-size:20px;margin-top:12px}.eternal-release .release-intro .release-status{min-height:0}}
+@media(max-width:720px){
+ .eternal-release .release-shell{padding-top:20px}
+ .eternal-release .release-heading{margin-bottom:20px}
+ .eternal-release .release-hero{gap:12px}
+ .eternal-release .release-intro{display:contents}
+ .eternal-release .release-intro .eyebrow{order:1;margin:0}
+ .eternal-release .release-intro h1{order:2;margin:0}
+ .eternal-release .release-artist{order:3;margin:0}
+ .eternal-release .eternal-hook{order:4;margin:6px 0}
+ .eternal-release .release-stage{order:5;margin-bottom:8px}
+ .eternal-release .release-intro-note{order:6;margin:0}
+ .eternal-release .release-status{order:7;margin:0}
+ .eternal-release .eternal-lyrics-link{order:8;padding:4px 0}
+ .eternal-release .eternal-version-picker{gap:8px;margin-bottom:12px}
+ .eternal-release .eternal-version-picker button{font-size:13px;gap:4px}
+}

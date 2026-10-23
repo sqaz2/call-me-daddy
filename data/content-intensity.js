@@ -22,6 +22,7 @@
     'numbness-as-a-trap':'raw',
 
     // --- deep (melancholy / heartbreak / heavy but not ambush) ---
+    'eternal-room':'deep',
     'her-story':'deep',
     // Sqaz has an independent opt-in gate; selecting a heavy lane cannot enable it.
     'sqaz-kill-you':'deep',

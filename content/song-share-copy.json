@@ -738,6 +738,16 @@
           "description": "Calculated Grind in 1:54. Open the shorter recording or switch to the 2:00 version above the artwork."
         }
       }
+    },
+    "eternal-room": {
+      "headline": "Your coat is still beside my chair.",
+      "text": "A chipped blue mug. The keys put down gently. A coat still beside the chair.\n\nEternal Room is about choosing to stay when the brave words fail. Open the page, choose between two different recordings, and read the lyrics.",
+      "description": "Stay when the room goes quiet. A kitchen, a difficult conversation, and the choice to stay. Explore two recordings of Eternal Room and the full lyrics.",
+      "sources": [
+        "eternal-room/lyrics.txt",
+        "eternal-room/index.html",
+        "content/releases/2026-10-23-eternal-room.json"
+      ]
     }
   }
 }
