@@ -5,6 +5,7 @@ import path from 'node:path';
 import {loadCatalog} from '../scripts/sync-song-links.mjs';
 import {buildCatalog,filterCatalog,makeQueue,shareURL,trackKey,GROUPS} from '../library/model.mjs';
 import {buildLibraryCatalog} from '../library/catalog.mjs';
+import {canonicalLibrarySongId} from '../library/identities.mjs';
 import {ARCHIVE_SONGS} from '../library/archive.mjs';
 import {STARMUFF_TRACKS} from '../data/starmuff-playlist.mjs';
 import {parseBrief,resolveShortlist,shortlistCSV,detailCoverage} from '../library/discovery.mjs';
@@ -12,11 +13,11 @@ import {librarySocial} from '../worker/library.mjs';
 const sources=loadCatalog(),catalog=buildLibraryCatalog(sources,STARMUFF_TRACKS),tracks=catalog.flatMap(s=>s.tracks);
 test('every published catalogue entry and exact audio version is discoverable, alongside existing archive music',()=>{
  for(const s of [...sources,...ARCHIVE_SONGS,...STARMUFF_TRACKS]){
-  const found=catalog.find(x=>x.id===s.id);assert.ok(found,s.id);
+  const found=catalog.find(x=>x.id===canonicalLibrarySongId(s.id));assert.ok(found,s.id);
   for(const v of s.variants?.some(v=>v.audio)?s.variants.filter(v=>v.audio):s.audio?[{id:'main',audio:s.audio}]:[])assert.equal(found.tracks.find(t=>t.variantId===v.id)?.audio,v.audio);
  }
  assert.equal(new Set(tracks.map(trackKey)).size,tracks.length);
- assert.equal(catalog.length,130);assert.equal(tracks.filter(t=>t.audio).length,174);assert.equal(tracks.filter(t=>t.external).length,4);
+ assert.equal(catalog.length,129);assert.equal(tracks.filter(t=>t.audio).length,174);assert.equal(tracks.filter(t=>t.external).length,3);
  assert.ok(!tracks.some(t=>t.audio?.includes('audiobook')||t.songId==='unwritten-skies-ambience'));
  assert.ok(catalog.every(s=>s.groups.some(id=>GROUPS.some(g=>g.id===id&&g.kind==='mood'))));
 });
@@ -72,14 +73,14 @@ test('exact song titles rank before broader mood matches, even when their words 
 
 test('browse moods and dropdowns share one filter; comedy replaces cinematic',()=>{
  const broad=filterCatalog(catalog,{mood:'comedy'});
- assert.equal(broad.length,21);
+ assert.equal(broad.length,20);
  assert.deepEqual(filterCatalog(catalog,{group:'cinematic',mood:'comedy'}).map(s=>s.id),broad.map(s=>s.id));
  assert.deepEqual(filterCatalog(catalog,{group:'comedy'}).map(s=>s.id),broad.map(s=>s.id));
  assert.deepEqual(filterCatalog(catalog,{group:'comedy',genre:'country'}).map(s=>s.id).sort(),['ashes-in-eastwood','big-dick-willy']);
  assert.equal(filterCatalog(catalog,{group:'starmuff',mood:'comedy'}).length,0); // real collections remain explicit
 });
 test('titles, former titles and exact versions survive punctuation and partial searches',()=>{
- for(const [q,id,version] of [["Twas the Tism M'Lord",'twas-the-tism-mlord'],['five note theme','five-note-theme'],['set a table for two','set-a-table-for-two'],['Need Love','i-need-love'],['Close My Eyes','2010-wows','close-my-eyes-ai-mix'],['Round the Bend','archive-crocodile-shoes'],['YouTube Release','youtube-W47ebCMfrBI']]){
+ for(const [q,id,version] of [["Twas the Tism M'Lord",'twas-the-tism-mlord'],['five note theme','five-note-theme'],['set a table for two','set-a-table-for-two'],['Need Love','i-need-love'],['Close My Eyes','2010-wows','close-my-eyes-ai-mix'],['Round the Bend','archive-crocodile-shoes'],['YouTube Release','the-musician-police']]){
   const first=filterCatalog(catalog,{q})[0];assert.equal(first?.id,id,q);if(version)assert.equal(first.visibleTracks[0].variantId,version);
  }
  for(const song of catalog)assert.equal(filterCatalog(catalog,{q:song.title})[0]?.id,song.id,song.title);
@@ -87,8 +88,8 @@ test('titles, former titles and exact versions survive punctuation and partial s
  assert.ok(!filterCatalog(catalog,{q:'trap'}).some(s=>s.id==='numbness-as-a-trap'));
 });
 test('verified external title and existing style metadata are indexed without guessing unknown genres',()=>{
- const external=catalog.find(s=>s.id==='youtube-W47ebCMfrBI');assert.equal(external.title,'@Dubstep');assert.equal(external.tracks[0].externalUrl,'https://youtu.be/W47ebCMfrBI');
- assert.match(librarySocial(new URL(shareURL({track:external.tracks[0]})),null).title,/@Dubstep/);
+ const external=catalog.find(s=>s.id==='the-musician-police');assert.equal(external.title,'The Musician Police (feat. Call Me Daddy)');assert.equal(external.tracks[0].externalUrl,'https://www.youtube.com/watch?v=7rI2MtnRsaA');assert.ok(external.tracks[0].genres.includes('dubstep'));assert.ok(!catalog.some(s=>s.id==='youtube-W47ebCMfrBI'));
+ assert.match(librarySocial(new URL(shareURL({track:external.tracks[0]})),null).title,/The Musician Police/);
  assert.ok(catalog.find(s=>s.id==='survival-mode').tracks.every(t=>t.genres.includes('hiphop')));
  assert.ok(catalog.find(s=>s.id==='eternal-room').tracks.every(t=>!t.genreKnown));
 });
@@ -98,4 +99,15 @@ test('project enquiry carries the exact recording, brief and a useful empty-shor
  const text=inquiryText([t],'Wedding scene; 20 seconds; Friday deadline',t=>shareURL({track:t}));
  assert.match(text,/Wedding scene; 20 seconds; Friday deadline/);assert.ok(text.includes(t.variantLabel));assert.ok(text.includes('version='+t.variantId));assert.match(text,/availability, pricing/);
  assert.match(inquiryText([],'',()=>''),/suggestions for the brief above/);
+});
+
+test('duplicate Musician Police links, saved picks and searches resolve to one entry',async()=>{
+ const {handleLibrary}=await import('../worker/library.mjs');
+ for(const q of ['@Dubstep','YouTube Release','The Musician Police'])assert.equal(filterCatalog(catalog,{q})[0].id,'the-musician-police');
+ assert.equal(resolveShortlist(['youtube-W47ebCMfrBI:main','the-musician-police:main'],catalog).length,1);
+ assert.equal(resolveShortlist(['youtube-W47ebCMfrBI:main'],catalog)[0].songId,'the-musician-police');
+ const old='https://library.musicsubject.com/?song=youtube-W47ebCMfrBI&version=main&pick=youtube-W47ebCMfrBI%3Amain';
+ const response=await handleLibrary(new Request(old),{});assert.equal(response.status,308);
+ const destination=new URL(response.headers.get('location'));assert.equal(destination.searchParams.get('song'),'the-musician-police');assert.deepEqual(destination.searchParams.getAll('pick'),['the-musician-police:main']);
+ assert.equal(new URL(shareURL({track:{songId:'youtube-W47ebCMfrBI',variantId:'main'}})).searchParams.get('song'),'the-musician-police');
 });

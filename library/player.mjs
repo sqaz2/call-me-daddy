@@ -1,3 +1,4 @@
+import {canonicalLibrarySongId} from './identities.mjs';
 import {GROUPS,normalizeFilters,filterCatalog,makeQueue,shareURL,trackKey} from './model.mjs';
 import {SCENES,detailCoverage,resolveShortlist,shortlistCSV,inquiryText as buildInquiry,LICENSING_EMAIL} from './discovery.mjs';
 import {buildLibraryCatalog} from './catalog.mjs';
@@ -12,6 +13,7 @@ let group=GROUPS.some(g=>g.id===parameters.get('group'))?parameters.get('group')
 let saved=[],preferences={},shortlist=[];
 try{saved=JSON.parse(localStorage.getItem('ms-library-saved')||'[]');preferences=JSON.parse(localStorage.getItem('ms-library-preferences')||'{}');shortlist=JSON.parse(localStorage.getItem('ms-library-shortlist')||'[]');}catch{}
 if(!Array.isArray(saved))saved=[];
+saved=[...new Set(saved.map(canonicalLibrarySongId))];
 if(!Array.isArray(shortlist))shortlist=[];
 if(parameters.has('pick'))shortlist=parameters.getAll('pick');
 shortlist=resolveShortlist(shortlist,catalog).map(trackKey);
@@ -42,7 +44,7 @@ const totalSongs=catalog.length,totalVersions=allTracks.filter(t=>t.audio).lengt
 $('totalCount').textContent=`${totalSongs} songs & tracks · ${totalVersions} recordings · ${externalCount} external versions`;
 $('allCount').textContent=catalog.length;
 $('shortlistCount').textContent=shortlist.length;
-$('coverageSummary').textContent=`${songs.length} of ${songs.length} main catalogue entries, ${LIBRARY_RELEASES.length} library releases, 2 archive song families and ${STARMUFF_TRACKS.length} original StarMuff tracks are indexed. ${allTracks.filter(t=>t.facts).length} recordings have measured lengths; ${allTracks.filter(t=>!t.genreKnown).length} versions still need genre review.`;
+$('coverageSummary').textContent=`${new Set(songs.map(s=>canonicalLibrarySongId(s.id))).size} unique main catalogue entries, ${LIBRARY_RELEASES.length} library releases, 2 archive song families and ${STARMUFF_TRACKS.length} original StarMuff tracks are indexed. ${allTracks.filter(t=>t.facts).length} recordings have measured lengths; ${allTracks.filter(t=>!t.genreKnown).length} versions still need genre review.`;
 function locationURL(track=null){return shareURL({group,q:$('search').value.trim(),...filters(),track,origin:location.origin});}
 function syncBrowseFilters(){const state=normalizeFilters({group,...filters()});group=state.group;restoreFilters(new URLSearchParams(state));}
 function selectGroup(id,{scroll=false}={}){group=id;savedOnly=false;limit=20;$('savedToggle').setAttribute('aria-pressed','false');$('search').value='';restoreFilters(new URLSearchParams());syncBrowseFilters();history.pushState({},'',locationURL());render();if(scroll)$('catalogue').scrollIntoView({behavior:'smooth',block:'start'});}

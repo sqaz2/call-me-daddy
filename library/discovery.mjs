@@ -1,3 +1,4 @@
+import {canonicalLibraryTrackKey} from './identities.mjs';
 import {EDITORIAL} from './editorial.mjs';
 import {AUDIO_FACTS} from './audio-facts.mjs';
 
@@ -67,7 +68,7 @@ export function detailCoverage(track){
 }
 export function resolveShortlist(keys,catalog){
  const byKey=new Map(catalog.flatMap(s=>s.tracks).map(t=>[`${t.songId}:${t.variantId}`,t]));
- return [...new Set(keys)].slice(0,30).map(k=>byKey.get(k)).filter(Boolean);
+ return [...new Set(keys.map(canonicalLibraryTrackKey))].slice(0,30).map(k=>byKey.get(k)).filter(Boolean);
 }
 export function shortlistCSV(tracks,makeURL){
  const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';

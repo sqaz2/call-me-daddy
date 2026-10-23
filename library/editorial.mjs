@@ -380,6 +380,8 @@ export const EDITORIAL = {
     "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
   },
   "the-musician-police": {
+    "genres": ["edm", "dubstep"],
+    "genreSource": "Artist confirmed the duplicate @Dubstep entry belongs to this song (2026-10-23); preserves that published source style label.",
     "moods": [
       "comedy"
     ],
