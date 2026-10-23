@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "audience": "library",
+  "song": {
+    "id": "five-note-motif",
+    "title": "Five-Note Motif",
+    "artist": "MusicSubject",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "Film cues",
+    "description": "A compact orchestral film cue built around a recurring motif. Audition it for a character entrance, transition or returning story thread.",
+    "audio": "/media/songs/2026/10/five-note-motif/audio.mp3",
+    "cover": "/media/songs/2026/10/five-note-motif/cover.png",
+    "kind": "Instrumental contemporary orchestral film cue",
+    "discoveryMoods": [
+      "cinematic"
+    ],
+    "moodSource": "Editorial suggestions from the supplied cue title/style and measured dynamics; audition against picture.",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full cue · V6",
+        "audio": "/media/songs/2026/10/five-note-motif/audio.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral film cue",
+        "productionNote": "Made with Suno; V6. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 74,
+          "bpmRange": "74–75",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 74–75, or 148–150 at double time. Allow for expressive timing.",
+          "keyEstimate": "E-flat major",
+          "keyStatus": "estimated",
+          "keyNote": "Methods agree on E-flat major.",
+          "integratedLufs": -19.2,
+          "loudnessRangeLu": 7.2,
+          "strongestSectionStart": 99.6,
+          "strongestSectionEnd": 109.6,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      }
+    ]
+  },
+  "share": {
+    "headline": "A small motif for a returning story thread.",
+    "description": "A compact orchestral film cue built around a recurring motif. Audition it for a character entrance, transition or returning story thread. Play the full cue and save the exact recording to your shortlist.",
+    "sources": [
+      "08-Five-Note-Motif.mp3",
+      "content/library-cue-analysis/2026-10-23.json"
+    ]
+  }
+}

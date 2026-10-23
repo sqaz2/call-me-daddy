@@ -778,12 +778,68 @@ export const AUDIO_FACTS = {
     "channels": 2,
     "bytes": 2314893
   },
+  "/media/songs/2026/10/five-note-descent/audio.mp3": {
+    "seconds": 176.69,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2704208
+  },
+  "/media/songs/2026/10/five-note-motif/audio.mp3": {
+    "seconds": 149.66,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2263101
+  },
   "/media/songs/2026/10/five-note-theme/audio.mp3": {
     "seconds": 152.83,
     "format": "MP3",
     "sampleRate": 48000,
     "channels": 2,
     "bytes": 3549619
+  },
+  "/media/songs/2026/10/five-note-theme/v6-1.mp3": {
+    "seconds": 149.81,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2216411
+  },
+  "/media/songs/2026/10/five-note-theme/v6-2.mp3": {
+    "seconds": 149.55,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2202511
+  },
+  "/media/songs/2026/10/five-note-theme/v6-wild-1.mp3": {
+    "seconds": 149.84,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2254506
+  },
+  "/media/songs/2026/10/five-note-theme/v6-wild-2.mp3": {
+    "seconds": 149.13,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2224888
+  },
+  "/media/songs/2026/10/five-notes-to-break-yo/audio.mp3": {
+    "seconds": 214.67,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 3212572
+  },
+  "/media/songs/2026/10/from-solitude-to-belong/audio.mp3": {
+    "seconds": 149.34,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2246265
   },
   "/media/songs/2026/10/her-story/audio.mp3": {
     "seconds": 108.26,
@@ -798,6 +854,13 @@ export const AUDIO_FACTS = {
     "sampleRate": 44100,
     "channels": 1,
     "bytes": 5117409
+  },
+  "/media/songs/2026/10/hopeful-wonder/audio.mp3": {
+    "seconds": 149.29,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 2244033
   },
   "/media/songs/2026/10/keep-building-your-future/audio.mp3": {
     "seconds": 135.62,
@@ -819,6 +882,13 @@ export const AUDIO_FACTS = {
     "sampleRate": 44100,
     "channels": 2,
     "bytes": 3278617
+  },
+  "/media/songs/2026/10/room-for-one-more/audio.mp3": {
+    "seconds": 207.73,
+    "format": "MP3",
+    "sampleRate": 44100,
+    "channels": 1,
+    "bytes": 3081817
   },
   "/media/songs/2026/10/running-a-monopoly/audio.mp3": {
     "seconds": 230.04,

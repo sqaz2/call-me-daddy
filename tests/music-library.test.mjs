@@ -78,7 +78,7 @@ test('Five-note Theme has a library-only recording page and exact social preview
  const song=LIBRARY_RELEASES.find(s=>s.id==='five-note-theme');assert.ok(song);
  assert.ok(!loadCatalog().some(s=>s.id===song.id));
  const entry=buildLibraryCatalog(loadCatalog(),STARMUFF_TRACKS).find(s=>s.id===song.id);
- assert.equal(entry.tracks.length,1);assert.equal(entry.tracks[0].facts.seconds,152.83);
+ assert.equal(entry.tracks.length,5);assert.equal(entry.tracks[0].facts.seconds,152.83);
  assert.ok(entry.groups.includes('cinematic')&&entry.groups.includes('instrumental'));
  const url=shareURL({track:entry.tracks[0]});
  const response=await handleLibrary(new Request(url),{ASSETS:assets});
@@ -86,10 +86,56 @@ test('Five-note Theme has a library-only recording page and exact social preview
  assert.equal(head.canonical,url);assert.match(head.title,/Five-note Theme/);
  assert.match(head.image,/five-note-theme\/cover.png$/);
  assert.match(body,/id="intro-title">Five-note Theme/);assert.match(body,/2:33/);
- assert.match(body,/id="cuePlay"/);assert.match(body,/1 recording available/);
+ assert.match(body,/id="cuePlay"/);assert.match(body,/5 recordings available/);
  assert.doesNotMatch(body,/<a[^>]+href=["']https:\/\/callmedaddy/);
  const unknown=await handleLibrary(new Request(LIBRARY_ORIGIN+'/?song=five-note-theme&version=missing'),{ASSETS:assets});
  assert.doesNotMatch(await unknown.text(),/id="cuePlay"/);
  const sitemap=await handleLibrary(new Request(LIBRARY_ORIGIN+'/sitemap.xml'),{});
  assert.match(await sitemap.text(),/song=five-note-theme&amp;version=main/);
+});
+
+test('ten uploaded cues are reachable in Film cues without publishing them to the artist catalogue',async()=>{
+ const {buildLibraryCatalog}=await import('../library/catalog.mjs');
+ const {loadCatalog}=await import('../scripts/sync-song-links.mjs');
+ const {createHash}=await import('node:crypto');
+ const evidence=JSON.parse(fs.readFileSync(new URL('../content/library-cue-analysis/2026-10-23.json',import.meta.url)));
+ const artist=loadCatalog(),catalog=buildLibraryCatalog(artist,STARMUFF_TRACKS),cues=filterCatalog(catalog,{group:'film-cues'});
+ assert.equal(cues.length,7);assert.equal(cues.flatMap(s=>s.visibleTracks).length,11);
+ assert.equal(evidence.recordings.length,10);
+ for(const r of evidence.recordings){
+  const entry=cues.find(s=>s.id===r.songId),track=entry?.visibleTracks.find(t=>t.variantId===r.variantId);
+  assert.ok(track,r.sourceUpload);assert.ok(!artist.some(s=>s.id===entry.id));
+  assert.equal(track.audio,r.audio);assert.ok(track.facts.seconds>0);
+  const bytes=fs.readFileSync(new URL('..'+r.audio,import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),r.sourceSha256);
+  const url=new URL(shareURL({track}));assert.equal(url.searchParams.get('version'),r.variantId);
+  const response=await handleLibrary(new Request(url),{ASSETS:assets});const page=await response.text();
+  assert.match(page,/id="cuePlay"/);assert.ok(page.includes(entry.title.replace(/&/g,'&amp;')));
+  assert.ok(!catalog.some(s=>s.title==='Earned Resolution'));
+ }
+});
+
+test('source styles and alternate theme names find the intended recordings',async()=>{
+ const {buildLibraryCatalog}=await import('../library/catalog.mjs');const {loadCatalog}=await import('../scripts/sync-song-links.mjs');
+ const catalog=buildLibraryCatalog(loadCatalog(),STARMUFF_TRACKS);
+ assert.ok(filterCatalog(catalog,{genre:'orchestral',group:'film-cues'}).some(s=>s.id==='hopeful-wonder'));
+ assert.deepEqual(filterCatalog(catalog,{genre:'chamber'}).map(s=>s.id),['from-solitude-to-belong']);
+ assert.deepEqual(filterCatalog(catalog,{q:'neoclassical'}).map(s=>s.id),['five-notes-to-break-yo']);
+ const theme=filterCatalog(catalog,{q:'A Five-Note Theme'})[0];assert.equal(theme.id,'five-note-theme');
+ assert.equal(theme.visibleTracks[0].variantId,'v6-wild-1');
+ assert.equal(filterCatalog(catalog,{q:'Hopeful Wonder'})[0].id,'hopeful-wonder');
+ assert.ok(filterCatalog(catalog,{q:'hopeful orchestral'}).some(s=>s.id==='hopeful-wonder'));
+});
+
+test('cue versions keep exact previews and uncertainty through details and shortlist exports',async()=>{
+ const {LIBRARY_RELEASES}=await import('../library/releases.mjs');const {analysisSummary,analysisFacts}=await import('../library/analysis.mjs');
+ const {buildLibraryCatalog}=await import('../library/catalog.mjs');const {shortlistCSV}=await import('../library/discovery.mjs');
+ const catalog=buildLibraryCatalog([],[]),theme=catalog.find(s=>s.id==='five-note-theme');
+ const original=theme.tracks.find(t=>t.variantId==='main');assert.equal(original.audio,'/media/songs/2026/10/five-note-theme/audio.mp3');assert.equal(analysisSummary(original),'');
+ const low=theme.tracks.find(t=>t.variantId==='v6-1');assert.match(analysisSummary(low),/low confidence/);assert.match(analysisSummary(low),/G major/);
+ const provisional=theme.tracks.find(t=>t.variantId==='v6-wild-2');assert.match(analysisSummary(provisional),/C minor \(provisional\)/);
+ const uncertain=catalog.find(s=>s.id==='five-notes-to-break-yo').tracks[0];assert.equal(uncertain.analysis.keyEstimate,null);assert.match(analysisSummary(uncertain),/Key uncertain/);assert.ok(analysisFacts(uncertain).some(([label,value])=>label==='Analysis basis'&&/No listening verification/.test(value)));
+ const csv=shortlistCSV([low,uncertain],t=>shareURL({track:t}));assert.match(csv,/BPM estimate/);assert.match(csv,/low confidence/);assert.match(csv,/uncertain/);assert.match(csv,/version=v6-1/);
+ const url=new URL(shareURL({track:low})),social=librarySocial(url,null);assert.ok(social.title.includes(low.variantLabel));assert.equal(social.canonical,url.href);
+ const body=await (await handleLibrary(new Request(url),{ASSETS:assets})).text();assert.match(body,/id="cueVersionSelect"/);assert.match(body,/<option value="v6-1" selected>/);assert.match(body,/low confidence/);
 });

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "audience": "library",
+  "song": {
+    "id": "from-solitude-to-belong",
+    "title": "From Solitude to Belong…",
+    "artist": "MusicSubject",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "Film cues",
+    "description": "A contemporary chamber cue with belonging at the centre of its title. Try the recording against a scene moving from solitude toward connection.",
+    "audio": "/media/songs/2026/10/from-solitude-to-belong/audio.mp3",
+    "cover": "/media/songs/2026/10/from-solitude-to-belong/cover.png",
+    "kind": "Instrumental contemporary chamber score",
+    "discoveryMoods": [
+      "cinematic",
+      "feel-good"
+    ],
+    "moodSource": "Editorial suggestions from the supplied cue title/style and measured dynamics; audition against picture.",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full cue · V6-WILD",
+        "audio": "/media/songs/2026/10/from-solitude-to-belong/audio.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary chamber score",
+        "productionNote": "Made with Suno; V6-WILD. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 76,
+          "bpmRange": "74–76",
+          "tempoStatus": "subdivision ambiguous",
+          "tempoNote": "Approximately 74–76, or 148–152 at double time. Some onset-based runs return about 101 BPM, indicating subdivision ambiguity.",
+          "keyEstimate": "D major",
+          "keyStatus": "estimated",
+          "keyNote": "Methods agree on D major.",
+          "integratedLufs": -17.5,
+          "loudnessRangeLu": 8.9,
+          "strongestSectionStart": 48.5,
+          "strongestSectionEnd": 58.5,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        },
+        "titleNote": "Full title is truncated in the supplied playlist screenshot."
+      }
+    ]
+  },
+  "share": {
+    "headline": "From a solitary moment toward connection.",
+    "description": "A contemporary chamber cue with belonging at the centre of its title. Try the recording against a scene moving from solitude toward connection. Play the full cue and save the exact recording to your shortlist.",
+    "sources": [
+      "03-From-Solitude-to-Belong.mp3",
+      "content/library-cue-analysis/2026-10-23.json"
+    ]
+  }
+}

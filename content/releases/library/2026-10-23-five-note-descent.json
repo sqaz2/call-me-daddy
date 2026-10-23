@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "audience": "library",
+  "song": {
+    "id": "five-note-descent",
+    "title": "Five-note Descent",
+    "artist": "MusicSubject",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "Film cues",
+    "description": "A slow orchestral cue that builds toward a late swell. Try it against a reveal or a scene gathering tension.",
+    "audio": "/media/songs/2026/10/five-note-descent/audio.mp3",
+    "cover": "/media/songs/2026/10/five-note-descent/cover.png",
+    "kind": "Instrumental orchestral film cue",
+    "discoveryMoods": [
+      "cinematic",
+      "tense"
+    ],
+    "moodSource": "Editorial suggestions from the supplied cue title/style and measured dynamics; audition against picture.",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full cue · V6 / COVER",
+        "audio": "/media/songs/2026/10/five-note-descent/audio.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental orchestral film cue",
+        "productionNote": "Made with Suno; V6; COVER. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 76,
+          "bpmRange": "75–76",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 75–76 at a slow pulse, or 150–152 when counted twice as fast. The screenshot requests 76 BPM in 4/4; this is intent, not a verified beat grid.",
+          "keyEstimate": "B-flat major",
+          "keyStatus": "estimated",
+          "keyNote": "Methods agree; B-flat is the dominant estimated centre.",
+          "integratedLufs": -19.5,
+          "loudnessRangeLu": 8.5,
+          "strongestSectionStart": 161.2,
+          "strongestSectionEnd": 171.2,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      }
+    ]
+  },
+  "share": {
+    "headline": "Five notes. A late swell. What happens on screen?",
+    "description": "A slow orchestral cue that builds toward a late swell. Try it against a reveal or a scene gathering tension. Play the full cue and save the exact recording to your shortlist.",
+    "sources": [
+      "01-Five-note-Descent.mp3",
+      "content/library-cue-analysis/2026-10-23.json"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "audience": "library",
+  "song": {
+    "id": "five-notes-to-break-yo",
+    "title": "Five Notes to Break Yo…",
+    "artist": "MusicSubject",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "Film cues",
+    "description": "A neoclassical instrumental score with a stronger section around 2:34. Audition the full cue for a dramatic character scene or reflective sequence.",
+    "audio": "/media/songs/2026/10/five-notes-to-break-yo/audio.mp3",
+    "cover": "/media/songs/2026/10/five-notes-to-break-yo/cover.png",
+    "kind": "Instrumental neoclassical score",
+    "discoveryMoods": [
+      "cinematic",
+      "reflective"
+    ],
+    "moodSource": "Editorial suggestions from the supplied cue title/style and measured dynamics; audition against picture.",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full cue · V6 / COVER",
+        "audio": "/media/songs/2026/10/five-notes-to-break-yo/audio.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental neoclassical score",
+        "productionNote": "Made with Suno; V6; COVER. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 71,
+          "bpmRange": "70–72",
+          "tempoStatus": "low confidence",
+          "tempoNote": "Approximately 70–72 BPM at a slow pulse, or 140–144 BPM at double time. Onset tracking favours about 70.8/143.6 BPM; the independent estimator returns about 140.3 BPM with weak confidence. Allow for expressive timing and review before grid-based editing.",
+          "keyEstimate": null,
+          "keyStatus": "uncertain",
+          "keyNote": "No reliable single global key. Whole-track profiles disagree among G major, E-flat major, C minor and A-flat major. Local STFT windows favour G/D major early, E-flat major later and A-flat major toward the end. This suggests possible modulation, but requires musical review; do not publish one confirmed key.",
+          "integratedLufs": -19.5,
+          "loudnessRangeLu": 6.2,
+          "strongestSectionStart": 149.1,
+          "strongestSectionEnd": 159.1,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        },
+        "titleNote": "Full title is truncated in the supplied playlist screenshot."
+      }
+    ]
+  },
+  "share": {
+    "headline": "A neoclassical cue with room for a scene to unfold.",
+    "description": "A neoclassical instrumental score with a stronger section around 2:34. Audition the full cue for a dramatic character scene or reflective sequence. Play the full cue and save the exact recording to your shortlist.",
+    "sources": [
+      "10-Five-Notes-to-Break-Yo.mp3",
+      "content/library-cue-analysis/2026-10-23.json"
+    ]
+  }
+}
