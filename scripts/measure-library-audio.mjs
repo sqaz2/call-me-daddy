@@ -4,8 +4,9 @@ import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {loadCatalog} from './sync-song-links.mjs';
 import {ARCHIVE_SONGS} from '../library/archive.mjs';
+import {LIBRARY_RELEASES} from '../library/releases.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const paths=new Set([...loadCatalog(),...ARCHIVE_SONGS].flatMap(s=>s.variants?.some(v=>v.audio)?s.variants.map(v=>v.audio):[s.audio]).filter(Boolean));
+const paths=new Set([...loadCatalog(),...ARCHIVE_SONGS,...LIBRARY_RELEASES].flatMap(s=>s.variants?.some(v=>v.audio)?s.variants.map(v=>v.audio):[s.audio]).filter(Boolean));
 const facts={};
 for(const url of [...paths].sort()){
  const file=path.join(root,decodeURIComponent(url));

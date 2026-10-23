@@ -70,3 +70,26 @@ test('removed ambience links return to the library without advertising a recordi
   assert.equal(r.status,302);assert.equal(r.headers.get('location'),LIBRARY_ORIGIN+'/');
  }
 });
+
+test('Five-note Theme has a library-only recording page and exact social preview',async()=>{
+ const {LIBRARY_RELEASES}=await import('../library/releases.mjs');
+ const {buildLibraryCatalog}=await import('../library/catalog.mjs');
+ const {loadCatalog}=await import('../scripts/sync-song-links.mjs');
+ const song=LIBRARY_RELEASES.find(s=>s.id==='five-note-theme');assert.ok(song);
+ assert.ok(!loadCatalog().some(s=>s.id===song.id));
+ const entry=buildLibraryCatalog(loadCatalog(),STARMUFF_TRACKS).find(s=>s.id===song.id);
+ assert.equal(entry.tracks.length,1);assert.equal(entry.tracks[0].facts.seconds,152.83);
+ assert.ok(entry.groups.includes('cinematic')&&entry.groups.includes('instrumental'));
+ const url=shareURL({track:entry.tracks[0]});
+ const response=await handleLibrary(new Request(url),{ASSETS:assets});
+ const body=await response.text(),head=readHead(body);
+ assert.equal(head.canonical,url);assert.match(head.title,/Five-note Theme/);
+ assert.match(head.image,/five-note-theme\/cover.png$/);
+ assert.match(body,/id="intro-title">Five-note Theme/);assert.match(body,/2:33/);
+ assert.match(body,/id="cuePlay"/);assert.match(body,/1 recording available/);
+ assert.doesNotMatch(body,/<a[^>]+href=["']https:\/\/callmedaddy/);
+ const unknown=await handleLibrary(new Request(LIBRARY_ORIGIN+'/?song=five-note-theme&version=missing'),{ASSETS:assets});
+ assert.doesNotMatch(await unknown.text(),/id="cuePlay"/);
+ const sitemap=await handleLibrary(new Request(LIBRARY_ORIGIN+'/sitemap.xml'),{});
+ assert.match(await sitemap.text(),/song=five-note-theme&amp;version=main/);
+});
