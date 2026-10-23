@@ -4,6 +4,7 @@ import {enrichTrack,parseBrief,matchBrief} from './discovery.mjs';
 export const LIBRARY_ORIGIN = 'https://library.musicsubject.com';
 export const GROUPS = [
   {id:'all', label:'All music', kind:'collection', description:'Songs, alternate mixes and game soundtracks. Audition a recording, save the exact version and ask about your project.'},
+  {id:'film-cues',label:'Film cues',kind:'collection',description:'Orchestral themes, chamber cues and neoclassical scores. Compare alternate takes, check recording details and shortlist the version that fits your scene.'},
   {id:'motivational', label:'Motivational', kind:'mood', description:'Keep going, build something, and find your next step.'},
   {id:'high-energy', label:'High energy', kind:'mood', description:'Big drops, forward motion and music with some muscle.'},
   {id:'feel-good', label:'Feel good', kind:'mood', description:'Connection, possibility and a little room to breathe.'},
@@ -31,6 +32,9 @@ export const GROUPS = [
   {id:'soundtrack',label:'Game soundtrack',kind:'genre',description:'The original StarMuff game cues, with their source titles preserved.'},
   {id:'unclassified',label:'Genre to review',kind:'review',description:'These recordings are available, but their genre needs a listening review.'},
   {id:'instrumental', label:'Instrumentals', kind:'genre', description:'Recordings explicitly identified as instrumental.'},
+  {id:'orchestral',label:'Orchestral',kind:'genre',description:'Orchestral recordings identified in the supplied source descriptions.'},
+  {id:'chamber',label:'Chamber',kind:'genre',description:'Chamber recordings identified in the supplied source descriptions.'},
+  {id:'neoclassical',label:'Neoclassical',kind:'genre',description:'Neoclassical scores identified in the supplied source descriptions.'},
   {id:'starmuff', label:'StarMuff · First Edition', kind:'collection', description:'The original 50-track StarMuff playlist: exploration, casino, Iron Frontier and more.'},
   {id:'commercial', label:'Commercial briefs', kind:'brief', description:'No recordings have been reviewed for a specific commercial brief yet.'},
   {id:'family', label:'Family-friendly briefs', kind:'brief', description:'No recordings have been reviewed and approved for this collection yet.'},
@@ -48,7 +52,7 @@ const MOODS = {
   comedy:['concrete-under-evergreens','anti-generative-ai-diss','one-million-dollars','ashes-in-eastwood','side-chick-finder','everybody-thinks-theyre-hot','big-dick-willy','running-a-monopoly','canadian-crop-dusting','set-a-table-for-two','superstore-effect','twas-the-tism-mlord','armando','id-pick-you-first','did-armando-die-after-you-held-his-beer','back-to-sticks','the-musician-police','funhouse-meltdown','namaste-hamster'],
   sports:['what-is-my-opponent-threatening-right-now','level-up']
 };
-const GENRES = {trap:/\btrap\b/i,hiphop:/\b(?:hip[ -]?hop|rap|trap|horrorcore|freestyle)\b/i, rnb:/\b(?:r&b|rnb|r-and-b|rhythm.and.blues|soul)\b/i, country:/\bcountry\b/i, rock:/\b(?:rock|punk|grunge)\b/i, pop:/\bpop\b/i, edm:/\b(?:edm|electronic|techno|warehouse|dubstep|dnb|drum.and.bass)\b/i, dubstep:/\bdubstep\b/i, dnb:/\b(?:dnb|d&b|drum.and.bass)\b/i, gospel:/\bgospel\b/i,spoken:/\b(?:spoken.word|chant)\b/i,instrumental:/\binstrumental\b/i};
+const GENRES = {orchestral:/\borchestral\b/i,chamber:/\bchamber\b/i,neoclassical:/\bneo[ -]?classical\b/i,trap:/\btrap\b/i,hiphop:/\b(?:hip[ -]?hop|rap|trap|horrorcore|freestyle)\b/i, rnb:/\b(?:r&b|rnb|r-and-b|rhythm.and.blues|soul)\b/i, country:/\bcountry\b/i, rock:/\b(?:rock|punk|grunge)\b/i, pop:/\bpop\b/i, edm:/\b(?:edm|electronic|techno|warehouse|dubstep|dnb|drum.and.bass)\b/i, dubstep:/\bdubstep\b/i, dnb:/\b(?:dnb|d&b|drum.and.bass)\b/i, gospel:/\bgospel\b/i,spoken:/\b(?:spoken.word|chant)\b/i,instrumental:/\binstrumental\b/i};
 export const trackKey = t => `${t.songId}:${t.variantId}`;
 export function buildCatalog(songs, starMuff=[], context={}) {
   const result=[];
@@ -64,6 +68,7 @@ export function buildCatalog(songs, starMuff=[], context={}) {
       const evidence=Object.values(GENRES).some(re=>re.test(specific))?specific:Object.values(GENRES).some(re=>re.test(general))?general:fallback;
       for(const [id,re] of Object.entries(GENRES))if(re.test(evidence))groups.push(id);
       if(song.playlist==='starmuff')groups.push('starmuff','cinematic','soundtrack');
+      if(song.libraryOnly&&song.project==='Film cues')groups.push('film-cues');
       for(const id of EDITORIAL[song.id]?.genres||[])if(GROUPS.some(g=>g.id===id&&g.kind==='genre'))groups.push(id);
       const id=v.id||String(i);
       const genres=groups.filter(g=>GROUPS.some(x=>x.id===g&&x.kind==='genre'));

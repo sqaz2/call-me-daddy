@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "audience": "library",
+  "song": {
+    "id": "hopeful-wonder",
+    "title": "Hopeful Wonder",
+    "artist": "MusicSubject",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "Film cues",
+    "description": "A contemporary orchestral cue for moments of possibility and discovery. Its strongest measured section sits around 1:40; try that moment against your picture.",
+    "audio": "/media/songs/2026/10/hopeful-wonder/audio.mp3",
+    "cover": "/media/songs/2026/10/hopeful-wonder/cover.png",
+    "kind": "Instrumental contemporary orchestral score",
+    "discoveryMoods": [
+      "cinematic",
+      "motivational",
+      "curious"
+    ],
+    "moodSource": "Editorial suggestions from the supplied cue title/style and measured dynamics; audition against picture.",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full cue · V6-WILD",
+        "audio": "/media/songs/2026/10/hopeful-wonder/audio.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral score",
+        "productionNote": "Made with Suno; V6-WILD. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 76,
+          "bpmRange": "75–76",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 76 BPM at a slow pulse, or 152 BPM at double time. Multiple starting-tempo beat trackers and an independent rhythm estimator agree on this pulse family. This does not certify a fixed beat grid.",
+          "keyEstimate": "D major",
+          "keyStatus": "estimated",
+          "keyNote": "STFT chroma, constant-Q chroma and all three HPCP profiles agree on D major globally. One local window suggests A major. This is an automated tonal estimate, not a verified score.",
+          "integratedLufs": -18.5,
+          "loudnessRangeLu": 9.6,
+          "strongestSectionStart": 94.7,
+          "strongestSectionEnd": 104.7,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      }
+    ]
+  },
+  "share": {
+    "headline": "What does possibility look like in your scene?",
+    "description": "A contemporary orchestral cue for moments of possibility and discovery. Its strongest measured section sits around 1:40; try that moment against your picture. Play the full cue and save the exact recording to your shortlist.",
+    "sources": [
+      "09-Hopeful-Wonder.mp3",
+      "content/library-cue-analysis/2026-10-23.json"
+    ]
+  }
+}

@@ -9,22 +9,124 @@
     "month": 10,
     "date": "2026-10-23",
     "project": "Film cues",
-    "description": "An instrumental theme for film, built around a five-note idea. One recording is available to audition.",
+    "description": "A five-note idea, five different recordings. Compare the original full theme with four orchestral takes and shortlist the version that fits your scene.",
     "audio": "/media/songs/2026/10/five-note-theme/audio.mp3",
     "cover": "/media/songs/2026/10/five-note-theme/cover.png",
     "kind": "Instrumental film cue",
-    "discoveryMoods": ["cinematic"],
-    "variants": [{
-      "id": "main",
-      "label": "Full theme · Instrumental",
-      "audio": "/media/songs/2026/10/five-note-theme/audio.mp3",
-      "date": "2026-10-23",
-      "productionNote": "Made with Suno; instrumental identification from the uploaded recording's embedded metadata."
-    }]
+    "discoveryMoods": [
+      "cinematic"
+    ],
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full theme · Instrumental",
+        "audio": "/media/songs/2026/10/five-note-theme/audio.mp3",
+        "date": "2026-10-23",
+        "productionNote": "Made with Suno; instrumental identification from the uploaded recording's embedded metadata."
+      },
+      {
+        "id": "v6-wild-1",
+        "label": "A Five-Note Theme · V6-WILD · Take 1",
+        "audio": "/media/songs/2026/10/five-note-theme/v6-wild-1.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral film cue",
+        "productionNote": "Made with Suno; V6-WILD. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 71,
+          "bpmRange": "70–72",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 70–72, or 140–144 at double time. Both methods identify this pulse family.",
+          "keyEstimate": "F major",
+          "keyStatus": "estimated",
+          "keyNote": "Methods agree on F major.",
+          "integratedLufs": -18.2,
+          "loudnessRangeLu": 5.5,
+          "strongestSectionStart": 135.3,
+          "strongestSectionEnd": 145.3,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      },
+      {
+        "id": "v6-wild-2",
+        "label": "A Five-Note Theme · V6-WILD · Take 2",
+        "audio": "/media/songs/2026/10/five-note-theme/v6-wild-2.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral film cue",
+        "productionNote": "Made with Suno; V6-WILD. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 75,
+          "bpmRange": "74–76",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 74–76, or 149–152 at double time. Tempo interpretation remains provisional.",
+          "keyEstimate": "C minor",
+          "keyStatus": "provisional",
+          "keyNote": "HPCP and constant-Q favour C minor; E-flat major is another profile result. STFT chroma favours B-flat major. Provisional pending musical review.",
+          "integratedLufs": -19.6,
+          "loudnessRangeLu": 7.7,
+          "strongestSectionStart": 108.8,
+          "strongestSectionEnd": 118.8,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      },
+      {
+        "id": "v6-1",
+        "label": "Five-note Theme · V6 · Take 1",
+        "audio": "/media/songs/2026/10/five-note-theme/v6-1.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral film cue",
+        "productionNote": "Made with Suno; V6. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 75,
+          "bpmRange": "74–76",
+          "tempoStatus": "low confidence",
+          "tempoNote": "Low confidence: approximately 74–76 (148–152 double time), but periodicity also suggests about 57 BPM. Weak rhythmic evidence; confirm by musical review before beat-grid editing.",
+          "keyEstimate": "G major",
+          "keyStatus": "estimated",
+          "keyNote": "Methods agree on G major, with some local D-major estimates.",
+          "integratedLufs": -20.7,
+          "loudnessRangeLu": 7.7,
+          "strongestSectionStart": 50.3,
+          "strongestSectionEnd": 60.3,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      },
+      {
+        "id": "v6-2",
+        "label": "Five-note Theme · V6 · Take 2",
+        "audio": "/media/songs/2026/10/five-note-theme/v6-2.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral film cue",
+        "productionNote": "Made with Suno; V6. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 76,
+          "bpmRange": "75–76",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 75–76, or 150–152 at double time. The pulse is less pronounced than a drum-led track.",
+          "keyEstimate": "B-flat major",
+          "keyStatus": "estimated",
+          "keyNote": "Methods agree globally on B-flat major; local windows also suggest F major and G minor.",
+          "integratedLufs": -21.9,
+          "loudnessRangeLu": 8.8,
+          "strongestSectionStart": 92.1,
+          "strongestSectionEnd": 102.1,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      }
+    ],
+    "aliases": [
+      "A Five-Note Theme",
+      "Five Note Theme"
+    ]
   },
   "share": {
     "headline": "Five notes. A theme for film.",
-    "description": "Audition Five-note Theme, an instrumental film cue from MusicSubject. Play the full recording or add it to a project shortlist.",
-    "sources": ["Five-note Theme.mp3"]
+    "description": "One five-note idea, five recordings to compare. Audition the original and orchestral alternate takes, then shortlist the exact version for your scene.",
+    "sources": [
+      "Five-note Theme.mp3",
+      "04-A-Five-Note-Theme-Version-1.mp3",
+      "05-A-Five-Note-Theme-Version-2.mp3",
+      "06-Five-note-Theme-Version-1-Fresh.mp3",
+      "07-Five-note-Theme-Version-2.mp3"
+    ]
   }
 }

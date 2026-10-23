@@ -17,7 +17,7 @@ export function librarySocial(url,index){
   const release=resolveLibraryRelease(url);
   const star=STARMUFF_TRACKS.find(t=>t.id===id),archive=ARCHIVE_SONGS.find(t=>t.id===id),extra=ARCHIVE_VARIANTS[id]?.find(v=>v.id===version);
   const archiveVersion=archive?.variants.find(v=>v.id===(version||archive.openerPolicy.defaultVersion));
-  if(release)record={...record,title:`${release.song.title} — MusicSubject Library`,description:release.song.shareCopy.description,image:LIBRARY_ORIGIN+(release.variant.cover||release.song.cover),imageAlt:release.song.title+' title artwork',type:'music.song'};
+  if(release)record={...record,title:`${release.song.title}${release.song.variants.length>1?" — "+release.variant.label:""} — MusicSubject Library`,description:release.song.shareCopy.description,image:LIBRARY_ORIGIN+(release.variant.cover||release.song.cover),imageAlt:release.song.title+' title artwork',type:'music.song'};
   else if(star&&(!version||version==='main'))record={...record,title:`${star.title} — MusicSubject Library`,description:'From the original StarMuff soundtrack. Play this recording in MusicSubject Library.',image:`${LIBRARY_ORIGIN}/library/starmuff-cover`,type:'music.song'};
   else if(archive&&archiveVersion)record={...record,title:`${archive.title} — ${archiveVersion.label} · MusicSubject Library`,description:archive.description,image:LIBRARY_ORIGIN+(archiveVersion.cover||archive.cover),type:'music.song'};
   else if(extra)record={...record,title:`I Need Love — ${extra.label} · MusicSubject Library`,description:`An existing archive version, available on ${extra.platform}.`,type:'music.song'};

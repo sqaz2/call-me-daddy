@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "audience": "library",
+  "song": {
+    "id": "room-for-one-more",
+    "title": "Room for One More",
+    "artist": "MusicSubject",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-23",
+    "project": "Film cues",
+    "description": "An orchestral cue built around the idea of belonging. Audition it for a reunion, a friendship or the moment a character accepts help.",
+    "audio": "/media/songs/2026/10/room-for-one-more/audio.mp3",
+    "cover": "/media/songs/2026/10/room-for-one-more/cover.png",
+    "kind": "Instrumental contemporary orchestral score",
+    "discoveryMoods": [
+      "cinematic",
+      "feel-good"
+    ],
+    "moodSource": "Editorial suggestions from the supplied cue title/style and measured dynamics; audition against picture.",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full cue · V6 / COVER",
+        "audio": "/media/songs/2026/10/room-for-one-more/audio.mp3",
+        "date": "2026-10-23",
+        "kind": "Instrumental contemporary orchestral score",
+        "productionNote": "Made with Suno; V6; COVER. Preview extracted from the supplied mono recording; original level retained. Instrumental/style labels come from the supplied playlist, not a listening review.",
+        "analysis": {
+          "bpmEstimate": 72,
+          "bpmRange": "71–72",
+          "tempoStatus": "estimated",
+          "tempoNote": "Approximately 71–72, or 142–144 at double time. Both rhythm methods identify this pulse family.",
+          "keyEstimate": null,
+          "keyStatus": "uncertain",
+          "keyNote": "Ambiguous tonal centre/mode. HPCP favours A-flat minor or its relative B major; other chroma profiles favour E-flat minor. Do not publish one confirmed key yet.",
+          "integratedLufs": -19.6,
+          "loudnessRangeLu": 9.5,
+          "strongestSectionStart": 150.1,
+          "strongestSectionEnd": 160.1,
+          "method": "Automated waveform, rhythm and tonal analysis; BPM and key are estimates. No listening verification."
+        }
+      }
+    ]
+  },
+  "share": {
+    "headline": "Make room for the moment someone belongs.",
+    "description": "An orchestral cue built around the idea of belonging. Audition it for a reunion, a friendship or the moment a character accepts help. Play the full cue and save the exact recording to your shortlist.",
+    "sources": [
+      "02-Room-for-One-More.mp3",
+      "content/library-cue-analysis/2026-10-23.json"
+    ]
+  }
+}
