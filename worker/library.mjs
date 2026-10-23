@@ -1,4 +1,4 @@
-import {LIBRARY_IDENTITIES} from '../library/identities.mjs';
+import {LIBRARY_IDENTITIES,canonicalLibraryURL} from '../library/identities.mjs';
 import {GROUPS,LIBRARY_ORIGIN,shareURL} from '../library/model.mjs';
 import {ARCHIVE_SONGS,ARCHIVE_VARIANTS} from '../library/archive.mjs';
 import {STARMUFF_TRACKS} from '../data/starmuff-playlist.mjs';
@@ -10,6 +10,7 @@ import {resolveLibraryRelease,renderLibraryRelease} from '../library/release-vie
 const HOST=new URL(LIBRARY_ORIGIN).hostname;
 const sharedScripts=new Set(['/continuous-playback.js','/data/songs.js','/data/archive-catalog.js','/data/2026-08-25-uploads.js','/data/2026-08-26-uploads.js','/data/2026-08-27-uploads.js','/data/2026-08-29-uploads.js','/data/song-lyrics.js','/data/starmuff-playlist.mjs','/data/song-social.json']);
 export function librarySocial(url,index){
+  url=canonicalLibraryURL(url);
   const group=GROUPS.find(g=>g.id===url.searchParams.get('group'))||GROUPS[0];
   let record={title:group.id==='all'?'MusicSubject Library':`${group.label} — MusicSubject Library`,description:group.description,image:`${LIBRARY_ORIGIN}/library/share.png`,imageAlt:'MusicSubject Library',type:'music.playlist'};
   const id=url.searchParams.get('song'),version=url.searchParams.get('version');
@@ -21,7 +22,7 @@ export function librarySocial(url,index){
   else if(archive&&archiveVersion)record={...record,title:`${archive.title} — ${archiveVersion.label} · MusicSubject Library`,description:archive.description,image:LIBRARY_ORIGIN+(archiveVersion.cover||archive.cover),type:'music.song'};
   else if(extra)record={...record,title:`I Need Love — ${extra.label} · MusicSubject Library`,description:`An existing archive version, available on ${extra.platform}.`,type:'music.song'};
   else if(id){const selected=resolveSocial(new URL('/?'+url.searchParams,LIBRARY_ORIGIN),index);if(selected){const image=new URL(selected.image);if(image.hostname==='callmedaddy.musicsubject.com')image.hostname=HOST;record={...selected,title:`${selected.title} · MusicSubject Library`,description:`${selected.title}. Open this recording in MusicSubject Library.`,image:image.href};}}
-  if(LIBRARY_IDENTITIES[id]&&(!version||version==='main'))record={...record,title:`${LIBRARY_IDENTITIES[id].title} — MusicSubject Library`,description:LIBRARY_IDENTITIES[id].description,type:'music.song'};
+  if(LIBRARY_IDENTITIES[id]&&(!version||version==='main'))record={...record,title:`${LIBRARY_IDENTITIES[id].title} — MusicSubject Library`,description:LIBRARY_IDENTITIES[id].description||record.description,type:'music.song'};
   const filters=Object.fromEntries(['mood','genre','scene','vocals','length','sort'].map(key=>[key,url.searchParams.get(key)||'']));
   const picks=url.searchParams.getAll('pick');
   if(picks.length&&!id)record={...record,title:'Shortlist — MusicSubject Library',description:'A shared selection of exact recordings. Audition the versions and discuss your project.'};
@@ -37,6 +38,8 @@ export async function handleLibrary(request,env){
   if(url.pathname==='/sitemap.xml')return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...GROUPS.map(g=>shareURL({group:g.id})),...LIBRARY_RELEASES.map(s=>shareURL({track:{songId:s.id,variantId:s.variants[0].id}}))].map(href=>`<url><loc>${href.replace(/&/g,'&amp;')}</loc></url>`).join('')}</urlset>`,{headers:{'content-type':'application/xml'}});
   if(['/library','/library/','/index.html'].includes(url.pathname))return Response.redirect(LIBRARY_ORIGIN+'/'+url.search,302);
   if(url.pathname==='/'){
+    const canonical=canonicalLibraryURL(url);
+    if(canonical.href!==url.href)return Response.redirect(canonical.href,308);
     if(url.searchParams.get('song')==='unwritten-skies-ambience'||['unwritten-skies','calming'].includes(url.searchParams.get('group')))return Response.redirect(LIBRARY_ORIGIN+'/',302);
     const page=await env.ASSETS.fetch(new Request(new URL('/library/',url),{method:'GET'}));
     if(!page.ok)return new Response('The library is temporarily unavailable.',{status:503});

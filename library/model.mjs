@@ -1,3 +1,4 @@
+import {canonicalLibraryURL} from './identities.mjs';
 import {EDITORIAL} from './editorial.mjs';
 import {enrichTrack,parseBrief,matchBrief} from './discovery.mjs';
 export const LIBRARY_ORIGIN = 'https://library.musicsubject.com';
@@ -119,5 +120,5 @@ export function shareURL({group='all',q='',track=null,origin=LIBRARY_ORIGIN,mood
   for(const [key,value] of Object.entries({mood,genre,scene,vocals,length,sort}))if(value)url.searchParams.set(key,value);
   for(const key of [...new Set(picks)].slice(0,30))url.searchParams.append('pick',key);
   if(track){url.searchParams.set('song',track.songId);url.searchParams.set('version',track.variantId);}
-  return url.href;
+  return canonicalLibraryURL(url).href;
 }
