@@ -73,3 +73,14 @@ the homepage features the latest announcement for that song.
 A release may include a top-level `lyrics` object with `text`, `snippet`, `sunoUrl`, and `clipIds`. Copy the released source verbatim, not an earlier draft. The sync command adds those words to the generated region in `data/song-lyrics.js`, so Music's lyric panel and lyric search see the same release. Legacy lyric entries outside that region remain untouched. Variant artwork is validated alongside its audio.
 
 When the artist supplies the released words directly and no Suno source is available, set `lyrics.source` to `"artist-supplied"` and omit `sunoUrl`. The words still appear in lyric search and the on-site lyric panel; no external source link is invented. Any supplied `sunoUrl` must remain a valid Suno song link.
+
+## Library-only film cues
+
+For a release intended only for MusicSubject Library, put its schemaVersion 1
+manifest in `content/releases/library/` and set `audience` to `library`. Supply
+the normal `song` metadata, dated assets, exact `variants`, and reviewed `share`
+headline, description and sources. Do not create an artist update or radio profile.
+The same `sync-releases.mjs` validates it and generates `library/releases.mjs`.
+Run `measure-library-audio.mjs` to refresh recording facts. Library recording
+links render a dedicated listening introduction and keep the library hostname.
+Add later recordings as variants in the same manifest.

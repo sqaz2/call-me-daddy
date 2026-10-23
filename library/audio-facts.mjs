@@ -778,6 +778,13 @@ export const AUDIO_FACTS = {
     "channels": 2,
     "bytes": 2314893
   },
+  "/media/songs/2026/10/five-note-theme/audio.mp3": {
+    "seconds": 152.83,
+    "format": "MP3",
+    "sampleRate": 48000,
+    "channels": 2,
+    "bytes": 3549619
+  },
   "/media/songs/2026/10/her-story/audio.mp3": {
     "seconds": 108.26,
     "format": "MP3",
