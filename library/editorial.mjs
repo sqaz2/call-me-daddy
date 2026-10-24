@@ -1,59 +1,113 @@
-// Mood suggestions preserve existing editorial classifications. They are not acoustic measurements.
+// Reviewed editorial interpretations. Genre confirmations are kept separate from lyrical moods.
 export const EDITORIAL = {
-  "eternal-room": {"moods": ["emotional", "reflective", "romantic"], "source": "Artist-supplied lyrics in eternal-room/lyrics.txt; editorial themes, not acoustic measurements"},
+  "eternal-room": {
+    "moods": [
+      "romantic",
+      "vulnerable",
+      "gentle",
+      "hopeful",
+      "emotional",
+      "reflective"
+    ],
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "An ordinary domestic scene becomes a vulnerable choice to stay; artist confirms rock.",
+    "genres": [
+      "rock"
+    ],
+    "genreSource": "Artist-confirmed genre (2026-10-24)."
+  },
   "power-moves-only": {
     "moods": [
-      "motivational"
+      "motivational",
+      "triumphant",
+      "confident",
+      "high-energy",
+      "intense"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Decisive confidence, work and competitive drive; artist confirms winning."
   },
   "pull-me-like-that": {
     "moods": [
-      "intense"
+      "sensual",
+      "playful",
+      "confident"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Flirtation, attraction and performed confidence; source directions describe swagger rock."
   },
   "fractured-face": {
     "moods": [
+      "vulnerable",
+      "lonely",
+      "anxious",
+      "tense",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "A hidden, fractured self wants to be seen and loved while shame and fear make that difficult."
   },
   "cloudlife": {
     "moods": [
-      "emotional",
+      "curious",
+      "gentle",
+      "hopeful",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Wonder at the water cycle and change: endings become a return, not a disappearance."
   },
   "her-perfume-rides-shotgun": {
     "moods": [
-      "emotional",
-      "reflective",
-      "romantic"
+      "romantic",
+      "gentle",
+      "hopeful",
+      "feel-good"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "A companion brings calm, trust, home and hope."
   },
   "keep-moving": {
     "moods": [
-      "motivational"
+      "motivational",
+      "hopeful",
+      "vulnerable",
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Keeps going through exhaustion and uncertainty without pretending a payoff is guaranteed."
   },
   "thirty-six": {
     "moods": [
-      "emotional",
-      "reflective"
+      "reflective",
+      "anxious",
+      "vulnerable",
+      "hopeful",
+      "motivational"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Pressure over time and too many possible paths narrows into accepting that one direction can be enough."
   },
   "wild-ways": {
     "moods": [
-      "emotional",
-      "romantic"
+      "motivational",
+      "hopeful",
+      "feel-good",
+      "romantic",
+      "vulnerable"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Acceptance, freedom and the courage to be oneself in connection."
   },
   "what-is-my-opponent-threatening-right-now": {
     "moods": [
@@ -63,25 +117,37 @@ export const EDITORIAL = {
   },
   "september-26th-heartbreak": {
     "moods": [
+      "romantic",
+      "vulnerable",
+      "hopeful",
       "emotional",
-      "reflective",
-      "romantic"
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Heartbreak becomes growth and the possibility of choosing love again."
   },
   "heartbreak-you-water-me": {
     "moods": [
+      "romantic",
+      "vulnerable",
+      "hopeful",
       "emotional",
-      "reflective",
-      "romantic"
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Pain is framed as nourishment for growth and renewed possibility."
   },
   "concrete-under-evergreens": {
     "moods": [
-      "comedy"
+      "comedy",
+      "gentle",
+      "playful"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Tender delivery and exaggerated disaster language make two small wheelbarrows of concrete into a civic catastrophe; artist confirms soft, sweet satire."
   },
   "anti-generative-ai-diss": {
     "moods": [
@@ -91,11 +157,19 @@ export const EDITORIAL = {
   },
   "where-the-teeth-are-kept": {
     "moods": [
+      "tense",
       "intense",
       "cinematic",
-      "tense"
+      "sensual"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "A seductive lure becomes danger in a dark fairy-tale setting; artist confirms suspenseful dubstep.",
+    "genres": [
+      "edm",
+      "dubstep"
+    ],
+    "genreSource": "Artist-confirmed genre (2026-10-24)."
   },
   "one-million-dollars": {
     "moods": [
@@ -111,10 +185,16 @@ export const EDITORIAL = {
   },
   "the-loudest-one-in-my-head": {
     "moods": [
+      "anxious",
+      "vulnerable",
+      "lonely",
+      "hopeful",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Rejection and silence trigger a spiral of interpretation. The ending questions that inner voice, offering a tentative opening toward hope rather than triumph."
   },
   "mind-at-war": {
     "moods": [
@@ -131,18 +211,28 @@ export const EDITORIAL = {
   },
   "shooting-star": {
     "moods": [
+      "romantic",
+      "vulnerable",
+      "lonely",
       "emotional",
-      "reflective",
-      "romantic"
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Longing for fuller reciprocation than the small response received."
   },
   "where-monsters-are": {
     "moods": [
+      "romantic",
+      "vulnerable",
+      "gentle",
+      "hopeful",
       "cinematic",
-      "tense"
+      "curious"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "A gothic setting holds a story of belonging, trust and staying with someone through their scars."
   },
   "hard-earned-light": {
     "moods": [
@@ -153,7 +243,9 @@ export const EDITORIAL = {
     "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
   },
   "survival-mode": {
-    "genres": ["hiphop"],
+    "genres": [
+      "hiphop"
+    ],
     "genreSource": "Existing explicit hiphop classification in scripts/sync-song-links.mjs genreFor; applies to both Celtic North recordings",
     "moods": [
       "intense"
@@ -171,15 +263,25 @@ export const EDITORIAL = {
   },
   "side-chick-finder": {
     "moods": [
-      "comedy"
+      "comedy",
+      "playful"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "The relationship premise is a deliberate joke; artist confirms comedy."
   },
   "one-brick": {
     "moods": [
-      "motivational"
+      "motivational",
+      "hopeful",
+      "triumphant",
+      "vulnerable",
+      "romantic",
+      "gentle"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Rebuilding a life that can be shared, one step at a time; artist describes the intended mood as hopeful and winning."
   },
   "nomadic-hustla": {
     "moods": [
@@ -208,10 +310,16 @@ export const EDITORIAL = {
   },
   "live-it-right": {
     "moods": [
+      "motivational",
+      "hopeful",
+      "vulnerable",
+      "anxious",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "The published lyric sheet questions waiting for approval and asks for support to stand and choose despite uncertainty."
   },
   "sqaz-kill-you": {
     "moods": [
@@ -223,24 +331,46 @@ export const EDITORIAL = {
   },
   "this-is-my-story": {
     "moods": [
+      "intense",
+      "bitter",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and data/song-lyrics.js.",
+    "replaceMoods": true,
+    "note": "A confrontational account of growing up, hustling, ambition and painful setbacks. Artist identifies the main recording as gangster rap.",
+    "variants": {
+      "main": {
+        "genres": [
+          "hiphop"
+        ],
+        "genreSource": "Artist confirms gangster rap (2026-10-24); the gospel version keeps its own genre."
+      }
+    }
   },
   "come-sit-here-with-me": {
     "moods": [
+      "vulnerable",
+      "lonely",
+      "gentle",
+      "hopeful",
       "emotional",
-      "reflective",
-      "romantic"
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "An open invitation to share company without demanding romance or knowing where it will go; clarified by the artist."
   },
   "keep-building-your-future": {
     "moods": [
-      "motivational"
+      "motivational",
+      "hopeful",
+      "feel-good",
+      "playful"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Encouragement to pursue purpose and keep building, with light jokes along the way."
   },
   "turning-invisible": {
     "moods": [
@@ -283,11 +413,20 @@ export const EDITORIAL = {
   },
   "2010-wows": {
     "moods": [
+      "intense",
+      "bitter",
+      "lonely",
+      "anxious",
       "emotional",
-      "reflective",
-      "romantic"
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Alienation, anger, missed chances and numbing pain; aggressive rap confirmed by the artist. The separate positive rewrite is not one of these three local recordings.",
+    "genres": [
+      "hiphop"
+    ],
+    "genreSource": "Artist-confirmed genre (2026-10-24)."
   },
   "the-games-she-hates": {
     "moods": [
@@ -298,9 +437,15 @@ export const EDITORIAL = {
   },
   "make-me-an-animal": {
     "moods": [
-      "intense"
+      "intense",
+      "tense",
+      "sensual",
+      "emotional",
+      "high-energy"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Primal attraction, obsession, surrender and the danger of wanting a destructive connection; artist confirms aggression."
   },
   "cheap-to-inform": {
     "moods": [
@@ -317,17 +462,28 @@ export const EDITORIAL = {
   },
   "everybody-else-less": {
     "moods": [
+      "bitter",
+      "vulnerable",
+      "lonely",
+      "intense",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Resentment of other people is tangled with self-dislike and the hurt behind a defensive voice."
   },
   "set-a-table-for-two": {
     "moods": [
       "comedy",
-      "romantic"
+      "playful",
+      "romantic",
+      "gentle",
+      "intense"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Dark wedding jokes surround a sincere moment of safety and affection; artist identifies Fuck Everybody But You as comedy."
   },
   "satans-loan": {
     "moods": [
@@ -338,9 +494,12 @@ export const EDITORIAL = {
   },
   "superstore-effect": {
     "moods": [
-      "comedy"
+      "comedy",
+      "playful"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Satire about noticing repeated chaos during an ordinary grocery run; artist confirms satire."
   },
   "twas-the-tism-mlord": {
     "moods": [
@@ -350,22 +509,35 @@ export const EDITORIAL = {
   },
   "armando": {
     "moods": [
-      "comedy"
+      "comedy",
+      "playful",
+      "high-energy"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Artist confirms comedy; the laugh and hold-my-beer premise belong to one song family."
   },
   "id-pick-you-first": {
     "moods": [
       "comedy",
-      "romantic"
+      "playful",
+      "romantic",
+      "gentle",
+      "feel-good"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "A gross relationship test becomes sincere acceptance."
   },
   "did-armando-die-after-you-held-his-beer": {
     "moods": [
-      "comedy"
+      "comedy",
+      "playful",
+      "high-energy"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Artist confirms comedy; the laugh and hold-my-beer premise connect the chosen and earlier mixes."
   },
   "level-up": {
     "moods": [
@@ -380,7 +552,10 @@ export const EDITORIAL = {
     "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
   },
   "the-musician-police": {
-    "genres": ["edm", "dubstep"],
+    "genres": [
+      "edm",
+      "dubstep"
+    ],
     "genreSource": "Artist confirmed the duplicate @Dubstep entry belongs to this song (2026-10-23); preserves that published source style label.",
     "moods": [
       "comedy"
@@ -389,9 +564,18 @@ export const EDITORIAL = {
   },
   "funhouse-meltdown": {
     "moods": [
-      "comedy"
+      "comedy",
+      "playful",
+      "high-energy"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Comic voice experiment; artist confirms the recording is dubstep.",
+    "genres": [
+      "edm",
+      "dubstep"
+    ],
+    "genreSource": "Artist-confirmed genre (2026-10-24)."
   },
   "youtube-W47ebCMfrBI": {
     "moods": [
@@ -415,16 +599,27 @@ export const EDITORIAL = {
   "find-your-people": {
     "moods": [
       "motivational",
+      "hopeful",
+      "feel-good",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "The artist confirms uplifting; the original Cut From the Same Fabric page describes keeping boundaries and losing bitterness.",
+    "lyricsReview": "The indexed text is a MusicSubject introduction and has not been matched to this recording. Mood uses the artist’s notes and the original three-track story."
   },
   "hell-has-people-too": {
     "moods": [
+      "bitter",
+      "intense",
+      "emotional",
       "reflective",
-      "emotional"
+      "motivational",
+      "hopeful"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Resentment and jealousy give way to boundaries and leaving a damaging connection."
   },
   "cut-from-the-same-fabric-instrumental": {
     "moods": [
@@ -435,10 +630,15 @@ export const EDITORIAL = {
   },
   "locked-in-these-walls": {
     "moods": [
+      "tense",
+      "intense",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Confinement and pressure in the documented van-life story; artist suggests aggression.",
+    "lyricsReview": "The indexed salmon-dinner text conflicts with the published van-life story. Lyrics need matching to the recordings."
   },
   "under-watch": {
     "moods": [
@@ -449,17 +649,27 @@ export const EDITORIAL = {
   },
   "seven-days-locked": {
     "moods": [
+      "tense",
+      "intense",
+      "vulnerable",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Confinement, defiance and self-judgment coexist with concern for others."
   },
   "stomp-clamp": {
     "moods": [
+      "motivational",
+      "hopeful",
+      "vulnerable",
       "intense",
-      "motivational"
+      "high-energy"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Asks the crowd for encouragement while struggling; it is resolve before a victory, not a victory parade."
   },
   "broke-my-mug-not-my-song": {
     "moods": [
@@ -470,10 +680,15 @@ export const EDITORIAL = {
   },
   "friction-the-what": {
     "moods": [
+      "motivational",
+      "hopeful",
       "intense",
-      "emotional"
+      "emotional",
+      "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Hardship and pressure become survival, vision and a reason to keep creating."
   },
   "couple-friends-couple-calls": {
     "moods": [
@@ -485,18 +700,26 @@ export const EDITORIAL = {
   },
   "i-need-love": {
     "moods": [
-      "emotional",
-      "reflective",
-      "romantic"
+      "romantic",
+      "lonely",
+      "vulnerable",
+      "hopeful",
+      "emotional"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "Loneliness and past hurt coexist with wanting to try connection again."
   },
   "numbness-as-a-trap": {
     "moods": [
+      "tense",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "The published catalogue describes numbness becoming its own trap.",
+    "lyricsReview": "The indexed text duplicates I Need That Sound. The correct lyric sheet still needs matching to this song."
   },
   "never-come-back-down": {
     "moods": [
@@ -507,10 +730,16 @@ export const EDITORIAL = {
   },
   "will-to-live": {
     "moods": [
+      "motivational",
+      "hopeful",
+      "vulnerable",
       "emotional",
       "reflective"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
+    "replaceMoods": true,
+    "note": "The artist’s published description says this was made from a low place to encourage continuing.",
+    "lyricsReview": "The indexed text duplicates Namaste Hamster and is not verified across these four recordings."
   },
   "calculated-grind": {
     "moods": [
@@ -520,3 +749,5 @@ export const EDITORIAL = {
     "source": "Artist-supplied lyrics in content/releases/2026-10-22-calculated-grind.json: reps, training, progress and discipline."
   }
 };
+
+export const MOOD_IDS = ["motivational", "high-energy", "feel-good", "emotional", "cinematic", "comedy", "sports", "reflective", "romantic", "tense", "intense", "curious", "relaxed", "hopeful", "vulnerable", "lonely", "bitter", "gentle", "triumphant", "playful", "anxious", "sensual", "confident"];

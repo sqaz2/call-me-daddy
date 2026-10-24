@@ -5,19 +5,22 @@
   const sourceVideo=document.getElementById('sourceVideo'),play=document.getElementById('pulsePlay'),icon=document.getElementById('pulseIcon'),status=document.getElementById('pulseStatus'),progress=document.getElementById('pulseProgress'),bar=document.getElementById('pulseProgressBar'),current=document.getElementById('pulseCurrent'),duration=document.getElementById('pulseDuration'),player=document.getElementById('armandoPlayer'),trackCopy=player?.querySelector('.track-copy'),trackTitle=trackCopy?.querySelector('strong'),trackLabel=trackCopy?.querySelector('small'),cover=player?.querySelector('.armando-cover-button img'),machineArtist=player?.querySelector('.machine-meta span'),machineProject=player?.querySelector('.machine-meta b'),historyDrawer=document.querySelector('.armando-history-drawer');
   const songLink=document.createElement('a');songLink.className='cmd-now-song-link';songLink.textContent='Open this song →';songLink.hidden=true;trackCopy?.appendChild(songLink);
   const shareButton=document.createElement('button');shareButton.className='cmd-now-share';shareButton.type='button';shareButton.textContent='↗ Share this song';trackCopy?.appendChild(shareButton);
-  const chosen={id:'did-armando-die-after-you-held-his-beer',songId:'did-armando-die-after-you-held-his-beer',title:'Did Armando Die After You Held His Beer?',artist:'MusicSubject × Call Me Daddy',project:'Armando',label:'Chosen version',audio:'/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/'};
-  const earlier={id:'armando',songId:'armando',title:'Armando — Earlier Mix',artist:'MusicSubject × Call Me Daddy',project:'Armando archive',label:'Earlier Armando mix',audio:'/media/songs/2026/08/armando/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/'};
-  let active=chosen,activeIndex=0;
+  const chosen={variantId:'main',variantLabel:'Chosen version',variantCount:2,id:'did-armando-die-after-you-held-his-beer',songId:'did-armando-die-after-you-held-his-beer',title:'Did Armando Die After You Held His Beer?',artist:'MusicSubject × Call Me Daddy',project:'Armando',label:'Chosen version',audio:'/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/?version=main'};
+  const earlier={variantId:'earlier',variantLabel:'Armando — Earlier Mix',variantCount:2,id:'did-armando-die-after-you-held-his-beer:earlier',songId:'did-armando-die-after-you-held-his-beer',title:'Did Armando Die After You Held His Beer?',artist:'MusicSubject × Call Me Daddy',project:'Armando archive',label:'Armando — Earlier Mix',audio:'/media/songs/2026/08/armando/audio.mp3',cover:'/media/songs/2026/08/armando/cover.png',experience:'/power-pulse-uprising/?version=earlier'};
+  const params=new URLSearchParams(location.search),startIndex=params.get('version')==='earlier'||params.get('song')==='armando'?1:0;
+  const versionButtons=[...document.querySelectorAll('[data-armando-version]')];
+  let active=startIndex?earlier:chosen,activeIndex=startIndex;
   const fmt=value=>Number.isFinite(value)?`${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`:'--:--';
   const sync=(time=audio.currentTime,total=audio.duration)=>{const ratio=total?time/total:0;if(bar)bar.style.width=`${ratio*100}%`;if(current)current.textContent=fmt(time);if(duration)duration.textContent=fmt(total);progress?.setAttribute('aria-valuenow',String(Math.round(ratio*100)))};
-  const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;if(trackTitle)trackTitle.textContent=track.title;if(trackLabel)trackLabel.textContent=track.label||(track.variantCount>1?`Play the site · ${track.variantLabel}`:'Play the site');if(machineArtist)machineArtist.textContent=track.artist||'MusicSubject × Call Me Daddy';if(machineProject)machineProject.textContent=(track.project||'Call Me Daddy radio').toUpperCase();if(cover&&track.cover){cover.src=track.cover;cover.alt=`${track.title} artwork`}const can=activeIndex>1&&track.experience;songLink.hidden=!can;if(can)songLink.href=track.experience;if(status)status.textContent=state.reason==='ready'?'Tap artwork to play':'Loading next…';sync()};
+  const paint=(track,state={})=>{active=track;activeIndex=state.index??activeIndex;versionButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.armandoVersion===track.variantId&&track.songId===chosen.songId)));if(play)play.setAttribute('aria-label',`Play ${track.title} — ${track.label||track.variantLabel||'Main version'}`);if(trackTitle)trackTitle.textContent=track.title;if(trackLabel)trackLabel.textContent=track.label||(track.variantCount>1?`Play the site · ${track.variantLabel}`:'Play the site');if(machineArtist)machineArtist.textContent=track.artist||'MusicSubject × Call Me Daddy';if(machineProject)machineProject.textContent=(track.project||'Call Me Daddy radio').toUpperCase();if(cover&&track.cover){cover.src=track.cover;cover.alt=`${track.title} artwork`}const can=activeIndex>1&&track.experience;songLink.hidden=!can;if(can)songLink.href=track.experience;if(status)status.textContent=state.reason==='ready'?'Tap artwork to play':'Loading next…';sync()};
   const controller=window.CMDContinuousPlayback.create({
     id:'armando-endless-player',
     audio,
     tracks:[chosen,earlier],
+    startIndex,
     localCount:2,
-    excludeIds:[chosen.id,earlier.id],
-    lastSongId:earlier.id,
+    excludeIds:[chosen.songId,'armando'],
+    lastSongId:chosen.songId,
     route:'/power-pulse-uprising/',
     replacePlayer:player,
     onTrack:paint,
@@ -28,6 +31,7 @@
     onNeedsTap:()=>{if(icon)icon.textContent='▶'}
   });
 
+  versionButtons.forEach(button=>button.addEventListener('click',()=>controller.load(button.dataset.armandoVersion==='earlier'?1:0,{autoplay:true,reason:'version'})));
   play?.addEventListener('click',()=>{if(audio.paused){sourceVideo?.pause();controller.play()}else controller.pause()});
   shareButton.addEventListener('click',()=>window.CMDPlaylistRadio?.share(active));
   sourceVideo?.addEventListener('play',()=>controller.pause());

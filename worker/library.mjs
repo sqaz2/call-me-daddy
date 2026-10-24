@@ -8,7 +8,7 @@ import {LIBRARY_RELEASES} from '../library/releases.mjs';
 import {resolveLibraryRelease,renderLibraryRelease} from '../library/release-view.mjs';
 
 const HOST=new URL(LIBRARY_ORIGIN).hostname;
-const sharedScripts=new Set(['/continuous-playback.js','/data/songs.js','/data/archive-catalog.js','/data/2026-08-25-uploads.js','/data/2026-08-26-uploads.js','/data/2026-08-27-uploads.js','/data/2026-08-29-uploads.js','/data/song-lyrics.js','/data/starmuff-playlist.mjs','/data/song-social.json']);
+const sharedScripts=new Set(['/data/song-identities.mjs','/continuous-playback.js','/data/songs.js','/data/archive-catalog.js','/data/2026-08-25-uploads.js','/data/2026-08-26-uploads.js','/data/2026-08-27-uploads.js','/data/2026-08-29-uploads.js','/data/song-lyrics.js','/data/starmuff-playlist.mjs','/data/song-social.json']);
 export function librarySocial(url,index){
   url=canonicalLibraryURL(url);
   const group=GROUPS.find(g=>g.id===url.searchParams.get('group'))||GROUPS[0];

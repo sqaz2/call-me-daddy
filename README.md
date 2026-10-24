@@ -86,6 +86,6 @@ The artist subsequently confirmed that the external “@Dubstep” upload is The
 
 ### October 23 orchestral cue uploads
 
-Ten uploaded recordings are now published only in MusicSubject Library under the Film cues collection. Six titled cues join the catalogue; four additional A Five-Note Theme / Five-note Theme takes join the existing five-note-theme entry, preserving its main recording and URL. The catalogue has 135 entries, 184 playable recordings and three external versions. Earned Resolution remains excluded because its capture was incomplete.
+Ten uploaded recordings are now published only in MusicSubject Library under the Film cues collection. Six titled cues join the catalogue; four additional A Five-Note Theme / Five-note Theme takes join the existing five-note-theme entry, preserving its main recording and URL. The catalogue has 134 entries, 184 playable recordings and three external versions. Earned Resolution remains excluded because its capture was incomplete.
 
 The dated library manifests retain source upload names, individual production notes, uncertain/truncated titles and automated BPM/key confidence. Recording details and shortlist CSV exports include those estimates plus loudness; older recordings without analysis remain unmeasured. Three source-labelled styles—Orchestral, Chamber and Neoclassical—are available in genre search. Cue pages expose a version selector, and their artwork, details, shortlist and sharing controls follow the selected recording.

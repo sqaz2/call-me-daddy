@@ -488,14 +488,6 @@
         "twas-the-tism-mlord/index.html"
       ]
     },
-    "armando": {
-      "headline": "Before Armando became a question, he was a laugh that got out of hand.",
-      "text": "I noticed my laugh in a reaction recording, isolated it, and kept following it until Armando had his own song. This is the earlier mix, before the final question gave the joke its payoff. Open it and meet the laugh that started the trouble.",
-      "description": "A laugh pulled from a reaction recording became Armando. This earlier mix preserves a step on the way to the chosen version.",
-      "sources": [
-        "power-pulse-uprising/index.html"
-      ]
-    },
     "id-pick-you-first": {
       "headline": "Would you still love me if I was a booger?",
       "text": "The relationship test went from caterpillar to booger, and somehow the grossest answer was the most affectionate. Open I’d Pick You First for the ridiculous question, the worse answer, and the reason it actually works as a love song.",
@@ -511,7 +503,14 @@
       "description": "A reaction, a laugh, a sample—and the question after “hold my beer.” Meet the chosen Armando version.",
       "sources": [
         "power-pulse-uprising/index.html"
-      ]
+      ],
+      "variants": {
+        "earlier": {
+          "headline": "Before Armando became a question, he was a laugh that got out of hand.",
+          "text": "I noticed my laugh in a reaction recording, isolated it, and kept following it until Armando had his own song. This is the earlier mix, before the final question gave the joke its payoff. Open it and meet the laugh that started the trouble.",
+          "description": "A laugh pulled from a reaction recording became Armando. This earlier mix preserves a step on the way to the chosen version."
+        }
+      }
     },
     "level-up": {
       "headline": "The tool can give you options. It cannot give you a reason.",

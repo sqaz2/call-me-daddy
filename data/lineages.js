@@ -55,10 +55,10 @@
     {
       id:'armando-family',
       title:'Armando',
-      kicker:'Character songs · same neighborhood',
+      kicker:'One song · two recordings',
       blurb:'Armando and the question that followed him.',
-      songIds:['armando','did-armando-die-after-you-held-his-beer'],
-      experience:'/music/?song=armando&intent=laugh'
+      songIds:['did-armando-die-after-you-held-his-beer'],
+      experience:'/power-pulse-uprising/'
     },
     {
       id:'make-me-an-animal-lives',

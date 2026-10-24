@@ -1,3 +1,4 @@
+import {SONG_REDIRECTS} from '../data/song-identities.mjs';
 import { handleShortLink } from './short-links.mjs';
 import { handleStarMuffMedia } from './starmuff.mjs';
 
@@ -171,6 +172,8 @@ export async function handleRequest(request, env) {
   // The /music* route also matches /musical. Leave those unrelated paths at
   // their existing origin instead of serving this site's assets on satans.loan.
   if (url.hostname === 'satans.loan') return fetch(request);
+  const oldId=url.searchParams.get('song'),redirect=Object.hasOwn(SONG_REDIRECTS,oldId)?SONG_REDIRECTS[oldId]:null;
+  if(redirect&&['GET','HEAD'].includes(request.method)){url.searchParams.set('song',redirect.songId);url.searchParams.set('version',redirect.variantId);return Response.redirect(url.href,302);}
   const starMuff = await handleStarMuffMedia(request, env);
   if (starMuff) return starMuff;
   if (/^\/music\/?$/.test(url.pathname) && ['GET','HEAD'].includes(request.method) &&
