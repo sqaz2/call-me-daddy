@@ -50,3 +50,16 @@ Armando's chosen and earlier recordings share one catalogue identity. The old
 `armando:main` key migrates to the canonical song's `earlier` variant. Permanent
 numbers 4 and 14 retain their original recordings. Do not allocate a second
 numbered slot for a recording already reached through an identity alias.
+
+## Genre families
+
+`genres.mjs` defines the browse families and parent tags. Techno, house, bass
+house, dubstep, drum & bass, trance and glitch hop include Electronic & EDM;
+trap and boom bap include Hip-hop & rap. All documented genres are visible on
+the selected recording's row, with native dropdown groups for mobile browsing.
+
+`recording-genres.mjs` adds classifications keyed by the exact audio path. The
+45 entries were matched through each MP3's embedded Suno clip ID to its public
+style description, recorded in `content/sources/library-genres-2026-10-24.json`.
+Do not copy source styles between sibling recordings or classify genres from
+lyrical moods. Six versions still lack sufficient source evidence.

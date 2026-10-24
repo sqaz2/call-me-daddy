@@ -23,7 +23,7 @@ test('every published catalogue entry and exact audio version is discoverable, a
 });
 test('genre search follows the exact version and does not mistake a subject for a genre',()=>{
  assert.ok(!filterCatalog(catalog,{genre:'trap'}).some(s=>s.id==='numbness-as-a-trap'));
- const trap=filterCatalog(catalog,{q:'trap'}).find(s=>s.id==='keep-moving');assert.deepEqual(trap.visibleTracks.map(t=>t.variantId),['trap-mix']);
+ const trap=filterCatalog(catalog,{q:'trap'}).find(s=>s.id==='keep-moving');assert.deepEqual(trap.visibleTracks.map(t=>t.variantId),['v2','trap-mix']);
  const gospel=filterCatalog(catalog,{genre:'gospel'}).find(s=>s.id==='this-is-my-story');assert.deepEqual(gospel.visibleTracks.map(t=>t.variantId),['gospel']);
  assert.ok(filterCatalog(catalog,{genre:'dubstep'}).some(s=>s.id==='canadian-crop-dusting'));
  assert.ok(filterCatalog(catalog,{genre:'hiphop'}).some(s=>s.id==='cheap-to-inform'));

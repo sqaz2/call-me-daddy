@@ -17,7 +17,7 @@ test('artist genre confirmations apply to the right recordings, without leaking 
  for(const [id,genre] of [['2010-wows','hiphop'],['eternal-room','rock'],['funhouse-meltdown','dubstep'],['where-the-teeth-are-kept','dubstep']])assert.ok(song(id).tracks.every(t=>t.genres.includes(genre)),id);
  assert.ok(song('this-is-my-story').tracks.find(t=>t.variantId==='main').genres.includes('hiphop'));
  assert.deepEqual(song('this-is-my-story').tracks.find(t=>t.variantId==='gospel').genres,['gospel']);
- assert.ok(song('concrete-under-evergreens').tracks.every(t=>!t.genreKnown)); // comedy is a mood, not an invented acoustic genre
+ assert.ok(song('concrete-under-evergreens').tracks.every(t=>t.genres.includes('rock'))); // matched source identifies adult-alternative, independent of its comedy mood
 });
 test('lyrical moods, dropdowns and natural brief searches agree',()=>{
  for(const [query,mood,id] of [['encouragement','motivational','keep-moving'],['encouraging','motivational','stomp-clamp'],['winning','triumphant','power-moves-only'],['hopeful','hopeful','one-brick'],['vulnerable','vulnerable','come-sit-here-with-me'],['curiosity','curious','cloudlife'],['bitter','bitter','everybody-else-less'],['sweet comedy','gentle','concrete-under-evergreens'],['suspenseful dubstep','tense','where-the-teeth-are-kept']]){

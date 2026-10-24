@@ -1,3 +1,5 @@
+import {expandGenreFamilies} from './genres.mjs';
+import {RECORDING_GENRES} from './recording-genres.mjs';
 import {canonicalLibraryURL} from './identities.mjs';
 import {EDITORIAL} from './editorial.mjs';
 import {enrichTrack,parseBrief,matchBrief} from './discovery.mjs';
@@ -37,6 +39,18 @@ export const GROUPS = [
   {id:'edm', label:'Electronic & EDM', kind:'genre', description:'Electronic, dance, dubstep, drum & bass and warehouse mixes.'},
   {id:'dubstep', label:'Dubstep', kind:'genre', description:'Wobble, halftime, melodic drops and heavy bass.'},
   {id:'dnb', label:'Drum & bass', kind:'genre', description:'Drum & bass versions from the catalogue.'},
+  {id:'techno',label:'Techno',kind:'genre',description:'Techno recordings, including lo-fi, underground and ambient techno.'},
+  {id:'house',label:'House',kind:'genre',description:'House recordings, including tropical, G-house and bass house.'},
+  {id:'bass-house',label:'Bass house',kind:'genre',description:'Bass-house and G-house recordings.'},
+  {id:'trance',label:'Trance',kind:'genre',description:'Recordings explicitly described as trance.'},
+  {id:'glitch-hop',label:'Glitch hop',kind:'genre',description:'Electronic and hip-hop crossover recordings labelled glitch hop.'},
+  {id:'boom-bap',label:'Boom bap',kind:'genre',description:'Hip-hop recordings described as boom bap.'},
+  {id:'metal',label:'Metal',kind:'genre',description:'Metal and alternative-metal recordings.'},
+  {id:'blues',label:'Blues',kind:'genre',description:'Blues and blues-rock recordings.'},
+  {id:'funk',label:'Funk',kind:'genre',description:'Funk and disco-funk recordings.'},
+  {id:'disco',label:'Disco',kind:'genre',description:'Disco and disco-funk recordings.'},
+  {id:'reggae',label:'Reggae',kind:'genre',description:'Recordings with an explicit reggae style.'},
+  {id:'ska',label:'Ska',kind:'genre',description:'Ska and ska-punk recordings.'},
   {id:'gospel',label:'Gospel',kind:'genre',description:'Recordings specifically labelled as gospel.'},
   {id:'spoken',label:'Spoken word & chant',kind:'genre',description:'Recordings labelled as spoken word, chant or a spoken opening.'},
   {id:'soundtrack',label:'Game soundtrack',kind:'genre',description:'The original StarMuff game cues, with their source titles preserved.'},
@@ -62,7 +76,7 @@ const MOODS = {
   comedy:['concrete-under-evergreens','anti-generative-ai-diss','one-million-dollars','ashes-in-eastwood','side-chick-finder','everybody-thinks-theyre-hot','big-dick-willy','running-a-monopoly','canadian-crop-dusting','set-a-table-for-two','superstore-effect','twas-the-tism-mlord','armando','id-pick-you-first','did-armando-die-after-you-held-his-beer','back-to-sticks','the-musician-police','funhouse-meltdown','namaste-hamster'],
   sports:['what-is-my-opponent-threatening-right-now','level-up']
 };
-const GENRES = {orchestral:/\borchestral\b/i,chamber:/\bchamber\b/i,neoclassical:/\bneo[ -]?classical\b/i,trap:/\btrap\b/i,hiphop:/\b(?:hip[ -]?hop|rap|trap|horrorcore|freestyle)\b/i, rnb:/\b(?:r&b|rnb|r-and-b|rhythm.and.blues|soul)\b/i, country:/\bcountry\b/i, rock:/\b(?:rock|punk|grunge)\b/i, pop:/\bpop\b/i, edm:/\b(?:edm|electronic|techno|warehouse|dubstep|dnb|drum.and.bass)\b/i, dubstep:/\bdubstep\b/i, dnb:/\b(?:dnb|d&b|drum.and.bass)\b/i, gospel:/\bgospel\b/i,spoken:/\b(?:spoken.word|chant)\b/i,instrumental:/\binstrumental\b/i};
+const GENRES = {techno:/\btechno\b/i,house:/\bhouse\b/i,'bass-house':/\b(?:bass[ -]house|g[ -]house)\b/i,trance:/\btrance\b/i,'glitch-hop':/\bglitch[ -]hop\b/i,'boom-bap':/\bboom[ -]bap\b/i,metal:/\bmetal\b/i,blues:/\bblues\b/i,funk:/\bfunk\b/i,disco:/\bdisco\b/i,reggae:/\breggae\b/i,ska:/\bska\b/i,orchestral:/\borchestral\b/i,chamber:/\bchamber\b/i,neoclassical:/\bneo[ -]?classical\b/i,trap:/\btrap\b/i,hiphop:/\b(?:hip[ -]?hop|rap|trap|horrorcore|freestyle)\b/i, rnb:/\b(?:r&b|rnb|r-and-b|rhythm.and.blues|soul)\b/i, country:/\bcountry\b/i, rock:/\b(?:rock|punk|grunge)\b/i, pop:/\bpop\b/i, edm:/\b(?:edm|electronic|techno|warehouse|dubstep|dnb|drum.and.bass)\b/i, dubstep:/\bdubstep\b/i, dnb:/\b(?:dnb|d&b|drum.and.bass)\b/i, gospel:/\bgospel\b/i,spoken:/\b(?:spoken.word|chant)\b/i,instrumental:/\binstrumental\b/i};
 export const trackKey = t => `${t.songId}:${t.variantId}`;
 export function buildCatalog(songs, starMuff=[], context={}) {
   const result=[];
@@ -81,10 +95,12 @@ export function buildCatalog(songs, starMuff=[], context={}) {
       if(song.libraryOnly&&song.project==='Film cues')groups.push('film-cues');
       for(const id of [...(EDITORIAL[song.id]?.genres||[]),...(EDITORIAL[song.id]?.variants?.[v.id]?.genres||[])])if(GROUPS.some(g=>g.id===id&&g.kind==='genre'))groups.push(id);
       const id=v.id||String(i);
-      const genres=groups.filter(g=>GROUPS.some(x=>x.id===g&&x.kind==='genre'));
+      const recordingGenre=RECORDING_GENRES[v.audio];
+      const genres=expandGenreFamilies([...groups.filter(g=>GROUPS.some(x=>x.id===g&&x.kind==='genre')),...(recordingGenre?.genres||[])]);
+      groups.push(...genres);
       if(!genres.length)groups.push('unclassified');
       const profile=enrichTrack(song,v,groups,context);
-      return {...song,...v,audio:v.audio||'',songId:song.id,variantId:id,variantLabel:v.label||'Main version',title:song.title,artist:song.artist||'MusicSubject',cover:song.playlist==='starmuff'?'/library/starmuff-cover':v.cover||song.cover||'/library/mark.svg',...profile,genres,genreKnown:genres.length>0,manualOnly:v.external||song.rotation==='opt-in'||(song.openerPolicy?.eligibleVersions&&!song.openerPolicy.eligibleVersions.includes(id)),date:v.date||song.date||`${song.year||2000}-${String(song.month||1).padStart(2,'0')}-01`};
+      return {...song,...v,audio:v.audio||'',songId:song.id,variantId:id,variantLabel:v.label||'Main version',title:song.title,artist:song.artist||'MusicSubject',cover:song.playlist==='starmuff'?'/library/starmuff-cover':v.cover||song.cover||'/library/mark.svg',...profile,genres,genreSource:recordingGenre?.source||profile.genreSource,genreSourceUrl:recordingGenre?.sourceUrl||'',genreStyles:recordingGenre?.styleSummary||'',genreKnown:genres.length>0,manualOnly:v.external||song.rotation==='opt-in'||(song.openerPolicy?.eligibleVersions&&!song.openerPolicy.eligibleVersions.includes(id)),date:v.date||song.date||`${song.year||2000}-${String(song.month||1).padStart(2,'0')}-01`};
     });
     if(tracks.length)result.push({...song,tracks,groups:[...new Set(tracks.flatMap(t=>t.groups))]});
   }

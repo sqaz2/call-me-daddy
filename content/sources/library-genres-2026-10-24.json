@@ -1,0 +1,1205 @@
+{
+  "reviewed": "2026-10-24",
+  "method": "Match embedded MP3 COMM clip ID to the public Suno recording. Map the published style labels to browse families; do not infer genres from lyrical subject matter. These are source classifications, not an acoustic measurement.",
+  "recordings": [
+    {
+      "songId": "live-it-right",
+      "variantId": "main",
+      "audio": "/media/songs/2026/10/live-it-right/audio.mp3",
+      "sourceTitle": "live your life (Remastered)",
+      "sourceUrl": "https://suno.com/song/cd0f4c16-adc4-49a4-bd61-91fc62858e1b",
+      "clipIds": [
+        "cd0f4c16-adc4-49a4-bd61-91fc62858e1b"
+      ],
+      "styles": [
+        "rap",
+        "trap"
+      ],
+      "tags": {
+        "TIT2": [
+          "live your life (Remastered)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-10-19T02:18:26Z; id=cd0f4c16-adc4-49a4-bd61-91fc62858e1b "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-10-18T21:55:48.088676+00:00; id=cd0f4c16-adc4-49a4-bd61-91fc62858e1b "
+        ]
+      }
+    },
+    {
+      "songId": "come-sit-here-with-me",
+      "variantId": "main",
+      "audio": "/media/songs/2026/10/come-sit-here-with-me/audio.mp3",
+      "sourceTitle": "Come Sit Here With Me",
+      "sourceUrl": "https://suno.com/song/63b22d29-5d2d-461e-8595-6373093b51fa",
+      "clipIds": [
+        "63b22d29-5d2d-461e-8595-6373093b51fa"
+      ],
+      "styles": [
+        "Glitch dubstep",
+        "high-impact half-time pulse with distorted growling mid-bass and gated wobble phrases; sharp instrumental stabs",
+        "dry swung percussion",
+        "organic guitar fragments",
+        "Sparse opening with close intimate male tenor",
+        "breath detail and crisp consonants; tucked deep doubles",
+        "octave layers and chopped vocal echoes",
+        "Build through raw static bursts",
+        "bit-crushed fills",
+        "accelerating edits",
+        "abrupt full-beat cutouts",
+        "then a final drop that climbs through silence into a heavier impact",
+        "Wide stereo instrumental overlaps",
+        "centered dry-forward lead vocal above the mix"
+      ],
+      "tags": {
+        "TIT2": [
+          "Come Sit Here With Me"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-10-14T15:51:14Z; id=63b22d29-5d2d-461e-8595-6373093b51fa "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-10-14T06:04:46.334217+00:00; id=63b22d29-5d2d-461e-8595-6373093b51fa "
+        ]
+      }
+    },
+    {
+      "songId": "keep-building-your-future",
+      "variantId": "main",
+      "audio": "/media/songs/2026/10/keep-building-your-future/audio.mp3",
+      "sourceTitle": "keep building your future",
+      "sourceUrl": "https://suno.com/song/90801739-41e4-4339-b6a4-1eb56e6509ed",
+      "clipIds": [
+        "90801739-41e4-4339-b6a4-1eb56e6509ed"
+      ],
+      "styles": [
+        "pop-rock"
+      ],
+      "tags": {
+        "TIT2": [
+          "keep building your future"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-10-11T16:30:59Z; id=90801739-41e4-4339-b6a4-1eb56e6509ed "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-10-11T16:19:05.755561+00:00; id=90801739-41e4-4339-b6a4-1eb56e6509ed "
+        ]
+      }
+    },
+    {
+      "songId": "make-me-an-animal",
+      "variantId": "suno-v6",
+      "audio": "/media/songs/2026/09/make-me-an-animal-v6/audio.mp3",
+      "sourceTitle": "Make Me an Animal (Remix)",
+      "sourceUrl": "https://suno.com/song/6ade3b4a-ea90-4cf9-83ab-b4b0f0f76a14",
+      "clipIds": [
+        "6ade3b4a-ea90-4cf9-83ab-b4b0f0f76a14"
+      ],
+      "styles": [
+        "industrial",
+        "alt-rock",
+        "blues-rock"
+      ],
+      "tags": {
+        "TIT2": [
+          "Make Me an Animal (Remix)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-09-12T09:52:57Z; id=6ade3b4a-ea90-4cf9-83ab-b4b0f0f76a14 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-09-12T08:42:20.409798+00:00; id=6ade3b4a-ea90-4cf9-83ab-b4b0f0f76a14 "
+        ]
+      }
+    },
+    {
+      "songId": "make-me-an-animal",
+      "variantId": "may-2026-remastered",
+      "audio": "/media/songs/2026/08/make-me-an-animal/may-2026-remastered.mp3",
+      "sourceTitle": "animal  (May 2026 Remastered)",
+      "sourceUrl": "https://suno.com/song/ba005430-8828-4f52-8a9d-3eabdac79fe4",
+      "clipIds": [
+        "ba005430-8828-4f52-8a9d-3eabdac79fe4"
+      ],
+      "styles": [
+        "> Alt-rock / dark pop track blending gritty industrial rock",
+        "electronic elements",
+        "and sensual bluesy guitar",
+        "Mood: Seductive",
+        "unstable",
+        "primal",
+        "emotionally raw\n\nVocals: Male",
+        "gritty with whispered verses and powerful",
+        "aggressive choruses",
+        "Slight rasp",
+        "Dark and intense tone",
+        "Instruments:\n\nGrungy electric guitar riffs\n\nHeavy distorted bass\n\nPunchy",
+        "industrial-style drums\n\nSynth textures (low",
+        "haunting pads + glitchy accents)\n\nMinimal piano or ambient FX in bridge (optional)\n\n\nStructure:\n\nVerse 1\n\nPre-Chorus\n\nChorus\n\nVerse 2\n\nPre-Chorus\n\nChorus\n\nBridge\n\nFinal Chorus / Outro"
+      ],
+      "tags": {
+        "TIT2": [
+          "animal  (May 2026 Remastered)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-23T20:22:57Z; id=ba005430-8828-4f52-8a9d-3eabdac79fe4 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-23T20:22:06.500922+00:00; id=ba005430-8828-4f52-8a9d-3eabdac79fe4 "
+        ]
+      }
+    },
+    {
+      "songId": "set-a-table-for-two",
+      "variantId": "main",
+      "audio": "/media/songs/2026/09/set-a-table-for-two/Set A Table For Two.mp3",
+      "sourceTitle": "Set A Table For Two",
+      "sourceUrl": "https://suno.com/song/de2f1819-86af-48c8-8f2b-32e7cb559f9f",
+      "clipIds": [
+        "de2f1819-86af-48c8-8f2b-32e7cb559f9f"
+      ],
+      "styles": [
+        "hip-hop",
+        "upbeat",
+        "satirical"
+      ],
+      "tags": {
+        "TIT2": [
+          "Set A Table For Two"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-09-08T01:28:51Z; id=de2f1819-86af-48c8-8f2b-32e7cb559f9f "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-09-08T01:28:45.335318+00:00; id=de2f1819-86af-48c8-8f2b-32e7cb559f9f "
+        ]
+      }
+    },
+    {
+      "songId": "set-a-table-for-two",
+      "variantId": "voice-clone",
+      "audio": "/media/songs/2026/09/set-a-table-for-two/fuck everybody but you.mp3",
+      "sourceTitle": "fuck everybody but you",
+      "sourceUrl": "https://suno.com/song/8d3d14bd-65fb-4b04-95ae-fc46ef1a039b",
+      "clipIds": [
+        "8d3d14bd-65fb-4b04-95ae-fc46ef1a039b"
+      ],
+      "styles": [
+        "hip-hop",
+        "upbeat",
+        "satirical"
+      ],
+      "tags": {
+        "TIT2": [
+          "fuck everybody but you"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-09-08T01:12:46Z; id=8d3d14bd-65fb-4b04-95ae-fc46ef1a039b "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-09-08T01:12:41.307892+00:00; id=8d3d14bd-65fb-4b04-95ae-fc46ef1a039b "
+        ]
+      }
+    },
+    {
+      "songId": "superstore-effect",
+      "variantId": "main",
+      "audio": "/media/songs/2026/09/superstore-effect/audio.mp3",
+      "sourceTitle": "Superstore Effect R (140 BPM Switch-Up) (Remix) (Remastered x5)",
+      "sourceUrl": "https://suno.com/song/9e56204d-2d65-4e8c-8c62-1d9ab610c2c8",
+      "clipIds": [
+        "9e56204d-2d65-4e8c-8c62-1d9ab610c2c8"
+      ],
+      "styles": [
+        "trap",
+        "hip-hop"
+      ],
+      "tags": {
+        "TIT2": [
+          "Superstore Effect R (140 BPM Switch-Up) (Remix) (Remastered x5)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-09-06T12:17:08Z; id=9e56204d-2d65-4e8c-8c62-1d9ab610c2c8 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-09-06T12:16:45.796896+00:00; id=9e56204d-2d65-4e8c-8c62-1d9ab610c2c8 "
+        ]
+      }
+    },
+    {
+      "songId": "power-moves-only",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/power-moves-only/main.mp3",
+      "sourceTitle": "Power Moves Only",
+      "sourceUrl": "https://suno.com/song/1cf1c78c-362b-42a3-9e37-c67617f3c9d3",
+      "clipIds": [
+        "1cf1c78c-362b-42a3-9e37-c67617f3c9d3"
+      ],
+      "styles": [
+        "dubstep",
+        "wobble-bass EDM",
+        "glitchy/industrial-leaning bass music"
+      ],
+      "tags": {
+        "TIT2": [
+          "Power Moves Only"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-22T07:41:45Z; id=1cf1c78c-362b-42a3-9e37-c67617f3c9d3 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-22T07:38:25.205871+00:00; id=1cf1c78c-362b-42a3-9e37-c67617f3c9d3 "
+        ]
+      }
+    },
+    {
+      "songId": "cloudlife",
+      "variantId": "life-of-a-cloud",
+      "audio": "/media/songs/2026/08/cloudlife/life-of-a-cloud.mp3",
+      "sourceTitle": "Cloudlife (the life of a cloud)",
+      "sourceUrl": "https://suno.com/song/d102e2f2-50c4-491c-affc-e6d374536715",
+      "clipIds": [
+        "d102e2f2-50c4-491c-affc-e6d374536715"
+      ],
+      "styles": [
+        "psychedelic rock",
+        "psychedelic pop",
+        "acid rock"
+      ],
+      "tags": {
+        "TIT2": [
+          "Cloudlife (the life of a cloud)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-02T20:58:20Z; id=d102e2f2-50c4-491c-affc-e6d374536715 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-02T20:55:12.384463+00:00; id=d102e2f2-50c4-491c-affc-e6d374536715 "
+        ]
+      }
+    },
+    {
+      "songId": "her-perfume-rides-shotgun",
+      "variantId": "v2-remastered",
+      "audio": "/media/songs/2026/08/her-perfume-rides-shotgun/v2-remastered.mp3",
+      "sourceTitle": "her perfume rides shotgun v2 (Remastered)",
+      "sourceUrl": "https://suno.com/song/1fa8b4b6-5007-4695-b2b8-4ec94d03baaa",
+      "clipIds": [
+        "1fa8b4b6-5007-4695-b2b8-4ec94d03baaa"
+      ],
+      "styles": [
+        "Genre: Hip-Hop / Soulful Boom-Bap  \nTempo: 90 BPM  \nInstrumentation: vinyl-style drums",
+        "chopped soul samples (female gospel vocals",
+        "horns",
+        "and strings)",
+        "analog bass",
+        "MPC-style swing",
+        "warm reverb",
+        "Mood: reflective",
+        "confident",
+        "nostalgic",
+        "seductive-real",
+        "Vocals: male rap verses with intelligent wordplay and rhythmic flow; optional female soul vocal hook",
+        "Production: gritty yet clean",
+        "sampled feel without direct reuse",
+        "analog saturation",
+        "punchy drums",
+        "head-nod groove",
+        "Lyrics theme: a loyal woman who rides with him through life; her perfume becomes a symbol of presence and devotion",
+        "Tags: soulful hip-hop",
+        "boom-bap",
+        "Jake One style",
+        "Rhymesayers vibe",
+        "MPC groove",
+        "gospel soul loop",
+        "vintage warmth",
+        "anthemic hook",
+        "Instruction: use the lyrics below; tone = authentic",
+        "smooth",
+        "introspective",
+        "seductive",
+        "avoid clichés"
+      ],
+      "tags": {
+        "TIT2": [
+          "her perfume rides shotgun v2 (Remastered)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-24T05:48:34Z; id=1fa8b4b6-5007-4695-b2b8-4ec94d03baaa "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-24T05:47:51.970979+00:00; id=1fa8b4b6-5007-4695-b2b8-4ec94d03baaa "
+        ]
+      }
+    },
+    {
+      "songId": "keep-moving",
+      "variantId": "v2",
+      "audio": "/media/songs/2026/08/keep-moving/v2.mp3",
+      "sourceTitle": "keep moving (v2)",
+      "sourceUrl": "https://suno.com/song/685b743e-4607-45e2-8bdf-1700e0e49a93",
+      "clipIds": [
+        "685b743e-4607-45e2-8bdf-1700e0e49a93"
+      ],
+      "styles": [
+        "trap",
+        "EDM",
+        "psychedelic"
+      ],
+      "tags": {
+        "TIT2": [
+          "keep moving (v2)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-10T09:12:07Z; id=685b743e-4607-45e2-8bdf-1700e0e49a93 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-10T09:08:48.776309+00:00; id=685b743e-4607-45e2-8bdf-1700e0e49a93 "
+        ]
+      }
+    },
+    {
+      "songId": "thirty-six",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/thirty-six/main.mp3",
+      "sourceTitle": "Thirty Six",
+      "sourceUrl": "https://suno.com/song/92a398b2-467f-4e04-a3c6-51e92cc61b90",
+      "clipIds": [
+        "92a398b2-467f-4e04-a3c6-51e92cc61b90"
+      ],
+      "styles": [
+        "minimal dubstep",
+        "EDM",
+        "vocal"
+      ],
+      "tags": {
+        "TIT2": [
+          "Thirty Six"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-10T10:28:17Z; id=92a398b2-467f-4e04-a3c6-51e92cc61b90 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-10T10:25:33.297627+00:00; id=92a398b2-467f-4e04-a3c6-51e92cc61b90 "
+        ]
+      }
+    },
+    {
+      "songId": "what-is-my-opponent-threatening-right-now",
+      "variantId": "can-i-get-mated",
+      "audio": "/media/songs/2026/08/what-is-my-opponent-threatening-right-now/can-i-get-mated.mp3",
+      "sourceTitle": "what is my opponent threatening RN (Can I get mated)",
+      "sourceUrl": "https://suno.com/song/a3c37d5a-3b7c-4b48-b489-9d2af138db43",
+      "clipIds": [
+        "a3c37d5a-3b7c-4b48-b489-9d2af138db43"
+      ],
+      "styles": [
+        "dubstep",
+        "cinematic electronic",
+        "half-time (UKF/club-style)"
+      ],
+      "tags": {
+        "TIT2": [
+          "what is my opponent threatening RN (Can I get mated)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-23T07:13:06Z; id=a3c37d5a-3b7c-4b48-b489-9d2af138db43 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-23T07:08:05.785511+00:00; id=a3c37d5a-3b7c-4b48-b489-9d2af138db43 "
+        ]
+      }
+    },
+    {
+      "songId": "concrete-under-evergreens",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/concrete-under-evergreens/audio.mp3",
+      "sourceTitle": "concrete in lacome",
+      "sourceUrl": "https://suno.com/song/10a1f59b-6572-4fd1-9c7e-d2c161d06622",
+      "clipIds": [
+        "10a1f59b-6572-4fd1-9c7e-d2c161d06622"
+      ],
+      "styles": [
+        "adult-alternative",
+        "ballad"
+      ],
+      "tags": {
+        "TXXX": [
+          "lyrics-eng [Verse 1]\nI saw the pictures underneath the trees\nTwo little piles where they shouldn't be\nSomeone said the city had been told\nAnd suddenly the whole damn story broke\nThe angry faces started coming in\nCalling out the workers for their sins\nI watched the comments gather one by one\nAnd knew exactly what had to be done\n[Pre-Chorus]\nYou said somebody had to care\nI said somebody better prepare\n[Chorus]\nDamn, thank God the city was notified\nBefore another wheelbarrow arrived\nTwo were enough to bring this town to its knees\nConcrete underneath the evergreen trees\nAnd I don't know how we made it through\nThe things those two small wheelbarrows put us through\nBut I'll remember where I was somehow\nWhen we almost lost the whole damn town\n[Verse 2]\nOne said the workers must be lazy men\nAnother swore they'd do it all again\nThen someone asked if they were building a dam\nAnd that's when everything got out of hand\nI wore the angry face just like the rest\nDelivered every word with righteousness\nLike somewhere sirens echoed through the night\nFor two small loads that didn't look quite right\n[Pre-Chorus]\nYou called it rude, you called the city hall\nI wondered if we'd survive at all\n[Chorus]\nDamn, thank God the city was notified\nBefore another wheelbarrow arrived\nTwo were enough to bring this town to its knees\nConcrete underneath the evergreen trees\nAnd I don't know how we made it through\nThe things those two small wheelbarrows put us through\nBut I'll remember where I was somehow\nWhen we almost lost the whole damn town\n[Bridge]\nMaybe someday the grass will grow again\nMaybe time will heal Big Dipper Park, my friend\nMaybe children will return without fear\nAnd tell the story of what happened here\nBut there's one thought that keeps me up at night\nOne possibility I can't leave behind—\nWhat if nobody had made that call?\nWhat if there'd been...\na third one after all?\n[Final Chorus]\nDamn, thank God the city was notified\nWe were one wheelbarrow from the other side\nHold your loved ones close and don't forget\nThe greatest threat this little town has met\nYeah, somehow we all made it through\nThose horrifying wheelbarrows, number one and two\nAnd every August I'll remember how\nWe nearly lost the whole damn town\n[Outro]\nTwo small wheelbarrows beneath the trees\nThoughts and prayers for the community ",
+          "sga 0.8 ",
+          "comment made with suno; created=2026-08-27T05:25:19Z; id=10a1f59b-6572-4fd1-9c7e-d2c161d06622 "
+        ],
+        "TIT2": [
+          "Concrete Under Evergreens "
+        ]
+      }
+    },
+    {
+      "songId": "where-monsters-are",
+      "variantId": "monster-and-maiden",
+      "audio": "/media/songs/2026/08/where-monsters-are/monster-and-maiden.mp3",
+      "sourceTitle": "Where Monsters Are (Monster and Maiden)",
+      "sourceUrl": "https://suno.com/song/7bc7f95c-c813-4af9-bbf3-5ddf893afa85",
+      "clipIds": [
+        "7bc7f95c-c813-4af9-bbf3-5ddf893afa85"
+      ],
+      "styles": [
+        "EDM",
+        "dubstep",
+        "cinematic electronic"
+      ],
+      "tags": {
+        "TIT2": [
+          "Where Monsters Are (Monster and Maiden)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-30T05:04:25Z; id=7bc7f95c-c813-4af9-bbf3-5ddf893afa85 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-30T05:01:38.575879+00:00; id=7bc7f95c-c813-4af9-bbf3-5ddf893afa85 "
+        ]
+      }
+    },
+    {
+      "songId": "where-monsters-are",
+      "variantId": "monster-and-maiden-alt",
+      "audio": "/media/songs/2026/08/where-monsters-are/monster-and-maiden-alt.mp3",
+      "sourceTitle": "Where Monsters Are (Monster & Maiden)",
+      "sourceUrl": "https://suno.com/song/9fc80b65-52ce-4930-b7f2-e61c4402a27b",
+      "clipIds": [
+        "9fc80b65-52ce-4930-b7f2-e61c4402a27b"
+      ],
+      "styles": [
+        "EDM",
+        "dubstep",
+        "cinematic electronic"
+      ],
+      "tags": {
+        "TIT2": [
+          "Where Monsters Are (Monster & Maiden)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-30T05:04:08Z; id=9fc80b65-52ce-4930-b7f2-e61c4402a27b "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-30T05:01:38.575959+00:00; id=9fc80b65-52ce-4930-b7f2-e61c4402a27b "
+        ]
+      }
+    },
+    {
+      "songId": "side-chick-finder",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/side-chick-finder/community-boyfriend.mp3",
+      "sourceTitle": "Side Chick Finder (Community boyfriend 😂)",
+      "sourceUrl": "https://suno.com/song/726faa05-dd67-4cec-bada-1c2122f5dfc4",
+      "clipIds": [
+        "726faa05-dd67-4cec-bada-1c2122f5dfc4"
+      ],
+      "styles": [
+        "G-House",
+        "bass-house"
+      ],
+      "tags": {
+        "TXXX": [
+          "comment made with suno; created=2026-08-01T22:52:00Z; id=726faa05-dd67-4cec-bada-1c2122f5dfc4 "
+        ]
+      }
+    },
+    {
+      "songId": "one-brick",
+      "variantId": "extended-v1",
+      "audio": "/media/songs/2026/08/one-brick/extended-v1.mp3",
+      "sourceTitle": "one brick at a time (EXTENDED v1)",
+      "sourceUrl": "https://suno.com/song/cc05d0be-30ec-4372-ab43-d3c47ad32b34",
+      "clipIds": [
+        "cc05d0be-30ec-4372-ab43-d3c47ad32b34"
+      ],
+      "styles": [
+        "EDM",
+        "minimal dubstep",
+        "cinematic electronic (noise",
+        "hypnotic)"
+      ],
+      "tags": {
+        "TIT2": [
+          "one brick at a time (EXTENDED v1)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-07T04:41:28Z; id=cc05d0be-30ec-4372-ab43-d3c47ad32b34 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-07T04:39:31.594353+00:00; id=cc05d0be-30ec-4372-ab43-d3c47ad32b34 "
+        ]
+      }
+    },
+    {
+      "songId": "did-armando-die-after-you-held-his-beer",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3",
+      "sourceTitle": "did Armando die after you held his beer",
+      "sourceUrl": "https://suno.com/song/d1a54d57-8ac5-446b-966e-9023e8e80dd8",
+      "clipIds": [
+        "d1a54d57-8ac5-446b-966e-9023e8e80dd8"
+      ],
+      "styles": [
+        "dubstep",
+        "reggae",
+        "hip-hop"
+      ],
+      "tags": {
+        "TIT2": [
+          "did Armando die after you held his beer"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-08-22T21:49:53Z; id=d1a54d57-8ac5-446b-966e-9023e8e80dd8 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-22T21:49:40.828610+00:00; id=d1a54d57-8ac5-446b-966e-9023e8e80dd8 "
+        ]
+      }
+    },
+    {
+      "songId": "id-pick-you-first",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/id-pick-you-first/audio.mp3",
+      "sourceTitle": "I’d Pick You First (remastered)",
+      "sourceUrl": "https://suno.com/song/6751182b-0a6b-4df6-a232-a47307baa8fe",
+      "clipIds": [
+        "6751182b-0a6b-4df6-a232-a47307baa8fe"
+      ],
+      "styles": [
+        "dubstep",
+        "hybrid dubstep"
+      ],
+      "tags": {
+        "TIT2": [
+          "I’d Pick You First (remastered)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-07-05T13:11:10Z; id=6751182b-0a6b-4df6-a232-a47307baa8fe "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-07-05T13:09:12.677881+00:00; id=6751182b-0a6b-4df6-a232-a47307baa8fe "
+        ]
+      }
+    },
+    {
+      "songId": "find-your-people",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/find-your-people/audio.mp3",
+      "sourceTitle": "Find Your People",
+      "sourceUrl": "https://suno.com/song/0950544a-6723-4169-a6bf-4a17c2e4f8c9",
+      "clipIds": [
+        "0950544a-6723-4169-a6bf-4a17c2e4f8c9"
+      ],
+      "styles": [
+        "hip-hop",
+        "dubstep",
+        "boom-bap"
+      ],
+      "tags": {
+        "TIT2": [
+          "Find Your People"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-08-16T08:01:28Z; id=0950544a-6723-4169-a6bf-4a17c2e4f8c9 "
+        ],
+        "COMM": [
+          "eng From cut from the same fabric\n\nmade with suno; created=2026-08-16T08:01:20.073017+00:00; id=0950544a-6723-4169-a6bf-4a17c2e4f8c9 "
+        ]
+      }
+    },
+    {
+      "songId": "hell-has-people-too",
+      "variantId": "main",
+      "audio": "/media/songs/2026/08/hell-has-people-too/audio.mp3",
+      "sourceTitle": "HELL HAS PEOPLE TOO",
+      "sourceUrl": "https://suno.com/song/faba466b-0832-42e7-9a26-32f4b7e79868",
+      "clipIds": [
+        "faba466b-0832-42e7-9a26-32f4b7e79868"
+      ],
+      "styles": [
+        "hip-hop",
+        "cinematic",
+        "industrial"
+      ],
+      "tags": {
+        "TIT2": [
+          "HELL HAS PEOPLE TOO (Remastered)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-08-16T08:14:22Z; id=faba466b-0832-42e7-9a26-32f4b7e79868 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-16T08:13:46.707810+00:00; id=faba466b-0832-42e7-9a26-32f4b7e79868 "
+        ]
+      }
+    },
+    {
+      "songId": "archive-nuride-away",
+      "variantId": "vocal-fix",
+      "audio": "/media/archive/old-files-new-tools/nuride-away/2026/vocal-fix-cut.mp3",
+      "sourceTitle": "nuRide Away (Vocal Fix Cut)",
+      "sourceUrl": "https://suno.com/song/18031326-39c5-408e-872a-b966c4dc7ce0",
+      "clipIds": [
+        "18031326-39c5-408e-872a-b966c4dc7ce0"
+      ],
+      "styles": [
+        "indie pop rock"
+      ],
+      "tags": {
+        "TIT2": [
+          "nuRide Away (Vocal Fix Cut)"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-08-11T22:21:13Z; id=18031326-39c5-408e-872a-b966c4dc7ce0 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-11T22:20:59.021303+00:00; id=18031326-39c5-408e-872a-b966c4dc7ce0 "
+        ]
+      }
+    },
+    {
+      "songId": "archive-crocodile-shoes",
+      "variantId": "2015-special-2026",
+      "audio": "/media/archive/old-files-new-tools/crocodile-shoes/2026/2015-special-2026-remix.mp3",
+      "sourceTitle": "Crocodile Shoes 2015 special 2026 remix",
+      "sourceUrl": "https://suno.com/song/85f3e900-a334-4a96-8118-8a0d23a8562d",
+      "clipIds": [
+        "85f3e900-a334-4a96-8118-8a0d23a8562d"
+      ],
+      "styles": [
+        "indie pop",
+        "soul"
+      ],
+      "tags": {
+        "TIT2": [
+          "Crocodile Shoes"
+        ],
+        "TXXX": [
+          "sga 0.8 ",
+          "comment made with suno; created=2026-08-08T08:15:48Z; id=85f3e900-a334-4a96-8118-8a0d23a8562d "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-08T08:15:42.273115+00:00; id=85f3e900-a334-4a96-8118-8a0d23a8562d "
+        ]
+      }
+    },
+    {
+      "songId": "everybody-else-less",
+      "variantId": "main",
+      "audio": "/media/collections/sad-music/2026/everybody-else-less/main.mp3",
+      "sourceTitle": "Everybody Else Less",
+      "sourceUrl": "https://suno.com/song/d14e0607-2c6a-4350-bc0c-4faf0eef30d6",
+      "clipIds": [
+        "d14e0607-2c6a-4350-bc0c-4faf0eef30d6"
+      ],
+      "styles": [
+        "alt-pop",
+        "dance-pop",
+        "disco-funk"
+      ],
+      "tags": {
+        "TIT2": [
+          "Everybody Else Less"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-16T00:28:49Z; id=d14e0607-2c6a-4350-bc0c-4faf0eef30d6 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-16T00:26:06.190210+00:00; id=d14e0607-2c6a-4350-bc0c-4faf0eef30d6 "
+        ]
+      }
+    },
+    {
+      "songId": "fractured-face",
+      "variantId": "may-2026-remastered",
+      "audio": "/media/songs/2026/08/fractured-face/may-2026-remastered.mp3",
+      "sourceTitle": "fractured face (May 2026 Remastered)",
+      "sourceUrl": "https://suno.com/song/023927de-c4f4-43a0-b418-7c58bcc49c3d",
+      "clipIds": [
+        "023927de-c4f4-43a0-b418-7c58bcc49c3d"
+      ],
+      "styles": [
+        "Genre/Style Tags:\n#Emo #Alternative #DarkIntrospective #EmotionalExploration #PostRock #AltMetal #Suno #spoken-word #sadcore #love-song #dubstep-techno-rythem #gym-music\n\nMood/Production Notes for Suno:\nDark",
+        "slow-burning alt-rock/emo with cinematic build",
+        "Verse sections minimal and confessional (low vocal",
+        "sparse drums",
+        "ambient guitar)",
+        "Hook explodes into distorted guitars",
+        "big drums",
+        "and layered harmonies"
+      ],
+      "tags": {
+        "TIT2": [
+          "fractured face (May 2026 Remastered)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-24T05:49:47Z; id=023927de-c4f4-43a0-b418-7c58bcc49c3d "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-24T05:48:45.184604+00:00; id=023927de-c4f4-43a0-b418-7c58bcc49c3d "
+        ]
+      }
+    },
+    {
+      "songId": "stomp-clamp",
+      "variantId": "suno-v6-remix",
+      "audio": "/media/collections/sad-music/2026/stomp-clamp/suno-v6-remix.mp3",
+      "sourceTitle": "I Need That Sound — Close Vocal Mix",
+      "sourceUrl": "https://suno.com/song/70eb52d4-113e-4ff7-9116-e0b0ad593824",
+      "clipIds": [
+        "70eb52d4-113e-4ff7-9116-e0b0ad593824"
+      ],
+      "styles": [
+        "raspy soulful blues-rock tenor lead",
+        "bright high-tenor projection",
+        "compact hook-forward arrangement",
+        "swung modern blues groove with punchy live drums",
+        "gritty electric guitar riffs",
+        "warm organ chords",
+        "melodic bass with dramatic dropouts immediately before each chorus",
+        "tight plate reverb on the lead vocal",
+        "quarter-note and dotted-eighth delays on hook endings",
+        "call-and-response vocal echoes",
+        "stacked gang responses in choruses",
+        "dynamic verse restraint into explosive choruses",
+        "loud clean modern mix",
+        "controlled low end",
+        "crisp transient detail"
+      ],
+      "tags": {
+        "TIT2": [
+          "I Need That Sound — Close Vocal Mix"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-09-10T10:09:10Z; id=70eb52d4-113e-4ff7-9116-e0b0ad593824 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-09-10T09:34:25.900136+00:00; id=70eb52d4-113e-4ff7-9116-e0b0ad593824 "
+        ]
+      }
+    },
+    {
+      "songId": "friction-the-what",
+      "variantId": "may-2026-remix",
+      "audio": "/media/collections/sad-music/2026/friction-the-what/may-2026.mp3",
+      "sourceTitle": "friction the what (may 2026 remix)",
+      "sourceUrl": "https://suno.com/song/5172d8f8-e641-4001-8655-cba27650a1f0",
+      "clipIds": [
+        "5172d8f8-e641-4001-8655-cba27650a1f0"
+      ],
+      "styles": [
+        "lo-fi techno",
+        "underground techno",
+        "acid-tinged electronic",
+        "4-on-the-floor"
+      ],
+      "tags": {
+        "TIT2": [
+          "friction the what (may 2026 remix)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-10T04:52:25Z; id=5172d8f8-e641-4001-8655-cba27650a1f0 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-10T04:49:43.834426+00:00; id=5172d8f8-e641-4001-8655-cba27650a1f0 "
+        ]
+      }
+    },
+    {
+      "songId": "i-need-love",
+      "variantId": "busker-mix-1",
+      "audio": "/media/collections/sad-music/2026/i-need-love/busker-mix-1.mp3",
+      "sourceTitle": "I need love (Busker Mix 1)",
+      "sourceUrl": "https://suno.com/song/12c29bdc-c2f0-4c97-a5d4-8d9d7775b7f1",
+      "clipIds": [
+        "12c29bdc-c2f0-4c97-a5d4-8d9d7775b7f1"
+      ],
+      "styles": [
+        "techno",
+        "busking",
+        "lo-fi"
+      ],
+      "tags": {
+        "TIT2": [
+          "I need love (Busker Mix 1)"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-08-24T11:24:02Z; id=12c29bdc-c2f0-4c97-a5d4-8d9d7775b7f1 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-24T11:23:42.980025+00:00; id=12c29bdc-c2f0-4c97-a5d4-8d9d7775b7f1 "
+        ]
+      }
+    },
+    {
+      "songId": "i-need-love",
+      "variantId": "busker-mix-2",
+      "audio": "/media/collections/sad-music/2026/i-need-love/busker-mix-2.mp3",
+      "sourceTitle": "I need love (busker Mix 2)",
+      "sourceUrl": "https://suno.com/song/d659e76b-36a3-4969-9844-4a011b56fe91",
+      "clipIds": [
+        "d659e76b-36a3-4969-9844-4a011b56fe91"
+      ],
+      "styles": [
+        "techno",
+        "busking",
+        "lo-fi"
+      ],
+      "tags": {
+        "TIT2": [
+          "I need love (busker Mix 2)"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-08-24T11:24:01Z; id=d659e76b-36a3-4969-9844-4a011b56fe91 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-24T11:23:42.979943+00:00; id=d659e76b-36a3-4969-9844-4a011b56fe91 "
+        ]
+      }
+    },
+    {
+      "songId": "numbness-as-a-trap",
+      "variantId": "may-2026-remix",
+      "audio": "/media/collections/sad-music/2026/numbness-as-a-trap/may-2026.mp3",
+      "sourceTitle": "numbness as a trap (may 2026 remix)",
+      "sourceUrl": "https://suno.com/song/a8832924-3bec-41f5-8e69-d8bd06f051e9",
+      "clipIds": [
+        "a8832924-3bec-41f5-8e69-d8bd06f051e9"
+      ],
+      "styles": [
+        "lo-fi underground techno",
+        "hypnotic acid-leaning bass",
+        "cassette-warm ambient techno"
+      ],
+      "tags": {
+        "TIT2": [
+          "numbness as a trap (may 2026 remix)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-11T10:31:31Z; id=a8832924-3bec-41f5-8e69-d8bd06f051e9 "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-11T10:28:36.925079+00:00; id=a8832924-3bec-41f5-8e69-d8bd06f051e9 "
+        ]
+      }
+    },
+    {
+      "songId": "numbness-as-a-trap",
+      "variantId": "barbershop-wobble-edit",
+      "audio": "/media/collections/sad-music/2026/numbness-as-a-trap/barbershop-wobble.mp3",
+      "sourceTitle": "numbness as a trap (barbershop wobble edit)",
+      "sourceUrl": "https://suno.com/song/fc4b77ad-ad85-41c3-b3e1-527af67dd3dc",
+      "clipIds": [
+        "fc4b77ad-ad85-41c3-b3e1-527af67dd3dc"
+      ],
+      "styles": [
+        "barbershop",
+        "dubstep",
+        "a cappella"
+      ],
+      "tags": {
+        "TXXX": [
+          "comment made with suno; created=2026-08-02T08:38:38Z; id=fc4b77ad-ad85-41c3-b3e1-527af67dd3dc ",
+          "sga 0.8 "
+        ]
+      }
+    },
+    {
+      "songId": "will-to-live",
+      "variantId": "2026",
+      "audio": "/media/collections/sad-music/2026/will-to-live/2026.mp3",
+      "sourceTitle": "Will to Live (2026)",
+      "sourceUrl": "https://suno.com/song/8d955bf7-9d9d-4cd6-8949-8c131e7af59c",
+      "clipIds": [
+        "8d955bf7-9d9d-4cd6-8949-8c131e7af59c"
+      ],
+      "styles": [
+        "dubstep",
+        "atmospheric trance",
+        "psychedelic glitch"
+      ],
+      "tags": {
+        "TIT2": [
+          "Will to Live (2026)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-18T10:48:18Z; id=8d955bf7-9d9d-4cd6-8949-8c131e7af59c "
+        ],
+        "COMM": [
+          "eng in honour of mens mental health \n\nmade with suno; created=2026-06-18T10:45:39.008132+00:00; id=8d955bf7-9d9d-4cd6-8949-8c131e7af59c "
+        ]
+      }
+    },
+    {
+      "songId": "will-to-live",
+      "variantId": "too-many-things",
+      "audio": "/media/collections/sad-music/2026/will-to-live/too-many-things.mp3",
+      "sourceTitle": "Will to Live (Too many things I haven't said)",
+      "sourceUrl": "https://suno.com/song/fd654ea8-812a-4711-9b09-05b17198ad3a",
+      "clipIds": [
+        "fd654ea8-812a-4711-9b09-05b17198ad3a"
+      ],
+      "styles": [
+        "glitch hop",
+        "dubstep",
+        "electronic (glitchy/bitcrushed)"
+      ],
+      "tags": {
+        "TIT2": [
+          "Will to Live (Too many things I haven't said)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-18T10:28:01Z; id=fd654ea8-812a-4711-9b09-05b17198ad3a "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-18T10:25:14.442986+00:00; id=fd654ea8-812a-4711-9b09-05b17198ad3a "
+        ]
+      }
+    },
+    {
+      "songId": "will-to-live",
+      "variantId": "namaste-hamster-requiem",
+      "audio": "/media/collections/sad-music/2026/will-to-live/namaste-hamster.mp3",
+      "sourceTitle": "Will to Live (Namaste, Hamster Requiem)",
+      "sourceUrl": "https://suno.com/song/8448028b-2899-4436-9920-4ffe43d4c3ca",
+      "clipIds": [
+        "8448028b-2899-4436-9920-4ffe43d4c3ca"
+      ],
+      "styles": [
+        "psychedelic",
+        "dubstep",
+        "meditation"
+      ],
+      "tags": {
+        "TIT2": [
+          "Will to Live (Namaste, Hamster Requiem)"
+        ],
+        "TXXX": [
+          "sga ﻿0.8 ",
+          "comment ﻿made with suno; created=2026-08-16T02:22:18Z; id=8448028b-2899-4436-9920-4ffe43d4c3ca "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-08-16T02:22:06.825085+00:00; id=8448028b-2899-4436-9920-4ffe43d4c3ca "
+        ]
+      }
+    },
+    {
+      "songId": "will-to-live",
+      "variantId": "more-original-2026",
+      "audio": "/media/collections/sad-music/2026/will-to-live/more-original-2026.mp3",
+      "sourceTitle": "Will to Live (2026)",
+      "sourceUrl": "https://suno.com/song/8d955bf7-9d9d-4cd6-8949-8c131e7af59c",
+      "clipIds": [
+        "8d955bf7-9d9d-4cd6-8949-8c131e7af59c"
+      ],
+      "styles": [
+        "dubstep",
+        "atmospheric trance",
+        "psychedelic glitch"
+      ],
+      "tags": {
+        "TXXX": [
+          "comment made with suno; created=2026-06-18T10:48:18Z; id=8d955bf7-9d9d-4cd6-8949-8c131e7af59c "
+        ]
+      }
+    },
+    {
+      "songId": "pull-me-like-that",
+      "variantId": "may-2026-chopped",
+      "audio": "/media/songs/2026/08/pull-me-like-that/may-2026-chopped.mp3",
+      "sourceTitle": "Pull Me Like That (May 2026 chopped)",
+      "sourceUrl": "https://suno.com/song/f02639c9-a70e-4e9d-960e-e7c12e8907cf",
+      "clipIds": [
+        "f02639c9-a70e-4e9d-960e-e7c12e8907cf"
+      ],
+      "styles": [
+        "glitch dubstep",
+        "dubstep",
+        "glitchy electronic",
+        "late-night club/bass music"
+      ],
+      "tags": {
+        "TIT2": [
+          "Pull Me Like That (May 2026 chopped)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-05-24T00:16:42Z; id=f02639c9-a70e-4e9d-960e-e7c12e8907cf "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-05-24T00:13:49.555871+00:00; id=f02639c9-a70e-4e9d-960e-e7c12e8907cf "
+        ]
+      }
+    },
+    {
+      "songId": "locked-in-these-walls",
+      "variantId": "remastered",
+      "audio": "/media/collections/sad-music/2025/locked-in-these-walls/original.mp3",
+      "sourceTitle": "Locked in these walls, under watchful ey (Remastered)",
+      "sourceUrl": "https://suno.com/song/c7f136fa-6e56-4484-9cc5-aaf7ec34873a",
+      "clipIds": [
+        "c7f136fa-6e56-4484-9cc5-aaf7ec34873a"
+      ],
+      "styles": [
+        "power pop",
+        "porn groove"
+      ],
+      "tags": {
+        "TIT2": [
+          "Locked in these walls, under watchful ey (Remastered)"
+        ],
+        "COMM": [
+          "eng salmon dinners got that flow so fine\n\nmade with suno; created=2025-08-26T09:40:27.305541+00:00; id=c7f136fa-6e56-4484-9cc5-aaf7ec34873a "
+        ]
+      }
+    },
+    {
+      "songId": "seven-days-locked",
+      "variantId": "where-the-lights-fade",
+      "audio": "/media/collections/sad-music/2025/seven-days-locked/main.mp3",
+      "sourceTitle": "seven days locked where the lights fade (vicious with myself)",
+      "sourceUrl": "https://suno.com/song/3a9418e6-b884-413e-9135-d904e8bfde29",
+      "clipIds": [
+        "3a9418e6-b884-413e-9135-d904e8bfde29"
+      ],
+      "styles": [
+        "[Genre: Alternative Rock]"
+      ],
+      "tags": {
+        "TIT2": [
+          "seven days locked where the lights fade (vicious with myself)"
+        ],
+        "COMM": [
+          "eng made with suno; created=2025-08-26T05:24:01.917536+00:00; id=3a9418e6-b884-413e-9135-d904e8bfde29 "
+        ]
+      },
+      "additionalSource": "data/song-lyrics.js"
+    },
+    {
+      "songId": "seven-days-locked",
+      "variantId": "vicious-with-myself",
+      "audio": "/media/collections/sad-music/2025/seven-days-locked/vicious.mp3",
+      "sourceTitle": "seven days locked (vicious with myself)",
+      "sourceUrl": "https://suno.com/song/509147ff-abdc-445c-a475-6548fa10cde3",
+      "clipIds": [
+        "509147ff-abdc-445c-a475-6548fa10cde3"
+      ],
+      "styles": [
+        "power pop",
+        "steady grunge",
+        "dubstep",
+        "bone chilling"
+      ],
+      "tags": {
+        "TIT2": [
+          "seven days locked (vicious with myself)"
+        ],
+        "COMM": [
+          "eng made with suno; created=2025-08-26T05:45:20.810689+00:00; id=509147ff-abdc-445c-a475-6548fa10cde3 "
+        ]
+      }
+    },
+    {
+      "songId": "september-26th-heartbreak",
+      "variantId": "2026-remix",
+      "audio": "/media/archive/2019-heartbreak-rehearsals/september-26th-heartbreak-2026-remix.mp3",
+      "sourceTitle": "2019 september 26th Heartbreak (2026 remix)",
+      "sourceUrl": "https://suno.com/song/dff144e6-7de2-4ca0-af21-897de1a4da8d",
+      "clipIds": [
+        "dff144e6-7de2-4ca0-af21-897de1a4da8d"
+      ],
+      "styles": [
+        "EDM",
+        "minimal dubstep",
+        "electronic/dancefloor"
+      ],
+      "tags": {
+        "TIT2": [
+          "2019 september 26th Heartbreak (2026 remix)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-14T05:05:52Z; id=dff144e6-7de2-4ca0-af21-897de1a4da8d "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-14T05:02:33.153115+00:00; id=dff144e6-7de2-4ca0-af21-897de1a4da8d "
+        ]
+      }
+    },
+    {
+      "songId": "wild-ways",
+      "variantId": "ai-voice-version",
+      "audio": "/media/archive/wild-ways/2026/ai-voice-version.mp3",
+      "sourceTitle": "wild ways 2019 MusicSubject_Callmedaddy.mp3",
+      "sourceUrl": "https://suno.com/song/4f8860f3-eaf7-4f80-9a9a-5df694ba998c",
+      "clipIds": [
+        "4f8860f3-eaf7-4f80-9a9a-5df694ba998c"
+      ],
+      "styles": [
+        "tropical house",
+        "pop",
+        "male vocals"
+      ],
+      "tags": {
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-13T09:29:45Z; id=4f8860f3-eaf7-4f80-9a9a-5df694ba998c "
+        ]
+      }
+    },
+    {
+      "songId": "wild-ways",
+      "variantId": "crowd-drop-remix",
+      "audio": "/media/archive/wild-ways/2026/crowd-drop-remix.mp3",
+      "sourceTitle": "wild ways 2019 (2026 crowd drop remix)",
+      "sourceUrl": "https://suno.com/song/52883eaa-141a-4b3b-b509-cf07dafd36da",
+      "clipIds": [
+        "52883eaa-141a-4b3b-b509-cf07dafd36da"
+      ],
+      "styles": [
+        "EDM",
+        "minimal dubstep",
+        "breaks"
+      ],
+      "tags": {
+        "TIT2": [
+          "wild ways 2019 (2026 crowd drop remix)"
+        ],
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-13T19:11:02Z; id=52883eaa-141a-4b3b-b509-cf07dafd36da "
+        ],
+        "COMM": [
+          "eng made with suno; created=2026-06-13T19:09:33.619996+00:00; id=52883eaa-141a-4b3b-b509-cf07dafd36da "
+        ]
+      }
+    },
+    {
+      "songId": "heartbreak-you-water-me",
+      "variantId": "2026-remix",
+      "audio": "/media/archive/2019-heartbreak-rehearsals/heartbreak-you-water-me-2026-remix.mp3",
+      "sourceTitle": "Heartbreak, heartbreak, you water me (2019) (2026 remix)",
+      "sourceUrl": "https://suno.com/song/6d39b159-9332-4455-9329-fecf7ca0ec7d",
+      "clipIds": [
+        "6d39b159-9332-4455-9329-fecf7ca0ec7d"
+      ],
+      "styles": [
+        "pop rock",
+        "electronic rock",
+        "male vocals"
+      ],
+      "tags": {
+        "TXXX": [
+          "comment ﻿made with suno; created=2026-06-14T05:28:32Z; id=6d39b159-9332-4455-9329-fecf7ca0ec7d "
+        ]
+      }
+    }
+  ]
+}

@@ -58,53 +58,72 @@ Armando is one song with Chosen version and Armando — Earlier Mix on both site
 | Wild Ways | Encouragement & resolve, Hopeful, Feel good, Love & longing, Vulnerable & open | Acceptance, freedom and the courage to be oneself in connection. |
 | Will to Live | Encouragement & resolve, Hopeful, Vulnerable & open, Emotional, Reflective | The artist’s published description says this was made from a low place to encourage continuing. |
 
-## Genres currently represented
+## Genre families and recording-specific styles
 
-Hip-hop & rap; Trap; R&B & soul; Country; Rock & alternative; Pop; Electronic & EDM; Dubstep; Drum & bass; Gospel; Spoken word & chant; Game soundtrack; Instrumentals; Orchestral; Chamber; Neoclassical.
+The follow-up genre audit matched the clip IDs embedded in the actual MP3 files to their public Suno pages. This classified 45 previously unknown recordings. These are published source styles, not acoustic measurements. Families are searchable together: techno, house, bass house, dubstep, drum & bass and trance also appear under Electronic & EDM; trap and boom bap also appear under Hip-hop & rap. Alternate recordings keep separate classifications.
+
+| Song | Recording | Source styles / classification |
+|---|---|---|
+| Cloudlife | The Life of a Cloud | Psychedelic rock / psychedelic pop / acid rock |
+| Come Sit Here With Me | Full song | Glitch dubstep |
+| Concrete Under Evergreens | Main version | Adult-alternative ballad |
+| Crocodile Shoes | 2015 Special / 2026 Remix | Indie pop / soul |
+| Did Armando Die After You Held His Beer? | Chosen version | Dubstep / reggae / hip-hop |
+| Everybody Else Less | Main Version | Alternative pop / dance-pop / disco-funk |
+| Find Your People | song | Hip-hop / dubstep / boom bap |
+| Fractured Face | May 2026 Remastered | Emo / alternative rock / alternative metal / spoken word / dubstep-techno |
+| Friction the What | May 2026 Remix | Lo-fi / underground techno |
+| Fuck Everybody But You | Wedding cut | Hip-hop |
+| Fuck Everybody But You | Voice-clone cut | Hip-hop |
+| Heartbreak, Heartbreak, You Water Me | 2026 Remix from 2019 Rehearsal | Pop-rock / electronic rock |
+| HELL HAS PEOPLE TOO | song | Hip-hop with cinematic / industrial production |
+| Her Perfume Rides Shotgun | v2 Remastered | Soulful hip-hop / boom bap |
+| I Need Love | Busker Mix 1 | Lo-fi techno / busking |
+| I Need Love | Busker Mix 2 | Lo-fi techno / busking |
+| I Need That Sound | I Need That Sound · Suno V6 Remix | Blues-rock lead and modern blues groove |
+| I’d Pick You First (remastered) | song | Hybrid dubstep |
+| Keep Building Your Future | Full song | Pop-rock |
+| Keep Moving | v2 | Trap / EDM |
+| Live It Right | Remastered | Rap / trap |
+| Locked in These Walls | Remastered | Power pop |
+| Make Me an Animal | Suno v6 | Industrial / alternative rock / blues-rock |
+| Make Me an Animal | Animal · May 2026 Remastered · 2025 song | Alternative rock / dark pop / industrial rock / electronic |
+| Numbness as a Trap | May 2026 Remix | Lo-fi underground / ambient techno |
+| Numbness as a Trap | Barbershop Wobble Edit | Barbershop / dubstep / a cappella |
+| nuRide Away | Vocal Fix Cut | Indie pop-rock |
+| One Brick | One Brick at a Time · Extended v1 | Minimal dubstep / EDM / cinematic electronic |
+| Power Moves Only | Current upload | Dubstep / wobble-bass EDM / industrial-leaning bass music |
+| Pull Me Like That | May 2026 Chopped · 2025 song | Glitch dubstep / electronic bass music |
+| September 26th Heartbreak | 2026 Remix from 2019 Rehearsal | EDM / minimal dubstep |
+| Seven Days Locked | Where the Lights Fade · Vicious With Myself | Alternative rock |
+| Seven Days Locked | Vicious With Myself | Power pop / grunge / dubstep |
+| Side Chick Finder (Community Boyfriend 😂) | song | G-house / bass house |
+| the superstore effect | 140 BPM Switch-Up Remaster | Trap / hip-hop |
+| Thirty Six | Current upload | Minimal dubstep / EDM |
+| What Is My Opponent Threatening Right Now? (Can I Get Mated?) | Can I Get Mated? | Dubstep / cinematic electronic |
+| Where Monsters Are | Monster and Maiden · earlier/original-family candidate | Dubstep / EDM / cinematic electronic |
+| Where Monsters Are | Monster & Maiden · alternate earlier-family file | Dubstep / EDM / cinematic electronic |
+| Wild Ways | AI Voice Version from the 2019 Source | Tropical house / pop |
+| Wild Ways | 2026 Crowd Drop Remix | EDM / minimal dubstep / breaks |
+| Will to Live | 2026 Version | Dubstep / atmospheric trance |
+| Will to Live | Too Many Things I Haven’t Said | Glitch hop / dubstep / electronic |
+| Will to Live | Namaste, Hamster Requiem | Psychedelic dubstep |
+| Will to Live | More Original 2026 Version · base status unknown | Dubstep / atmospheric trance |
 
 ## Genre still unknown
 
-37 songs have 51 versions without an established genre. These remain searchable by title and their supported moods. Other versions of the same song may already have a genre.
+6 songs have 6 versions without enough recording-specific style evidence. These remain available by title and supported moods.
 
 | Song | Versions needing a listening/style review |
 |---|---|
-| Cloudlife | The Life of a Cloud |
-| Come Sit Here With Me | Full song |
-| Concrete Under Evergreens | Main version |
-| Crocodile Shoes | 2015 Special / 2026 Remix; Round the Bend · rough copy |
-| Did Armando Die After You Held His Beer? | Chosen version; Armando — Earlier Mix |
-| Everybody Else Less | Main Version |
-| Find Your People | song |
-| Fractured Face | May 2026 Remastered |
-| Friction the What | May 2026 Remix |
-| Fuck Everybody But You | Wedding cut; Voice-clone cut |
-| Heartbreak, Heartbreak, You Water Me | 2026 Remix from 2019 Rehearsal |
-| HELL HAS PEOPLE TOO | song |
-| Her Perfume Rides Shotgun | v2 Remastered |
-| I Need Love | Busker Mix 1; Busker Mix 2; We Fall in Love Too Quickly · 2024 AI reimagining |
-| I Need That Sound | I Need That Sound · Suno V6 Remix |
-| I’d Pick You First (remastered) | song |
-| Keep Building Your Future | Full song |
-| Keep Moving | v2 |
-| Live It Right | Remastered |
-| Locked in These Walls | Remastered |
-| Make Me an Animal | Suno v6; Animal · May 2026 Remastered · 2025 song |
-| Numbness as a Trap | May 2026 Remix; Barbershop Wobble Edit |
-| nuRide Away | Vocal Fix Cut; Original vocal source · archive |
-| One Brick | One Brick at a Time · Extended v1 |
-| Power Moves Only | Current upload |
-| Pull Me Like That | May 2026 Chopped · 2025 song |
-| September 26th Heartbreak | 2026 Remix from 2019 Rehearsal |
-| Seven Days Locked | Where the Lights Fade · Vicious With Myself; Vicious With Myself |
-| Shooting Star | 2019 cut |
-| Side Chick Finder (Community Boyfriend 😂) | song |
 | The Loudest One in My Head | Remix |
-| the superstore effect | 140 BPM Switch-Up Remaster |
-| Thirty Six | Current upload |
-| What Is My Opponent Threatening Right Now? (Can I Get Mated?) | Can I Get Mated? |
-| Where Monsters Are | Monster and Maiden · earlier/original-family candidate; Monster & Maiden · alternate earlier-family file |
-| Wild Ways | AI Voice Version from the 2019 Source; 2026 Crowd Drop Remix |
-| Will to Live | 2026 Version; Too Many Things I Haven’t Said; Namaste, Hamster Requiem; More Original 2026 Version · base status unknown |
+| Did Armando Die After You Held His Beer? | Armando — Earlier Mix |
+| nuRide Away | Original vocal source · archive |
+| Crocodile Shoes | Round the Bend · rough copy |
+| I Need Love | We Fall in Love Too Quickly · 2024 AI reimagining |
+| Shooting Star | 2019 cut |
+
+Evidence is recorded in `content/sources/library-genres-2026-10-24.json` and `library/recording-genres.mjs`.
 
 ## Lyric mapping checks still needed
 
