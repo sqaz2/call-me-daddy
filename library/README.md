@@ -19,3 +19,17 @@ Validation: `node --test tests/music-library.test.mjs tests/playback-sync.test.j
 plus the existing Site checks. Browser testing covers first-tap playback,
 version/next/previous identity, collection browsing and sharing. A desktop
 browser does not prove physical-phone background playback.
+
+## Room Enough film preview
+
+The published film at https://roomenough.grok.me/ accompanies every locally playable
+recording. Its public MP4 is streamed directly, muted, through film-preview.mjs;
+the shared song audio remains the only playback and Media Session owner. New
+tracks, versions and repeats restart the picture. Pause, buffering, seeking and
+playback speed follow the song, and the film loops for longer recordings. Hiding
+the film pauses only the picture. Video errors leave music playing.
+
+The preview is beside the catalogue and on individual cue pages. The dock's
+Watch film action returns to it. No film audio is added to the catalogue.
+
+Run node --test tests/film-preview.test.mjs with the existing library checks.
