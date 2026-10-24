@@ -21,11 +21,12 @@ export function connectFilmPreview({audio,video,onState=()=>{}}){
       try{video.currentTime=position;}catch{}
     }
   }
-  function stop(next='paused'){
+  function stop(next=failed?'unavailable':'paused'){
     generation++;pending=false;video.pause();report(next);
   }
   function resume(){
-    if(!shouldPlay()||failed)return;
+    if(failed){report('unavailable');return;}
+    if(!shouldPlay())return;
     silence();
     if(!video.getAttribute('src'))video.src=ROOM_ENOUGH_VIDEO;
     align();
