@@ -1,3 +1,4 @@
+import {deliveryFacts,requestedDeliverables} from './delivery.mjs';
 import {GENRE_FAMILIES} from './genres.mjs';
 import {canonicalLibraryTrackKey} from './identities.mjs';
 import {EDITORIAL,MOOD_IDS} from './editorial.mjs';
@@ -73,9 +74,10 @@ export function resolveShortlist(keys,catalog){
 }
 export function shortlistCSV(tracks,makeURL){
  const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
- return [['Title','Artist','Version','Seconds','Genres','Moods / collections','Scene suggestions','Vocals','Text flags','Production notes','BPM estimate','Tempo status','Key estimate','Key status','Integrated LUFS','Loudness range LU','Clearance','Exact recording URL'],...tracks.map(t=>[t.title,t.artist,t.variantLabel,t.facts?.seconds||'',t.genres?.join('; ')||'Unverified',t.groups.join('; '),t.scenes?.join('; ')||'',t.vocals,t.flags?.join('; ')||'Not fully reviewed',t.provenance,t.analysis?.bpmRange||'',t.analysis?.tempoStatus||'',t.analysis?.keyEstimate||'',t.analysis?.keyStatus||'',t.analysis?.integratedLufs??'',t.analysis?.loudnessRangeLu??'','Confirm master and publishing rights',makeURL(t)])].map(row=>row.map(cell).join(',')).join('\r\n');
+ return [['Title','Artist','Version','Seconds','Genres','Moods / collections','Scene suggestions','Vocals','Text flags','Production notes','BPM estimate','Tempo status','Key estimate','Key status','Integrated LUFS','Loudness range LU','Listening file','Clean edit','Instrumental availability','Original WAV master','Stems / multitracks','Clearance','Exact recording URL'],...tracks.map(t=>[t.title,t.artist,t.variantLabel,t.facts?.seconds||'',t.genres?.join('; ')||'Unverified',t.groups.join('; '),t.scenes?.join('; ')||'',t.vocals,t.flags?.join('; ')||'Not fully reviewed',t.provenance,t.analysis?.bpmRange??t.analysis?.bpmEstimate??'',t.analysis?.tempoStatus||'',t.analysis?.keyEstimate||'',t.analysis?.keyStatus||'',t.analysis?.integratedLufs??'',t.analysis?.loudnessRangeLu??'',...deliveryFacts(t).map(([,value])=>value),'Confirm master and publishing rights',makeURL(t)])].map(row=>row.map(cell).join(',')).join('\r\n');
 }
 
-export function inquiryText(tracks,brief,makeURL){
- return `Hello William,\n\nI’m looking for music for a project.\n\n${brief.trim()||'Scene / story:\nProduction and intended use:\nTerritories and licence term:\nBudget range:\nDeadline:'}\n\n${tracks.length?'Recordings I’m interested in:\n'+tracks.map(t=>`${t.title} — ${t.variantLabel}\n${makeURL(t)}`).join('\n\n'):'I’d appreciate suggestions for the brief above.'}\n\nCould you confirm availability, pricing, master and publishing clearance, and which edits or delivery files are available for this use?`;
+export function inquiryText(tracks,brief,makeURL,requested=[]){
+ const needs=requestedDeliverables(requested);
+ return `Hello William,\n\nI’m looking for music for a project.\n\n${brief.trim()||'Scene / story:\nProduction and intended use:\nTerritories and licence term:\nBudget range:\nDeadline:'}\n\n${tracks.length?'Recordings I’m interested in:\n'+tracks.map(t=>`${t.title} — ${t.variantLabel}\n${makeURL(t)}`).join('\n\n'):'I’d appreciate suggestions for the brief above.'}\n\n${needs.length?'Requested delivery options (please confirm availability):\n'+needs.map(x=>'• '+x).join('\n')+'\n\n':''}Could you confirm availability, pricing, master and publishing clearance, and which edits or delivery files are available for this use?`;
 }

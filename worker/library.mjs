@@ -23,7 +23,7 @@ export function librarySocial(url,index){
   else if(extra)record={...record,title:`I Need Love — ${extra.label} · MusicSubject Library`,description:`An existing archive version, available on ${extra.platform}.`,type:'music.song'};
   else if(id){const selected=resolveSocial(new URL('/?'+url.searchParams,LIBRARY_ORIGIN),index);if(selected){const image=new URL(selected.image);if(image.hostname==='callmedaddy.musicsubject.com')image.hostname=HOST;record={...selected,title:`${selected.title} · MusicSubject Library`,description:`${selected.title}. Open this recording in MusicSubject Library.`,image:image.href};}}
   if(LIBRARY_IDENTITIES[id]&&(!version||version==='main'))record={...record,title:`${LIBRARY_IDENTITIES[id].title} — MusicSubject Library`,description:LIBRARY_IDENTITIES[id].description||record.description,type:'music.song'};
-  const filters=Object.fromEntries(['mood','genre','scene','vocals','length','sort'].map(key=>[key,url.searchParams.get(key)||'']));
+  const filters=Object.fromEntries(['mood','genre','scene','vocals','length','tempo','key','sort'].map(key=>[key,url.searchParams.get(key)||'']));
   const picks=url.searchParams.getAll('pick');
   if(picks.length&&!id)record={...record,title:'Shortlist — MusicSubject Library',description:'A shared selection of exact recordings. Audition the versions and discuss your project.'};
   else if(!id&&(Object.values(filters).some(Boolean)||url.searchParams.has('q')))record={...record,title:'Music for your scene — MusicSubject Library',description:'Browse this music search by mood, genre and scene. Audition exact versions and build a shortlist.'};

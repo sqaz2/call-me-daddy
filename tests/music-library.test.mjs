@@ -131,7 +131,7 @@ test('cue versions keep exact previews and uncertainty through details and short
  const {LIBRARY_RELEASES}=await import('../library/releases.mjs');const {analysisSummary,analysisFacts}=await import('../library/analysis.mjs');
  const {buildLibraryCatalog}=await import('../library/catalog.mjs');const {shortlistCSV}=await import('../library/discovery.mjs');
  const catalog=buildLibraryCatalog([],[]),theme=catalog.find(s=>s.id==='five-note-theme');
- const original=theme.tracks.find(t=>t.variantId==='main');assert.equal(original.audio,'/media/songs/2026/10/five-note-theme/audio.mp3');assert.equal(analysisSummary(original),'');
+ const original=theme.tracks.find(t=>t.variantId==='main');assert.equal(original.audio,'/media/songs/2026/10/five-note-theme/audio.mp3');assert.ok(original.analysis?.sourceSha256);assert.ok(analysisSummary(original));assert.notEqual(original.analysis,theme.tracks.find(t=>t.variantId==='v6-1').analysis);
  const low=theme.tracks.find(t=>t.variantId==='v6-1');assert.match(analysisSummary(low),/low confidence/);assert.match(analysisSummary(low),/G major/);
  const provisional=theme.tracks.find(t=>t.variantId==='v6-wild-2');assert.match(analysisSummary(provisional),/C minor \(provisional\)/);
  const uncertain=catalog.find(s=>s.id==='five-notes-to-break-yo').tracks[0];assert.equal(uncertain.analysis.keyEstimate,null);assert.match(analysisSummary(uncertain),/Key uncertain/);assert.ok(analysisFacts(uncertain).some(([label,value])=>label==='Analysis basis'&&/No listening verification/.test(value)));

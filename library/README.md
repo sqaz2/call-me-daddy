@@ -70,3 +70,43 @@ notes. See `catalogue-review.md` for the current evidence.
 For fast screening, existing recording-specific tempo/key estimates appear on
 song rows with their uncertainty labels. The film panel scrolls with the page
 so it cannot cover song controls; Watch film still returns to the preview.
+
+## Recording analysis and delivery requests
+
+As of 24 October 2026, all 184 playable recordings have analysis: 181 numeric
+tempo estimates, 182 key estimates (55 provisional), three uncertain tempos
+and two uncertain keys. Three external-only versions remain unanalysed.
+Twelve recordings are explicitly identified as instrumental.
+
+`recording-analysis.mjs` supplies automated tempo/key estimates and measured
+file facts by exact audio path. The ten existing cue analyses take precedence;
+no sibling recording inherits another version's result. Tempo and key filters
+include confidence/unknown choices, persist in shared URLs, and apply to the
+same version as genre/mood/length. Tempo bands use the published primary pulse;
+possible half/double-time alternatives remain in details. These are estimates,
+not a listening review or certified beat grid. Provisional and uncertain keys
+remain labelled on rows and in CSV exports.
+
+Evidence and file SHA-256 values are stored in
+`content/sources/library-audio-analysis-2026-10-24.json`. Reproduce using Python
+with Essentia, librosa, numpy, scipy and ffmpeg/ffprobe installed:
+
+```sh
+node scripts/export-library-analysis-jobs.mjs > /tmp/library-analysis-jobs.json
+python scripts/analyze-library-audio.py --input /tmp/library-analysis-jobs.json --cache /tmp/library-audio-analysis --workers 3
+```
+
+The script analyses the complete recording, compares independent beat/tonal
+methods and checks three local tonal windows. Missing local soundtrack files
+are read from their existing public Library media route and cached outside the
+repository. Reuse of cached results requires the same source-file hash.
+
+`delivery.mjs` describes documented preview files and instrumental metadata.
+There are no verified clean-edit, original WAV or stem delivery packages in the
+published catalogue. This does not establish whether the artist has private
+masters. Mark availability as unconfirmed, and include selected requests in the
+project enquiry; never label an MP3 conversion as an original WAV master.
+
+The artist explicitly deferred the contact-email change on 2026-10-24. Keep the
+current address until they supply or select its replacement. This is a deferred
+configuration task, not a scheduled reminder, and no email is sent by the site.
