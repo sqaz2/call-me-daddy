@@ -62,4 +62,7 @@ the selected recording's row, with native dropdown groups for mobile browsing.
 45 entries were matched through each MP3's embedded Suno clip ID to its public
 style description, recorded in `content/sources/library-genres-2026-10-24.json`.
 Do not copy source styles between sibling recordings or classify genres from
-lyrical moods. Six versions still lack sufficient source evidence.
+lyrical moods. Artist follow-up and a matching Loudest One upload subsequently resolve five
+more broad classifications in `editorial.mjs`. The older 2024 I Need Love stays
+unclassified; nuRide Away’s original and Shooting Star retain explicit working
+classification notes. See `catalogue-review.md` for the current evidence.
