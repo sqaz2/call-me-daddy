@@ -110,20 +110,22 @@ The follow-up genre audit matched the clip IDs embedded in the actual MP3 files 
 | Will to Live | Namaste, Hamster Requiem | Psychedelic dubstep |
 | Will to Live | More Original 2026 Version · base status unknown | Dubstep / atmospheric trance |
 
-## Genre still unknown
+## Artist follow-up and remaining review — 24 October 2026
 
-6 songs have 6 versions without enough recording-specific style evidence. These remain available by title and supported moods.
+| Song / recording | Classification | Evidence / confidence |
+|---|---|---|
+| The Loudest One in My Head · Remix | Pop; source describes indie pop / acoustic pop | Suno upload titled “The Loudest One in My Head (Remix) - MusicSubject.mp3”, 122 seconds, matches the local remix filename and measured 122.04-second duration. Metadata match, not an embedded clip ID or a fresh listening assessment. A different linked take is psychedelic dubstep; that tag is not copied here. |
+| Armando — Earlier Mix | Dubstep / electronic | Artist confirmed. |
+| Crocodile Shoes · Round the Bend rough copy | Pop | Artist confirmed; existing remix classifications remain specific to each recording. |
+| nuRide Away · Original vocal source | Pop, working classification | Artist tentatively suggested pop; “buried away” interpreted as nuRide Away in the context of the six-item review list. Still open to listening review. |
+| Shooting Star · 2019 cut | Electronic, broad working classification | Artist described electronic / dubstep / house uncertainty. Only the common electronic family is assigned; exact subgenre remains open. |
+| I Need Love · Cinematic Terror Dubstep Score | Dubstep / electronic | Artist confirmation agrees with the existing recording label. Busker and ska-punk versions retain their own styles. |
 
-| Song | Versions needing a listening/style review |
-|---|---|
-| The Loudest One in My Head | Remix |
-| Did Armando Die After You Held His Beer? | Armando — Earlier Mix |
-| nuRide Away | Original vocal source · archive |
-| Crocodile Shoes | Round the Bend · rough copy |
-| I Need Love | We Fall in Love Too Quickly · 2024 AI reimagining |
-| Shooting Star | 2019 cut |
+### Genre still unknown
 
-Evidence is recorded in `content/sources/library-genres-2026-10-24.json` and `library/recording-genres.mjs`.
+**I Need Love · We Fall in Love Too Quickly · 2024 AI reimagining** remains unclassified. It is still searchable by title and supported moods. nuRide Away and Shooting Star have useful broad working labels, but their tentative status is retained in the recording’s Genre source details.
+
+The original 45 source matches are recorded in `content/sources/library-genres-2026-10-24.json` and `library/recording-genres.mjs`. The Loudest One follow-up evidence is in `content/sources/library-loudest-genre-2026-10-24.json`; artist confirmations and working classifications are in `library/editorial.mjs`.
 
 ## Lyric mapping checks still needed
 

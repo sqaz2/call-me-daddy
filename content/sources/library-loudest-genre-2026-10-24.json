@@ -1,0 +1,29 @@
+{
+  "reviewedAt": "2026-10-24",
+  "songId": "the-loudest-one-in-my-head",
+  "variantId": "remix",
+  "audio": "/media/songs/2026/08/the-loudest-one-in-my-head/remix.mp3",
+  "sourceUrl": "https://suno.com/song/27ce02c5-39d7-44c8-a4de-19f295ce85a0",
+  "sourceTitle": "The Loudest One in My Head (Remix) - MusicSubject.mp3",
+  "sourceDurationSeconds": 122,
+  "localMeasuredDurationSeconds": 122.04,
+  "styleLabels": [
+    "indie pop",
+    "acoustic pop",
+    "male vocals"
+  ],
+  "styleDescription": "Indie pop with a clean, modern production style. The arrangement features a bright acoustic guitar strumming syncopated rhythms, a tight electric bass with a rounded tone, and a drum kit with a crisp snare and punchy kick. A clean electric guitar provides melodic counterpoint with occasional palm-muted lines. Male vocals are delivered in a conversational, rhythmic tenor, shifting into a layered, harmonized chorus. The tempo is 105 BPM in the key of G major. The production uses subtle vocal doubling and light plate reverb on the lead vocal. The bridge features a stripped-back arrangement with staccato acoustic guitar before building back into a full-band finale.",
+  "matchMethod": "Uploaded filename and matching duration; not an embedded clip ID or direct audio comparison.",
+  "classification": [
+    "pop"
+  ],
+  "excludedSibling": {
+    "clipId": "1c8f5c26-d791-4ad6-b9d3-f1ea347443b8",
+    "title": "The Loudest One in My Head (slapped w Namaste, Hamster filter)",
+    "styles": [
+      "psychedelic",
+      "dubstep",
+      "meditation"
+    ]
+  }
+}

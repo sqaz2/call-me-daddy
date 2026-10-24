@@ -23,7 +23,7 @@ test('45 newly classified recordings have an exact MP3-to-source match',()=>{
   assert.equal(entry.sourceUrl,'https://suno.com/song/'+entry.clipId);
   assert.ok(entry.genres.every(id=>t.genres.includes(id)));assert.ok(t.genreKnown);assert.ok(t.genreSourceUrl);
  }
- assert.equal(catalog.flatMap(s=>s.tracks).filter(t=>!t.genreKnown).length,6);
+ assert.equal(catalog.flatMap(s=>s.tracks).filter(t=>!t.genreKnown).length,1);
 });
 test('rap, techno, dubstep and house are searchable alongside lyrical moods',()=>{
  for(const [q,id] of [['techno','friction-the-what'],['rap','live-it-right'],['dubstep vulnerable','come-sit-here-with-me'],['winning dubstep','power-moves-only'],['bass house comedy','side-chick-finder'],['boom bap','find-your-people']])assert.ok(filterCatalog(catalog,{q}).some(s=>s.id===id),q);
@@ -43,6 +43,13 @@ test('exact recordings retain different styles, and lyric subjects do not become
  assert.ok(track('numbness-as-a-trap','may-2026-remix').genres.includes('techno'));
  assert.ok(!track('numbness-as-a-trap','may-2026-remix').genres.includes('hiphop'));
  assert.deepEqual(track('this-is-my-story','gospel').genres,['gospel']);
- assert.ok(!track('did-armando-die-after-you-held-his-beer','earlier').genreKnown);
+ assert.deepEqual(track('did-armando-die-after-you-held-his-beer','earlier').genres,['dubstep','edm']);
+ assert.deepEqual(track('archive-crocodile-shoes','rough-copy').genres,['pop']);
+ assert.deepEqual(track('shooting-star','2019-cut').genres,['edm']);
+ assert.deepEqual(track('the-loudest-one-in-my-head','remix').genres,['pop']);
+ assert.ok(!track('i-need-love','2024-reimagined').genreKnown);
+ assert.ok(track('i-need-love','dubstep-cinematic-terror').genres.includes('dubstep'));
+ assert.ok(!track('i-need-love','busker-mix-1').genres.includes('dubstep'));
+ assert.match(track('archive-nuride-away','source-vocals').genreSource,/tentative/);
  const sample=buildCatalog([{id:'title-test',title:'Techno House Trap',audio:'/not-real.mp3',kind:'song'}]);assert.equal(sample[0].tracks[0].genreKnown,false);
 });

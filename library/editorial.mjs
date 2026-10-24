@@ -194,7 +194,15 @@ export const EDITORIAL = {
     ],
     "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
     "replaceMoods": true,
-    "note": "Rejection and silence trigger a spiral of interpretation. The ending questions that inner voice, offering a tentative opening toward hope rather than triumph."
+    "note": "Rejection and silence trigger a spiral of interpretation. The ending questions that inner voice, offering a tentative opening toward hope rather than triumph.",
+    "variants": {
+      "remix": {
+        "genres": [
+          "pop"
+        ],
+        "genreSource": "Published Suno upload “The Loudest One in My Head (Remix) - MusicSubject.mp3” is labelled indie pop / acoustic pop. Matched by uploaded filename and 122-second duration to this 122.04-second remix, not by an embedded clip ID: https://suno.com/song/27ce02c5-39d7-44c8-a4de-19f295ce85a0 (24 October 2026). The separate psychedelic dubstep take is not this recording."
+      }
+    }
   },
   "mind-at-war": {
     "moods": [
@@ -219,7 +227,15 @@ export const EDITORIAL = {
     ],
     "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
     "replaceMoods": true,
-    "note": "Longing for fuller reciprocation than the small response received."
+    "note": "Longing for fuller reciprocation than the small response received.",
+    "variants": {
+      "2019-cut": {
+        "genres": [
+          "edm"
+        ],
+        "genreSource": "Working broad electronic classification from the artist’s description (24 October 2026). Dubstep versus house remains undecided; neither subgenre is asserted."
+      }
+    }
   },
   "where-monsters-are": {
     "moods": [
@@ -537,7 +553,15 @@ export const EDITORIAL = {
     ],
     "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
     "replaceMoods": true,
-    "note": "Artist confirms comedy; the laugh and hold-my-beer premise connect the chosen and earlier mixes."
+    "note": "Artist confirms comedy; the laugh and hold-my-beer premise connect the chosen and earlier mixes.",
+    "variants": {
+      "earlier": {
+        "genres": [
+          "dubstep"
+        ],
+        "genreSource": "Artist confirmed Armando — Earlier Mix is dubstep (24 October 2026)."
+      }
+    }
   },
   "level-up": {
     "moods": [
@@ -708,7 +732,15 @@ export const EDITORIAL = {
     ],
     "source": "Artist notes (2026-10-24) and editorial review of the published lyrics / song story; moods describe the writing and intended use, not measured audio features.",
     "replaceMoods": true,
-    "note": "Loneliness and past hurt coexist with wanting to try connection again."
+    "note": "Loneliness and past hurt coexist with wanting to try connection again.",
+    "variants": {
+      "dubstep-cinematic-terror": {
+        "genres": [
+          "dubstep"
+        ],
+        "genreSource": "Artist confirmed the newest I Need Love version is dubstep (24 October 2026), consistent with the published Cinematic Terror Dubstep Score label. Older versions retain their own styles."
+      }
+    }
   },
   "numbness-as-a-trap": {
     "moods": [
@@ -747,6 +779,26 @@ export const EDITORIAL = {
       "sports"
     ],
     "source": "Artist-supplied lyrics in content/releases/2026-10-22-calculated-grind.json: reps, training, progress and discipline."
+  },
+  "archive-crocodile-shoes": {
+    "variants": {
+      "rough-copy": {
+        "genres": [
+          "pop"
+        ],
+        "genreSource": "Artist confirmed the previously unclassified Crocodile Shoes rough copy is pop (24 October 2026). Other remixes keep their own styles."
+      }
+    }
+  },
+  "archive-nuride-away": {
+    "variants": {
+      "source-vocals": {
+        "genres": [
+          "pop"
+        ],
+        "genreSource": "Working broad classification from the artist’s tentative pop description (24 October 2026); interpreted in the review-list context as nuRide Away. Still open to listening review."
+      }
+    }
   }
 };
 
