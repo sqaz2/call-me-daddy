@@ -17,7 +17,7 @@ test('every published catalogue entry and exact audio version is discoverable, a
   for(const v of s.variants?.some(v=>v.audio)?s.variants.filter(v=>v.audio):s.audio?[{id:'main',audio:s.audio}]:[])assert.equal(found.tracks.find(t=>t.variantId===v.id)?.audio,v.audio);
  }
  assert.equal(new Set(tracks.map(trackKey)).size,tracks.length);
- assert.equal(catalog.length,135);assert.equal(tracks.filter(t=>t.audio).length,184);assert.equal(tracks.filter(t=>t.external).length,3);
+ assert.equal(catalog.length,134);assert.equal(tracks.filter(t=>t.audio).length,184);assert.equal(tracks.filter(t=>t.external).length,3);
  assert.ok(!tracks.some(t=>t.audio?.includes('audiobook')||t.songId==='unwritten-skies-ambience'));
  assert.ok(catalog.every(s=>s.groups.some(id=>GROUPS.some(g=>g.id===id&&g.kind==='mood'))));
 });
@@ -73,7 +73,7 @@ test('exact song titles rank before broader mood matches, even when their words 
 
 test('browse moods and dropdowns share one filter; comedy replaces cinematic',()=>{
  const broad=filterCatalog(catalog,{mood:'comedy'});
- assert.equal(broad.length,20);
+ assert.equal(broad.length,19);
  assert.deepEqual(filterCatalog(catalog,{group:'cinematic',mood:'comedy'}).map(s=>s.id),broad.map(s=>s.id));
  assert.deepEqual(filterCatalog(catalog,{group:'comedy'}).map(s=>s.id),broad.map(s=>s.id));
  assert.deepEqual(filterCatalog(catalog,{group:'comedy',genre:'country'}).map(s=>s.id).sort(),['ashes-in-eastwood','big-dick-willy']);
@@ -91,7 +91,7 @@ test('verified external title and existing style metadata are indexed without gu
  const external=catalog.find(s=>s.id==='the-musician-police');assert.equal(external.title,'The Musician Police (feat. Call Me Daddy)');assert.equal(external.tracks[0].externalUrl,'https://www.youtube.com/watch?v=7rI2MtnRsaA');assert.ok(external.tracks[0].genres.includes('dubstep'));assert.ok(!catalog.some(s=>s.id==='youtube-W47ebCMfrBI'));
  assert.match(librarySocial(new URL(shareURL({track:external.tracks[0]})),null).title,/The Musician Police/);
  assert.ok(catalog.find(s=>s.id==='survival-mode').tracks.every(t=>t.genres.includes('hiphop')));
- assert.ok(catalog.find(s=>s.id==='eternal-room').tracks.every(t=>!t.genreKnown));
+ assert.ok(catalog.find(s=>s.id==='eternal-room').tracks.every(t=>t.genres.includes('rock')));
 });
 test('project enquiry carries the exact recording, brief and a useful empty-shortlist path',async()=>{
  const {inquiryText}=await import('../library/discovery.mjs');

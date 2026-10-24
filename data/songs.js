@@ -1121,22 +1121,6 @@ window.CMD_SONGS = [
   },
   // RELEASE-MANIFEST:SONGS:END
   {
-    id: 'armando',
-    title: 'Armando — Earlier Mix',
-    artist: 'MusicSubject × Call Me Daddy',
-    year: 2026,
-    month: 8,
-    date: '2026-08-22',
-    project: 'Armando',
-    description: 'The earlier laugh-driven mix that led to the chosen Armando version.',
-    audio: '/media/songs/2026/08/armando/audio.mp3',
-    cover: '/media/songs/2026/08/armando/cover.png',
-    video: '/media/songs/2026/08/armando/background.mp4',
-    catalogVideo: true,
-    experience: '/power-pulse-uprising/',
-    kind: 'earlier mix'
-  },
-  {
     id: 'id-pick-you-first',
     title: 'I’d Pick You First (remastered)',
     artist: 'MusicSubject',
@@ -1166,7 +1150,12 @@ window.CMD_SONGS = [
     cover: '/media/songs/2026/08/armando/cover.png',
     experience: '/power-pulse-uprising/',
     sunoUrl: 'https://suno.com/s/UGp7Ky1VDub3Munu',
-    kind: 'chosen version'
+    kind: 'comedy · two versions',
+    aliases: ['Armando', 'Armando — Earlier Mix'],
+    variants: [
+      {id:'main',label:'Chosen version',audio:'/media/songs/2026/08/did-armando-die-after-you-held-his-beer/audio.mp3',experience:'/power-pulse-uprising/?version=main'},
+      {id:'earlier',label:'Armando — Earlier Mix',audio:'/media/songs/2026/08/armando/audio.mp3',date:'2026-08-22',video:'/media/songs/2026/08/armando/background.mp4',catalogVideo:true,experience:'/power-pulse-uprising/?version=earlier'}
+    ]
   },
   {
     id: 'level-up',

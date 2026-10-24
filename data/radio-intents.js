@@ -61,7 +61,6 @@ window.CMD_RADIO_CONFIG = {
     }
   },
   profiles: {
-    armando:                         {surprise: 88, laugh: 100, think: 30, 'level-up': 28, heavy: 18, 'old-files': 24},
     'id-pick-you-first':             {surprise: 84, laugh: 96,  think: 52, 'level-up': 58, heavy: 28, 'old-files': 30},
     'did-armando-die-after-you-held-his-beer':
                                      {surprise: 96, laugh: 100, think: 34, 'level-up': 30, heavy: 20, 'old-files': 20},

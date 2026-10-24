@@ -5,7 +5,7 @@ export const LIBRARY_ORIGIN = 'https://library.musicsubject.com';
 export const GROUPS = [
   {id:'all', label:'All music', kind:'collection', description:'Songs, alternate mixes and game soundtracks. Audition a recording, save the exact version and ask about your project.'},
   {id:'film-cues',label:'Film cues',kind:'collection',description:'Orchestral themes, chamber cues and neoclassical scores. Compare alternate takes, check recording details and shortlist the version that fits your scene.'},
-  {id:'motivational', label:'Motivational', kind:'mood', description:'Keep going, build something, and find your next step.'},
+  {id:'motivational', label:'Encouragement & resolve', kind:'mood', description:'Keep going, build something, and find your next step.'},
   {id:'high-energy', label:'High energy', kind:'mood', description:'Big drops, forward motion and music with some muscle.'},
   {id:'feel-good', label:'Feel good', kind:'mood', description:'Connection, possibility and a little room to breathe.'},
   {id:'emotional', label:'Emotional', kind:'mood', description:'Personal stories, reflection, loss and the work of getting through.'},
@@ -16,8 +16,18 @@ export const GROUPS = [
   {id:'romantic',label:'Love & longing',kind:'mood',description:'Connection, romance and heartbreak. Content and tone vary by recording.'},
   {id:'tense',label:'Tense & unsettling',kind:'mood',description:'Suspense, fictional horror and tension cues.'},
   {id:'intense',label:'Intense & defiant',kind:'mood',description:'Primal, confrontational and action-oriented selections.'},
-  {id:'curious',label:'Curious & exploratory',kind:'mood',description:'Exploration cues from the existing StarMuff soundtrack.'},
+  {id:'curious',label:'Curious & exploratory',kind:'mood',description:'Wonder, curiosity and discovery in songs and soundtrack cues.'},
   {id:'relaxed',label:'Relaxed & background',kind:'mood',description:'Existing menu, reading and lounge cues. Audition the recording for your scene.'},
+  {id:'hopeful',label:'Hopeful',kind:'mood',description:'Possibility and a reason to believe, including quiet or tentative hope.'},
+  {id:'vulnerable',label:'Vulnerable & open',kind:'mood',description:'Letting someone see the uncertainty, need or hurt underneath.'},
+  {id:'lonely',label:'Lonely & seeking company',kind:'mood',description:'Isolation, alienation and the wish for companionship.'},
+  {id:'bitter',label:'Bitter & resentful',kind:'mood',description:'Resentment, disappointment and self-critical anger.'},
+  {id:'gentle',label:'Gentle & tender',kind:'mood',description:'Softness, sweetness, affection and care.'},
+  {id:'triumphant',label:'Winning & triumphant',kind:'mood',description:'Victory, progress and a sense of overcoming.'},
+  {id:'playful',label:'Playful',kind:'mood',description:'Mischief, wit and an intentionally light touch.'},
+  {id:'anxious',label:'Anxious & uncertain',kind:'mood',description:'Self-doubt, overthinking and uncertainty.'},
+  {id:'sensual',label:'Sensual & magnetic',kind:'mood',description:'Desire, attraction and charged intimacy.'},
+  {id:'confident',label:'Confident',kind:'mood',description:'Swagger, certainty and self-belief.'},
   {id:'hiphop', label:'Hip-hop & rap', kind:'genre', description:'Rap, trap, chants and freestyle recordings.'},
   {id:'trap',label:'Trap',kind:'genre',description:'Recordings specifically labelled as trap.'},
   {id:'rnb', label:'R&B & soul', kind:'genre', description:'R&B and soul versions, grouped by their recorded style labels.'},
@@ -69,7 +79,7 @@ export function buildCatalog(songs, starMuff=[], context={}) {
       for(const [id,re] of Object.entries(GENRES))if(re.test(evidence))groups.push(id);
       if(song.playlist==='starmuff')groups.push('starmuff','cinematic','soundtrack');
       if(song.libraryOnly&&song.project==='Film cues')groups.push('film-cues');
-      for(const id of EDITORIAL[song.id]?.genres||[])if(GROUPS.some(g=>g.id===id&&g.kind==='genre'))groups.push(id);
+      for(const id of [...(EDITORIAL[song.id]?.genres||[]),...(EDITORIAL[song.id]?.variants?.[v.id]?.genres||[])])if(GROUPS.some(g=>g.id===id&&g.kind==='genre'))groups.push(id);
       const id=v.id||String(i);
       const genres=groups.filter(g=>GROUPS.some(x=>x.id===g&&x.kind==='genre'));
       if(!genres.length)groups.push('unclassified');

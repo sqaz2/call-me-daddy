@@ -9,7 +9,7 @@ Collection links use `?group=country`; exact recordings use
 `?song=SONG_ID&version=VERSION_ID`. Library shares and server-rendered previews
 keep the library hostname. Existing numbered artist links remain unchanged.
 Genres follow individual version labels. Mood groups are editorial selections
-in `model.mjs`. Brief collections stay empty until reviewed.
+in `editorial.mjs`, with the shared vocabulary in `model.mjs`. Brief collections stay empty until reviewed.
 
 StarMuff First Edition uses the existing 50-track playlist and range-aware
 service binding. The library contains existing audio recordings only. It does
@@ -33,3 +33,20 @@ The preview is beside the catalogue and on individual cue pages. The dock's
 Watch film action returns to it. No film audio is added to the catalogue.
 
 Run node --test tests/film-preview.test.mjs with the existing library checks.
+
+## Classification review
+
+`editorial.mjs` records the artist's genre confirmations and reviewed lyrical
+moods, explanations and evidence status. `replaceMoods` replaces older generic
+moods; per-version genre evidence stays on that recording. The same vocabulary
+powers dropdowns, browse buttons and natural-language search. The song-by-song
+review and remaining unknown genres are in [catalogue-review.md](catalogue-review.md).
+
+`lyric-sheets.mjs` preserves exact text from the published Concrete Under
+Evergreens and Live It Right pages. Four conflicting legacy lyric mappings
+remain flagged for review and are excluded from Library lyric search/details.
+
+Armando's chosen and earlier recordings share one catalogue identity. The old
+`armando:main` key migrates to the canonical song's `earlier` variant. Permanent
+numbers 4 and 14 retain their original recordings. Do not allocate a second
+numbered slot for a recording already reached through an identity alias.

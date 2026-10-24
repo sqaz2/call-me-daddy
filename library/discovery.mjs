@@ -1,19 +1,19 @@
 import {canonicalLibraryTrackKey} from './identities.mjs';
-import {EDITORIAL} from './editorial.mjs';
+import {EDITORIAL,MOOD_IDS} from './editorial.mjs';
 import {AUDIO_FACTS} from './audio-facts.mjs';
 
 export const SCENES=[
- {id:'comeback',label:'Comeback & perseverance'}, {id:'connection',label:'Love & connection'},
+ {id:'comeback',label:'Comeback & perseverance'}, {id:'connection',label:'Connection & companionship'},
  {id:'reflection',label:'Loss & reflection'}, {id:'comic',label:'Comic situations'},
  {id:'tension',label:'Suspense & unease'}, {id:'action',label:'Action & competition'},
  {id:'exploration',label:'Wonder & discovery'}, {id:'nightlife',label:'Nightlife & casino'},
  {id:'background',label:'Menus & reading'}
 ];
 export const LICENSING_EMAIL='notacop@moneylaundering.dev'; // Existing public Contact Will address.
-const sceneMoods={motivational:'comeback','feel-good':'connection',romantic:'connection',emotional:'reflection',reflective:'reflection',comedy:'comic',tense:'tension',intense:'action',sports:'action',curious:'exploration',relaxed:'background'};
+const sceneMoods={motivational:'comeback','feel-good':'connection',romantic:'connection',vulnerable:'connection',lonely:'connection',gentle:'connection',triumphant:'comeback',anxious:'tension',bitter:'reflection',emotional:'reflection',reflective:'reflection',comedy:'comic',tense:'tension',intense:'action',sports:'action',curious:'exploration',relaxed:'background'};
 export function enrichTrack(song,variant,groups,{lyrics={}}={}){
- const editorial=EDITORIAL[song.id],moods=[...(editorial?.moods||[]),...(song.discoveryMoods||[])];
- const added=[...groups,...moods],scenes=[];
+ const editorial=EDITORIAL[song.id],version=editorial?.variants?.[variant.id],moods=[...(editorial?.moods||[]),...(version?.moods||[]),...(song.discoveryMoods||[])];
+ const added=[...groups.filter(g=>!editorial?.replaceMoods||!MOOD_IDS.includes(g)),...moods],scenes=[];
  if(song.playlist==='starmuff'){
   const title=song.title.toLowerCase();
   if(/exploration|anomaly|abomoly/.test(title)){added.push('curious');scenes.push('exploration');}
@@ -23,17 +23,17 @@ export function enrichTrack(song,variant,groups,{lyrics={}}={}){
   if(/menu|reading|lounge/.test(title)){added.push('relaxed');scenes.push('background');}
  }
  for(const g of added)if(sceneMoods[g])scenes.push(sceneMoods[g]);
- const text=[variant.label,variant.kind].filter(Boolean).join(' '),songText=lyrics[song.id]?.search||'';
+ const text=[variant.label,variant.kind].filter(Boolean).join(' '),songText=editorial?.lyricsReview?'':lyrics[song.id]?.search||'';
  const instrumental=added.includes('instrumental');
  const vocals=instrumental?'instrumental':/\bspoken\b/i.test(text)||(song.id==='her-story'&&variant.id==='opening')?'spoken':songText||/\b(vocal|chant|rap|song)\b/i.test([text,song.kind,song.description].join(' '))?'vocal':'unknown';
  const flags=[];
  if(/\b(?:fuck\w*|shit\w*|bitch\w*|asshole\w*|dick|cunt\w*)\b/i.test([song.title,text,songText].join(' ')))flags.push('Explicit language in supplied text');
  if(/\bexplicit\b/i.test(song.kind||'')&&!flags.length)flags.push('Explicit release label');
  const provenance=variant.productionNote||(/\b(?:suno|AI|Gemini|voice.clone)\b/i.test([song.kind,song.description,text,song.sunoUrl].filter(Boolean).join(' '))?'AI involvement documented':'Production method not fully documented');
- return {groups:[...new Set(added)],scenes:[...new Set(scenes)],facts:AUDIO_FACTS[variant.audio]||null,vocals,flags,provenance,moodSource:editorial?.source||song.moodSource||(song.playlist==='starmuff'?'Soundtrack cue titles and game use':'Catalogue description'),lyricsAvailable:!!songText};
+ return {groups:[...new Set(added)],scenes:[...new Set(scenes)],facts:AUDIO_FACTS[variant.audio]||null,vocals,flags,provenance,moodSource:editorial?.source||song.moodSource||(song.playlist==='starmuff'?'Soundtrack cue titles and game use':'Catalogue description'),lyricsAvailable:!!songText,lyricsReview:editorial?.lyricsReview||'',moodNote:editorial?.note||'',genreSource:version?.genreSource||editorial?.genreSource||'Published recording style labels'};
 }
-const synonyms={hopeful:'motivational',hope:'motivational',uplifting:'motivational',inspiring:'motivational',inspirational:'motivational',resilience:'motivational',perseverance:'comeback',happy:'feel-good',upbeat:'feel-good',joyful:'feel-good',sad:'emotional',sadness:'emotional',melancholy:'emotional',melancholic:'emotional',heartbreak:'emotional',funny:'comedy',humorous:'comedy',satire:'comedy',humour:'comedy',humor:'comedy',love:'romantic',longing:'romantic',romance:'romantic',friendship:'connection',friends:'connection',suspense:'tense',suspenseful:'tense',scary:'tense',horror:'tense',aggressive:'intense',defiant:'intense',space:'exploration',adventure:'exploration',wonder:'exploration',discovery:'exploration',calm:'relaxed',calming:'relaxed',chill:'relaxed',quiet:'relaxed',electronic:'edm',hiphop:'hiphop',rap:'hiphop',soul:'rnb',rnb:'rnb',drumandbass:'dnb',drumnbass:'dnb',sports:'sports',instrumentals:'instrumental',instrumental:'instrumental',vocals:'vocal',lyrics:'vocal'};
-const concepts=new Set(['orchestral','chamber','neoclassical','trap','gospel','spoken','soundtrack',...Object.values(synonyms),'country','dubstep','rock','pop','cinematic','reflective','curious','motivational','high-energy','feel-good','emotional','comedy','sports','intense','romantic','tense','relaxed',...SCENES.map(s=>s.id)]);
+const synonyms={hopeful:'hopeful',hope:'hopeful',encouragement:'motivational',encouraging:'motivational',encourage:'motivational',winning:'triumphant',victory:'triumphant',win:'triumphant',vulnerability:'vulnerable',companionship:'connection',company:'connection',tender:'gentle',sweet:'gentle',soft:'gentle',resentment:'bitter',resentful:'bitter',loneliness:'lonely',isolation:'lonely',anxiety:'anxious',uncertain:'anxious',curiosity:'curious',swagger:'confident',gangster:'hiphop',gangsta:'hiphop',uplifting:'motivational',inspiring:'motivational',inspirational:'motivational',resilience:'motivational',perseverance:'comeback',happy:'feel-good',upbeat:'feel-good',joyful:'feel-good',sad:'emotional',sadness:'emotional',melancholy:'emotional',melancholic:'emotional',heartbreak:'emotional',funny:'comedy',humorous:'comedy',satire:'comedy',humour:'comedy',humor:'comedy',love:'romantic',longing:'romantic',romance:'romantic',friendship:'connection',friends:'connection',suspense:'tense',suspenseful:'tense',scary:'tense',horror:'tense',aggressive:'intense',defiant:'intense',space:'exploration',adventure:'exploration',wonder:'exploration',discovery:'exploration',calm:'relaxed',calming:'relaxed',chill:'relaxed',quiet:'relaxed',electronic:'edm',hiphop:'hiphop',rap:'hiphop',soul:'rnb',rnb:'rnb',drumandbass:'dnb',drumnbass:'dnb',sports:'sports',instrumentals:'instrumental',instrumental:'instrumental',vocals:'vocal',lyrics:'vocal'};
+const concepts=new Set([...MOOD_IDS,'orchestral','chamber','neoclassical','trap','gospel','spoken','soundtrack',...Object.values(synonyms),'country','dubstep','rock','pop','cinematic','reflective','curious','motivational','high-energy','feel-good','emotional','comedy','sports','intense','romantic','tense','relaxed',...SCENES.map(s=>s.id)]);
 const stop=new Set('i we need want looking find music song songs track tracks recording recordings for a an the and or with that is feels feeling something me to of in by on some please scene film video tv movie but'.split(' '));
 const normalize=s=>String(s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/drum\s*(?:&|and|n)\s*bass/g,'drumandbass').replace(/hip[ -]hop/g,'hiphop').replace(/r\s*&\s*b/g,'rnb').replace(/feel[ -]good/g,'feel-good').replace(/high[ -]energy/g,'high-energy');
 const titleKey=s=>normalize(s).replace(/[’'‘]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
@@ -48,7 +48,7 @@ export function parseBrief(q=''){
 }
 export function matchBrief(song,track,brief){
  const tags=new Set([...track.groups,...(track.scenes||[]),track.vocals]);
- const text=normalize([song.title,track.variantLabel,song.artist,song.project,...(track.aliases||[]),song.description,...(song.aliases||[]),song.searchLyrics||''].join(' '));
+ const text=normalize([song.title,track.variantLabel,song.artist,song.project,...(track.aliases||[]),song.description,...(song.aliases||[]),track.lyricsReview?'':song.searchLyrics||''].join(' '));
  const words=new Set(text.match(/[a-z0-9]+(?:-[a-z0-9]+)*/g)||[]);
  const has=t=>concepts.has(t)?tags.has(t):words.has(t);
  const titles=[song.title,...(song.aliases||[]),song.id?.replace(/-/g,' ')].filter(Boolean).map(titleKey);
@@ -63,7 +63,7 @@ export function matchBrief(song,track,brief){
  return {score:brief.terms.length?Math.round(100*matched.length/brief.terms.length):null,matched,missing};
 }
 export function detailCoverage(track){
- const checks=[['Title & artist',!!track.title&&!!track.artist],['Mood / scene tags',track.groups.some(g=>['motivational','high-energy','feel-good','emotional','cinematic','comedy','sports','reflective','romantic','tense','intense','curious','relaxed'].includes(g))],['Genre',!!track.genreKnown],['Measured duration',!!track.facts?.seconds],['Vocal information',track.vocals!=='unknown'],['Lyrics / instrumental identification',track.lyricsAvailable||track.vocals==='instrumental'],['Master & publishing clearance',false],['Delivery files / stems confirmed',false]];
+ const checks=[['Title & artist',!!track.title&&!!track.artist],['Mood / scene tags',track.groups.some(g=>MOOD_IDS.includes(g))],['Genre',!!track.genreKnown],['Measured duration',!!track.facts?.seconds],['Vocal information',track.vocals!=='unknown'],['Lyrics / instrumental identification',track.lyricsAvailable||track.vocals==='instrumental'],['Master & publishing clearance',false],['Delivery files / stems confirmed',false]];
  return {available:checks.filter(x=>x[1]).length,total:checks.length,checks};
 }
 export function resolveShortlist(keys,catalog){

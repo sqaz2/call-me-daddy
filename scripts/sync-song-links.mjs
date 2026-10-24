@@ -1,3 +1,4 @@
+import {canonicalRecording,SONG_REDIRECTS} from '../data/song-identities.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -63,7 +64,7 @@ export function allocate(catalog, previous = { schemaVersion: 1, songs: [] }) {
   for (const song of ordered) {
     let row = registry.songs.find(item => item.songId === song.id);
     if (!row) { row = { number: next++, songId: song.id, versions: [] }; registry.songs.push(row); }
-    for (const version of variants(song)) if (!row.versions.includes(version.id)) row.versions.push(version.id);
+    for (const version of variants(song)) if (!row.versions.includes(version.id) && !registry.songs.some(saved=>saved.versions.some(id=>{const old=canonicalRecording(saved.songId,id);return old.songId===song.id&&old.variantId===version.id;}))) row.versions.push(version.id);
   }
   return registry;
 }
@@ -72,16 +73,17 @@ export function buildLinks(catalog, registry) {
   const copies = loadShareCopy(catalog);
   const rows = [];
   for (const saved of registry.songs) {
-    const song = catalog.find(item => item.id === saved.songId);
+    const song = catalog.find(item => item.id === canonicalRecording(saved.songId).songId);
     if (!song) continue; // Retired numbers stay reserved; they never resolve to another song.
     const available = variants(song);
-    for (const [index, id] of saved.versions.entries()) {
+    for (const [index, savedId] of saved.versions.entries()) {
+      const id=canonicalRecording(saved.songId,savedId).variantId;
       const variant = available.find(item => item.id === id);
       if (!variant) continue;
       const page = song.experience || '';
       const samePageSongs = catalog.filter(item => item.experience && new URL(item.experience, origin).pathname === new URL(page || '/music/', origin).pathname);
       // These existing story players honor the exact version query on first play.
-      const versionAware = ['/this-is-my-story/', '/times-are-coming/', '/nobody-wants-to-listen/', '/archive/2010-wows/', '/the-games-she-hates/', '/make-me-an-animal-v6/', '/set-a-table-for-two/'].includes(new URL(page || '/', origin).pathname);
+      const versionAware = ['/power-pulse-uprising/','/this-is-my-story/', '/times-are-coming/', '/nobody-wants-to-listen/', '/archive/2010-wows/', '/the-games-she-hates/', '/make-me-an-animal-v6/', '/set-a-table-for-two/'].includes(new URL(page || '/', origin).pathname);
       const direct = page && !page.startsWith('/updates/') && (available.length === 1 || song.shareToExperience === true || versionAware) && samePageSongs.length === 1;
       let target = direct ? new URL(page, origin) : new URL('/music/', origin);
       if (direct && available.length > 1) target.searchParams.set('version', id);
@@ -98,7 +100,7 @@ export function buildLinks(catalog, registry) {
         audio: variant.audio || '', aliases, target: target.pathname + target.search + target.hash });
     }
   }
-  const data = { schemaVersion: 1, origin, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', dnb: 'dnb.fyi', other: 'suno.fyi', jokes: 'jokes.win' }, rows };
+  const data = { schemaVersion: 1, origin, redirects: SONG_REDIRECTS, domains: { hiphop: 'hiphop.bid', dubstep: 'dubstep.bid', dnb: 'dnb.fyi', other: 'suno.fyi', jokes: 'jokes.win' }, rows };
   data.revision = createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0, 16);
   return data;
 }

@@ -27,7 +27,7 @@ test('shared playlist tail excludes the local set once, then rebuilds forever',(
 
 test('every finite collection player hands its last local song into endless radio',()=>{
   const players={
-    'power-pulse-uprising/continuous-player.js':['CMDContinuousPlayback.create',"tracks:[chosen,earlier]",'excludeIds:[chosen.id,earlier.id]'],
+    'power-pulse-uprising/continuous-player.js':['CMDContinuousPlayback.create',"tracks:[chosen,earlier]","excludeIds:[chosen.songId,'armando']"],
     'i-wont-let-the-wifi-go/wifi.js':['CMDContinuousPlayback.create','tracks:[self]','excludeIds:[self.id]'],
     'cut-from-the-same-fabric/player.js':['CMDPlaylistRadio?.create',"playbackMode==='radio'",'loadRadio(true)'],
     'old-files-new-tools/player.js':['CMDPlaylistRadio?.create','nextTrack','loadRadio()'],

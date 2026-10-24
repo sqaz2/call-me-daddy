@@ -13,14 +13,17 @@
   };
   function rowForTrack(track) {
     if (!track) return null;
-    const songId = track.songId || String(track.id || '').split(':')[0];
+    const oldId = track.songId || String(track.id || '').split(':')[0];
+    const redirect=Object.hasOwn(data.redirects||{},oldId)?data.redirects[oldId]:null;
+    const songId=redirect?.songId||oldId;
     const audio = track.audio || track.src || track.expectedPath;
     const matches = audio ? data.rows.filter(row => row.audio && pathname(row.audio) === pathname(audio)) : [];
     if (matches.length) return matches.find(row => row.songId === songId) || matches[0];
     // An unrecognized source must never inherit a different recording's short link.
     if (audio) return null;
-    const version = track.variantId || track.version || String(track.id || '').split(':')[1];
-    return data.rows.find(row => row.songId === songId && (version ? row.version === version : row.slot === 1)) || null;
+    const version = redirect?.variantId || track.variantId || track.version || String(track.id || '').split(':')[1];
+    const candidates=data.rows.filter(row=>row.songId===songId);
+    return (version?candidates.find(row=>row.version===version):candidates.find(row=>row.version==='main')||candidates.find(row=>row.slot===1))||null;
   }
   function rowForUrl(value) {
     const url = parse(value);
@@ -34,7 +37,7 @@
     if (songId) return rowForTrack({ songId, variantId: version });
     const candidates = data.rows.filter(row => row.aliases.some(alias => pathname(alias) === pathname(url.href)));
     if (new Set(candidates.map(row => row.songId)).size !== 1) return null;
-    return candidates.find(row => version ? row.version === version : row.slot === 1) || null;
+    return (version?candidates.find(row=>row.version===version):candidates.find(row=>row.version==='main')||candidates.find(row=>row.slot===1))||null;
   }
   const forTrack = track => urlFor(rowForTrack(track));
   const specialRoute = value => { const url = parse(value); return url && (url.searchParams.has('t') || pathname(url.href) === '/winhamp'); };

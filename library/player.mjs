@@ -1,3 +1,4 @@
+import {LIBRARY_LYRICS} from './lyric-sheets.mjs';
 import {connectFilmPreview} from './film-preview.mjs';
 import {canonicalLibrarySongId} from './identities.mjs';
 import {GROUPS,normalizeFilters,filterCatalog,makeQueue,shareURL,trackKey} from './model.mjs';
@@ -9,7 +10,6 @@ import {analysisSummary,analysisFacts} from './analysis.mjs';
 
 const $=id=>document.getElementById(id),songs=window.CMD_SONGS||[];
 const catalog=buildLibraryCatalog(songs,STARMUFF_TRACKS,{lyrics:window.CMD_SONG_LYRICS||{}});
-for(const song of catalog)song.searchLyrics=window.CMD_SONG_LYRICS?.[song.id]?.search||'';
 const allTracks=catalog.flatMap(s=>s.tracks),parameters=new URLSearchParams(location.search);
 let group=GROUPS.some(g=>g.id===parameters.get('group'))?parameters.get('group'):'all';
 let saved=[],preferences={},shortlist=[];
@@ -164,9 +164,10 @@ function shareTrack(track){if(!track)return;const root=shareCopies?.[track.songI
 let detailTrack=null;
 function showDetails(song,track=defaultTrack(song)){detailTrack=track;
   const label=id=>GROUPS.find(g=>g.id===id)?.label||id;const facts=[['Recording',track.variantLabel],['Length',track.facts?format(Math.round(track.facts.seconds)):'Not measured'],['Style',track.genres.map(label).join(', ')||'Not verified'],['Mood',track.groups.filter(id=>GROUPS.some(g=>g.id===id&&g.kind==='mood')).map(label).join(', ')||'To review'],['Scene suggestions',track.scenes.map(id=>SCENES.find(s=>s.id===id)?.label||id).join(', ')||'To review'],['Vocal information',track.vocals],['Text review',track.flags.join('; ')||'Not fully reviewed; not certified clean'],['Production',track.provenance],['Audio preview',track.facts?`${track.facts.format} · ${track.facts.sampleRate/1000} kHz · ${track.facts.channels} channels`:track.external?'External release':'Streamed soundtrack']];
+  if(track.moodNote)facts.push(['Why these moods',track.moodNote]);if(track.genreKnown)facts.push(['Genre source',track.genreSource]);
   facts.push(...analysisFacts(track));if(track.titleNote)facts.push(['Title note',track.titleNote]);
   $('detailFacts').replaceChildren(...facts.flatMap(([name,value])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=name;dd.textContent=value;return [dt,dd];}));const coverage=detailCoverage(track);$('detailCoverage').textContent=`Information supplied: ${coverage.available}/${coverage.total}. Still to confirm: ${coverage.checks.filter(x=>!x[1]).map(x=>x[0]).join(', ')}. This measures available information, not musical quality.`;
-  $('detailShortlist').textContent=shortlist.includes(trackKey(track))?'Remove this version from shortlist':'Add this version to shortlist';$('detailTitle').textContent=song.title;$('detailArtist').textContent=song.artist||'MusicSubject';$('detailDescription').textContent=song.description||'No additional notes for this recording yet.';$('detailLyrics').textContent=window.CMDSongLyrics?.lyrics(song.id)||'Lyrics are not available for this recording.';$('details').showModal();}
+  $('detailShortlist').textContent=shortlist.includes(trackKey(track))?'Remove this version from shortlist':'Add this version to shortlist';$('detailTitle').textContent=song.title;$('detailArtist').textContent=song.artist||'MusicSubject';$('detailDescription').textContent=song.description||'No additional notes for this recording yet.';$('detailLyrics').textContent=track.lyricsReview?'Lyrics are being checked against this recording.':LIBRARY_LYRICS[song.id]?.lyrics||window.CMDSongLyrics?.lyrics(song.id)||'Lyrics are not available for this recording.';$('details').showModal();}
 $('closeDetails').onclick=()=>$('details').close();$('closeShare').onclick=()=>$('shareFallback').close();
 $('copyFallback').onclick=async()=>{try{await navigator.clipboard.writeText($('shareAddress').value);$('shareFallback').close();notify('Link copied.');}catch{$('shareAddress').select();notify('Select and copy the link in the box.');}};
 $('searchForm').onsubmit=e=>{e.preventDefault();render();$('catalogue').scrollIntoView({behavior:'smooth',block:'start'});};$('search').oninput=()=>{limit=20;history.replaceState({},'',locationURL());render();};$('clearSearch').onclick=()=>{$('search').value='';history.replaceState({},'',locationURL());render();$('search').focus();};
