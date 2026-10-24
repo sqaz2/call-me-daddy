@@ -1,3 +1,5 @@
+import {RECORDING_ANALYSIS} from './recording-analysis.mjs';
+import {matchesAnalysis} from './analysis.mjs';
 import {expandGenreFamilies} from './genres.mjs';
 import {RECORDING_GENRES} from './recording-genres.mjs';
 import {canonicalLibraryURL} from './identities.mjs';
@@ -100,7 +102,8 @@ export function buildCatalog(songs, starMuff=[], context={}) {
       groups.push(...genres);
       if(!genres.length)groups.push('unclassified');
       const profile=enrichTrack(song,v,groups,context);
-      return {...song,...v,audio:v.audio||'',songId:song.id,variantId:id,variantLabel:v.label||'Main version',title:song.title,artist:song.artist||'MusicSubject',cover:song.playlist==='starmuff'?'/library/starmuff-cover':v.cover||song.cover||'/library/mark.svg',...profile,genres,genreSource:recordingGenre?.source||profile.genreSource,genreSourceUrl:recordingGenre?.sourceUrl||'',genreStyles:recordingGenre?.styleSummary||'',genreKnown:genres.length>0,manualOnly:v.external||song.rotation==='opt-in'||(song.openerPolicy?.eligibleVersions&&!song.openerPolicy.eligibleVersions.includes(id)),date:v.date||song.date||`${song.year||2000}-${String(song.month||1).padStart(2,'0')}-01`};
+      const measured=RECORDING_ANALYSIS[v.audio];
+      return {...song,...v,audio:v.audio||'',songId:song.id,variantId:id,variantLabel:v.label||'Main version',title:song.title,artist:song.artist||'MusicSubject',cover:song.playlist==='starmuff'?'/library/starmuff-cover':v.cover||song.cover||'/library/mark.svg',...profile,analysis:v.analysis||measured?.analysis||null,facts:profile.facts||measured?.facts||null,genres,genreSource:recordingGenre?.source||profile.genreSource,genreSourceUrl:recordingGenre?.sourceUrl||'',genreStyles:recordingGenre?.styleSummary||'',genreKnown:genres.length>0,manualOnly:v.external||song.rotation==='opt-in'||(song.openerPolicy?.eligibleVersions&&!song.openerPolicy.eligibleVersions.includes(id)),date:v.date||song.date||`${song.year||2000}-${String(song.month||1).padStart(2,'0')}-01`};
     });
     if(tracks.length)result.push({...song,tracks,groups:[...new Set(tracks.flatMap(t=>t.groups))]});
   }
@@ -116,12 +119,13 @@ export function normalizeFilters(state={}) {
  return result;
 }
 export function filterCatalog(catalog,options={}) {
- const {group='all',q='',savedOnly=false,saved=[],mood='',genre='',scene='',vocals='',length='',sort='relevance',shortlist=null}=normalizeFilters(options);
+ const {group='all',q='',savedOnly=false,saved=[],mood='',genre='',scene='',vocals='',length='',tempo='',key='',sort='relevance',shortlist=null}=normalizeFilters(options);
   const brief=parseBrief(q);
   const found=catalog.flatMap(song=>{
     if(savedOnly&&!saved.includes(song.id))return [];
     const tracks=song.tracks.flatMap(t=>{
       if(group!=='all'&&!t.groups.includes(group)||mood&&!t.groups.includes(mood)||genre&&!t.groups.includes(genre)||scene&&!t.scenes.includes(scene)||vocals&&t.vocals!==vocals||shortlist&&!shortlist.includes(trackKey(t)))return [];
+      if(!matchesAnalysis(t,{tempo,key}))return [];
       const seconds=t.facts?.seconds;
       if(length==='short'&&!(seconds>0&&seconds<=120)||length==='medium'&&!(seconds>120&&seconds<=240)||length==='long'&&!(seconds>240))return [];
       const match=matchBrief(song,t,brief);return match?[{...t,match}]:[];
@@ -131,6 +135,7 @@ export function filterCatalog(catalog,options={}) {
     return [{...song,visibleTracks:tracks,match:tracks[0].match}];
   });
   if(sort==='title')found.sort((a,b)=>a.title.localeCompare(b.title));
+  else if(sort==='tempo')found.sort((a,b)=>(a.visibleTracks[0].analysis?.bpmEstimate??Infinity)-(b.visibleTracks[0].analysis?.bpmEstimate??Infinity));
   else if(sort==='shortest')found.sort((a,b)=>(a.visibleTracks[0].facts?.seconds??Infinity)-(b.visibleTracks[0].facts?.seconds??Infinity));
   else if(q.trim())found.sort((a,b)=>Number(!!b.match.exactTitle)-Number(!!a.match.exactTitle)||Number(!!b.match.titleMatch)-Number(!!a.match.titleMatch)||(b.match.score||0)-(a.match.score||0));
   // Prefer complete matches; show clearly labelled alternatives only when none fit.
@@ -144,11 +149,11 @@ export function makeQueue(songs,first,shuffle=false,random=Math.random) {
   if(shuffle)for(let i=tracks.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[tracks[i],tracks[j]]=[tracks[j],tracks[i]];}
   return [first,...tracks];
 }
-export function shareURL({group='all',q='',track=null,origin=LIBRARY_ORIGIN,mood='',genre='',scene='',vocals='',length='',sort='',picks=[]}={}) {
+export function shareURL({group='all',q='',track=null,origin=LIBRARY_ORIGIN,mood='',genre='',scene='',vocals='',length='',tempo='',key='',sort='',picks=[]}={}) {
   const url=new URL('/',origin);
   if(group!=='all')url.searchParams.set('group',group);
   if(q)url.searchParams.set('q',q);
-  for(const [key,value] of Object.entries({mood,genre,scene,vocals,length,sort}))if(value)url.searchParams.set(key,value);
+  for(const [filter,value] of Object.entries({mood,genre,scene,vocals,length,tempo,key,sort}))if(value)url.searchParams.set(filter,value);
   for(const key of [...new Set(picks)].slice(0,30))url.searchParams.append('pick',key);
   if(track){url.searchParams.set('song',track.songId);url.searchParams.set('version',track.variantId);}
   return canonicalLibraryURL(url).href;

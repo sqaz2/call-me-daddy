@@ -32,7 +32,8 @@ test('genre search follows the exact version and does not mistake a subject for 
 test('combined filters are strict and unknown durations or vocals do not pass',()=>{
  const result=filterCatalog(catalog,{mood:'motivational',genre:'dubstep',length:'medium'});
  assert.ok(result.length);for(const s of result)for(const t of s.visibleTracks){assert.ok(t.groups.includes('motivational')&&t.groups.includes('dubstep'));assert.ok(t.facts.seconds>120&&t.facts.seconds<=240);}
- assert.equal(filterCatalog(catalog,{group:'starmuff',length:'short'}).length,0);
+ const shortSoundtracks=filterCatalog(catalog,{group:'starmuff',length:'short'});assert.ok(shortSoundtracks.length);assert.ok(shortSoundtracks.flatMap(s=>s.visibleTracks).every(t=>t.facts.seconds>0&&t.facts.seconds<=120));
+ const unknown=buildCatalog([{id:'unknown-length',title:'Unknown length',audio:'/fixture-with-no-duration.mp3'}]);assert.equal(filterCatalog(unknown,{length:'short'}).length,0);
  assert.ok(filterCatalog(catalog,{q:'no vocals'}).flatMap(s=>s.visibleTracks).every(t=>t.vocals==='instrumental'));
  assert.ok(filterCatalog(catalog,{q:'hopeful without comedy'}).every(s=>s.visibleTracks.every(t=>!t.groups.includes('comedy'))));
 });
