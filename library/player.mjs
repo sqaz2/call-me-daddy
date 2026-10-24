@@ -1,3 +1,4 @@
+import {connectFilmPreview} from './film-preview.mjs';
 import {canonicalLibrarySongId} from './identities.mjs';
 import {GROUPS,normalizeFilters,filterCatalog,makeQueue,shareURL,trackKey} from './model.mjs';
 import {SCENES,detailCoverage,resolveShortlist,shortlistCSV,inquiryText as buildInquiry,LICENSING_EMAIL} from './discovery.mjs';
@@ -27,6 +28,23 @@ syncBrowseFilters();
 let savedOnly=false,limit=20,visible=[],current=null,controller=null,playbackSongs=[],shuffle=false,repeat='all',noticeUntil=0;
 const chosenVersions=new Map(),audio=document.createElement('audio');
 audio.id='libraryAudio';audio.preload='metadata';audio.hidden=true;document.body.append(audio);
+let filmPhase='paused',filmVisible=true;
+const film=connectFilmPreview({audio,video:$('sceneFilm'),onState:state=>{filmPhase=state;paintFilm();}});
+function paintFilm(){
+  const playing=!audio.paused&&!audio.ended;
+  const retry=filmPhase==='blocked'||filmPhase==='unavailable';
+  $('filmStage').classList.toggle('is-playing',playing&&filmPhase==='playing');
+  $('filmPlay').setAttribute('aria-label',retry?'Retry film without interrupting the song':playing?'Pause recording and film':'Play selected recording with film');
+  $('filmPrompt').textContent=retry?'Tap to retry the film':filmPhase==='loading'?'Loading film…':playing?'Resume film':current?'Play recording with film':'Choose a song, or tap to play';
+  $('filmStatus').textContent=filmPhase==='unavailable'?'Film unavailable. Your song can keep playing.':filmPhase==='blocked'?'Tap the film to start the picture. Your song can keep playing.':'The film follows your song. It loops for longer recordings.';
+}
+function showFilm(value){filmVisible=!!value;$('filmBody').hidden=!filmVisible;$('filmToggle').textContent=filmVisible?'Hide film':'Show film';$('filmToggle').setAttribute('aria-expanded',String(filmVisible));film.setEnabled(filmVisible);}
+$('filmToggle').onclick=()=>showFilm(!filmVisible);
+$('filmPlay').onclick=()=>{if(filmPhase==='blocked'||filmPhase==='unavailable'){film.retry();if(!isPlaying())toggle();}else toggle();};
+$('dockFilm').onclick=()=>{showFilm(true);$('filmPreview').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'});};
+$('filmFullscreen').onclick=()=>{const stage=$('filmStage');if(stage.requestFullscreen)stage.requestFullscreen().catch(()=>notify('Fullscreen is unavailable in this browser.'));else if($('sceneFilm').webkitEnterFullscreen)$('sceneFilm').webkitEnterFullscreen();};
+for(const event of ['play','pause','ended'])audio.addEventListener(event,paintFilm);
+
 const clamp=v=>Math.max(0,Math.min(100,Number(v)||0));
 $('volume').value=clamp(preferences.volume??65);audio.volume=Number($('volume').value)/100;
 document.body.classList.toggle('classic',!!preferences.classic);$('skin').setAttribute('aria-pressed',String(!!preferences.classic));
@@ -109,6 +127,7 @@ function paintSelection(){
   if(!current)return;
   const family=catalog.find(s=>s.id===current.songId),index=family?.tracks.findIndex(t=>trackKey(t)===trackKey(current))??0;
   if(cueTrack&&family)updateCue(family,current);
+  $('filmRecording').textContent=current.title+' · '+current.variantLabel;paintFilm();
   $('dockTitle').textContent=current.title;$('dockSubtitle').textContent=`${current.variantLabel} · ${current.artist}`;
   $('dockEnquiry').disabled=false;
   $('dockCover').src=current.cover||'/library/mark.svg';$('dockArt').setAttribute('aria-label',`Play or pause ${current.title}`);
@@ -126,7 +145,7 @@ function start(track){
   controller?.pause();controller?.destroy();
   current=regularTrack(track);playbackSongs=visible;audio.volume=Number($('volume').value)/100;
   const queue=makeQueue(playbackSongs,current,shuffle).map(regularTrack);
-  controller=window.CMDContinuousPlayback.create({id:'musicsubject-library',route:locationURL(current),audio,tracks:queue,localCount:queue.length,radio:{next:()=>null},loopLocal:repeat==='all',repeatOne:repeat==='one',followPages:false,restoreSession:false,onTrack:t=>{current=t;chosenVersions.set(t.songId,t.variantId);history.replaceState({},'',locationURL(t));render();},onStatus:kind=>{if(kind==='error')notify('Recording unavailable. Trying the next one…');if(kind==='failed'||kind==='blocked')notify('Tap Play to retry this recording.');}});
+  controller=window.CMDContinuousPlayback.create({id:'musicsubject-library',route:locationURL(current),audio,tracks:queue,localCount:queue.length,radio:{next:()=>null},loopLocal:repeat==='all',repeatOne:repeat==='one',followPages:false,restoreSession:false,onTrack:t=>{current=t;film.select();chosenVersions.set(t.songId,t.variantId);history.replaceState({},'',locationURL(t));render();},onStatus:kind=>{if(kind==='error')notify('Recording unavailable. Trying the next one…');if(kind==='failed'||kind==='blocked')notify('Tap Play to retry this recording.');}});
   controller.load(0,{autoplay:true,reason:'library-pick'});
   history.replaceState({},'',locationURL(current));notify(`${track.title} · ${track.variantLabel}`);paintSelection();
 }
@@ -208,6 +227,7 @@ function updateCue(song,track){
  $('cueShortlist').textContent=shortlist.includes(trackKey(track))?'✓ Shortlisted':'＋ Shortlist';
 }
 if(cueTrack){
+ document.querySelector('.cue-copy').append($('filmPreview'));
  const playCue=()=>{if(current&&trackKey(current)===trackKey(cueTrack)&&controller)controller.toggle();else start(cueTrack);};
  $('cuePlay').onclick=playCue;$('cueArtwork').onclick=playCue;
  $('cueShare').onclick=()=>shareTrack(cueTrack);
