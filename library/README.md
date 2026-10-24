@@ -63,6 +63,10 @@ the selected recording's row, with native dropdown groups for mobile browsing.
 style description, recorded in `content/sources/library-genres-2026-10-24.json`.
 Do not copy source styles between sibling recordings or classify genres from
 lyrical moods. Artist follow-up and a matching Loudest One upload subsequently resolve five
-more broad classifications in `editorial.mjs`. The older 2024 I Need Love stays
-unclassified; nuRide Away’s original and Shooting Star retain explicit working
-classification notes. See `catalogue-review.md` for the current evidence.
+more broad classifications in `editorial.mjs`. The older 2024 I Need Love is Pop according to its published SoundCloud page;
+nuRide Away’s original and Shooting Star retain explicit working classification
+notes. See `catalogue-review.md` for the current evidence.
+
+For fast screening, existing recording-specific tempo/key estimates appear on
+song rows with their uncertainty labels. The film panel scrolls with the page
+so it cannot cover song controls; Watch film still returns to the preview.
