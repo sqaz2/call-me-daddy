@@ -121,9 +121,9 @@ The follow-up genre audit matched the clip IDs embedded in the actual MP3 files 
 | Shooting Star · 2019 cut | Electronic, broad working classification | Artist described electronic / dubstep / house uncertainty. Only the common electronic family is assigned; exact subgenre remains open. |
 | I Need Love · Cinematic Terror Dubstep Score | Dubstep / electronic | Artist confirmation agrees with the existing recording label. Busker and ska-punk versions retain their own styles. |
 
-### Genre still unknown
+### Remaining classification uncertainty
 
-**I Need Love · We Fall in Love Too Quickly · 2024 AI reimagining** remains unclassified. It is still searchable by title and supported moods. nuRide Away and Shooting Star have useful broad working labels, but their tentative status is retained in the recording’s Genre source details.
+**I Need Love · We Fall in Love Too Quickly · 2024 AI reimagining** is now Pop: its exact published SoundCloud page supplies that genre, and the artist describes it as alternative pop (24 October 2026). It is independent of the newer dubstep version. All listed recordings now have at least a broad genre or format classification; this is not a claim that every subgenre is listening-verified. nuRide Away and Shooting Star have useful broad working labels, but their tentative status is retained in the recording’s Genre source details.
 
 The original 45 source matches are recorded in `content/sources/library-genres-2026-10-24.json` and `library/recording-genres.mjs`. The Loudest One follow-up evidence is in `content/sources/library-loudest-genre-2026-10-24.json`; artist confirmations and working classifications are in `library/editorial.mjs`.
 

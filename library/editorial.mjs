@@ -739,6 +739,12 @@ export const EDITORIAL = {
           "dubstep"
         ],
         "genreSource": "Artist confirmed the newest I Need Love version is dubstep (24 October 2026), consistent with the published Cinematic Terror Dubstep Score label. Older versions retain their own styles."
+      },
+      "2024-reimagined": {
+        "genres": [
+          "pop"
+        ],
+        "genreSource": "The published SoundCloud page labels this exact 2024 recording Pop; the artist describes it as alternative pop (24 October 2026). https://soundcloud.com/will-crowell/we-fall-in-love-too-quickly-2024-reimagined-with-ai"
       }
     }
   },
