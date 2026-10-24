@@ -71,6 +71,8 @@ test('blocked or failed video playback never pauses or skips the song and can be
   video.rejectPlay=null;film.retry();await settle();assert.equal(video.paused,false);
   video.error={code:2};video.emit('error');
   assert.equal(states.at(-1),'unavailable');assert.equal(audio.paused,false);
+  audio.paused=true;audio.emit('pause');assert.equal(states.at(-1),'unavailable');
+  playing();await settle();assert.equal(states.at(-1),'unavailable');
   film.retry();await settle();assert.equal(video.paused,false);assert.equal(audio.pauses,0);
 });
 test('old asynchronous play results cannot change a rapidly selected replacement recording',async()=>{
