@@ -1,5 +1,11 @@
 // Reviewed editorial interpretations. Genre confirmations are kept separate from lyrical moods.
 export const EDITORIAL = {
+  "no-respect": {
+    "moods": ["reflective", "lonely", "confident"],
+    "genres": ["hiphop"],
+    "source": "Artist-supplied verses and the collaboration story at /no-respect/.",
+    "genreSource": "Hip-hop collaboration between Dogg Knows and William J. Crowell."
+  },
   "eternal-room": {
     "moods": [
       "romantic",
