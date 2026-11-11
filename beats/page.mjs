@@ -8,6 +8,8 @@ const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp
 const time = value => `${Math.floor(value / 60)}:${String(Math.floor(value % 60)).padStart(2, '0')}`;
 const absolute = value => new URL(value || '/', location.href).href;
 let controller;
+document.querySelector('.beat-question').hidden = !tracks.length;
+if (!tracks.length) status.textContent = '';
 const owner = () => {
   try { return window.top.CMDUniversalPlayer || window.CMDUniversalPlayer; }
   catch { return window.CMDUniversalPlayer; }
