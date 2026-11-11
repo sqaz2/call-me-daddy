@@ -50,12 +50,12 @@ test('shortlist exports and enquiries carry delivery needs without implying avai
  assert.match(request,/Requested delivery options \(please confirm availability\)/);assert.match(request,/Reviewed clean edit/);assert.match(request,/Original WAV master/);assert.match(request,/version=fast/);
 });
 
-test('existing analyses stay recording-specific and the new unmeasured beat remains unknown',()=>{
+test('every playable recording has its own analysis; external links receive none',()=>{
  const all=buildLibraryCatalog(loadCatalog(),STARMUFF_TRACKS).flatMap(s=>s.tracks),local=all.filter(t=>t.audio&&!t.external),external=all.filter(t=>t.external);
- assert.equal(local.length,185);assert.equal(external.length,3);assert.equal(Object.keys(RECORDING_ANALYSIS).length,174);
+ assert.equal(local.length,184);assert.equal(external.length,3);assert.equal(Object.keys(RECORDING_ANALYSIS).length,174);
  const audit=JSON.parse(fs.readFileSync('content/sources/library-audio-analysis-2026-10-24.json'));
  assert.equal(audit.recordings.length,174);assert.deepEqual(audit.errors,[]);
- for(const t of local){if(t.audio==='/media/songs/2026/11/running-a-monopoly/rap-beat.mp3'){assert.equal(t.analysis,null);assert.equal(matchesAnalysis(t,{tempo:'slow'}),false);assert.equal(matchesAnalysis(t,{key:'C minor'}),false);assert.ok(t.facts?.seconds>0);continue;}assert.ok(t.analysis,t.audio);assert.ok(t.facts?.seconds>0,t.audio);if(RECORDING_ANALYSIS[t.audio]){assert.deepEqual(t.analysis,RECORDING_ANALYSIS[t.audio].analysis);assert.match(t.analysis.sourceSha256,/^[a-f0-9]{64}$/);assert.ok(t.analysis.sourceBytes>0);}}
+ for(const t of local){assert.ok(t.analysis,t.audio);assert.ok(t.facts?.seconds>0,t.audio);if(RECORDING_ANALYSIS[t.audio]){assert.deepEqual(t.analysis,RECORDING_ANALYSIS[t.audio].analysis);assert.match(t.analysis.sourceSha256,/^[a-f0-9]{64}$/);assert.ok(t.analysis.sourceBytes>0);}}
  for(const t of external){assert.equal(t.analysis,null);assert.equal(matchesAnalysis(t,{tempo:'slow'}),false);}
  for(const r of audit.recordings){assert.deepEqual(RECORDING_ANALYSIS[r.audio],{analysis:r.analysis,facts:r.facts});assert.ok(local.some(t=>t.audio===r.audio));if(r.analysis.keyStatus==='uncertain')assert.equal(r.analysis.keyEstimate,null);}
 });

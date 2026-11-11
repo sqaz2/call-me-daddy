@@ -5,8 +5,7 @@ const links = require('../data/song-links.json');
 (async () => {
   const { loadCatalog } = await import('./sync-song-links.mjs');
   const { hipHopBeats } = await import('../beats/model.mjs');
-  const beat = hipHopBeats(loadCatalog()).find(t => t.songId === 'running-a-monopoly');
-  assert(beat);
+  const beat = hipHopBeats(loadCatalog())[0];
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true,
     userAgent: 'Mozilla/5.0 (Linux; Android 17) AppleWebKit/537.36 Chrome/144.0 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/535.0]' });
@@ -15,7 +14,16 @@ const links = require('../data/song-links.json');
   await context.route(url => Object.values(links.domains).includes(url.hostname), route => route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'content-type': 'application/json' }, body: JSON.stringify({ service: 'musicsubject-song-links', revision: links.revision }) }));
   await context.addInitScript(() => { window.__copies = []; Object.defineProperty(navigator, 'clipboard', { value: { writeText: text => { window.__copies.push(text); return Promise.resolve(); } } }); });
   try {
-    await page.goto(base + beat.experience, { waitUntil: 'networkidle' });
+    await page.goto(base + (beat?.experience || '/beats/'), { waitUntil: 'networkidle' });
+    if (!beat) {
+      assert.equal(await page.locator('[data-beat-play]').count(), 0);
+      assert.match(await page.locator('#beatGrid').innerText(), /No beats are published here yet/);
+      assert.equal(await page.locator('#beatsAudio').getAttribute('src'), null);
+      assert.equal(await page.locator('.beat-question').isVisible(), false);
+      assert.deepEqual(errors, []);
+      console.log('PASS Beats: no recording is invented when the intended upload has not been identified.');
+      return;
+    }
     assert.equal(await page.locator('#beatsAudio').getAttribute('src'), null);
     for (const width of [320, 390, 1440]) {
       await page.setViewportSize({ width, height: 844 });
