@@ -23,6 +23,8 @@ function draw() {
     button.querySelector('.beat-play-label').textContent = playing ? '❚❚ Pause beat' : '▶ Play beat';
     button.closest('article').classList.toggle('is-playing', playing);
   });
+  const active = source && tracks.find(track => absolute(track.audio) === absolute(source));
+  if (active) status.textContent = media.error ? 'Playback stopped. Tap the artwork to retry.' : media.paused ? `Paused · ${active.title}` : media.readyState < 3 ? 'Buffering…' : `Playing · ${active.title} · use the dock to seek or skip.`;
 }
 function play(index) {
   const track = tracks[index], current = owner(), media = current?.getMedia?.();
