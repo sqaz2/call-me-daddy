@@ -10,6 +10,7 @@ See `SITE-MAP.md` for the full information architecture and archive/media map.
 - `/updates/` — running public history of new music, experiments, archive finds and meaningful site changes
 - `/winhamp/` — one-screen Winamp-inspired player with the live catalogue, spectrum, shuffle, repeat, version search and exact-recording share links. Choose Call Me Daddy, the original 50-track StarMuff playlist, or All music. Share `/winhamp/?playlist=starmuff` to open the game soundtrack directly.
 - `/music/` — growing music catalog and intention-driven continuous player
+- `/beats/` — Hip Hop Beats, with artwork playback and exact-recording engagement shares. Tag an instrumental variant with `collection: "hip-hop-beats"`, set its `shareCategory` to `music`, and give it an exact `/beats/?song=SONG_ID&version=VERSION_ID` experience/share URL. Keep versions in their existing song manifest, review their share-copy override, then synchronize releases and measure audio facts. The collection reads those tags automatically; vocal songs are not added by title or genre alone.
 - `/anti-generative-ai-diss/` — four-track anti-gatekeeping collection, origin story and invitation-ready guest lane
 - `/level-up/` — Level Up / New Tools Trilogy finale
 - `/back-to-sticks/` — Back to Sticks release story

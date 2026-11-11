@@ -13,7 +13,11 @@ const cases={
 };
 const config=cases[releaseId];assert(config,'Choose a known release fixture');
 const out=`/tmp/replay-qa/${releaseId}`;fs.mkdirSync(out,{recursive:true});
-const {song,lyrics,update}=require(`../content/releases/${config.manifest}.json`);
+const release=require(`../content/releases/${config.manifest}.json`);
+// Dedicated beat recordings are exercised by check-beats-browser.cjs. The
+// authored song page retains its vocal versions and original publication.
+const song={...release.song,variants:release.song.variants.filter(v=>v.collection!=='hip-hop-beats')};
+const lyrics=release.lyrics,update=[release.update,...(release.previousUpdates||[])].find(u=>!u.variantId||song.variants.some(v=>v.id===u.variantId));
 const variant=song.variants.find(v=>v.id===config.initialVersion)||song.variants[0];
 const links=require('../data/song-links.json');
 (async()=>{

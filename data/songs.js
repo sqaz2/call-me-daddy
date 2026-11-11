@@ -1,6 +1,62 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "running-a-monopoly",
+    "title": "Running a Monopoly",
+    "artist": "MusicSubject × Call Me Daddy",
+    "year": 2026,
+    "month": 10,
+    "date": "2026-10-08",
+    "project": "Running a Monopoly",
+    "description": "A five-dollar breakfast empire. A Monopoly app. A stomach staging a hostile takeover. Satirical hip-hop freestyle by Call Me Daddy.",
+    "audio": "/media/songs/2026/10/running-a-monopoly/audio.mp3",
+    "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
+    "experience": "/running-a-monopoly/",
+    "shareUrl": "/running-a-monopoly/?version=main",
+    "kind": "Satire · Hip-hop freestyle",
+    "shareGenre": "hiphop",
+    "shareCategory": "jokes",
+    "sunoUrl": "https://suno.com/song/3e85dc33-7cfa-4504-87c2-f24d84926b9f",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Full freestyle",
+        "audio": "/media/songs/2026/10/running-a-monopoly/audio.mp3",
+        "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
+        "duration": 230.04,
+        "date": "2026-10-08",
+        "experience": "/running-a-monopoly/?version=main",
+        "shareUrl": "/running-a-monopoly/?version=main",
+        "sunoUrl": "https://suno.com/song/3e85dc33-7cfa-4504-87c2-f24d84926b9f"
+      },
+      {
+        "id": "rap-beat",
+        "label": "Rap beat",
+        "kind": "Hip-hop instrumental",
+        "collection": "hip-hop-beats",
+        "audio": "/media/songs/2026/11/running-a-monopoly/rap-beat.mp3",
+        "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
+        "duration": 230.088,
+        "date": "2026-11-10",
+        "experience": "/beats/?song=running-a-monopoly&version=rap-beat",
+        "shareUrl": "/beats/?song=running-a-monopoly&version=rap-beat",
+        "shareGenre": "hiphop",
+        "shareCategory": "music",
+        "productionNote": "Hip-hop instrumental version of Running a Monopoly.",
+        "sourceUpload": "/call-me-daddy-voice-running-a-monopoly-vocals.mp3",
+        "sunoUrl": "",
+        "description": "Hip-hop instrumental version of Running a Monopoly. What rapper—or rappers—would MURDER this beat?"
+      }
+    ],
+    "openerPolicy": {
+      "defaultVersion": "main",
+      "eligibleVersions": [
+        "main"
+      ]
+    },
+    "shareToExperience": true
+  },
+  {
     "id": "eternal-room",
     "title": "Eternal Room",
     "artist": "MusicSubject × Call Me Daddy",
@@ -478,37 +534,6 @@ window.CMD_SONGS = [
         "experience": "/turning-invisible/?version=main",
         "shareUrl": "/turning-invisible/?version=main",
         "sunoUrl": "https://suno.com/song/4172d191-b336-4917-a0d6-e640199866ad"
-      }
-    ]
-  },
-  {
-    "id": "running-a-monopoly",
-    "title": "Running a Monopoly",
-    "artist": "MusicSubject × Call Me Daddy",
-    "year": 2026,
-    "month": 10,
-    "date": "2026-10-08",
-    "project": "Running a Monopoly",
-    "description": "A five-dollar breakfast empire. A Monopoly app. A stomach staging a hostile takeover. Satirical hip-hop freestyle by Call Me Daddy.",
-    "audio": "/media/songs/2026/10/running-a-monopoly/audio.mp3",
-    "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
-    "experience": "/running-a-monopoly/",
-    "shareUrl": "/running-a-monopoly/?version=main",
-    "kind": "Satire · Hip-hop freestyle",
-    "shareGenre": "hiphop",
-    "shareCategory": "jokes",
-    "sunoUrl": "https://suno.com/song/3e85dc33-7cfa-4504-87c2-f24d84926b9f",
-    "variants": [
-      {
-        "id": "main",
-        "label": "Full freestyle",
-        "audio": "/media/songs/2026/10/running-a-monopoly/audio.mp3",
-        "cover": "/media/songs/2026/10/running-a-monopoly/cover.jpg",
-        "duration": 230.04,
-        "date": "2026-10-08",
-        "experience": "/running-a-monopoly/?version=main",
-        "shareUrl": "/running-a-monopoly/?version=main",
-        "sunoUrl": "https://suno.com/song/3e85dc33-7cfa-4504-87c2-f24d84926b9f"
       }
     ]
   },

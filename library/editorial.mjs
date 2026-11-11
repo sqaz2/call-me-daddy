@@ -400,7 +400,16 @@ export const EDITORIAL = {
     "moods": [
       "comedy"
     ],
-    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js"
+    "source": "Existing editorial selections in data/taste-clusters.js and data/content-intensity.js",
+    "variants": {
+      "rap-beat": {
+        "moods": ["high-energy"],
+        "replaceMoods": true,
+        "source": "Artist identified the new upload as a rap beat and described it as going HARD (November 10, 2026).",
+        "genreSource": "Artist-confirmed rap beat; this recording is published as a hip-hop instrumental.",
+        "lyricsReview": "Instrumental beat version; the full freestyle's lyric sheet does not apply."
+      }
+    }
   },
   "times-are-coming": {
     "moods": [

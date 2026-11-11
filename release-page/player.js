@@ -16,7 +16,8 @@
     document.querySelectorAll('[data-cut]').forEach(button=>{button.disabled=true});
     return;
   }
-  const variants=song.variants.filter(variant=>variant?.audio);
+  // The Beats collection owns its instrumental queue and listening page.
+  const variants=song.variants.filter(variant=>variant?.audio&&variant.collection!=='hip-hop-beats');
   const tracks=variants.map(variant=>({...song,...variant,id:`${SONG_ID}:${variant.id}`,songId:SONG_ID,variantId:variant.id,variantLabel:variant.label,variantCount:variants.length,title:song.title,cover:variant.cover||song.cover,radioIntent:intent}));
   const absolute=value=>{try{return new URL(value,location.href).href}catch{return String(value||'')}};
   const indexFor=source=>source?tracks.findIndex(track=>absolute(track.audio)===absolute(source)):-1;

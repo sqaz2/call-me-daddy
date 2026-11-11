@@ -85,9 +85,13 @@ export function buildLinks(catalog, registry) {
       // These existing story players honor the exact version query on first play.
       const versionAware = ['/power-pulse-uprising/','/this-is-my-story/', '/times-are-coming/', '/nobody-wants-to-listen/', '/archive/2010-wows/', '/the-games-she-hates/', '/make-me-an-animal-v6/', '/set-a-table-for-two/'].includes(new URL(page || '/', origin).pathname);
       const direct = page && !page.startsWith('/updates/') && (available.length === 1 || song.shareToExperience === true || versionAware) && samePageSongs.length === 1;
-      let target = direct ? new URL(page, origin) : new URL('/music/', origin);
-      if (direct && available.length > 1) target.searchParams.set('version', id);
-      if (!direct) {
+      // Beat collections supply an exact song/version URL while retaining the
+      // original song identity and its already-issued numbered links.
+      const beatPage = variant.collection === 'hip-hop-beats' && variant.shareUrl ? new URL(variant.shareUrl, origin) : null;
+      if (beatPage && (beatPage.origin !== origin || beatPage.pathname !== '/beats/' || beatPage.searchParams.get('song') !== song.id || beatPage.searchParams.get('version') !== id)) throw new Error(`Invalid exact beat route: ${song.id}/${id}`);
+      let target = beatPage || (direct ? new URL(page, origin) : new URL('/music/', origin));
+      if (!beatPage && direct && available.length > 1) target.searchParams.set('version', id);
+      if (!beatPage && !direct) {
         target.searchParams.set('song', song.id);
         target.searchParams.set('version', id);
         target.searchParams.set('share', '1');
