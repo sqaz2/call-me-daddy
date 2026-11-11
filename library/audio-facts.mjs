@@ -938,5 +938,12 @@ export const AUDIO_FACTS = {
     "sampleRate": 48000,
     "channels": 2,
     "bytes": 4223593
+  },
+  "/media/songs/2026/11/running-a-monopoly/rap-beat.mp3": {
+    "seconds": 230.09,
+    "format": "MP3",
+    "sampleRate": 48000,
+    "channels": 2,
+    "bytes": 7362216
   }
 };

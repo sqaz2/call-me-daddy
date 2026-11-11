@@ -340,7 +340,19 @@
       "description": "A five-dollar McDonald's deal, a Monopoly app, and a stomach calling an emergency meeting. Read the Running a Monopoly incident report.",
       "sources": [
         "running-a-monopoly/index.html"
-      ]
+      ],
+      "variants": {
+        "rap-beat": {
+          "headline": "This beat goes HARD. Who would MURDER it?",
+          "text": "This beat goes HARD. 🔥\n\nWhat rapper—or rappers—would MURDER this beat?\nDrop your dream lineup 👇",
+          "description": "What rapper—or dream lineup—would MURDER this beat? Press play on the Running a Monopoly rap beat and share your picks.",
+          "sources": [
+            "beats/index.html",
+            "content/releases/2026-10-08-running-a-monopoly.json",
+            "media/songs/2026/11/running-a-monopoly/rap-beat.mp3"
+          ]
+        }
+      }
     },
     "times-are-coming": {
       "headline": "“How've you been? I'm doing better today.”",
