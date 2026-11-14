@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "song": {
+    "id": "no-respect",
+    "title": "No Respect",
+    "artist": "Dogg Knows feat. MusicSubject & Call Me Daddy",
+    "year": 2026,
+    "month": 11,
+    "date": "2026-11-02",
+    "description": "William closes his verse in Alberta with a question. Dogg Knows answers from South Africa in bars about writing alone and raising his son.",
+    "audio": "/media/songs/2026/11/no-respect/radio.m4a",
+    "cover": "/media/songs/2026/11/no-respect/cover.jpg",
+    "experience": "/no-respect/",
+    "shareUrl": "/no-respect/?version=main",
+    "shareToExperience": true,
+    "kind": "Hip-hop",
+    "shareGenre": "hiphop",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Radio copy",
+        "audio": "/media/songs/2026/11/no-respect/radio.m4a",
+        "cover": "/media/songs/2026/11/no-respect/cover.jpg",
+        "duration": 202.41,
+        "date": "2026-11-02",
+        "experience": "/no-respect/?version=main",
+        "shareUrl": "/no-respect/?version=main",
+        "analysis": {
+          "integratedLufs": -13.3,
+          "loudnessRangeLu": 6.8,
+          "truePeakDbtp": -0.5,
+          "method": "FFmpeg EBU R128 measurement of the full radio copy."
+        }
+      }
+    ]
+  },
+  "radio": {
+    "think": 95,
+    "surprise": 65,
+    "heavy": 70,
+    "laugh": 0,
+    "level-up": 35,
+    "old-files": 0
+  },
+  "update": {
+    "id": "release-no-respect",
+    "published": "2026-11-02T01:00:00-06:00",
+    "type": "New release",
+    "songId": "no-respect",
+    "variantId": "main",
+    "title": "No Respect",
+    "summary": "William closes his verse in Alberta with a question. Dogg Knows answers from South Africa in bars about writing alone and raising his son.",
+    "href": "/no-respect/",
+    "sharePath": "/updates/release-no-respect/",
+    "cta": "Play the radio copy",
+    "featured": true,
+    "cover": "/media/songs/2026/11/no-respect/cover.jpg",
+    "cardLines": [
+      "NO",
+      "RESPECT"
+    ],
+    "cardTag": "South Africa × Alberta",
+    "cardSummary": "Who’d you write for, all those nights on your own?",
+    "badge": "RADIO COPY",
+    "intent": "think"
+  }
+}

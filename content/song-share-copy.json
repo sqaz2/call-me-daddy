@@ -747,6 +747,15 @@
         "eternal-room/index.html",
         "content/releases/2026-10-23-eternal-room.json"
       ]
+    },
+    "no-respect": {
+      "headline": "Who’d you write for, all those nights on your own?",
+      "text": "William had the keys to the dealership. Now he’s making records in the van he sleeps in. Hear him hand the mic to Dogg Knows, the South African father writing through the night.",
+      "description": "William closes his verse in Alberta with a question. Dogg Knows answers from South Africa in bars about writing alone and raising his son.",
+      "sources": [
+        "no-respect/index.html",
+        "content/releases/2026-11-02-no-respect.json"
+      ]
     }
   }
 }

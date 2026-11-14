@@ -1,6 +1,40 @@
 window.CMD_SONGS = [
   // RELEASE-MANIFEST:SONGS:START
   {
+    "id": "no-respect",
+    "title": "No Respect",
+    "artist": "Dogg Knows feat. MusicSubject & Call Me Daddy",
+    "year": 2026,
+    "month": 11,
+    "date": "2026-11-02",
+    "description": "William closes his verse in Alberta with a question. Dogg Knows answers from South Africa in bars about writing alone and raising his son.",
+    "audio": "/media/songs/2026/11/no-respect/radio.m4a",
+    "cover": "/media/songs/2026/11/no-respect/cover.jpg",
+    "experience": "/no-respect/",
+    "shareUrl": "/no-respect/?version=main",
+    "shareToExperience": true,
+    "kind": "Hip-hop",
+    "shareGenre": "hiphop",
+    "variants": [
+      {
+        "id": "main",
+        "label": "Radio copy",
+        "audio": "/media/songs/2026/11/no-respect/radio.m4a",
+        "cover": "/media/songs/2026/11/no-respect/cover.jpg",
+        "duration": 202.41,
+        "date": "2026-11-02",
+        "experience": "/no-respect/?version=main",
+        "shareUrl": "/no-respect/?version=main",
+        "analysis": {
+          "integratedLufs": -13.3,
+          "loudnessRangeLu": 6.8,
+          "truePeakDbtp": -0.5,
+          "method": "FFmpeg EBU R128 measurement of the full radio copy."
+        }
+      }
+    ]
+  },
+  {
     "id": "eternal-room",
     "title": "Eternal Room",
     "artist": "MusicSubject × Call Me Daddy",
